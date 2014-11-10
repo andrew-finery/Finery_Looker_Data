@@ -23,3 +23,13 @@
     stacking: ''
     x_axis_scale: auto
     interpolation: linear
+
+  - name: add_a_unique_name_104
+    title: Untitled Table
+    type: table
+    base_view: sessions
+    dimensions: [sessions.browser]
+    measures: [sessions.count, visitors.count, sessions.average_pages_per_session, sessions.average_session_duration_seconds,
+    sessions.bounce_rate, sessions.new_visitors_count_over_total_visitors_count, sessions.sessions_from_new_visitors_count]
+    sorts: [sessions.count desc]
+    limit: 500
