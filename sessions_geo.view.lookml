@@ -21,9 +21,7 @@
       SELECT
         v.domain_userid,
         v.domain_sessionidx,
-        g.name AS geo_country,
         v.geo_country AS geo_country_code_2_characters,
-        g.three_letter_iso_code AS geo_country_code_3_characters,
         v.geo_region,
         v.geo_city,
         v.geo_zipcode,
@@ -52,8 +50,6 @@
           FROM atomic.events) AS a
         GROUP BY 1,2,3,4,5,6,7,8
         ) AS v
-        LEFT JOIN reference_data.country_codes AS g
-        ON v.geo_country = g.two_letter_iso_code
     
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions_basic.SQL_TABLE_NAME} # Generate this table *after* the sessions_basic table is generated
     distkey: domain_userid
@@ -77,12 +73,6 @@
   - dimension: geography_country
     sql: ${TABLE}.geo_country
     
-  - dimension: geography_country_three_letter_iso_code
-    sql: ${TABLE}.geo_country_code_3_characters
-    
-  - dimension: geography_country_two_letter_iso_code
-    sql: ${TABLE}.geo_country_code_2_characters
-  
   - dimension: geography_region
     sql: ${TABLE}.geo_region
     

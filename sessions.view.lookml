@@ -25,9 +25,7 @@
         s.session_end_ts,
         s.number_of_events,
         s.distinct_pages_viewed,
-        g.geo_country,
         g.geo_country_code_2_characters,
-        g.geo_country_code_3_characters,
         g.geo_region,
         g.geo_city,
         g.geo_zipcode,
@@ -116,7 +114,7 @@
   
   - dimension_group: start
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, hour, date, dow, week, month]
     sql: ${TABLE}.session_start_ts
     
   - dimension: end
@@ -174,17 +172,6 @@
       <a href=events?fields=events.events_detail*&f[events.session_id]=<%= value%>>Event Stream</a>
   
   # Geo fields #
-  
-  - dimension: geography_country
-    sql: ${TABLE}.geo_country
-    html: |
-      <%= linked_value %>
-      <a href="/dashboards/snowplow_ssd/traffic_pulse?country=<%= value %>" target="_new">
-      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
-    
-  - dimension: geography_country_three_letter_iso_code
-    sql: ${TABLE}.geo_country_code_3_characters
-    
   - dimension: geography_country_two_letter_iso_code
     sql: ${TABLE}.geo_country_code_2_characters
   
@@ -400,16 +387,20 @@
   - measure: events_per_visitor
     type: number
     decimals: 2
-    sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
+    sql: ${events_count}/NULLIF(${visitors_count},0)::REAL#
+    
+  - measure: average_session_duration_seconds
+    type: average
+    decimals: 2
+    sql: ${session_duration_seconds}
+  
+  - measure: average_pages_per_session
+    type: average
+    decimals: 2
+    sql: ${distinct_pages_viewed}
     
   # Geo measures
-  - measure: country_count
-    type: count_distinct
-    sql: ${geography_country}
-    detail: 
-    - geography_country
-    - detail*
-    
+
   - measure: region_count
     type: count_distinct
     sql: ${geography_region}
