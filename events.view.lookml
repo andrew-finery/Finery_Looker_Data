@@ -35,33 +35,10 @@
       l.element_id AS link_click_element_id,
       l.element_classes AS link_click_element_classes,
       l.element_target AS link_click_element_target,
-      l.target_url AS link_click_target_url,
-      w.root_id AS web_page_event_id,
-      w.breadcrumb AS web_page_breadcrumb,
-      w.genre AS web_page_genre,
-      w.author AS web_page_author,
-      w.date_created AS web_page_date_created,
-      w.date_modified AS web_page_date_modified,
-      w.date_published AS web_page_date_published,
-      w.in_language AS web_page_in_language,
-      sfs.name AS sfs_name,
-      sfs.email AS sfs_email,
-      sfs.company AS sfs_company,
-      sfs.events_per_month AS sfs_events_per_month,
-      sfs.service_type AS sfs_service_type,
-      tfs.name AS tfs_name,
-      tfs.email AS tfs_email,
-      tfs.company AS tfs_company,
-      tfs.events_per_month AS tfs_events_per_month
+      l.target_url AS link_click_target_url
       FROM atomic.events e
-      LEFT JOIN atomic.org_schema_web_page_1 w
-      ON e.event_id = w.root_id
       LEFT JOIN atomic.com_snowplowanalytics_snowplow_link_click_1 l
       ON e.event_id = l.root_id
-      LEFT JOIN atomic.com_snowplowanalytics_snowplow_website_signup_form_submitted_1 sfs
-      ON e.event_id = sfs.root_id
-      LEFT JOIN atomic.com_snowplowanalytics_snowplow_website_trial_form_submitted_1 tfs
-      ON e.event_id = tfs.root_id
       WHERE domain_userid IS NOT NULL
     
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
@@ -213,96 +190,7 @@
   - dimension: target_url
     sql: ${TABLE}.link_click_target_url  
     
-  # schema.org web page dimensions #
-  - dimension: has_schema_org_dimensions
-    type: yesno
-    sql: ${TABLE}.web_page_event_id IS NOT NULL
   
-  - dimension: bread_crumb
-    sql: ${TABLE}.breadcrumb
-
-  - dimension: genre
-    sql: ${TABLE}.genre
-
-  - dimension: author
-    sql: ${TABLE}.web_page_author
-
-  - dimension: date_created
-    sql: ${TABLE}.date_created
-
-  - dimension_group: date_created
-    type: time
-    timeframes: [time, hour, date, week, month]
-    sql: ${TABLE}.date_created
-
-  - dimension: date_modified
-    sql: ${TABLE}.date_modified
-
-  - dimension_group: date_modified
-    type: time
-    timeframes: [time, hour, date, week, month]
-    sql: ${TABLE}.date_modified
-
-  - dimension: date_published
-    sql: ${TABLE}.date_published
-
-  - dimension_group: date_published
-    type: time
-    timeframes: [time, hour, date, week, month]
-    sql: ${TABLE}.date_published
-
-  - dimension: in_language
-    sql: ${TABLE}.in_language
-    
-  # Trial and signup form submitted fields
-  - dimension: name
-    sql: NVL(${TABLE}.sfs_name , ${TABLE}.tfs_name)
-    
-  - dimension: email
-    sql: NVL(${TABLE}.sfs_email , ${TABLE}.tfs_email)
-    
-  - dimension: company
-    sql: NVL(${TABLE}.sfs_company , ${TABLE}.tfs_company)
-    
-  - dimension: events_per_month
-    sql: NVL(${TABLE}.sfs_events_per_month , ${TABLE}.tfs_events_per_month)
-    
-  - dimension: service_type
-    sql: ${TABLE}.sfs_service_type
-    
-  # Conversion events
-  - dimension: product_funnel_1_viewed_product_page
-    type: yesno
-    sql: ${TABLE}.page_urlpath LIKE '%product%'
-    
-  - dimension: product_funnel_2_viewed_get_started_page
-    type: yesno
-    sql: ${TABLE}.page_urlpath LIKE '%product/get-started.html%'
-    
-  - dimension: product_funnel_3a_viewed_trial_form
-    type: yesno
-    sql: ${TABLE}.page_urlpath LIKE '%product/free-trial.html%'
-    
-  - dimension: product_funnel_4a_submitted_trial_form
-    type: yesno
-    sql: ${TABLE}.tfs_email IS NOT NULL 
-    
-  - dimension: product_funnel_3b_viewed_signup_form
-    type: yesno
-    sql: ${TABLE}.page_urlpath LIKE '%product/sign-up-for-snowplow-as-a-service.html%'
-    
-  - dimension: product_funnel_4b_submitted_signup_form
-    type: yesno
-    sql: ${TABLE}.sfs_email IS NOT NULL
-    
-  - dimension: product_funnel_3_viewed_trial_form_or_signup_form
-    type: yesno
-    sql: ${product_funnel_3a_viewed_trial_form} OR ${product_funnel_3b_viewed_signup_form}
-    
-  - dimension: product_funnel_4_submitted_signup_or_trial_form
-    type: yesno
-    sql: ${product_funnel_4a_submitted_trial_form} OR ${product_funnel_4b_submitted_signup_form}
-
 # MEASURES #
   
   # Basic measures
@@ -397,71 +285,7 @@
     sql: ${approx_user_usage_in_minutes}/NULLIF(${sessions_count}, 0)::REAL
 
 
-  # Conversion measures
-  - measure: product_funnel_1_viewed_product_page_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_1_viewed_product_page: yes
-  
-  - measure: product_funnel_2_viewed_get_started_page_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_2_viewed_get_started_page: yes
-      
-  - measure: product_funnel_3_viewed_trial_form_or_signup_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_3_viewed_trial_form_or_signup_form: yes
-
-  - measure: product_funnel_3a_viewed_trial_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_3a_viewed_trial_form: yes
-      
-  - measure: product_funnel_3b_viewed_signup_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_3b_viewed_signup_form: yes
-
-  - measure: product_funnel_4_submitted_signup_or_trial_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_4_submitted_signup_or_trial_form: yes
-      
-  - measure: product_funnel_4a_submitted_trial_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_4a_submitted_trial_form: yes
-      
-  - measure: product_funnel_4b_submitted_signup_form_session_count
-    type: count_distinct
-    sql: ${session_id}
-    detail: sessions_detail*
-    filters:
-      product_funnel_4b_submitted_signup_form: yes
-      
-  - measure: form_submissions_count
-    type: count
-    detail: form_submits_detail*
-    filters:
-      product_funnel_4b_submitted_signup_form: yes
-  
-  
-  # ----- Detail ------
+ # ----- Detail ------
   sets:
     form_submits_detail:
       - session_index
