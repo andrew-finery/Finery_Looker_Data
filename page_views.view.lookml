@@ -63,5 +63,14 @@
     type: yesno
     sql: ${sessions_last_page.event_id} is not null
     
-  - measure: count
+  - measure: count_views
     type: count
+    
+  - measure: count_exits
+    type: count_distinct
+    sql: ${sessions_last_page.event_id}
+    
+  - measure: count_exits_2
+    type: count
+    sql: ${TABLE}.exit_page_flag = 'yes'
+    

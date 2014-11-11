@@ -18,7 +18,7 @@
     base_view: sessions
     measures: [sessions.bounce_rate]
     sorts: [sessions.bounce_rate desc]
-    empty_color: [red]
+    colors: [blue, orange]
     limit: 500
     show_null_labels: false
 
@@ -32,6 +32,7 @@
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
+    colors: [red, orange]
     limit: 500
     width: 7
     height: 2

@@ -16,7 +16,7 @@
   joins: 
   - join: sessions_last_page
     sql_on: |
-      sessions.event_id = visitors.event_id
+      sessions_last_page.event_id = page_views.event_id
 
 
 
