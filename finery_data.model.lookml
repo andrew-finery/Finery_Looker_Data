@@ -13,6 +13,10 @@
 - base_view: visitors
 
 - base_view: page_views
+  joins: 
+  - join: sessions_last_page
+    sql_on: |
+      sessions.event_id = visitors.event_id
 
 
 

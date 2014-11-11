@@ -17,7 +17,7 @@
             when (page_urlpath like '%checkout/address%') then 5
             when (page_urlpath like '%checkout/delivery%') then 6
             when (page_urlpath like '%checkout/payment%') then 7
-            when (page_urlpath like '%checkout/payment%') then 8
+            when (page_urlpath like '%orders%') then 8
       else 1 end as site_progress,
       
       case when (page_urlpath like '%clothing%') then '2 - Category Page'
@@ -26,7 +26,7 @@
             when (page_urlpath like '%checkout/address%') then '5 - Checkout - Enter Address'
             when (page_urlpath like '%checkout/delivery%') then '6 - Checkout - Delivery'
             when (page_urlpath like '%checkout/payment%') then '7 - Checkout - Payment'
-            when (page_urlpath like '%checkout/payment%') then '8 - Order Completed'
+            when (page_urlpath like '%orders%') then '8 - Order Completed'
       else '1 - Home Page/Other' end as page_type
       
       
@@ -35,7 +35,7 @@
       where event = 'page_view'
 
     
-    sql_trigger_value: SELECT COUNT(*) FROM ${session.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx]
 
@@ -58,6 +58,10 @@
 
   - dimension: page_type
     sql: ${TABLE}.page_type
+  
+  - dimension: exit_page_flag
+    type: yesno
+    sql: ${sessions_last_page.event_id} is not null
     
   - measure: count
     type: count
