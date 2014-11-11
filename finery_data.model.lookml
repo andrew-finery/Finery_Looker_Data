@@ -12,5 +12,7 @@
 
 - base_view: visitors
 
+- base_view: page_views
+
 
 
