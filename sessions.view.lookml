@@ -351,8 +351,8 @@
   - measure: bounce_rate
     type: number
     decimals: 2
-    sql: ${bounced_sessions_count}/NULLIF(${count},0)::REAL
-  
+    sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
+    
   - measure: sessions_from_new_visitors_count
     type: count_distinct
     sql: ${session_id}
