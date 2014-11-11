@@ -12,15 +12,45 @@
   
   
   elements:
-  - name: add_a_unique_name_65
-    title: Untitled Visualization
+  - name: total_visits
+    title: Total Visits
+    type: single_value
+    base_view: sessions
+    measures: [sessions.count]
+    listen:
+     date: sessions.start_date
+    width: 3
+    height: 2
+    
+  - name: visitors
+    title: Total Visitors
+    type: single_value
+    base_view: sessions
+    measures: [sessions.sessions_from_new_visitors_count]
+    listen:
+     date: sessions.start_date
+    width: 3
+    height: 2
+    
+  - name: conversion_rate
+    title: Conversion Rate
     type: single_value
     base_view: sessions
     measures: [sessions.bounce_rate]
-    sorts: [sessions.bounce_rate desc]
-    colors: [blue, orange]
-    limit: 500
-    show_null_labels: false
+    listen:
+     date: sessions.start_date
+    width: 3
+    height: 2
+
+  - name: bounce_rate
+    title: Bounce Rate
+    type: single_value
+    base_view: sessions
+    measures: [sessions.bounce_rate]
+    listen:
+     date: sessions.start_date
+    width: 3
+    height: 2
 
   - name: web_stats_by_device
     title: Web Stats by Device
@@ -33,9 +63,9 @@
      date: sessions.start_date
     sorts: [sessions.count desc]
     colors: [red, orange]
-    limit: 500
-    width: 7
-    height: 2
+    limit: 50
+    width: 6
+    height: 3
 
   - name: web_stats_by_browser
     title: Web Stats by Browser
@@ -47,8 +77,8 @@
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
-    limit: 500
-    width: 7
+    limit: 50
+    width: 6
     height: 4
   
   - name: visits_by_day
@@ -72,7 +102,42 @@
     y_axis_combined: true
     y_axis_labels: "Visits"
     interpolation: linear
-    width: 8
+    width: 6
+    height: 4
+    
+  - name: exit_rates_by_page
+    title: Exit Rates by Page
+    type: table
+    base_view: page_views
+    dimensions: [page_views.page_type]
+    measures: [page_views.count_views, page_views.count_exits, page_views.exit_rate]
+    listen:
+     date: sessions.start_date
+    sorts: [page_views.count_views desc]
+    width: 6
     height: 3
+    
+  - name: exit_rates_by_page_and_browser
+    title: Exit Rates by Page and Browser
+    type: looker_column
+    base_view: page_views
+    dimensions: [page_views.browser_family, page_views.page_type]
+    pivots: [page_views.browser_family]
+    measures: [page_views.exit_rate]
+    listen:
+     date: sessions.start_date
+    sorts: [page_views.page_type]
+    limit: 500
+    show_null_labels: false
+    column_spacing_ratio: 0.2
+    hide_legend: false
+    column_group_spacing_ratio: 0.3
+    stacking: ''
+    x_axis_label: ''
+    y_axis_labels: [Exit Rate (%)]
+    y_axis_max: ['100']
+    y_axis_min: ['0']
+    width: 12
+    height: 5
 
   

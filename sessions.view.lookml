@@ -352,6 +352,7 @@
     type: number
     decimals: 2
     sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
+    format: "%0.2f%"
     
   - measure: sessions_from_new_visitors_count
     type: count_distinct
