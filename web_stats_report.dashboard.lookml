@@ -57,7 +57,7 @@
     type: table
     base_view: sessions
     dimensions: [sessions.device_type]
-    measures: [sessions.count, visitors.count, sessions.average_pages_per_session, sessions.average_session_duration_seconds,
+    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration_seconds,
     sessions.bounce_rate, sessions.new_visitors_count_over_total_visitors_count]
     listen:
      date: sessions.start_date
@@ -72,7 +72,7 @@
     type: table
     base_view: sessions
     dimensions: [sessions.browser]
-    measures: [sessions.count, visitors.count, sessions.average_pages_per_session, sessions.average_session_duration_seconds,
+    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration_seconds,
     sessions.bounce_rate, sessions.new_visitors_count_over_total_visitors_count]
     listen:
      date: sessions.start_date
@@ -98,7 +98,7 @@
     show_null_labels: false
     show_null_points: true
     point_style: circle
-    x_axis_scale: ordinal
+    x_axis_scale: auto
     y_axis_combined: true
     y_axis_labels: "Visits"
     interpolation: linear

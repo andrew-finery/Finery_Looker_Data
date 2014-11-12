@@ -394,12 +394,16 @@
     type: average
     decimals: 2
     sql: ${session_duration_seconds}
-  
-  - measure: average_pages_per_session
-    type: average
-    decimals: 2
-    sql: ${distinct_pages_viewed}
     
+  - measure: page_view_count
+    type: sum
+    sql: ${TABLE}.distinct_pages_viewed
+  
+  - measure: pages_per_session
+    type: number
+    decimals: 2
+    sql: ${page_view_count}/NULLIF(${count},0)::REAL
+  
   # Geo measures
 
   - measure: region_count
