@@ -60,7 +60,7 @@
       where event = 'page_view'
 
     
-    sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${events.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx]
 

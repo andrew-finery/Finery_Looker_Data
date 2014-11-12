@@ -84,6 +84,9 @@
       LEFT JOIN ${sessions_technology.SQL_TABLE_NAME} AS t
         ON s.domain_userid = t.domain_userid AND
         s.domain_sessionidx = t.domain_sessionidx
+      LEFT JOIN (select domain_userid as domain_userid, domain_sessionidx as domain_sessionidx, max(site_progress) as site_progress from ${page_views.SQL_TABLE_NAME} group by 1,2) AS pg
+        ON s.domain_userid = pg.domain_userid AND
+        s.domain_sessionidx = pg.domain_sessionidx
     
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions_technology.SQL_TABLE_NAME}
     distkey: domain_userid
@@ -330,6 +333,20 @@
     
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
+    
+  # site progress  
+  
+  - dimension: site_progress
+    sql_case:
+     1 - Home Page/Other: ${TABLE}.site_progress = 1
+     2 - Category Page: ${TABLE}.site_progress = 2
+     3 - Product Page: ${TABLE}.site_progress = 3
+     4 - View Cart: ${TABLE}.site_progress = 4
+     5 - Checkout - Enter Address: ${TABLE}.site_progress = 5
+     6 - Checkout - Delivery: ${TABLE}.site_progress = 6
+     7 - Checkout - Payment: ${TABLE}.site_progress = 7
+     8 - Order Completed: ${TABLE}.site_progress = 8
+     else: Error
   
   # MEASURES #
 

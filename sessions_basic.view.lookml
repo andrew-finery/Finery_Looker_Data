@@ -31,7 +31,7 @@
         AND domain_userid <> ''
       GROUP BY 1,2
     
-    sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${events.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events
+    sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${page_views.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx]
     
