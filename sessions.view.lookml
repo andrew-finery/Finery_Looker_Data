@@ -67,7 +67,8 @@
         t.dvce_type,
         t.dvce_ismobile,
         t.dvce_screenwidth,
-        t.dvce_screenheight
+        t.dvce_screenheight,
+        pg.site_progress
       FROM ${sessions_basic.SQL_TABLE_NAME} AS s
       LEFT JOIN ${sessions_geo.SQL_TABLE_NAME} AS g
         ON s.domain_userid = g.domain_userid AND
@@ -347,14 +348,18 @@
      7 - Checkout - Payment: ${TABLE}.site_progress = 7
      8 - Order Completed: ${TABLE}.site_progress = 8
      else: Error
-  
+     
   # MEASURES #
 
   - measure: count
     type: count_distinct
     sql: ${session_id}
     detail: individual_detail*
-
+    
+  - measure: count_running_total
+    type: running_total
+    sql: ${count}
+    
   - measure: visitors_count
     type: count_distinct
     sql: ${user_id}
