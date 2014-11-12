@@ -165,4 +165,8 @@
   - measure: average_session_duration_seconds
     type: average
     sql: EXTRACT(EPOCH FROM (${end}-${start}))
+    
+  - measure: average_session_duration
+    type: string
+    sql: cast(${average_session_duration_seconds}/60 as int)||':'||mod(cast(${average_session_duration_seconds} as int), 60)
       

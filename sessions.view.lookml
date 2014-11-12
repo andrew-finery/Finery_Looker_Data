@@ -292,6 +292,9 @@
   - dimension: browser_type
     sql: ${TABLE}.br_type
     
+  - dimension: browser_family
+    sql: ${TABLE}.br_family
+    
   - dimension: browser_renderengine
     sql: ${TABLE}.br_renderengine
     
@@ -366,15 +369,17 @@
     sql: ${count} - ${sessions_from_new_visitors_count}
     detail: individual_detail*
   
-  - measure: new_visitors_count_over_total_visitors_count
+  - measure: new_visitor_percentage
     type: number
     decimals: 2
-    sql: ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
+    sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
+    format: "%0.2f%"
 
-  - measure: returning_visitors_count_over_total_visitors_count
+  - measure: returning_visitor_percentage
     type: number
     decimals: 2
-    sql: ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
+    sql: 100.0 * ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
+    format: "%0.2f%"
     
   - measure: events_count
     type: sum
@@ -388,12 +393,16 @@
   - measure: events_per_visitor
     type: number
     decimals: 2
-    sql: ${events_count}/NULLIF(${visitors_count},0)::REAL#
+    sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
     
   - measure: average_session_duration_seconds
     type: average
     decimals: 2
     sql: ${session_duration_seconds}
+  
+  - measure: average_session_duration
+    type: string
+    sql: cast(${average_session_duration_seconds}/60 as int)||':'||right('0' || mod(cast(${average_session_duration_seconds} as int), 60), 2)
     
   - measure: page_view_count
     type: sum

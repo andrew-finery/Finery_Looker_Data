@@ -57,29 +57,29 @@
     type: table
     base_view: sessions
     dimensions: [sessions.device_type]
-    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration_seconds,
-    sessions.bounce_rate, sessions.new_visitors_count_over_total_visitors_count]
+    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
+    sessions.bounce_rate, sessions.new_visitor_percentage]
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
     colors: [red, orange]
     limit: 50
     width: 6
-    height: 3
+    height: 2
 
   - name: web_stats_by_browser
     title: Web Stats by Browser
     type: table
     base_view: sessions
-    dimensions: [sessions.browser]
-    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration_seconds,
-    sessions.bounce_rate, sessions.new_visitors_count_over_total_visitors_count]
+    dimensions: [sessions.browser_family]
+    measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
+    sessions.bounce_rate, sessions.new_visitor_percentage]
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
     limit: 50
     width: 6
-    height: 4
+    height: 3
   
   - name: visits_by_day
     title: Visits
