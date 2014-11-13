@@ -118,7 +118,7 @@
   
   - dimension_group: start
     type: time
-    timeframes: [time, hour, date, dow, week, month]
+    timeframes: [time, hour, date, hod, dow, week, month]
     sql: ${TABLE}.session_start_ts
     
   - dimension: end
@@ -348,6 +348,12 @@
      7 - Checkout - Payment: ${TABLE}.site_progress = 7
      8 - Order Completed: ${TABLE}.site_progress = 8
      else: Error
+  
+  #temp order placed dimension   #
+  - dimension: order_placed_temp
+    type: yesno
+    sql: ${TABLE}.site_progress = 8
+  #end#
      
   # MEASURES #
 
@@ -360,6 +366,24 @@
     type: running_total
     sql: ${count}
     
+  - measure: count_percent_of_total
+    type: percent_of_total
+    sql: ${count}
+    
+  # temp order measures #  
+  - measure: order_count_temp
+    type: count
+    filters:
+      order_placed_temp: yes
+    sql: ${order_placed_temp}
+  - measure: conversion_rate_temp
+    type: number
+    decimals: 2
+    sql: 100.0 * ${order_count_temp}/NULLIF(${count},0)::REAL
+    format: "%0.2f%"
+  #end#
+
+
   - measure: visitors_count
     type: count_distinct
     sql: ${user_id}
