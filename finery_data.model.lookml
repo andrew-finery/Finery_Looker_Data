@@ -13,11 +13,6 @@
 - explore: visitors
 
 - explore: page_views
-  joins: 
-  - join: sessions_last_page
-    sql_on: |
-      sessions_last_page.event_id = page_views.event_id
-
 
 
 

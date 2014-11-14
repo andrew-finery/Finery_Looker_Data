@@ -1,20 +1,3 @@
-# Copyright (c) 2013-2014 Snowplow Analytics Ltd. All rights reserved.
-#
-# This program is licensed to you under the Apache License Version 2.0,
-# and you may not use this file except in compliance with the Apache License Version 2.0.
-# You may obtain a copy of the Apache License Version 2.0 at http://www.apache.org/licenses/LICENSE-2.0.
-#
-# Unless required by applicable law or agreed to in writing,
-# software distributed under the Apache License Version 2.0 is distributed on an
-# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
-#
-# Version: 2-0-0
-#
-# Author(s): Yali Sassoon
-# Copyright: Copyright (c) 2013-2014 Snowplow Analytics Ltd
-# License: Apache License Version 2.0
-
 - view: sessions_basic
   derived_table:
     sql: |
@@ -31,7 +14,7 @@
         AND domain_userid <> ''
       GROUP BY 1,2
     
-    sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${page_views.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events
+    sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${events.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx]
     
