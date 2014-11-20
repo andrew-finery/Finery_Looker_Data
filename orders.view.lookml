@@ -1,5 +1,6 @@
-- view: com_finerylondon_transaction_1
-  sql: |
+- view: orders
+  derived_table:
+    sql: |
       SELECT
       a.customer_id,
       a.diff_billing_address,
@@ -19,14 +20,18 @@
       a.qty_total,
       a.shipping_cost,
       b.domain_userid,
-      b.domain_sessionidx
+      b.domain_sessionidx,
+      a.root_tstamp
       
       from atomic.com_finerylondon_transaction_1 a
       left join
       atomic.events b
       on a.root_id = b.event_id
-      
-      
+  
+    sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
+    distkey: domain_userid
+    sortkeys: [domain_userid, domain_sessionidx, root_tstamp]
+    
   fields:
 
   - dimension: user_id
@@ -38,9 +43,7 @@
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
-  - dimension: user_id
-    sql: ${TABLE}.domain_userid
-    
+
   - dimension: order_id
     primary_key: true
     sql: ${TABLE}.id
@@ -88,18 +91,6 @@
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.root_tstamp
-
-  - dimension: schema_format
-    sql: ${TABLE}.schema_format
-
-  - dimension: schema_name
-    sql: ${TABLE}.schema_name
-
-  - dimension: schema_vendor
-    sql: ${TABLE}.schema_vendor
-
-  - dimension: schema_version
-    sql: ${TABLE}.schema_version
 
   - dimension: shipping
     type: number

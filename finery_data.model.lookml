@@ -14,5 +14,13 @@
 
 - explore: page_views
 
+- explore: orders
+  joins:
+  - join: sessions
+    sql: |
+      left join ${sessions.SQL_TABLE_NAME} AS sessions
+      on sessions.domain_userid = orders.domain_userid
+      and sessions.domain_sessionidx = orders.domain_sessionidx
+
 
 
