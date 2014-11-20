@@ -21,12 +21,27 @@
       a.shipping_cost,
       b.domain_userid,
       b.domain_sessionidx,
-      a.root_tstamp
+      a.root_tstamp,
+      c.adjustment_amount,
+      d.total_items,
+      d.items_full_price,
+      d.number_of_parent_skus,
+      d.number_of_child_skus
       
       from atomic.com_finerylondon_transaction_1 a
+      
       left join
       atomic.events b
       on a.root_id = b.event_id
+      
+      left join
+      (select root_id as root_id, sum(amount) as adjustment_amount from atomic.com_finerylondon_order_adjustments_1 group by 1) c
+      on a.root_id = c.root_id
+      
+      left join
+      (select root_id as root_id, sum(price*quantity) as items_full_price, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus,  sum(quantity) as total_items from atomic.com_finerylondon_product_in_order_1 group by 1) d
+      on a.root_id = d.root_id
+
   
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
     distkey: domain_userid
