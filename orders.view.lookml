@@ -107,7 +107,14 @@
   - dimension: transaction_ids
     sql: ${TABLE}.transaction_ids
 
-
+  - dimension: revenue_in_gbp
+    sql:  |
+          case
+          when ${TABLE}.currency_code = 'GBP' then ${TABLE}.revenue*1.00
+          when ${TABLE}.currency_code = 'USD' then ${TABLE}.revenue*0.64
+          when ${TABLE}.currency_code = 'CAD' then ${TABLE}.revenue*0.56
+          else ${TABLE}.revenue end
+    
   - measure: count
     type: count
     drill_fields: [id, schema_name]
