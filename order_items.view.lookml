@@ -1,15 +1,13 @@
 - view: order_items
   derived_table:
     sql: |
-        select
-          
+      SELECT
           a.order_tstamp,
           a.order_id,
           a.user_id,
           a.customer_order_code,
           a.domain_userid,
           a.domain_sessionidx,
-          a.customer_order_code,
           
           b.root_id,
           b.sku,
@@ -47,7 +45,7 @@
         
     sql_trigger_value: SELECT COUNT(*) FROM ${orders.SQL_TABLE_NAME}
     distkey: domain_userid
-    sortkeys: [domain_userid, domain_sessionidx, root_tstamp]
+    sortkeys: [domain_userid, domain_sessionidx, order_tstamp]
 
   fields:
 
@@ -183,7 +181,7 @@
     
   - measure: sum_gross_revenue
     type: sum
-    sql: ${TABLE}.gross_revenue
+    sql: ${gross_revenue}
     
     
     

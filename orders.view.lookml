@@ -1,7 +1,7 @@
 - view: orders
   derived_table:
     sql: |
-          select
+      SELECT
           d.collector_tstamp as order_tstamp,
           a.root_id as event_id,
           a.id as order_id,
@@ -12,7 +12,7 @@
           B.item_total as total_of_items,
           B.shipment_total as shipping_total,
           -B.adjustment_total as total_discount,
-          b.total-b.payment_total as store_credit_used,
+          b.total-c.amount as store_credit_used,
           B.included_tax_total as tax_total,
           c.amount as net_revenue,
           d.domain_userid,
@@ -53,7 +53,7 @@
           
           atomic.com_finerylondon_transaction_1 a
           
-          left join select top 10* from atomic.com_finerylondon_order_1 b
+          left join atomic.com_finerylondon_order_1 b
           on a.id = b.id
           
           left join atomic.com_finerylondon_payment_completed_1 c
@@ -62,7 +62,7 @@
           left join atomic.events d
           on a.root_id = d.event_id
           
-          left join (select root_id as root_id, sum(quantity) as number_of_items, count(distinct id) as number_of_parent_skus, count(distinct variant_id), as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
+          left join (select root_id as root_id, sum(quantity) as number_of_items, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
           on e.root_id = a.root_id
           
           where c.state = 'completed'
@@ -72,7 +72,7 @@
   
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
     distkey: domain_userid
-    sortkeys: [domain_userid, domain_sessionidx, root_tstamp]
+    sortkeys: [domain_userid, domain_sessionidx, order_tstamp]
     
   fields:
 
@@ -121,74 +121,105 @@
 
 
   - dimension: gross_revenue
+    type: number
+    decimals: 2
     sql: ${TABLE}.gross_revenue
 
+
   - dimension: total_of_items
+    type: number
+    decimals: 2
     sql: ${TABLE}.total_of_items
 
   - dimension: shipping_total
+    type: number
+    decimals: 2
     sql: ${TABLE}.shipping_total
 
   - dimension: total_discount
+    type: number
+    decimals: 2
     sql: ${TABLE}.total_discount
   
   - dimension: store_credit_used
+    type: number
+    decimals: 2
     sql: ${TABLE}.store_credit_used
   
   - dimension: net_revenue
+    type: number
+    decimals: 2
     sql: ${TABLE}.net_revenue
 
 # Revenue Measures Converted into GBP
 
   - dimension: gross_revenue_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.gross_revenue*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.gross_revenue*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.gross_revenue*0.56
           else ${TABLE}.gross_revenue end
+    format: "£%0.2f"
   
   - dimension: total_of_items_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.total_of_items*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.total_of_items*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.total_of_items*0.56
           else ${TABLE}.revenue end
+    format: "£%0.2f"
           
   
   - dimension: shipping_total_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.shipping_total*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.shipping_total*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.shipping_total*0.56
           else ${TABLE}.shipping_total end
+    format: "£%0.2f"
           
    
   - dimension: total_discount_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.total_discount*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.total_discount*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.total_discount*0.56
           else ${TABLE}.total_discount end
+    format: "£%0.2f"
           
   - dimension: store_credit_used_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.store_credit_used*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.store_credit_used*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.store_credit_used*0.56
           else ${TABLE}.store_credit_used end
+    format: "£%0.2f"
           
   - dimension: net_revenue_in_gbp
+    type: number
+    decimals: 2
     sql:  |
           case
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.net_revenue*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.net_revenue*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.net_revenue*0.56
           else ${TABLE}.net_revenue end
+    format: "£%0.2f"
 
   - dimension: number_of_items
     sql: ${TABLE}.number_of_items
@@ -297,37 +328,45 @@
 
   - measure: sum_gross_revenue_gbp
     type: sum
-    sql: ${TABLE}.gross_revenue_gbp
+    sql: ${gross_revenue_in_gbp}
+    format: "£%0.2f"
 
   - measure: sum_total_of_items_gbp
     type: sum
-    sql: ${TABLE}.total_of_items_gbp
+    sql: ${total_of_items_in_gbp}
+    format: "£%0.2f"
 
   - measure: sum_shipping_total_gbp
     type: sum
-    sql: ${TABLE}.shipping_total_gbp
+    sql: ${shipping_total_in_gbp}
+    format: "£%0.2f"
 
   - measure: sum_total_discount_gbp
     type: sum
-    sql: ${TABLE}.total_discount_gbp
+    sql: ${total_discount_in_gbp}
+    format: "£%0.2f"
   
   - measure: sum_store_credit_used_gbp
     type: sum
-    sql: ${TABLE}.store_credit_used_gbp
+    sql: ${store_credit_used_in_gbp}
+    format: "£%0.2f"
   
   - measure: sum_net_revenue_gbp
     type: sum
-    sql: ${TABLE}.net_revenue_gbp
+    sql: ${net_revenue_in_gbp}
+    format: "£%0.2f"
     
   # revenue averages
 
   - measure: avg_gross_revenue_gbp
     type: average
-    sql: ${TABLE}.gross_revenue_gbp
+    sql: ${gross_revenue_in_gbp}
+    format: "£%0.2f"
       
   - measure: avg_net_revenue_gbp
     type: average
-    sql: ${TABLE}.net_revenue_gbp
+    sql: ${net_revenue_in_gbp}
+    format: "£%0.2f"
       
    # basket size averages
   

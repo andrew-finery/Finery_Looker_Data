@@ -25,5 +25,5 @@
   joins:
   - join: line_detail_re15
     sql_on: |
-      order_items.sku = line_detail_re15.child_sku
+      order_items.sku = line_detail_re15.ean
 
