@@ -28,6 +28,7 @@
                     OR (mkt_campaign = '' AND mkt_content = '' AND mkt_medium = '' AND mkt_source = '' AND mkt_term = '')
             )
           ) -- Either the refr or mkt fields are set (not blank)
+          AND app_id = 'production'
         GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12) AS t
       WHERE "rank" = 1 -- Only pull the first referer for each visit
     

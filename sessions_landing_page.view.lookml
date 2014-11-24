@@ -31,7 +31,7 @@
                 FIRST_VALUE(page_urlpath) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlpath,
                 FIRST_VALUE(dvce_tstamp) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS dvce_tstamp
                 FROM atomic.events
-                ) AS a
+                WHERE app_id = 'production') AS a
                 GROUP BY 1,2,3,4,5)a
                 
                 left join
@@ -50,7 +50,8 @@
                 FIRST_VALUE(page_urlpath) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlpath,
                 FIRST_VALUE(dvce_tstamp) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS dvce_tstamp
                 FROM atomic.events
-                where event = 'page_view') AS a
+                where event = 'page_view'
+                AND app_id = 'production') AS a
                 GROUP BY 1,2,3,4,5)b
                 
                 on a.domain_userid = b.domain_userid
@@ -65,6 +66,7 @@
                 count(distinct page_url) as distinct_pages,
                 case when (count(distinct page_url)) > (sum(case when event = 'page_view' then 1 else 0 end)) then 'DP' else 'PV' end as final_pv
                 from atomic.events
+                WHERE app_id = 'production'
                 group by 1,2) c
                 
                 on a.domain_userid = c.domain_userid

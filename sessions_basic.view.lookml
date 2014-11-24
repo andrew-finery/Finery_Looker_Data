@@ -12,6 +12,7 @@
         atomic.events
       WHERE domain_userid IS NOT NULL
         AND domain_userid <> ''
+        AND app_id = 'production'
       GROUP BY 1,2
     
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${events.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events

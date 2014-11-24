@@ -62,7 +62,8 @@
             br_features_windowsmedia, br_cookies, os_name, os_family, os_manufacturer, os_timezone, dvce_type, dvce_ismobile, dvce_screenwidth,
             dvce_screenheight) AS "rank"
         FROM "atomic"."events"
-        WHERE domain_userid IS NOT NULL ) AS a
+        WHERE domain_userid IS NOT NULL
+        AND app_id = 'production') AS a
       WHERE rank = 1  
       GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
     

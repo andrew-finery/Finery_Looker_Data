@@ -11,6 +11,7 @@
       FROM atomic.events
       WHERE domain_userid IS NOT NULL
         AND domain_userid <> ''
+        AND app_id = 'production'
       GROUP BY 1
       
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
