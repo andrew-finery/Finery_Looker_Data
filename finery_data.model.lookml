@@ -20,4 +20,10 @@
     sql_on: |
       sessions.domain_userid = orders.domain_userid
       and sessions.domain_sessionidx = orders.domain_sessionidx
+      
+- explore: order_items
+  joins:
+  - join: line_detail_re15
+    sql_on: |
+      order_items.sku = line_detail_re15.child_sku
 
