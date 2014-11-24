@@ -177,7 +177,7 @@
           when ${TABLE}.currency_code = 'GBP' then ${TABLE}.total_of_items*1.00
           when ${TABLE}.currency_code = 'USD' then ${TABLE}.total_of_items*0.64
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.total_of_items*0.56
-          else ${TABLE}.revenue end
+          else ${TABLE}.total_of_items end
     format: "£%0.2f"
           
   
