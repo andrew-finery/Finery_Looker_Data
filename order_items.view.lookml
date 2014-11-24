@@ -78,13 +78,20 @@
     sql: ${TABLE}.sku
     
   - dimension: price
+    type: number
+    decimals: 2
     sql: ${TABLE}.price
+    format: "£%0.2f"
   
   - dimension: quantity
     sql: ${TABLE}.quantity
   
   - dimension: gross_revenue
+    type: number
+    decimals: 2
     sql: ${TABLE}.price * ${TABLE}.quantity
+    format: "£%0.2f"
+    
     
   # Device fields #
     
@@ -182,7 +189,7 @@
   - measure: sum_gross_revenue
     type: sum
     sql: ${gross_revenue}
-    
+    format: "£%0.2f"
     
     
     

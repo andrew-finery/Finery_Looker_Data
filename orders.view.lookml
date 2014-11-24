@@ -124,32 +124,37 @@
     type: number
     decimals: 2
     sql: ${TABLE}.gross_revenue
-
+    format: "£%0.2f"
 
   - dimension: total_of_items
     type: number
     decimals: 2
     sql: ${TABLE}.total_of_items
-
+    format: "£%0.2f"
+    
   - dimension: shipping_total
     type: number
     decimals: 2
     sql: ${TABLE}.shipping_total
-
+    format: "£%0.2f"
+    
   - dimension: total_discount
     type: number
     decimals: 2
     sql: ${TABLE}.total_discount
+    format: "£%0.2f"
   
   - dimension: store_credit_used
     type: number
     decimals: 2
     sql: ${TABLE}.store_credit_used
+    format: "£%0.2f"
   
   - dimension: net_revenue
     type: number
     decimals: 2
     sql: ${TABLE}.net_revenue
+    format: "£%0.2f"
 
 # Revenue Measures Converted into GBP
 
