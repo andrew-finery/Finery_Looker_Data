@@ -360,11 +360,13 @@
 
   - measure: avg_gross_revenue_gbp
     type: average
+    decimals: 2
     sql: ${gross_revenue_in_gbp}
     format: "£%0.2f"
       
   - measure: avg_net_revenue_gbp
     type: average
+    decimals: 2
     sql: ${net_revenue_in_gbp}
     format: "£%0.2f"
       
@@ -372,8 +374,10 @@
   
   - measure: avg_items_in_bag
     type: average
+    decimals: 2
     sql: ${TABLE}.number_of_items
       
   - measure: avg_skus_in_bag
     type: average
+    decimals: 2
     sql: ${TABLE}.number_of_products
