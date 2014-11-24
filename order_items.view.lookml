@@ -166,15 +166,15 @@
   # MEASURES #
   
   - measure: count_orders
-    type: count distinct
+    type: count_distinct
     sql: ${TABLE}.order_id
     
   - measure: count_customers
-    type: count distinct
+    type: count_distinct
     sql: ${TABLE}.user_id  
     
   - measure: distinct_skus_sold
-    type: count distinct
+    type: count_distinct
     sql: ${TABLE}.sku
   
   - measure: items_sold

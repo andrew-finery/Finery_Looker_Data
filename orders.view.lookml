@@ -282,11 +282,11 @@
 # MEASURES #
   
   - measure: count_orders
-    type: count distinct
+    type: count_distinct
     sql: ${TABLE}.order_id
     
   - measure: count_customers
-    type: count distinct
+    type: count_distinct
     sql: ${TABLE}.user_id  
     
   - measure: total_items
@@ -321,20 +321,20 @@
     
   # revenue averages
 
-- measure: avg_gross_revenue_gbp
-  type: average
-  sql: ${TABLE}.gross_revenue_gbp
-    
-- measure: avg_net_revenue_gbp
-  type: average
-  sql: ${TABLE}.net_revenue_gbp
-    
- # basket size averages
-
-- measure: avg_items_in_bag
-  type: average
-  sql: ${TABLE}.number_of_items
-    
-- measure: avg_skus_in_bag
-  type: average
-  sql: ${TABLE}.number_of_products
+  - measure: avg_gross_revenue_gbp
+    type: average
+    sql: ${TABLE}.gross_revenue_gbp
+      
+  - measure: avg_net_revenue_gbp
+    type: average
+    sql: ${TABLE}.net_revenue_gbp
+      
+   # basket size averages
+  
+  - measure: avg_items_in_bag
+    type: average
+    sql: ${TABLE}.number_of_items
+      
+  - measure: avg_skus_in_bag
+    type: average
+    sql: ${TABLE}.number_of_products
