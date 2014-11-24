@@ -222,13 +222,18 @@
     format: "£%0.2f"
 
   - dimension: number_of_items
+    type: number
+    decimals: 2
     sql: ${TABLE}.number_of_items
   
   - dimension: number_of_products
+    type: number
+    decimals: 2
     sql: ${TABLE}.number_of_products
     
   - dimension: number_of_variants
-
+    type: number
+    decimals: 2
     sql: ${TABLE}.number_of_variants
 
 # Device fields #
@@ -360,13 +365,11 @@
 
   - measure: avg_gross_revenue_gbp
     type: average
-    decimals: 2
     sql: ${gross_revenue_in_gbp}
     format: "£%0.2f"
       
   - measure: avg_net_revenue_gbp
     type: average
-    decimals: 2
     sql: ${net_revenue_in_gbp}
     format: "£%0.2f"
       
@@ -374,10 +377,11 @@
   
   - measure: avg_items_in_bag
     type: average
-    decimals: 2
     sql: ${TABLE}.number_of_items
+    format: "%0.2f"
       
   - measure: avg_skus_in_bag
     type: average
     decimals: 2
     sql: ${TABLE}.number_of_products
+    format: "%0.2f"
