@@ -225,6 +225,17 @@
           when ${TABLE}.currency_code = 'CAD' then ${TABLE}.store_credit_used*0.56
           else ${TABLE}.store_credit_used end
     format: "£%0.2f"
+  
+  - dimension: payment_received_in_gbp
+    type: number
+    decimals: 2
+    sql:  |
+          case
+          when ${TABLE}.currency_code = 'GBP' then ${TABLE}.payment_received*1.00
+          when ${TABLE}.currency_code = 'USD' then ${TABLE}.payment_received*0.64
+          when ${TABLE}.currency_code = 'CAD' then ${TABLE}.payment_received*0.56
+          else ${TABLE}.payment_received end
+    format: "£%0.2f"
           
   - dimension: net_revenue_in_gbp
     type: number
