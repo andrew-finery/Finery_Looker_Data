@@ -14,7 +14,8 @@
           -B.adjustment_total as total_discount,
           b.total-c.amount as store_credit_used,
           B.included_tax_total as tax_total,
-          c.amount as net_revenue,
+          c.amount as payment_receieved,
+          b.item_total + b.shipment_total + b.adjustment_total - b.included_tax_total as net_revenue,
           d.domain_userid,
           d.domain_sessionidx,
           e.number_of_items as number_of_items,
@@ -65,9 +66,13 @@
           left join (select root_id as root_id, sum(quantity) as number_of_items, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
           on e.root_id = a.root_id
           
+          left join spree_orders f
+          on f.id = a.id
+          
           where c.state = 'completed'
           and d.app_id = 'production'
           and a.root_tstamp > date '2014-11-22'
+          and f.state <> '"canceled"'
 
   
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
@@ -148,6 +153,12 @@
     type: number
     decimals: 2
     sql: ${TABLE}.store_credit_used
+    format: "£%0.2f"
+  
+  - dimension: payment_received
+    type: number
+    decimals: 2
+    sql: ${TABLE}.payment_received
     format: "£%0.2f"
   
   - dimension: net_revenue
