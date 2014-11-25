@@ -29,3 +29,5 @@
       
 - explore: users_signup
 
+- explore: leads
+
