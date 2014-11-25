@@ -15,9 +15,19 @@
            else 'No' end as signed_up,
       
       spree_users.created_at,
-      spree_users.first_name,
-      spree_users.last_name,
-      mandrill.referral_sent_at
+      spree_users.first_name as first_name,
+      spree_users.last_name as last_name,
+      mandrill.referral_sent_at,
+      
+      mailchimp.first_name as mailchimp_first_name,
+      mailchimp.last_name as mailchimp_last_name,
+      mailchimp.INVITECODE,
+      mailchimp.CREDIT,
+      mailchimp.Tier,
+      mailchimp.Currency,
+      mailchimp.Referrer,
+      mailchimp.NR_Reference,
+      mailchimp.Time_for_Welcome_E_mail
       
       from
       
@@ -25,12 +35,12 @@
       from
       ((select left(right(email, len(email)-1), len(email)-2) as email_address from spree_users)
       union
-      (select email_address from scratchpad.mailchimp_temp)
+      (select email_address from mailchimp_invites)
       union
       (select email_address from mandrill_referrals where status = 'sent'))
       group by 1) as all_emails
       
-      left join (select email_address from scratchpad.mailchimp_temp group by 1) as mailchimp
+      left join (select email_address, first_name, last_name, INVITECODE, CREDIT, Tier, Currency, Referrer, NR_Reference, Time_for_Welcome_E_mail from mailchimp_invites) as mailchimp
       on all_emails.email_address = mailchimp.email_address
       
       left join (select cast (date as datetime) as referral_sent_at, Email_Address as email_address from mandrill_referrals where status = 'sent' group by 1,2) as mandrill
@@ -85,6 +95,35 @@
     
   - dimension: last_name
     sql: ${TABLE}.last_name
+    
+  # mailchimp dimensions#
+  
+  - dimension: mailchimp_first_name
+    sql: ${TABLE}.mailchimp_first_name
+    
+  - dimension: mailchimp_last_name
+    sql: ${TABLE}.mailchimp_last_name
+    
+  - dimension: invitecode
+    sql: ${TABLE}.invitecode
+    
+  - dimension: credit
+    sql: ${TABLE}.credit
+    
+  - dimension: tier
+    sql: ${TABLE}.tier
+    
+  - dimension: currency
+    sql: ${TABLE}.currency
+    
+  - dimension: referrer
+    sql: ${TABLE}.referrer
+    
+  - dimension: nr_reference
+    sql: ${TABLE}.nr_reference
+  
+  - dimension: time_for_welcome_e_mail
+    sql: ${TABLE}.time_for_welcome_e_mail
     
   # MEASURES #
   

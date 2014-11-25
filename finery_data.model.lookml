@@ -20,6 +20,9 @@
     sql_on: |
       sessions.domain_userid = orders.domain_userid
       and sessions.domain_sessionidx = orders.domain_sessionidx
+  - join: users_signup
+    sql_on: |
+      orders.user_id = users_signup.id
       
 - explore: order_items
   joins:
