@@ -27,9 +27,5 @@
     sql_on: |
       order_items.sku = line_detail_re15.ean
       
-- explore: register_success
-
-- explore: mailchimp_invites
-
-- explore: mandrill_referrals
+- explore: users_signup
 
