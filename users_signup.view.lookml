@@ -16,7 +16,8 @@
       
       spree_users.created_at,
       spree_users.first_name,
-      spree_users.last_name
+      spree_users.last_name,
+      mandrill.referral_sent_at
       
       from
       
@@ -26,13 +27,13 @@
       union
       (select email_address from scratchpad.mailchimp_temp)
       union
-      (select email_address from scratchpad.mandrill_referrals_temp))
+      (select email_address from mandrill_referrals where status = 'sent'))
       group by 1) as all_emails
       
       left join (select email_address from scratchpad.mailchimp_temp group by 1) as mailchimp
       on all_emails.email_address = mailchimp.email_address
       
-      left join (select email_address from scratchpad.mandrill_referrals_temp group by 1) as mandrill
+      left join (select cast (date as datetime) as referral_sent_at, Email_Address as email_address from mandrill_referrals where status = 'sent' group by 1,2) as mandrill
       on all_emails.email_address = mandrill.email_address
       
       left join
@@ -65,7 +66,12 @@
   - dimension_group: created_at
     type: time
     timeframes: [time, date, hod, hour, week, month]
-    sql: ${TABLE}.collector_tstamp
+    sql: ${TABLE}.created_at
+  
+  - dimension_group: referral_sent_at
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.referral_sent_at
     
   - dimension: source
     sql: ${TABLE}.source
