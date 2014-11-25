@@ -7,32 +7,14 @@
 
   elements:
 
-  - name: no_of_signups
-    title: Number of Signups
-    type: single_value
-    model: finery_data
-    explore: register_success
-    measures: [register_success.number_of_signups]
-    sorts: [register_success.number_of_signups desc]
-    limit: 500
-    
-  - name: no_of_invites
-    title: Number of Invites Sent (Mailchimp)
-    type: single_value
-    model: finery_data
-    explore: mailchimp_invites
-    measures: [mailchimp_invites.number_of_invites_sent]
-    sorts: [mailchimp_invites.number_of_invites_sent desc]
-    limit: 500
-    
-  - name: no_of_referrals
-    title: Number of Referrals Sent (Mandrill)
-    type: single_value
-    model: finery_data
-    explore: mandrill_referrals
-    measures: [mandrill_referrals.number_of_invites_sent]
-    sorts: [mandrill_referrals.number_of_invites_sent desc]
-    limit: 500
-
+- name: add_a_unique_name_891
+  title: Untitled Table
+  type: table
+  model: finery_data
+  explore: users_signup
+  dimensions: [users_signup.source]
+  measures: [users_signup.emails_sent, users_signup.sign_ups, users_signup.sign_up_rate]
+  sorts: [users_signup.emails_sent desc]
+  limit: 500
 
 

@@ -93,6 +93,10 @@
     filters:
       signed_up: yes
     sql: ${email_address}
+  
+  - measure: sign_ups_running_total
+    type: running_total
+    sql: ${sign_ups}
     
   - measure: emails_sent
     type: count
