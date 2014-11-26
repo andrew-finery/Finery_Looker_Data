@@ -52,7 +52,7 @@
   - dimension_group: order_time
     type: time
     timeframes: [time, date, hod, week, month]
-    sql: ${TABLE}.collector_tstamp
+    sql: ${TABLE}.order_tstamp
     
   - dimension: order_id
     primary_key: true
