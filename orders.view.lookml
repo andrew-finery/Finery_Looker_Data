@@ -6,7 +6,7 @@
           max(a.root_tstamp) as order_tstamp,
           a.root_id as event_id,
           a.id as order_id,
-          d.user_id as user_id,
+          dd.user_id as user_id,
           c.payment_method as payment_method,
           c.state,
           B.item_total + B.shipment_total as gross_revenue,
@@ -18,6 +18,7 @@
           c.amount as net_revenue,
           dd.domain_userid,
           dd.domain_sessionidx,
+          a.qty_total as number_of_items,
           e.number_of_parent_skus as number_of_products,
           e.number_of_child_skus as number_of_variants,
           B.currency as currency_code,
@@ -53,7 +54,7 @@
           and a.root_tstamp > date '2014-11-22'
           and f.state <> '"canceled"'
           
-          group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+          group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
 
 
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
