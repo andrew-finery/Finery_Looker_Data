@@ -1,78 +1,55 @@
 - view: orders
   derived_table:
     sql: |
-      SELECT
-          d.collector_tstamp as order_tstamp,
-          a.root_id as event_id,
-          a.id as order_id,
-          d.user_id as user_id,
-          c.payment_method as payment_method,
-          c.state,
-          B.item_total + B.shipment_total as gross_revenue,
-          B.item_total as total_of_items,
-          B.shipment_total as shipping_total,
-          -B.adjustment_total as total_discount,
-          b.total-c.amount as store_credit_used,
-          B.included_tax_total as tax_total,
-          c.amount as payment_receieved,
-          b.item_total + b.shipment_total + b.adjustment_total - b.included_tax_total as net_revenue,
-          d.domain_userid,
-          d.domain_sessionidx,
-          e.number_of_items as number_of_items,
-          e.number_of_parent_skus as number_of_products,
-          e.number_of_child_skus as number_of_variants,
-          B.currency as currency_code,
-          b.use_credit as use_credit,
-          RIGHT(d.page_urlpath, 10) as customer_order_code,
-          d.br_name,
-          d.br_family,
-          d.br_version,
-          d.br_type,
-          d.br_renderengine,
-          d.br_lang,
-          d.br_features_director,
-          d.br_features_flash,
-          d.br_features_gears,
-          d.br_features_java,
-          d.br_features_pdf,
-          d.br_features_quicktime,
-          d.br_features_realplayer,
-          d.br_features_silverlight,
-          d.br_features_windowsmedia,
-          d.br_cookies,
-          d.os_name,
-          d.os_family,
-          d.os_manufacturer,
-          d.os_timezone,
-          d.dvce_type,
-          d.dvce_ismobile,
-          d.dvce_screenwidth,
-          d.dvce_screenheight
-          
-          
-          from
-          
-          atomic.com_finerylondon_transaction_1 a
-          
-          left join atomic.com_finerylondon_order_1 b
-          on a.id = b.id
-          
-          left join atomic.com_finerylondon_payment_completed_1 c
-          on b.root_id = c.root_id
-          
-          left join atomic.events d
-          on a.root_id = d.event_id
-          
-          left join (select root_id as root_id, sum(quantity) as number_of_items, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
-          on e.root_id = a.root_id
-          
-          left join spree_orders f
-          on f.id = a.id
-          
-          where c.state = 'completed'
-          and d.app_id = 'production'
-          and a.root_tstamp > date '2014-11-22'
-          and f.state <> '"canceled"'
+      select
+
+        max(a.root_tstamp) as order_tstamp,
+        a.root_id as event_id,
+        a.id as order_id,
+        d.user_id as user_id,
+        c.payment_method as payment_method,
+        c.state,
+        B.item_total + B.shipment_total as gross_revenue,
+        B.item_total as total_of_items,
+        B.shipment_total as shipment_total,
+        -B.adjustment_total as total_discount,
+        b.total-c.amount as store_credit_used,
+        B.included_tax_total as tax_total,
+        c.amount as net_revenue,
+        dd.domain_userid,
+        dd.domain_sessionidx,
+        e.number_of_parent_skus as number_of_products,
+        e.number_of_child_skus as number_of_variants,
+        B.currency as currency_code,
+        b.use_credit as use_credit,
+        RIGHT(dd.page_urlpath, 10) as customer_order_code
+        
+        
+        from
+        
+        atomic.com_finerylondon_transaction_1 a
+        
+        left join atomic.com_finerylondon_order_1 b
+        on a.id = b.id
+        
+        left join atomic.com_finerylondon_payment_completed_1 c
+        on b.root_id = c.root_id
+        
+        left join atomic.events d
+        on b.root_id = d.event_id
+        
+        left join atomic.events dd
+        on a.root_id = dd.event_id
+        
+        left join (select root_id as root_id, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
+        on e.root_id = a.root_id
+        
+        where c.state = 'completed'
+        and d.app_id = 'production'
+        and dd.app_id = 'production'
+        and a.root_tstamp > date '2014-11-22'
+        
+        group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 
   
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
@@ -262,85 +239,6 @@
     type: number
     decimals: 2
     sql: ${TABLE}.number_of_variants
-
-# Device fields #
-    
-  - dimension: device_type
-    sql: ${TABLE}.dvce_type
-    
-  - dimension: device_is_mobile
-    sql: ${TABLE}.dvce_ismobile
-    
-  - dimension: device_screen_width
-    sql: ${TABLE}.dvce_screenwidth
-    
-  - dimension: device_screen_height
-    sql: ${TABLE}.dvce_screenheight
-    
-  # OS fields #
-    
-  - dimension: operating_system
-    sql: ${TABLE}.os_name
-    
-  - dimension: operating_system_family
-    sql: ${TABLE}.os_family
-    
-  - dimension: operating_system_manufacturer
-    sql: ${TABLE}.os_manufacturer
-    
-  # Browser fields #
-  
-  - dimension: browser
-    sql: ${TABLE}.br_name
-    
-  - dimension: browser_version
-    sql: ${TABLE}.br_version
-    
-  - dimension: browser_type
-    sql: ${TABLE}.br_type
-    
-  - dimension: browser_family
-    sql: ${TABLE}.br_family
-    
-  - dimension: browser_renderengine
-    sql: ${TABLE}.br_renderengine
-    
-  - dimension: browser_language
-    sql: ${TABLE}.br_lang
-    
-  - dimension: browser_has_director_plugin
-    sql: ${TABLE}.br_features_director
-    
-  - dimension: browser_has_flash_plugin
-    sql: ${TABLE}.br_features_flash
-    
-  - dimension: browser_has_gears_plugin
-    sql: ${TABLE}.br_features_gears
-    
-  - dimension: browser_has_java_plugin
-    sql: ${TABLE}.br_features_java
-    
-  - dimension: browser_has_pdf_plugin
-    sql: ${TABLE}.br_features_pdf
-    
-  - dimension: browser_has_quicktime_plugin
-    sql: ${TABLE}.br_features_quicktime
-    
-  - dimension: browser_has_realplayer_plugin
-    sql: ${TABLE}.br_features_realplayer
-    
-  - dimension: browser_has_silverlight_plugin
-    sql: ${TABLE}.br_features_silverlight
-    
-  - dimension: browser_has_windowsmedia_plugin
-    sql: ${TABLE}.br_features_windowsmedia
-    
-  - dimension: browser_supports_cookies
-    sql: ${TABLE}.br_cookies
-
-
-
-
 
 # MEASURES #
   

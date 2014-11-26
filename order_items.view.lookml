@@ -12,32 +12,7 @@
           b.root_id,
           b.sku,
           b.price,
-          b.quantity,
-          
-          a.br_name,
-          a.br_family,
-          a.br_version,
-          a.br_type,
-          a.br_renderengine,
-          a.br_lang,
-          a.br_features_director,
-          a.br_features_flash,
-          a.br_features_gears,
-          a.br_features_java,
-          a.br_features_pdf,
-          a.br_features_quicktime,
-          a.br_features_realplayer,
-          a.br_features_silverlight,
-          a.br_features_windowsmedia,
-          a.br_cookies,
-          a.os_name,
-          a.os_family,
-          a.os_manufacturer,
-          a.os_timezone,
-          a.dvce_type,
-          a.dvce_ismobile,
-          a.dvce_screenwidth,
-          a.dvce_screenheight
+          b.quantity
   
         from ${orders.SQL_TABLE_NAME} a
         left join atomic.com_finerylondon_product_in_order_1 b
@@ -93,80 +68,6 @@
     format: "£%0.2f"
     
     
-  # Device fields #
-    
-  - dimension: device_type
-    sql: ${TABLE}.dvce_type
-    
-  - dimension: device_is_mobile
-    sql: ${TABLE}.dvce_ismobile
-    
-  - dimension: device_screen_width
-    sql: ${TABLE}.dvce_screenwidth
-    
-  - dimension: device_screen_height
-    sql: ${TABLE}.dvce_screenheight
-    
-  # OS fields #
-    
-  - dimension: operating_system
-    sql: ${TABLE}.os_name
-    
-  - dimension: operating_system_family
-    sql: ${TABLE}.os_family
-    
-  - dimension: operating_system_manufacturer
-    sql: ${TABLE}.os_manufacturer
-    
-  # Browser fields #
-  
-  - dimension: browser
-    sql: ${TABLE}.br_name
-    
-  - dimension: browser_version
-    sql: ${TABLE}.br_version
-    
-  - dimension: browser_type
-    sql: ${TABLE}.br_type
-    
-  - dimension: browser_family
-    sql: ${TABLE}.br_family
-    
-  - dimension: browser_renderengine
-    sql: ${TABLE}.br_renderengine
-    
-  - dimension: browser_language
-    sql: ${TABLE}.br_lang
-    
-  - dimension: browser_has_director_plugin
-    sql: ${TABLE}.br_features_director
-    
-  - dimension: browser_has_flash_plugin
-    sql: ${TABLE}.br_features_flash
-    
-  - dimension: browser_has_gears_plugin
-    sql: ${TABLE}.br_features_gears
-    
-  - dimension: browser_has_java_plugin
-    sql: ${TABLE}.br_features_java
-    
-  - dimension: browser_has_pdf_plugin
-    sql: ${TABLE}.br_features_pdf
-    
-  - dimension: browser_has_quicktime_plugin
-    sql: ${TABLE}.br_features_quicktime
-    
-  - dimension: browser_has_realplayer_plugin
-    sql: ${TABLE}.br_features_realplayer
-    
-  - dimension: browser_has_silverlight_plugin
-    sql: ${TABLE}.br_features_silverlight
-    
-  - dimension: browser_has_windowsmedia_plugin
-    sql: ${TABLE}.br_features_windowsmedia
-    
-  - dimension: browser_supports_cookies
-    sql: ${TABLE}.br_cookies
     
   # MEASURES #
   
