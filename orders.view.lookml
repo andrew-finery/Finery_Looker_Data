@@ -3,58 +3,58 @@
     sql: |
       select
 
-          max(a.root_tstamp) as order_tstamp,
-          a.root_id as event_id,
-          a.id as order_id,
-          dd.user_id as user_id,
-          c.payment_method as payment_method,
-          c.state,
-          B.item_total + B.shipment_total as gross_revenue,
-          B.item_total as total_of_items,
-          B.shipment_total as shipment_total,
-          -B.adjustment_total as total_discount,
-          b.total-c.amount as store_credit_used,
-          B.included_tax_total as tax_total,
-          c.amount as net_revenue,
-          dd.domain_userid,
-          dd.domain_sessionidx,
-          a.qty_total as number_of_items,
-          e.number_of_parent_skus as number_of_products,
-          e.number_of_child_skus as number_of_variants,
-          B.currency as currency_code,
-          b.use_credit as use_credit,
-          RIGHT(dd.page_urlpath, 10) as customer_order_code
-          
-          
-          from
-          
-          atomic.com_finerylondon_transaction_1 a
-          
-          left join atomic.com_finerylondon_order_1 b
-          on a.id = b.id
-          
-          left join atomic.com_finerylondon_payment_completed_1 c
-          on b.root_id = c.root_id
-          
-          left join atomic.events d
-          on b.root_id = d.event_id
-          
-          left join atomic.events dd
-          on a.root_id = dd.event_id
-          
-          left join (select root_id as root_id, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
-          on e.root_id = a.root_id
-          
-          left join spree_orders f
-          on a.id = f.id
-          
-          where c.state = 'completed'
-          and d.app_id = 'production'
-          and dd.app_id = 'production'
-          and a.root_tstamp > date '2014-11-22'
-          and f.state <> '"canceled"'
-          
-          group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
+        max(a.root_tstamp) as order_tstamp,
+        a.id as order_id,
+        a.root_id as event_id,
+        dd.user_id as user_id,
+        c.payment_method as payment_method,
+        c.state,
+        B.item_total + B.shipment_total as gross_revenue,
+        B.item_total as total_of_items,
+        B.shipment_total as shipment_total,
+        -B.adjustment_total as total_discount,
+        b.total-c.amount as store_credit_used,
+        B.included_tax_total as tax_total,
+        c.amount as net_revenue,
+        dd.domain_userid,
+        dd.domain_sessionidx,
+        a.qty_total as number_of_items,
+        e.number_of_parent_skus as number_of_products,
+        e.number_of_child_skus as number_of_variants,
+        B.currency as currency_code,
+        b.use_credit as use_credit,
+        RIGHT(dd.page_urlpath, 10) as customer_order_code
+        
+        
+        from
+        
+        atomic.com_finerylondon_transaction_1 a
+        
+        left join atomic.com_finerylondon_order_1 b
+        on a.id = b.id
+        
+        left join atomic.com_finerylondon_payment_completed_1 c
+        on b.root_id = c.root_id
+        
+        left join atomic.events d
+        on b.root_id = d.event_id
+        
+        left join atomic.events dd
+        on a.root_id = dd.event_id
+        
+        left join (select root_id as root_id, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
+        on e.root_id = a.root_id
+        
+        left join spree_orders f
+        on a.id = f.id
+        
+        where c.state = 'completed'
+        and d.app_id = 'production'
+        and dd.app_id = 'production'
+        and a.root_tstamp > date '2014-11-22'
+        and f.state <> '"canceled"'
+        
+        group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
 
 
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}

@@ -9,7 +9,6 @@
           a.domain_userid,
           a.domain_sessionidx,
           
-          b.root_id,
           b.sku,
           b.price,
           b.quantity
