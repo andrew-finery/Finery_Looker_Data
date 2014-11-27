@@ -45,14 +45,14 @@
         left join (select root_id as root_id, count(distinct id) as number_of_parent_skus, count(distinct variant_id) as number_of_child_skus from atomic.com_finerylondon_product_in_order_1 group by 1) e
         on e.root_id = a.root_id
         
-        left join spree_orders f
+        left join spree.orders_snapshot f
         on a.id = f.id
         
         where c.state = 'completed'
         and d.app_id = 'production'
         and dd.app_id = 'production'
         and a.root_tstamp > date '2014-11-22'
-        and f.state <> '"canceled"'
+        and f.state <> 'canceled'
         
         group by 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
 
