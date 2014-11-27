@@ -7,8 +7,8 @@
       
       (select
       left(right(email, len(email)-1), len(email)-2) as email_address,
-      min(cast (left(right(created_at, len(created_at)-1), len(created_at)-2) as timestamp)) as created_at
-      from spree_leads
+      min(created_at) as created_at
+      from spree.leads_snapshot
       group by 1) a
       
       left join ${users_signup.SQL_TABLE_NAME} b
