@@ -216,6 +216,13 @@
     type: average
     sql: ${net_revenue_in_gbp}
     format: "£%0.2f"
+    
+  # revenue running totals
+  
+  - measure: gross_revenue_gbp_running_total
+    type: running_total
+    sql: ${sum_gross_revenue_gbp}
+    format: "£%0.2f"
       
    # basket size averages
   - measure: avg_items_in_bag
@@ -223,3 +230,6 @@
     decimals: 2
     sql: ${total_items}/${count_orders}
     format: "%0.2f"
+    
+    
+  
