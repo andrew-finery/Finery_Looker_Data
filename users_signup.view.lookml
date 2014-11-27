@@ -1,62 +1,74 @@
 - view: users_signup
   derived_table:
     sql: |
-      select
-
-      all_emails.email_address as email_address,
-      
-      spree_users.id as id,
-      
-      case when mailchimp.email_address is not null then 'Initial Invite'
-           when mandrill.email_address is not null then 'Referral'
-           else 'Other' end as source,
-           
-      case when spree_users.email_address is not null then 'Yes'
-           else 'No' end as signed_up,
-      
-      spree_users.created_at,
-      spree_users.first_name as first_name,
-      spree_users.last_name as last_name,
-      mandrill.referral_sent_at,
-      
-      mailchimp.first_name as mailchimp_first_name,
-      mailchimp.last_name as mailchimp_last_name,
-      mailchimp.INVITECODE,
-      mailchimp.CREDIT,
-      mailchimp.Tier,
-      mailchimp.Currency,
-      mailchimp.Referrer,
-      mailchimp.NR_Reference,
-      mailchimp.Time_for_Welcome_E_mail
-      
-      from
-      
-      (select email_address
-      from
-      ((select left(right(email, len(email)-1), len(email)-2) as email_address from spree_users)
-      union
-      (select email_address from mailchimp_invites)
-      union
-      (select email_address from mandrill_referrals where status = 'sent'))
-      group by 1) as all_emails
-      
-      left join (select email_address, first_name, last_name, INVITECODE, CREDIT, Tier, Currency, Referrer, NR_Reference, Time_for_Welcome_E_mail from mailchimp_invites) as mailchimp
-      on all_emails.email_address = mailchimp.email_address
-      
-      left join (select cast (date as datetime) as referral_sent_at, Email_Address as email_address from mandrill_referrals where status = 'sent' group by 1,2) as mandrill
-      on all_emails.email_address = mandrill.email_address
-      
-      left join
-      (select
-      id as id,
-      left(right(email, len(email)-1), len(email)-2) as email_address,
-      cast(left(right(created_at, len(created_at)-1), len(created_at)-2) as datetime) as created_at,
-      case when first_name = 'NULL' then 'N/A' else left(right(first_name, len(first_name)-1), len(first_name)-2) end as first_name,
-      case when last_name = 'NULL' then 'N/A' else left(right(last_name, len(last_name)-1), len(last_name)-2) end as last_name
-      from spree_users
-      where email <> 'NULL') spree_users
-      
-      on spree_users.email_address = all_emails.email_address
+      SELECT all_emails.email_address AS email_address,
+                 spree_users.id AS id,
+                 CASE
+                   WHEN mailchimp.email_address IS NOT NULL THEN 'Initial Invite'
+                   WHEN mandrill.email_address IS NOT NULL THEN 'Referral'
+                   ELSE 'Other'
+                 END AS source,
+                 CASE
+                   WHEN spree_users.email_address IS NOT NULL THEN 'Yes'
+                   ELSE 'No'
+                 END AS signed_up,
+                 spree_users.created_at,
+                 spree_users.first_name AS first_name,
+                 spree_users.last_name AS last_name,
+                 mandrill.referral_sent_at,
+                 mailchimp.first_name AS mailchimp_first_name,
+                 mailchimp.last_name AS mailchimp_last_name,
+                 mailchimp.INVITECODE,
+                 mailchimp.CREDIT,
+                 mailchimp.Tier,
+                 mailchimp.Currency,
+                 mailchimp.Referrer,
+                 mailchimp.NR_Reference,
+                 mailchimp.Time_for_Welcome_Email
+          
+          from
+                
+                (select email_address
+                from
+                ((select email as email_address from spree.users_snapshot)
+                union
+                (select email_address from mailchimp.initial_invites)
+                union
+                (select email_address from mandrill.referrals where status = 'sent'))
+                group by 1) all_emails
+                
+           LEFT JOIN (SELECT email_address,
+                              first_name,
+                              last_name,
+                              INVITECODE,
+                              CREDIT,
+                              Tier,
+                              Currency,
+                              Referrer,
+                              NR_Reference,
+                              Time_for_Welcome_Email
+                       FROM mailchimp.initial_invites) AS mailchimp ON all_emails.email_address = mailchimp.email_address
+                       
+          LEFT JOIN (SELECT CAST(DATE AS datetime) AS referral_sent_at,
+                              Email_Address AS email_address
+                       FROM mandrill.referrals
+                       WHERE status = 'sent'
+                       GROUP BY 1,
+                                2) AS mandrill ON all_emails.email_address = mandrill.email_address
+                                
+          LEFT JOIN (SELECT id AS id,
+                              email AS email_address,
+                              created_at AS created_at,
+                              CASE
+                                WHEN first_name = 'NULL' THEN 'N/A'
+                                ELSE first_name
+                              END AS first_name,
+                              CASE
+                                WHEN last_name = 'NULL' THEN 'N/A'
+                                ELSE last_name
+                              END AS last_name
+                       FROM spree.users_snapshot
+                       WHERE email <> 'NULL') spree_users ON spree_users.email_address = all_emails.email_address
 
     sql_trigger_value: SELECT COUNT(*) FROM spree_users
     distkey: id
