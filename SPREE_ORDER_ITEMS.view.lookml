@@ -77,7 +77,7 @@
           else ${gross_revenue} end
     format: "£%0.2f"
   
-  - dimension: gross_revenue_in_gbp
+  - dimension: gross_item_revenue_in_gbp
     type: number
     decimals: 2
     sql:  |
@@ -107,8 +107,8 @@
     type: sum
     sql: ${TABLE}.quantity
     
-  - measure: sum_gross_revenue_in_gbp
+  - measure: sum_gross_item_revenue_in_gbp
     type: sum
-    sql: ${gross_revenue_in_gbp}
+    sql: ${gross_item_revenue_in_gbp}
     format: "£%0.2f"
 
