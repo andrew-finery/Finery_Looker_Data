@@ -32,3 +32,16 @@
   - join: users_signup
     sql_on: |
       spree_order_items.customer_id = users_signup.id
+      
+- explore: spree_stock_items
+  joins:
+  - join: line_detail_re15
+    sql_on: |
+      spree_stock_items.sku = line_detail_re15.ean
+      
+      
+- explore: sales_snapshot
+  joins:
+  - join: line_detail_re15
+    sql_on: |
+      sales_snapshot.sku = line_detail_re15.ean
