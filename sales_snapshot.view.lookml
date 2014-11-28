@@ -117,17 +117,41 @@
   - measure: day_on_day
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_sales_yesterday}/NULLIF(${sum_sales_day_before_yest},0)::REAL
+    sql: 100.0 * ${sum_sales_yesterday}/NULLIF(${sum_sales_day_before_yest},0)::REAL - 100
     format: "%0.2f%"
+    html: |
+      {% if value < 100 - Red' %}
+        <p style="color: black; background-color: #D77070; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% elsif value > 100 - Green' %}
+        <p style="color: black; background-color: #A2D68F; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% else %}
+        <p style="color: black; background-color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% endif %}
    
   - measure: week_on_week
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_sales_last_7_days}/NULLIF(${sum_sales_previous_7_days},0)::REAL
+    sql: 100.0 * ${sum_sales_last_7_days}/NULLIF(${sum_sales_previous_7_days},0)::REAL - 100
     format: "%0.2f%"
+    html: |
+      {% if value < 100 - Red' %}
+        <p style="color: black; background-color: #D77070; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% elsif value > 100 - Green' %}
+        <p style="color: black; background-color: #A2D68F; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% else %}
+        <p style="color: black; background-color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% endif %}
  
   - measure: month_on_month
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_sales_last_28_days}/NULLIF(${sum_sales_previous_28_days},0)::REAL
+    sql: 100.0 * ${sum_sales_last_28_days}/NULLIF(${sum_sales_previous_28_days},0)::REAL - 100
     format: "%0.2f%"
+    html: |
+      {% if value < 100 - Red' %}
+        <p style="color: black; background-color: #D77070; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% elsif value > 100 - Green' %}
+        <p style="color: black; background-color: #A2D68F; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% else %}
+        <p style="color: black; background-color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% endif %}
