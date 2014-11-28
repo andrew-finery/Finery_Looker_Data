@@ -47,54 +47,54 @@
     type: number
     decimals: 2
     sql: ${TABLE}.sales_yesterday
-    format: "%0.2f"
+    format: "£%0.2f"
    
   - dimension: sales_day_before_yest
     type: number
     decimals: 2
     sql: ${TABLE}.sales_day_before_yest
-    format: "%0.2f"
+    format: "£%0.2f"
     
   - dimension: sales_last_7_days
     type: number
     decimals: 2
     sql: ${TABLE}.sales_last_7_days
-    format: "%0.2f"
+    format: "£%0.2f"
     
   - dimension: sales_previous_7_days
     type: number
     decimals: 2
     sql: ${TABLE}.sales_previous_7_days
-    format: "%0.2f"
+    format: "£%0.2f"
 
   - dimension: sales_last_28_days
     type: number
     decimals: 2
     sql: ${TABLE}.sales_last_28_days
-    format: "%0.2f"
+    format: "£%0.2f"
   
   - dimension: sales_previous_28_days
     type: number
     decimals: 2
     sql: ${TABLE}.sales_previous_28_days
-    format: "%0.2f"
+    format: "£%0.2f"
     
   #measures#
   
   - measure: sum_sales_yesterday
     type: sum
     sql: ${sales_yesterday}
-    format: "%0.2f"
+    format: "£%0.2f"
   
   - measure: sum_sales_day_before_yest
     type: sum
     sql: ${sales_day_before_yest}
-    format: "%0.2f"
+    format: "£%0.2f"
   
   - measure: sum_sales_last_7_days
     type: sum
     sql: ${sales_last_7_days}
-    format: "%0.2f"
+    format: "£%0.2f"
     
   - measure: sum_sales_previous_7_days
     type: sum
@@ -105,12 +105,12 @@
   - measure: sum_sales_last_28_days
     type: sum
     sql: ${sales_last_28_days}
-    format: "%0.2f"
+    format: "£%0.2f"
     
   - measure: sum_sales_previous_28_days
     type: sum
     sql: ${sales_previous_28_days}
-    format: "%0.2f"
+    format: "£%0.2f"
     
   # comparison measures
   

@@ -17,7 +17,11 @@
       on a.variant_id = b.id
       
       where a.deleted_at is null
-        
+    
+    sql_trigger_value: SELECT COUNT(*) FROM spree.stock_items_snapshot
+    distkey: sku
+    sortkeys: [sku]
+
         
   fields:
 
@@ -42,14 +46,15 @@
     type: int
     sql: ${TABLE}.sku
     
-  #measures#
+  # measures #
+  - measure: sum_count_on_hand
+    type: sum
+    sql: ${count_on_hand}
   
   - measure: number_of_skus
     type: count_distinct
     sql: ${sku}
   
-  - measure: sum_count_on_hand
-    type: sum
-    sql: ${count_on_hand}
+
 
 
