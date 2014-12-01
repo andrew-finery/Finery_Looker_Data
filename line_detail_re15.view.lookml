@@ -47,14 +47,25 @@
     sql: ${TABLE}.country_of_origin
 
   - dimension: department
-    sql: ${TABLE}.department
+    sql_case:
+      Formal Trousers and Shorts: ${TABLE}.department = 'Formal Trousers & Shorts'
+      Outerwear and Blazers: ${TABLE}.department = 'Outerwear & Blazers'
+      Accessories: ${TABLE}.department = 'Accessories'
+      Day Dresses: ${TABLE}.department = 'Day Dresses'
+      Evening Dresses: ${TABLE}.department = 'Evening Dresses'
+      Jersey Tops: ${TABLE}.department = 'Jersey Tops'
+      Knitwear: ${TABLE}.department = 'Knitwear'
+      Shoes: ${TABLE}.department = 'Shoes'
+      Skirts: ${TABLE}.department = 'Skirts'
+      Woven Tops: ${TABLE}.department = 'Woven Tops'
+      else: 'Other'
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.department_category,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_count_on_hand&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Category+-+{{value}}&f%5Bline_detail_re15.department%5D=%22{{value}}%22&run=1">{{value}}</a>
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand&sorts=sales_snapshot.sum_sales_yesterday+desc&limit=500&total=on&vis=%7B%22type%22:%22looker_column%22%7D&show=data,fields&title=Sales+by+Style+-+{{value}}&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:1%7D%5D%7D&f%5Bline_detail_re15.department%5D={{value}}&run=1">{{value}}</a>
   
   - dimension: department_category
     sql: ${TABLE}.department||' - '||${TABLE}.category   
-    html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_count_on_hand&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.department_category%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Style+-+{{value}}&f%5Bline_detail_re15.department_category%5D=%22{{value}}%22&run=1">{{value}}</a>
+    #html: |
+     #   <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_count_on_hand&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.department_category%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Style+-+{{value}}&f%5Bline_detail_re15.department_category%5D=%22{{value}}%22&run=1">{{value}}</a>
   
   - dimension: style
     sql: ${TABLE}.description
