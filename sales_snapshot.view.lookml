@@ -99,7 +99,40 @@
     decimals: 2
     sql: ${TABLE}.sales_previous_28_days
     format: "£%0.2f"
-    
+  
+  - dimension: sales_yesterday_qty
+    type: int
+    sql: ${TABLE}.sales_yesterday_qty
+
+  - dimension: sales_day_before_yest_qty
+    type: int
+    sql: ${TABLE}.sales_day_before_yest_qty
+
+  - dimension: sales_last_7_days_qty
+    type: int
+    sql: ${TABLE}.sales_last_7_days_qty
+
+  - dimension: sales_previous_7_days_qty
+    type: int
+    sql: ${TABLE}.sales_previous_7_days_qty
+
+  - dimension: sales_last_28_days_qty
+    type: int
+    sql: ${TABLE}.sales_last_28_days_qty
+
+  - dimension: sales_previous_28_days_qty
+    type: int
+    sql: ${TABLE}.sales_previous_28_days_qty
+  
+  
+  - dimension: count_on_hand
+    sql: ${TABLE}.count_on_hand  
+  
+  - dimension: days_cover
+    type: number
+    decimals: 2
+    sql: ${count_on_hand}/NULLIF(${sales_last_7_days_qty},0)::REAL
+
   #measures#
   
   - measure: sum_sales_yesterday
@@ -132,6 +165,30 @@
     type: sum
     sql: ${sales_previous_28_days}
     format: "£%0.2f"
+    
+  - measure: sum_sales_yesterday_qty
+    type: sum
+    sql: ${sales_yesterday_qty}
+  
+  - measure: sum_sales_day_before_yest_qty
+    type: sum
+    sql: ${sales_day_before_yest_qty}
+  
+  - measure: sum_sales_last_7_days_qty
+    type: sum
+    sql: ${sales_last_7_days_qty}
+    
+  - measure: sum_sales_previous_7_days_qty
+    type: sum
+    sql: ${sales_previous_7_days_qty}
+  
+  - measure: sum_sales_last_28_days_qty
+    type: sum
+    sql: ${sales_last_28_days_qty}
+    
+  - measure: sum_sales_previous_28_days_qty
+    type: sum
+    sql: ${sales_previous_28_days_qty}
     
   # comparison measures
   
@@ -179,4 +236,5 @@
       
   - measure: sum_count_on_hand
     type: sum
-    sql: ${TABLE}.count_on_hand
+    sql: ${count_on_hand}
+
