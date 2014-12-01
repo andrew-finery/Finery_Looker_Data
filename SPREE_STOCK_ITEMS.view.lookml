@@ -17,6 +17,7 @@
       on a.variant_id = b.id
       
       where a.deleted_at is null
+      and updated_at > date '2014-11-11'
     
     sql_trigger_value: SELECT COUNT(*) FROM spree.stock_items_snapshot
     distkey: sku
