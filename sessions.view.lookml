@@ -426,10 +426,13 @@
     type: average
     decimals: 2
     sql: ${session_duration_seconds}
+    filters:
+      session_duration_seconds: < 3600
   
   - measure: average_session_duration
     type: string
     sql: cast(${average_session_duration_seconds}/60 as int)||':'||right('0' || mod(cast(${average_session_duration_seconds} as int), 60), 2)
+
     
   - measure: page_view_count
     type: sum
