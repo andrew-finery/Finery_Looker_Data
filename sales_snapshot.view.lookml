@@ -15,7 +15,21 @@
             
             --last 28 days vs previous 28 days
             sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 28 and date_trunc('day', current_date) - 1 then price*quantity*exchange_rate else 0 end) as sales_last_28_days,
-            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 56 and date_trunc('day', current_date) - 29 then price*quantity*exchange_rate else 0 end) as sales_previous_28_days
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 56 and date_trunc('day', current_date) - 29 then price*quantity*exchange_rate else 0 end) as sales_previous_28_days,
+            
+            --QUANTITIES
+            --yesterday vs day before
+            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 1 then quantity else 0 end) as sales_yesterday_qty,
+            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 2 then quantity else 0 end) as sales_day_before_yest_qty,
+            
+            --last 7 days vs previous 7 days
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 7 and date_trunc('day', current_date) - 1 then quantity else 0 end) as sales_last_7_days_qty,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 14 and date_trunc('day', current_date) - 8 then quantity else 0 end) as sales_previous_7_days_qty,
+            
+            --last 28 days vs previous 28 days
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 28 and date_trunc('day', current_date) - 1 then quantity else 0 end) as sales_last_28_days_qty,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 56 and date_trunc('day', current_date) - 29 then quantity else 0 end) as sales_previous_28_days_qty
+                        
             
             from
             
