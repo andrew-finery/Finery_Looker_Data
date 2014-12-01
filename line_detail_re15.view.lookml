@@ -49,16 +49,18 @@
   - dimension: department
     sql: ${TABLE}.department
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/order_items?fields=line_detail_re15.department_category,order_items.distinct_skus_sold,order_items.items_sold,order_items.sum_gross_revenue&sorts=order_items.items_sold+desc&limit=500&vis=%7B%22type%22:%22looker_column%22%7D&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&show=data,fields&title=Sales+by+Category+-+{{value}}&look_id=9&f%5Bline_detail_re15.department%5D=%22{{value}}%22&run=1">{{value}}</a>
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.department_category,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Category+-+{{value}}&f%5Bline_detail_re15.department%5D=%22{{value}}%22&run=1">{{value}}</a>
   
   - dimension: department_category
     sql: ${TABLE}.department||' - '||${TABLE}.category   
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/order_items?fields=line_detail_re15.parent_sku,line_detail_re15.description,order_items.price,order_items.items_sold,order_items.sum_gross_revenue&limit=500&vis=%7B%22type%22:%22looker_column%22%7D&filter_config=%7B%22line_detail_re15.department_category%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&show=data,fields&title=Sales+by+Parent+SKU+-+{{value}}&look_id=9&sorts=order_items.items_sold+desc&f%5Bline_detail_re15.department_category%5D=%22{{value}}%22&run=1">{{value}}</a>
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.department_category%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Style+-+{{value}}&f%5Bline_detail_re15.department_category%5D=%22{{value}}%22&run=1">{{value}}</a>
   
-  - dimension: description
+  - dimension: style
     sql: ${TABLE}.description
-
+    html: |
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.option_name,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Option+-+{{value}}&f%5Bline_detail_re15.style%5D=%22{{value}}%22&run=1">{{value}}</a>
+  
   - dimension: design_buying_style_nr
     sql: ${TABLE}.design_buying_style_nr
 
@@ -150,11 +152,14 @@
     convert_tz: false
     sql: ${TABLE}.order_placement_date
 
+  - dimension: option_name
+    sql: ${TABLE}.description||' - '||${TABLE}.colour_group 
+    html: |
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.size,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days&sorts=line_detail_re15.size+asc&total=on&filter_config=%7B%22line_detail_re15.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bline_detail_re15.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
+  
+
   - dimension: parent_sku
     sql: ${TABLE}.parent_sku
-    html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/order_items?fields=line_detail_re15.parent_sku,line_detail_re15.description,line_detail_re15.colour_group,order_items.price,line_detail_re15.size,order_items.items_sold,order_items.sum_gross_revenue&sorts=line_detail_re15.colour_group+desc&limit=500&vis=%7B%22type%22:%22looker_column%22%7D&filter_config=%7B%22line_detail_re15.parent_sku%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&show=data,fields&title=Sales+by+Parent+SKU+-+{{value}}&look_id=9&f%5Bline_detail_re15.parent_sku%5D=%22{{value}}%22">{{value}}</a>
-  
     
   - dimension: retail_markup_ex_vat
     type: number
