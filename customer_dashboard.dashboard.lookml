@@ -92,7 +92,8 @@
     model: finery_data
     explore: users_signup
     dimensions: [users_signup.source]
-    measures: [users_signup.emails_sent, users_signup.sign_ups, users_signup.sign_up_rate]
+    measures: [users_signup.emails_sent, users_signup.sign_ups, users_signup.sign_up_rate,
+      spree_orders.count_customers, users_signup.purchase_rate]
     sorts: [users_signup.emails_sent desc]
     limit: 500
     height: 3

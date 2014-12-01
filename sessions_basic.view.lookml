@@ -6,6 +6,7 @@
         domain_sessionidx,
         MIN(collector_tstamp) AS session_start_ts,
         MAX(collector_tstamp) AS session_end_ts,
+        max(user_id) AS customer_id,
         COUNT(*) AS number_of_events,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed
       FROM
@@ -35,6 +36,9 @@
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
+  
+  - dimension: customer_id
+    sql: ${TABLE}.customer_id
   
   - dimension: session_index_tier
     type: tier

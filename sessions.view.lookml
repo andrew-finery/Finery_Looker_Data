@@ -8,6 +8,7 @@
         s.session_end_ts,
         s.number_of_events,
         s.distinct_pages_viewed,
+        s.customer_id,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -91,6 +92,13 @@
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
   
+  - dimension: customer_id
+    sql: ${TABLE}.customer_id
+  
+  - dimension: login
+    type: yesno
+    sql: ${TABLE}.customer_id is not null
+  
   - dimension: session_index_tier
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
@@ -139,11 +147,7 @@
       new: ${TABLE}.domain_sessionidx = 1
       returning: ${TABLE}.domain_sessionidx > 1
       else: unknown
-    html: |
-      <%= linked_value %>
-      <a href="/dashboards/snowplow_ssd/traffic_pulse?new_vs_returning=<%= value %>" target="_new">
-      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
-
+   
   # Pages visited #
   - dimension: distinct_pages_viewed
     sql: ${TABLE}.distinct_pages_viewed
@@ -155,9 +159,7 @@
   
   - dimension: event_stream
     sql: ${session_id}
-    html: |
-      <a href=events?fields=events.events_detail*&f[events.session_id]=<%= value%>>Event Stream</a>
-  
+    
   # Geo fields #
   - dimension: geography_country_two_letter_iso_code
     sql: ${TABLE}.geo_country_code_2_characters
@@ -184,10 +186,6 @@
     
   - dimension: landing_page_path
     sql: ${TABLE}.landing_page_path
-    html: |
-      <%= linked_value %>
-      <a href="/dashboards/snowplow_ssd/traffic_pulse?landing_page=<%= value %>%25" target="_new">
-      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
     
   - dimension: landing_page
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path

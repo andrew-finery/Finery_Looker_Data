@@ -15,6 +15,10 @@
 - explore: page_views
 
 - explore: users_signup
+  joins:
+  - join: spree_orders
+    sql_on: |
+      spree_orders.customer_id = users_signup.id
 
 - explore: leads
 

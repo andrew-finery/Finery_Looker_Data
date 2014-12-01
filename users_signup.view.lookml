@@ -15,7 +15,7 @@
                  spree_users.created_at,
                  spree_users.first_name AS first_name,
                  spree_users.last_name AS last_name,
-                 mandrill.referral_sent_at,
+                 min(mandrill.referral_sent_at) as referral_sent_at,
                  mailchimp.first_name AS mailchimp_first_name,
                  mailchimp.last_name AS mailchimp_last_name,
                  mailchimp.INVITECODE,
@@ -69,6 +69,8 @@
                               END AS last_name
                        FROM spree.users_snapshot
                        WHERE email <> 'NULL') spree_users ON spree_users.email_address = all_emails.email_address
+                      
+              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17
 
     sql_trigger_value: SELECT COUNT(*) FROM spree_users
     distkey: id
@@ -83,7 +85,7 @@
   
   - dimension: customer_id
     type: int
-    sql: ${TABLE}.customer_id
+    sql: ${TABLE}.id
     
   - dimension_group: created_at
     type: time
@@ -140,17 +142,17 @@
   # MEASURES #
   
   - measure: sign_ups
-    type: count
+    type: count_distinct
     filters:
       signed_up: yes
-    sql: ${email_address}
+    sql: ${customer_id}
   
   - measure: sign_ups_running_total
     type: running_total
     sql: ${sign_ups}
     
   - measure: emails_sent
-    type: count
+    type: count_distinct
     filters:
       source: Initial Invite,Referral
     sql: ${email_address}
@@ -161,5 +163,10 @@
     sql: 100.0 * ${sign_ups}/NULLIF(${emails_sent},0)::REAL
     format: "%0.2f%"
     
+  - measure: purchase_rate
+    type: number
+    decimals: 2
+    sql: 100.0 * ${spree_orders.count_customers}/NULLIF(${emails_sent},0)::REAL
+    format: "%0.2f%"
     
   
