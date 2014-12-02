@@ -124,14 +124,16 @@
     type: int
     sql: ${TABLE}.sales_previous_28_days_qty
   
-  
-  - dimension: count_on_hand
+  - dimension: count_on_hand_qty
     sql: ${TABLE}.count_on_hand  
+  
+  - dimension: count_on_hand_gbp
+    sql: ${TABLE}.count_on_hand*${line_detail_re15.uk_selling_price}
   
   - dimension: days_cover
     type: number
     decimals: 2
-    sql: ${count_on_hand}/NULLIF(${sales_last_7_days_qty},0)::REAL
+    sql: 7.0 * ${count_on_hand_qty}/NULLIF(${sales_last_7_days_qty},0)::REAL
 
   #measures#
   
@@ -234,7 +236,17 @@
         <p style="color: black; background-color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
       {% endif %}
       
-  - measure: sum_count_on_hand
+  - measure: sum_count_on_hand_qty
     type: sum
-    sql: ${count_on_hand}
+    sql: ${count_on_hand_qty}
+    
+  - measure: sum_count_on_hand_gbp
+    type: sum
+    sql: ${count_on_hand_gbp}
+    format: "£%0.2f"
 
+  - measure: avg_days_cover
+    type: number
+    decimals: 1
+    sql: 7.0 * ${sum_count_on_hand_qty}/NULLIF(${sum_sales_last_7_days_qty},0)::REAL
+    format: "%0.1f"
