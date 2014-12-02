@@ -141,6 +141,8 @@
                     and a.page_urlhost = c.page_urlhost --join on url to get rid of any instances of different urls being sent out at exactly the same time for within a session
                     and a.page_urlpath = c.page_urlpath
                     
+                    where a.domain_sessionidx is not null
+                    
                     group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 --group to eliminate any events that could be collected twice in error
 
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions_technology.SQL_TABLE_NAME}
