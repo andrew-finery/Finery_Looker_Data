@@ -103,6 +103,10 @@
   - dimension: signed_up
     type: yesno
     sql: ${TABLE}.signed_up = 'Yes'
+  
+  - dimension: purchased
+    type: yesno
+    sql: ${spree_orders.customer_id} is not null
     
   - dimension: first_name
     sql: ${TABLE}.first_name
