@@ -73,7 +73,7 @@
         ON s.domain_userid = pg.domain_userid AND
         s.domain_sessionidx = pg.domain_sessionidx
     
-    sql_trigger_value: SELECT COUNT(*) FROM ${page_views.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
     
