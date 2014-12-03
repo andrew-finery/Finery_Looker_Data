@@ -340,20 +340,6 @@
     type: percent_of_total
     sql: ${count}
     
-  # temp order measures #  
-  - measure: order_count_temp
-    type: count
-    filters:
-      order_placed_temp: yes
-    sql: ${order_placed_temp}
-  - measure: conversion_rate_temp
-    type: number
-    decimals: 2
-    sql: 100.0 * ${order_count_temp}/NULLIF(${count},0)::REAL
-    format: "%0.2f%"
-  #end#
-
-
   - measure: visitors_count
     type: count_distinct
     sql: ${user_id}

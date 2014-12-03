@@ -5,12 +5,10 @@
 
   filters:
   - name: date
-    title: "Date"
+    title: "Graph Filter - Date"
     type: date_filter
-    default_value: 7 Days
+    default_value: 8 days ago for 7 days
 
-  
-  
   elements:
   - name: total_visits
     title: Total Visits
@@ -32,52 +30,80 @@
     width: 3
     height: 2
     
+  - name: percentage_logins
+    title: Percentage of Logins
+    type: looker_pie
+    model: finery_data
+    explore: sessions
+    dimensions: [payment_funnel.logged_in]
+    measures: [sessions.count]
+    listen:
+     date: sessions.start_date
+    sorts: [sessions.count desc]
+    limit: 500
+    width: 3
+    height: 2
+    colors: [skyblue, red]
+    hide_legend: false
+    
   - name: conversion_rate
-    title: Conversion Rate
+    title: Conversion Rate (from Logins)
     type: single_value
     base_view: sessions
-    measures: [sessions.conversion_rate_temp]
+    measures: [payment_funnel.order_completed_percentage]
+    filters:
+      payment_funnel.logged_in: yes
     listen:
      date: sessions.start_date
     width: 3
     height: 2
 
-  - name: bounce_rate
-    title: Bounce Rate
-    type: single_value
-    base_view: sessions
+  - name: bounce_rate_by_login_status
+    title: Bounce Rate by Login (Yes/No)
+    type: looker_column
+    model: finery_data
+    explore: sessions
+    dimensions: [payment_funnel.logged_in]
     measures: [sessions.bounce_rate]
     listen:
      date: sessions.start_date
+    sorts: [payment_funnel.logged_in desc]
+    limit: 500
+    colors: [darkgreen]
+    hide_legend: false
     width: 3
     height: 2
 
   - name: web_stats_by_device
-    title: Web Stats by Device
+    title: Web Stats by Device (Logins)
     type: table
     base_view: sessions
     dimensions: [sessions.device_type]
     measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
-    sessions.bounce_rate, sessions.new_visitor_percentage, sessions.conversion_rate_temp]
+    sessions.bounce_rate, sessions.new_visitor_percentage, payment_funnel.order_completed_percentage]
+    filters:
+      payment_funnel.logged_in: 'Yes'
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
     colors: [red, orange]
-    limit: 50
+    limit: 3
     width: 6
     height: 2
 
   - name: web_stats_by_browser
-    title: Web Stats by Browser
+    title: Web Stats by Browser (Logins)
     type: table
     base_view: sessions
     dimensions: [sessions.browser_family]
     measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
-    sessions.bounce_rate, sessions.new_visitor_percentage, sessions.conversion_rate_temp]
+    sessions.bounce_rate, sessions.new_visitor_percentage, payment_funnel.order_completed_percentage]
+    filters:
+      payment_funnel.logged_in: 'Yes'
     listen:
      date: sessions.start_date
     sorts: [sessions.count desc]
-    limit: 50
+    limit: 5
     width: 6
     height: 3
   
@@ -104,18 +130,6 @@
     interpolation: linear
     width: 6
     height: 4
-    
-  #- name: exit_rates_by_page
-  #  title: Exit Rates by Page
-  #  type: table
-  #  base_view: page_views
-  #  dimensions: [page_views.page_type]
-  #  measures: [page_views.count_views, page_views.count_exits, page_views.exit_rate]
-  #  listen:
-  #   date: sessions.start_date
-  #  sorts: [page_views.count_views desc]
-  #  width: 6
-  #  height: 3
     
   - name: visits_by_hour
     title: Visits by Hour
@@ -146,6 +160,8 @@
     dimensions: [page_views.browser_family, page_views.page_type]
     pivots: [page_views.browser_family]
     measures: [page_views.exit_rate]
+    filters:
+     page_views.browser_family: '"Apple WebKit","Chrome","Firefox","Internet Explorer","Safari"'
     listen:
      date: sessions.start_date
     sorts: [page_views.page_type]
@@ -163,7 +179,7 @@
     height: 4
 
   - name: where_do_visitors_reach
-    title: How far do Visitors reach on the site?
+    title: How far do Visitors reach on the site? (Once they have logged in)
     type: looker_pie
     base_view: sessions
     dimensions: [sessions.site_progress]
@@ -171,6 +187,7 @@
     listen:
      date: sessions.start_date
     filters:
+      payment_funnel.logged_in: 'Yes'
       sessions.site_progress: -Error
     sorts: [sessions.site_progress]
     limit: 500
@@ -180,23 +197,68 @@
     height: 4
     
   - name: payment_funnel
-    title: Payment Funnel - Where do we lose Visitors?
+    title: Payment Funnel (Once User Logs In)
     type: looker_column
-    base_view: sessions
-    dimensions: [sessions.site_progress]
-    measures: [sessions.count_percent_of_total]
+    model: finery_data
+    explore: sessions
+    measures: [payment_funnel.added_to_cart_percentage, payment_funnel.checkout_started_percentage,
+      payment_funnel.address_entered_percentage, payment_funnel.delivery_method_percentage,
+      payment_funnel.order_completed_percentage]
+    filters:
+      payment_funnel.logged_in: 'Yes'
     listen:
      date: sessions.start_date
-    colors: [darkolivegreen]
-    filters:
-      sessions.site_progress: 4 - View Cart, 5 - Checkout - Enter Address, 6 - Checkout - Delivery, 7 - Checkout - Payment, 8 - Order Completed
-    sorts: [sessions.site_progress]
+    sorts: [payment_funnel.added_to_cart_percentage desc]
+    series_labels:
+     "payment_funnel.added_to_cart_percentage": "Added to Cart"
+     "payment_funnel.checkout_started_percentage": "Checkout Started"
+     "payment_funnel.address_entered_percentage": "Address Entered"
+     "payment_funnel.delivery_method_percentage": "Delivery Method Selected"
+     "payment_funnel.order_completed_percentage": "Order Placed"
     limit: 500
-    y_axis_labels: "Visitors Lost (%)"
+    colors: [GREEN, BLUE, BLACK, RED, PURPLE]
     show_null_labels: false
     show_null_points: true
     stacking: ''
+    y_axis_combined: true
+    show_value_labels: false
+    show_view_names: true
+    x_axis_scale: auto
     width: 6
     height: 4
+    
+  - name: payment_funnel_by_browser
+    title: Payment Funnel by Browser (Once User Logs In)
+    type: looker_column
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.browser_family]
+    measures: [payment_funnel.added_to_cart_percentage, payment_funnel.checkout_started_percentage,
+      payment_funnel.address_entered_percentage, payment_funnel.delivery_method_percentage,
+      payment_funnel.order_completed_percentage]
+    filters:
+      payment_funnel.logged_in: 'Yes'
+    listen:
+      date: sessions.start_date
+    sorts: [payment_funnel.added_to_cart_percentage desc]
+    series_labels:
+     "payment_funnel.added_to_cart_percentage": "Added to Cart"
+     "payment_funnel.checkout_started_percentage": "Checkout Started"
+     "payment_funnel.address_entered_percentage": "Address Entered"
+     "payment_funnel.delivery_method_percentage": "Delivery Method Selected"
+     "payment_funnel.order_completed_percentage": "Order Placed"
+    limit: 500
+    colors: [GREEN, BLUE, BLACK, RED, PURPLE]
+    stacking: ''
+    y_axis_combined: true
+    show_null_labels: false
+    show_null_points: true
+    show_value_labels: false
+    show_view_names: true
+    x_axis_scale: auto
+    width: 6
+    height: 4
+
+
 
   
