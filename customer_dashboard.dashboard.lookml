@@ -106,12 +106,13 @@
     explore: spree_orders
     dimensions: [users_signup.source]
     measures: [spree_orders.count_customers, spree_orders.count_orders, spree_orders.avg_gross_revenue_gbp,
-      spree_orders.avg_net_revenue_gbp]
+    spree_orders.avg_net_revenue_ex_tax_in_gbp, spree_orders.avg_net_revenue_ex_tax_and_discount_gbp,
+    spree_orders.avg_store_credit_used_gbp, spree_orders.avg_discount_in_gbp]
     sorts: [spree_orders.count_customers desc]
     limit: 500
     height: 3
-    width: 5
-  
+    width: 8
+
   - name: gross_revenue_by_day
     title: Gross Revenue by Day
     type: looker_line
