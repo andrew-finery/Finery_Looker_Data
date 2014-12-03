@@ -111,6 +111,15 @@
     sql: ${TABLE}.store_credit_used
     format: "%0.2f"
     
+  - dimension: store_credit_used_boolean
+    type: yesno
+    sql: ${store_credit_used} > 0
+    
+  - dimension: discount_used_boolean
+    type: yesno
+    sql: ${discount} > 0
+
+
 # Revenue Measures Converted into GBP
 
   - dimension: gross_revenue_in_gbp
