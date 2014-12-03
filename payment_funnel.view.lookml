@@ -80,7 +80,7 @@
     type: yesno
     sql: ${TABLE}.delivery_method_boolean = 1
   
-  - dimension: transaction_completed
+  - dimension: order_completed
     type: yesno
     sql: ${TABLE}.transaction_completed_boolean = 1
   
@@ -100,35 +100,35 @@
     type: count
     sql: ${added_to_cart}
     filters:
-      logged_in: yes
+      added_to_cart: yes
       
   
   - measure: checkout_started_count
     type: count
     sql: ${checkout_started}
     filters:
-      logged_in: yes
+      checkout_started: yes
       
   
   - measure: address_entered_count
     type: count
     sql: ${address_entered}
     filters:
-      logged_in: yes
+      address_entered: yes
       
   
   - measure: delivery_method_count
     type: count
     sql: ${delivery_method}
     filters:
-      logged_in: yes
+      delivery_method: yes
       
   
   - measure: order_completed_count
     type: count
     sql: ${order_completed}
     filters:
-      logged_in: yes
+      order_completed: yes
       
   - measure: logged_in_percentage
     type: number

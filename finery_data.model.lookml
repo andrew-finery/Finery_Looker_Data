@@ -12,6 +12,7 @@
   - join: payment_funnel
     sql_on: |
       sessions.domain_userid = payment_funnel.domain_userid and sessions.domain_sessionidx = payment_funnel.domain_sessionidx
+    join_type: one_to_one
 
 - explore: visitors
 
