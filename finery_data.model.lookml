@@ -9,6 +9,9 @@
   - join: visitors
     sql_on: |
       sessions.domain_userid = visitors.domain_userid
+  - join: payment_funnel
+    sql_on: |
+      sessions.domain_userid = payment_funnel.domain_userid and sessions.domain_sessionidx = payment_funnel.domain_sessionidx
 
 - explore: visitors
 

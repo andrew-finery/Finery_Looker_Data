@@ -2,13 +2,13 @@
   derived_table:
     sql: |
       SELECT
+      
         s.domain_userid,
         s.domain_sessionidx,
         s.session_start_ts,
         s.session_end_ts,
         s.number_of_events,
         s.distinct_pages_viewed,
-        s.customer_id,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -73,7 +73,7 @@
         ON s.domain_userid = pg.domain_userid AND
         s.domain_sessionidx = pg.domain_sessionidx
     
-    sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${payment_funnel.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
     
@@ -91,14 +91,7 @@
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
-  
-  - dimension: customer_id
-    sql: ${TABLE}.customer_id
-  
-  - dimension: login
-    type: yesno
-    sql: ${TABLE}.customer_id is not null
-  
+
   - dimension: session_index_tier
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
@@ -210,11 +203,7 @@
       social: ${TABLE}.refr_medium = 'social'
       other_website: ${TABLE}.refr_medium = 'unknown'
       else: direct
-    html: |
-      <%= linked_value %>
-      <a href="/dashboards/snowplow_ssd/traffic_pulse?referer_medium=<%= value %>" target="_new">
-      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
-    
+
   - dimension: referer_source
     sql: ${TABLE}.refr_source
     
