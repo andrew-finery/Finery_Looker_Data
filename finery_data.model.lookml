@@ -50,4 +50,11 @@
   - join: line_detail_re15
     sql_on: |
       sales_snapshot.sku = line_detail_re15.ean
+      
+- explore: spree_order_items
+  joins:
+  - join: line_detail_re15
+    sql_on: |
+      spree_order_items.sku = line_detail_re15.ean
+
 
