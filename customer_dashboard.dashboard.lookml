@@ -119,7 +119,7 @@
     model: finery_data
     explore: spree_orders
     dimensions: [spree_orders.completed_date]
-    measures: [spree_orders.sum_gross_revenue_gbp, spree_orders.gross_revenue_gbp_running_total]
+    measures: [spree_orders.sum_gross_revenue_gbp]
     filters:
       spree_orders.completed_date: before 0 days ago
     sorts: [spree_orders.completed_date]
