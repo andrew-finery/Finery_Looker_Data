@@ -7,7 +7,7 @@
   - name: date
     title: "Graph Filter - Date"
     type: date_filter
-    default_value: 8 days ago for 7 days
+    default_value: 7 days ago for 7 days
 
   elements:
   - name: total_visits
