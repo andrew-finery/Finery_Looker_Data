@@ -112,7 +112,7 @@
     sql: ${TABLE}.customer_id  
     
   - measure: distinct_skus_sold
-    type: count_distinctspree_order_items.order_id
+    type: count_distinct
     sql: ${TABLE}.sku
   
   - measure: items_sold
