@@ -4,6 +4,7 @@
         select
             a.sku,
             a.count_on_hand,
+            b.max_selling_price_gbp,
             
             --yesterday vs day before
             sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 1 then price*quantity*exchange_rate else 0 end) as sales_yesterday,
@@ -45,6 +46,7 @@
             a.price as price,
             a.currency as currency,
             a.quantity as quantity,
+            a.max_selling_price_gbp as max_selling_price_gbp,
             b.exchange_rate as exchange_rate
             from ${spree_order_items.SQL_TABLE_NAME} a
             left join lookup.exchange_rates b
@@ -52,7 +54,7 @@
             and a.currency = b.currency) b
             on a.sku = b.sku
             
-            group by 1,2
+            group by 1,2,3
 
     sql_trigger_value: SELECT COUNT(*) FROM ${spree_order_items.SQL_TABLE_NAME}
     distkey: sku
@@ -63,6 +65,17 @@
 
   - dimension: sku
     sql: ${TABLE}.sku
+    
+  - dimension: max_selling_price_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.max_selling_price_gbp
+    format: "£%0.2f"
+  
+  - dimension: selling_price_tiered
+    type: tier
+    tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
+    sql: ${max_selling_price_gbp}
    
   - dimension: sales_yesterday
     type: number

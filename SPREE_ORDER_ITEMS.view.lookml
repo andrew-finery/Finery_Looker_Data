@@ -1,28 +1,30 @@
 - view: spree_order_items
   derived_table:
     sql: |
-      select
+      select 
 
         a.completed_at as order_tstamp,
         b.order_id as order_id,
         a.customer_id as customer_id,
         a.order_code as order_code,
-        
         c.sku,
         b.price,
         b.currency,
-        b.quantity
+        b.quantity,
+        d.max_selling_price_gbp
         
         from
 
-        ${spree_orders.SQL_TABLE_NAME} a
+        looker_scratch.LD$PKT2BC$9C3ODX3QNIU2V6CFYIB_spree_orders a
         inner join
         spree.line_items_snapshot b
         on a.order_id = b.order_id
         left join 
         (select id, sku from spree.variants_snapshot where deleted_at is null group by 1,2) c
         on b.variant_id = c.id
-         
+        left join
+        (select variant_id, max(amount) as max_selling_price_gbp from spree.prices_snapshot where currency = 'GBP' group by 1) d
+        on b.variant_id = d.variant_id
         
     sql_trigger_value: SELECT COUNT(*) FROM ${spree_orders.SQL_TABLE_NAME}
     distkey: order_id
@@ -87,9 +89,19 @@
           when ${TABLE}.currency = 'CAD' then ${gross_revenue}*0.56
           else ${gross_revenue} end
     format: "£%0.2f"
-    
-    
-  # MEASURES #
+  
+  - dimension: max_selling_price_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.max_selling_price_gbp
+    format: "£%0.2f"
+  
+  - dimension: selling_price_tiered
+    type: tier
+    tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
+    sql: ${max_selling_price_gbp}
+  
+   # MEASURES #
   
   - measure: count_orders
     type: count_distinct
