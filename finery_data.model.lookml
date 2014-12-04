@@ -56,5 +56,8 @@
   - join: line_detail_re15
     sql_on: |
       spree_order_items.sku = line_detail_re15.ean
+    join: spree_orders
+    sql_on: |
+      spree_orders.order_id = spree_order_items.order_id
 
 

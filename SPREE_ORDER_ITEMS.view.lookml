@@ -100,7 +100,7 @@
     type: tier
     tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
     sql: ${max_selling_price_gbp}
-  
+
    # MEASURES #
   
   - measure: count_orders
@@ -112,7 +112,7 @@
     sql: ${TABLE}.customer_id  
     
   - measure: distinct_skus_sold
-    type: count_distinct
+    type: count_distinctspree_order_items.order_id
     sql: ${TABLE}.sku
   
   - measure: items_sold
@@ -123,4 +123,13 @@
     type: sum
     sql: ${gross_item_revenue_in_gbp}
     format: "£%0.2f"
+    
+  - measure: gross_revenue_last_7_days
+    type: sum
+    sql: ${gross_item_revenue_in_gbp}
+    filters:
+      order_time_date: 7 days ago for 7 days
+    format: "£%0.2f"
+    
+
 
