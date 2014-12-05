@@ -15,7 +15,7 @@
         
         from
 
-        {spree_orders.SQL_TABLE_NAME} a
+        ${spree_orders.SQL_TABLE_NAME} a
         inner join
         spree.line_items_snapshot b
         on a.order_id = b.order_id
