@@ -63,4 +63,5 @@
     sql_on: |
       spree_orders.order_id = spree_order_items.order_id
 
+- explore: daily_data
 
