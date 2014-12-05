@@ -42,6 +42,9 @@
       Blouse: ${TABLE}.category = 'Blouse'
       Fit and Flare: ${TABLE}.category = 'Fit and Flare'
       else: 'Other'
+    html: |
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.style,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&limit=500&total=on&vis=%7B%22type%22:%22looker_column%22%7D&show=data,fields&title=Sales+by+Style+-+{{value}}&filter_config=%7B%22product_lookup.category%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:1%7D%5D%7D&f%5Bproduct_lookup.category%5D={{value}}&run=1">{{value}}</a>
+  
 
   - dimension: cloth_composition
     sql: ${TABLE}.cloth_composition
@@ -129,10 +132,14 @@
 
   - dimension: style
     sql: ${TABLE}.name
+    html: |
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.option_name,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22product_lookup.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Option+-+{{value}}&f%5Bproduct_lookup.style%5D=%22{{value}}%22&run=1">{{value}}</a>
   
   - dimension: option_name
     sql: ${TABLE}.name||' - '||${TABLE}.colour_group 
-
+    html: |
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.size,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=product_lookup.size+asc&total=on&filter_config=%7B%22product_lookup.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bproduct_lookup.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>>
+  
   - dimension: neck_shape
     sql: ${TABLE}.neck_shape
 
@@ -191,7 +198,7 @@
   - dimension: stock_code
     sql: ${TABLE}.stock_code
 
-  - dimension: style
+  - dimension: product_style
     sql: ${TABLE}.style
 
   - dimension: sub_season_code

@@ -15,7 +15,7 @@
         
         from
 
-        looker_scratch.LD$PKT2BC$9C3ODX3QNIU2V6CFYIB_spree_orders a
+        {spree_orders.SQL_TABLE_NAME} a
         inner join
         spree.line_items_snapshot b
         on a.order_id = b.order_id
