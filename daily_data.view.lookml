@@ -120,3 +120,22 @@
    - measure: sum_leads
      type: sum
      sql: ${TABLE}.count_leads
+     
+   - measure: new_sessions_converted_to_leads_perc
+     type: number
+     decimals: 2
+     sql: 100.0 * ${sum_leads}/NULLIF(${sum_new_visitor_not_logged_in},0)::REAL
+     format: "%0.2f%"
+   
+   - measure: conversion_rate_logged_in
+     type: number
+     decimals: 2
+     sql: 100.0 * ${sum_orders}/NULLIF(${sum_logged_in_sessions},0)::REAL
+     format: "%0.2f%"   
+     
+   - measure: logged_in_referral_rate
+     type: number
+     decimals: 2
+     sql: 100.0 * ${sum_referrals}/NULLIF(${sum_logged_in_sessions},0)::REAL
+     format: "%0.2f%"     
+    
