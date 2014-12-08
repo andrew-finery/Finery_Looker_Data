@@ -60,8 +60,8 @@
       Woven Tops: ${TABLE}.department = 'Woven Tops'
       else: 'Other'
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&limit=500&total=on&vis=%7B%22type%22:%22looker_column%22%7D&show=data,fields&title=Sales+by+Style+-+{{value}}&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:1%7D%5D%7D&f%5Bline_detail_re15.department%5D={{value}}&run=1">{{value}}</a>
-  
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.style,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&limit=500&total=on&vis=%7B%22type%22:%22looker_column%22%7D&show=data,fields&title=Sales+by+Style+-+{{value}}&filter_config=%7B%22line_detail_re15.department%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:1%7D%5D%7D&f%5Bline_detail_re15.department%5D={{value}}&run=1">{{value}}</a>
+
   - dimension: department_category
     sql: ${TABLE}.department||' - '||${TABLE}.category   
     #html: |
@@ -70,8 +70,8 @@
   - dimension: style
     sql: ${TABLE}.description
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.option_name,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Option+-+{{value}}&f%5Bline_detail_re15.style%5D=%22{{value}}%22&run=1">{{value}}</a>
-  
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.option_name,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22line_detail_re15.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Option+-+{{value}}&f%5Bline_detail_re15.style%5D=%22{{value}}%22&run=1">{{value}}</a>
+
   - dimension: design_buying_style_nr
     sql: ${TABLE}.design_buying_style_nr
 
@@ -166,8 +166,7 @@
   - dimension: option_name
     sql: ${TABLE}.description||' - '||${TABLE}.colour_group 
     html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.size,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=line_detail_re15.size+asc&total=on&filter_config=%7B%22line_detail_re15.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bline_detail_re15.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
-  
+        <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=line_detail_re15.size,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_days_cover&sorts=line_detail_re15.size+asc&total=on&filter_config=%7B%22line_detail_re15.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bline_detail_re15.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
 
   - dimension: parent_sku
     sql: ${TABLE}.parent_sku
