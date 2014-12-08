@@ -24,7 +24,11 @@
                  mailchimp.Currency,
                  mailchimp.Referrer,
                  mailchimp.NR_Reference,
-                 mailchimp.Time_for_Welcome_Email
+                 mailchimp.Time_for_Welcome_Email,
+                 ord.number_of_orders,
+                 ord.first_order,
+                 ord.last_order,
+                 case when ord.customer_id is not null then 'Yes' else 'No' end as purchased_flag
           
           from
                 
@@ -69,8 +73,16 @@
                               END AS last_name
                        FROM spree.users_snapshot
                        WHERE email <> 'NULL') spree_users ON spree_users.email_address = all_emails.email_address
+                       
+          LEFT JOIN (SELECT customer_id as customer_id,
+                            count(distinct order_id) as number_of_orders,
+                            min(completed_at) as first_order,
+                            max(completed_at) as last_order
+                            from ${spree_orders.SQL_TABLE_NAME}
+                            group by 1) ord
+                      on ord.customer_id = spree_users.id
                       
-              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17
+              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21
 
     sql_trigger_value: SELECT COUNT(*) FROM spree_users
     distkey: id
@@ -106,8 +118,18 @@
   
   - dimension: purchased
     type: yesno
-    sql: ${spree_orders.customer_id} is not null
+    sql: ${TABLE}.purchased_flag = 'Yes'
     
+  - dimension_group: first_purchase
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.first_order
+  
+  - dimension_group: last_purchase
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.last_order
+
   - dimension: first_name
     sql: ${TABLE}.first_name
     
@@ -160,7 +182,13 @@
     filters:
       source: Initial Invite,Referral
     sql: ${email_address}
-    
+  
+  - measure: count_customers
+    type: count_distinct
+    filters:
+      purchased: Yes
+    sql: ${customer_id}
+  
   - measure: sign_up_rate
     type: number
     decimals: 2
@@ -170,7 +198,7 @@
   - measure: purchase_rate
     type: number
     decimals: 2
-    sql: 100.0 * ${spree_orders.count_customers}/NULLIF(${emails_sent},0)::REAL
+    sql: 100.0 * ${count_customers}/NULLIF(${emails_sent},0)::REAL
     format: "%0.2f%"
     
-  
+
