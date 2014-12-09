@@ -14,7 +14,7 @@
         AND app_id = 'production'
       GROUP BY 1
       
-    sql_trigger_value: SELECT COUNT(*) FROM ${page_views.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${identity_stitching.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid]
     
