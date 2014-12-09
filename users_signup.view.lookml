@@ -32,16 +32,16 @@
           
           from
                 
-                (select email_address
+                (select lower(email_address) as email_address
                 from
-                ((select email as email_address from spree.users_snapshot)
+                ((select lower(email) as email_address from spree.users_snapshot)
                 union
-                (select email_address from mailchimp.initial_invites)
+                (select lower(email_address) as email_address from mailchimp.initial_invites)
                 union
-                (select email_address from mandrill.referrals where status = 'sent'))
+                (select lower(email_address) as email_address from mandrill.referrals where status = 'sent'))
                 group by 1) all_emails
                 
-           LEFT JOIN (SELECT email_address,
+           LEFT JOIN (SELECT lower(email_address) as email_address,
                               first_name,
                               last_name,
                               INVITECODE,
@@ -54,14 +54,14 @@
                        FROM mailchimp.initial_invites) AS mailchimp ON all_emails.email_address = mailchimp.email_address
                        
           LEFT JOIN (SELECT CAST(DATE AS datetime) AS referral_sent_at,
-                              Email_Address AS email_address
+                              lower(Email_Address) AS email_address
                        FROM mandrill.referrals
                        WHERE status = 'sent'
                        GROUP BY 1,
                                 2) AS mandrill ON all_emails.email_address = mandrill.email_address
                                 
           LEFT JOIN (SELECT id AS id,
-                              email AS email_address,
+                              lower(email) AS email_address,
                               created_at AS created_at,
                               CASE
                                 WHEN first_name = 'NULL' THEN 'N/A'
