@@ -6,6 +6,7 @@
         s.domain_userid,
         s.domain_sessionidx,
         s.session_start_ts,
+        case when id.domain_userid is null then s.domain_userid else id.user_id end as blended_user_id,
         s.session_end_ts,
         s.number_of_events,
         s.distinct_pages_viewed,
@@ -72,6 +73,8 @@
       LEFT JOIN (select domain_userid as domain_userid, domain_sessionidx as domain_sessionidx, max(site_progress) as site_progress from ${page_views.SQL_TABLE_NAME} group by 1,2) AS pg
         ON s.domain_userid = pg.domain_userid AND
         s.domain_sessionidx = pg.domain_sessionidx
+      LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
+        on s.domain_userid = id.domain_userid
     
     sql_trigger_value: SELECT COUNT(*) FROM ${payment_funnel.SQL_TABLE_NAME}
     distkey: domain_userid
@@ -84,6 +87,9 @@
   
   - dimension: user_id
     sql: ${TABLE}.domain_userid
+  
+  - dimension: blended_user_id
+    sql: ${TABLE}.blended_user_id
     
   - dimension: session_index
     type: int

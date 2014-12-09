@@ -15,6 +15,6 @@
 
      sql_trigger_value: SELECT COUNT(*) FROM ${page_views.SQL_TABLE_NAME}
      distkey: domain_userid
-     sortkeys: [domain_userid, domain_sessionidx]
+     sortkeys: [domain_userid]
 
 
