@@ -16,6 +16,8 @@
 
 - explore: visitors
 
+- explore: atomic_events
+
 - explore: page_views
 
 - explore: users_signup
