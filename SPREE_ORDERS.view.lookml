@@ -21,7 +21,7 @@
                    WHEN b.store_credit IS NULL THEN 0
                    ELSE b.store_credit
                  END AS store_credit_used
-          FROM spree.orders_snapshot a
+          FROM (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) a
             LEFT JOIN (SELECT order_id,
                               SUM(amount) AS store_credit
                        FROM spree.payments_snapshot
@@ -30,7 +30,7 @@
           WHERE a.state = 'complete'
           AND a.created_at > DATE '2014-11-22'
     
-    sql_trigger_value: SELECT COUNT(*) FROM spree.orders_snapshot
+    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_orders
     distkey: order_id
     sortkeys: [order_id, completed_at]
 

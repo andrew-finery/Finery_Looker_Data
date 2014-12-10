@@ -35,7 +35,7 @@
                 
                 (select lower(email_address) as email_address
                 from
-                ((select lower(email) as email_address from spree.users_snapshot)
+                ((select lower(email) as email_address from (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date))
                 union
                 (select lower(email_address) as email_address from mailchimp.initial_invites)
                 union
@@ -72,7 +72,7 @@
                                 WHEN last_name = 'NULL' THEN 'N/A'
                                 ELSE last_name
                               END AS last_name
-                       FROM spree.users_snapshot
+                       FROM (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date)
                        WHERE email <> 'NULL') spree_users ON spree_users.email_address = all_emails.email_address
                        
           LEFT JOIN (SELECT customer_id as customer_id,
@@ -84,7 +84,7 @@
                       on ord.customer_id = spree_users.id
           left join (select
                       lower(mailchimp.email_address) as email_address
-                      from spree.users_snapshot users
+                      from (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date) users
                       inner join (select first_name, last_name, email_address from mailchimp.initial_invites group by 1,2,3) mailchimp
                       on lower(users.first_name) = lower(mailchimp.first_name)
                       and lower(users.last_name) = lower(mailchimp.last_name)
@@ -95,7 +95,7 @@
                       
               group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21
 
-    sql_trigger_value: SELECT COUNT(*) FROM spree_users
+    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_users
     distkey: id
     sortkeys: [id, created_at]
     

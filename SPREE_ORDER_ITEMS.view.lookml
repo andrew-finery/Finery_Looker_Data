@@ -17,7 +17,7 @@
 
         ${spree_orders.SQL_TABLE_NAME} a
         inner join
-        spree.line_items_snapshot b
+        (select * from daily_snapshot.spree_line_items where date(spree_timestamp) = current_date) b
         on a.order_id = b.order_id
         left join 
         (select id, sku from spree.variants_snapshot where deleted_at is null group by 1,2) c

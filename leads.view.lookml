@@ -8,7 +8,7 @@
       (select
       left(right(email, len(email)-1), len(email)-2) as email_address,
       min(created_at) as created_at
-      from spree.leads_snapshot
+      from (select * from daily_snapshot.spree_leads where date(spree_timestamp) = current_date)
       group by 1) a
       
       left join ${users_signup.SQL_TABLE_NAME} b
@@ -17,7 +17,7 @@
       
       where b.email_address is null
 
-    sql_trigger_value: SELECT COUNT(*) FROM spree_leads
+    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_leads
     distkey: email_address
     sortkeys: [email_address, created_at]
     
