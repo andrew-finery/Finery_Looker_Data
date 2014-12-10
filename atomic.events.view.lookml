@@ -144,6 +144,11 @@
     type: time
     timeframes: [time, hour, date, hod, dow, week, month]
     sql: ${TABLE}.collector_tstamp
+  
+  - dimension: event_time_tier
+    type: tier
+    tiers: [0,8,12,16,20]
+    sql: ${event_time_hod}
     
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
