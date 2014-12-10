@@ -3,7 +3,8 @@
     sql: |
       SELECT all_emails.email_address AS email_address,
                  spree_users.id AS id,
-                 CASE
+                CASE
+                   when mailchimp_diff.email_address is not null and spree_users.email_address is null then 'Initial Invite - But Diff Email Used'
                    WHEN mailchimp.email_address IS NOT NULL THEN 'Initial Invite'
                    WHEN mandrill.email_address IS NOT NULL THEN 'Referral'
                    ELSE 'Other'
@@ -81,6 +82,16 @@
                             from ${spree_orders.SQL_TABLE_NAME}
                             group by 1) ord
                       on ord.customer_id = spree_users.id
+          left join (select
+                      lower(mailchimp.email_address) as email_address
+                      from spree.users_snapshot users
+                      inner join (select first_name, last_name, email_address from mailchimp.initial_invites group by 1,2,3) mailchimp
+                      on lower(users.first_name) = lower(mailchimp.first_name)
+                      and lower(users.last_name) = lower(mailchimp.last_name)
+                      where lower(users.email) <> lower(mailchimp.email_address)
+                      group by 1) mailchimp_diff
+                      on mailchimp_diff.email_address = all_emails.email_address
+
                       
               group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21
 
@@ -180,7 +191,7 @@
   - measure: emails_sent
     type: count_distinct
     filters:
-      source: Initial Invite,Referral
+      source: Initial Invite,Referral, Initial Invite - But Diff Email Used
     sql: ${email_address}
   
   - measure: count_customers
