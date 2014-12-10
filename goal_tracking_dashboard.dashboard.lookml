@@ -15,6 +15,8 @@
     dimensions: [daily_data.date_date]
     measures: [daily_data.sum_logged_in_sessions, daily_data.sum_not_logged_in_sessions]
     sorts: [daily_data.date_date]
+    filters:
+      daily_data.date_date: before today
     limit: 500
     stacking: normal
     show_value_labels: false
@@ -33,6 +35,8 @@
     dimensions: [daily_data.date_date]
     measures: [daily_data.conversion_rate_logged_in, daily_data.logged_in_referral_rate]
     sorts: [daily_data.date_date desc]
+    filters:
+      daily_data.date_date: before today
     limit: 500
     stacking: ''
     show_value_labels: false
@@ -51,6 +55,8 @@
     dimensions: [daily_data.date_date]
     measures: [daily_data.sum_leads]
     sorts: [daily_data.date_date desc]
+    filters:
+      daily_data.date_date: before today
     limit: 500
     stacking: ''
     show_value_labels: false
@@ -69,6 +75,8 @@
     dimensions: [daily_data.date_date]
     measures: [daily_data.new_sessions_converted_to_leads_perc]
     sorts: [daily_data.date_date desc]
+    filters:
+      daily_data.date_date: before today
     limit: 500
     stacking: ''
     show_value_labels: false
@@ -87,6 +95,8 @@
     dimensions: [daily_data.date_date]
     measures: [daily_data.sum_sign_ups, daily_data.sum_orders, daily_data.sum_referrals]
     sorts: [daily_data.date_date desc]
+    filters:
+      daily_data.date_date: before today
     limit: 500
     stacking: ''
     show_value_labels: false
