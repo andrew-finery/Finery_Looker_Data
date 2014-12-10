@@ -173,6 +173,8 @@
     
   - measure: latest_update
     type: string
-    sql: max(${TABLE}.collector_tstamp)
+    sql: max(${event_time_time})
+    
+
 
     
