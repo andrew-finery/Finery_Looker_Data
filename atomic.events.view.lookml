@@ -150,6 +150,14 @@
     tiers: [0,8,12,16,20]
     sql: ${event_time_hod}
     
+  - dimension: time_period
+    sql_case:
+      00-00 to 08-00: ${event_time_hod} between 0 and 7
+      08-00 to 12-00: ${event_time_hod} between 8 and 11
+      12-00 to 16-00: ${event_time_hod} between 12 and 15
+      16-00 to 20-00: ${event_time_hod} between 16 and 19
+      20-00 to 00-00: ${event_time_hod} > 19
+    
   - dimension: user_id
     sql: ${TABLE}.user_id
   
