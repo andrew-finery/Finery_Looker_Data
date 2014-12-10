@@ -150,14 +150,19 @@
     tiers: [0,8,12,16,20]
     sql: ${event_time_hod}
     
-  - dimension: domain_userid
-    sql: ${TABLE}.domain_userid
+  - dimension: user_id
+    sql: ${TABLE}.user_id
   
   - dimension: domain_sessionidx
     sql: ${TABLE}.domain_sessionidx
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
+  
+  - dimension: domain_userid
+    sql: ${TABLE}.domain_userid
+  
+  # MEASURES #
   
   - measure: count_orders
     type: count_distinct
@@ -170,6 +175,12 @@
   - measure: count_sessions
     type: count_distinct
     sql: ${session_id}
+  
+  - measure: count_logins
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      user_id: -NULL
     
   - measure: latest_update
     type: string
