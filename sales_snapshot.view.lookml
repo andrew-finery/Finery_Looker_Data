@@ -263,3 +263,9 @@
     decimals: 1
     sql: 7.0 * ${sum_count_on_hand_qty}/NULLIF(${sum_sales_last_7_days_qty},0)::REAL
     format: "%0.1f"
+    
+  - measure: avg_weeks_cover
+    type: number
+    decimals: 1
+    sql: ${sum_count_on_hand_qty}/NULLIF(${sum_sales_last_7_days_qty},0)::REAL
+    format: "%0.1f"
