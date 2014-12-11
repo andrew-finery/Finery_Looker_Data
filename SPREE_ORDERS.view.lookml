@@ -27,7 +27,7 @@
                        FROM (select * from daily_snapshot.spree_payments where date(spree_timestamp) = current_date)
                        WHERE source_type = 'Spree::StoreCredit'
                        GROUP BY 1) b ON a.id = b.order_id
-          WHERE a.state = 'complete'
+          WHERE a.state in ('complete', 'returned')
           AND a.created_at > DATE '2014-11-22'
     
     sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_orders

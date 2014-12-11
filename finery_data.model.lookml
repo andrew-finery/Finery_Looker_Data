@@ -72,4 +72,11 @@
   - join: product_lookup
     sql_on: |
       returns.sku = product_lookup.ean
+  - join: spree_orders
+    sql_on: |
+      spree_orders.order_id = returns.order_id
+  - join: users_signup
+    sql_on: |
+      spree_orders.customer_id = users_signup.id
+
 
