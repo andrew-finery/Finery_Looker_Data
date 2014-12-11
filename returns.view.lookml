@@ -45,6 +45,7 @@
         on c.variant_id = g.id
         
         where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
+        and a.id <> 1 --removing test return
         
      sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_return_authorizations
      distkey: return_id
