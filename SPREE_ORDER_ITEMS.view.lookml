@@ -20,7 +20,7 @@
         (select * from daily_snapshot.spree_line_items where date(spree_timestamp) = current_date) b
         on a.order_id = b.order_id
         left join 
-        (select id, sku from spree.variants_snapshot where deleted_at is null group by 1,2) c
+        (select id, sku from (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) where deleted_at is null group by 1,2) c
         on b.variant_id = c.id
         left join
         (select variant_id, max(amount) as max_selling_price_gbp from spree.prices_snapshot where currency = 'GBP' group by 1) d

@@ -13,7 +13,7 @@
       (select * from daily_snapshot.spree_stock_items where date(spree_timestamp) = current_date) a
       
       inner join
-      spree.variants_snapshot b
+      (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) b
       on a.variant_id = b.id
       
       where a.deleted_at is null
