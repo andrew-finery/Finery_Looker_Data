@@ -23,7 +23,7 @@
         (select id, sku from (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) where deleted_at is null group by 1,2) c
         on b.variant_id = c.id
         left join
-        (select variant_id, max(amount) as max_selling_price_gbp from spree.prices_snapshot where currency = 'GBP' group by 1) d
+        (select variant_id, max(amount) as max_selling_price_gbp from (select * from daily_snapshot.spree_prices where date(spree_timestamp) = current_date) where currency = 'GBP' group by 1) d
         on b.variant_id = d.variant_id
         
     sql_trigger_value: SELECT COUNT(*) FROM ${spree_orders.SQL_TABLE_NAME}

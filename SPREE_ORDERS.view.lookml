@@ -24,7 +24,7 @@
           FROM (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) a
             LEFT JOIN (SELECT order_id,
                               SUM(amount) AS store_credit
-                       FROM spree.payments_snapshot
+                       FROM (select * from daily_snapshot.spree_payments where date(spree_timestamp) = current_date)
                        WHERE source_type = 'Spree::StoreCredit'
                        GROUP BY 1) b ON a.id = b.order_id
           WHERE a.state = 'complete'
