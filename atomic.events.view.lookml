@@ -111,7 +111,8 @@
           a.doc_width,
           a.doc_height,
           b.root_id as root_id_trans,
-          c.root_id as root_id_reg
+          c.root_id as root_id_reg,
+          d.root_id as root_id_lead
           
           from atomic.events a
           
@@ -120,6 +121,9 @@
           
           left join atomic.com_finerylondon_registration_success_1 c
           on a.event_id = c.root_id
+          
+          left join atomic.com_finerylondon_lead_created_1 d
+          on a.event_id = d.root_id
           
           where a.app_id = 'production'
           
@@ -139,6 +143,9 @@
 
   - dimension: event_id_reg
     sql: ${TABLE}.root_id_reg
+    
+  - dimension: event_id_lead
+    sql: ${TABLE}.root_id_lead
   
   - dimension_group: event_time
     type: time
@@ -189,6 +196,11 @@
     sql: ${session_id}
     filters:
       user_id: -NULL
+      
+  - measure: count_leads
+    type: count_distinct
+    sql: ${event_id_lead}
+
     
   - measure: latest_update
     type: string
