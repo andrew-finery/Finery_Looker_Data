@@ -10,7 +10,7 @@
       
       from
       
-      spree.stock_items_snapshot a
+      (select * from daily_snapshot.spree_stock_items where date(spree_timestamp) = current_date) a
       
       inner join
       spree.variants_snapshot b
@@ -19,8 +19,7 @@
       where a.deleted_at is null
       and a.updated_at > date '2014-11-11'
     
-    sql_trigger_value: SELECT COUNT(*) FROM spree.stock_items_snapshot
-    distkey: sku
+    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_stock_items
     sortkeys: [sku]
 
         
