@@ -67,3 +67,9 @@
 
 - explore: daily_data
 
+- explore: returns
+  joins:
+  - join: product_lookup
+    sql_on: |
+      returns.sku = product_lookup.ean
+
