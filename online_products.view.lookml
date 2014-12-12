@@ -98,15 +98,17 @@
        type: string
        sql: ${TABLE}.image_origin_id || '/single/' || ${TABLE}.attachment_file_name
        html: |
-          <img src="https://assets.finerylondon.com/spree/products/{{value}}" /> {{value}}
+          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/> {{value}}
           
      - dimension: option_image_2
-       type: string
-       sql: ${TABLE}.image_origin_id || '/single/' || ${TABLE}.attachment_file_name
-       html: |
-          <img src="https://assets.finerylondon.com/spree/products/{{value}}" /> {{value}}
+       sql: first_value(${TABLE}.attachment_file_name) over (Partition by ${TABLE}.option)
        
 # measures
+
+     - measure: attachment_file_name
+       type: string
+       sql: first_value(${TABLE}.attachment_file_name) over (Partition by ${TABLE}.option)
+       
      - measure: number_of_skus
        type: count_distinct
        sql: ${ean}
