@@ -112,7 +112,9 @@
           a.doc_height,
           b.root_id as root_id_trans,
           c.root_id as root_id_reg,
-          d.root_id as root_id_lead
+          d.root_id as root_id_lead,
+          e.root_id as root_id_ref,
+          e."msg.subject"
           
           from atomic.events a
           
@@ -124,6 +126,9 @@
           
           left join atomic.com_finerylondon_lead_created_1 d
           on a.event_id = d.root_id
+          
+          left join atomic.com_mandrill_message_sent_1 e
+          on a.event_id = e.root_id
           
           where a.app_id = 'production'
           
@@ -147,6 +152,9 @@
   - dimension: event_id_lead
     sql: ${TABLE}.root_id_lead
   
+  - dimension: event_id_ref
+    sql: ${TABLE}.root_id_ref
+  
   - dimension_group: event_time
     type: time
     timeframes: [time, hour, date, hod, dow, week, month]
@@ -167,6 +175,9 @@
     
   - dimension: user_id
     sql: ${TABLE}.user_id
+    
+  - dimension: email_subject
+    sql: ${TABLE}."msg.subject"
   
   - dimension: domain_sessionidx
     sql: ${TABLE}.domain_sessionidx
@@ -200,8 +211,13 @@
   - measure: count_leads
     type: count_distinct
     sql: ${event_id_lead}
-
     
+  - measure: count_referrals
+    type: count_distinct
+    sql: ${event_id_ref}
+    #filters:
+    #  email_subject: '%exclusive invitation%'
+
   - measure: latest_update
     type: string
     sql: max(${event_time_time})
