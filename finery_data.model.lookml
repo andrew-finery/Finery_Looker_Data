@@ -78,5 +78,7 @@
   - join: users_signup
     sql_on: |
       spree_orders.customer_id = users_signup.id
+      
+- explore: online_products
 
 
