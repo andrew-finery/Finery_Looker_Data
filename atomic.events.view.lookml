@@ -130,7 +130,7 @@
           left join atomic.com_mandrill_message_sent_1 e
           on a.event_id = e.root_id
           
-          where a.app_id = 'production'
+           WHERE a.app_id = 'production'
           
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
     distkey: event_id
@@ -193,20 +193,31 @@
   - measure: count_orders
     type: count_distinct
     sql: ${event_id_trans}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
   
   - measure: count_signups
     type: count_distinct
     sql: ${event_id_reg}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
   
   - measure: count_sessions
     type: count_distinct
     sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
   
   - measure: count_logins
     type: count_distinct
     sql: ${session_id}
     filters:
       user_id: -NULL
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
       
   - measure: count_leads
     type: count_distinct
