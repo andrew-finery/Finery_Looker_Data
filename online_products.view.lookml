@@ -23,8 +23,8 @@
         from
         (select * from daily_snapshot.spree_products where date(spree_timestamp) = current_date) a
         
-        left join
-        (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) b
+        inner join
+        (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date and is_master <>1) b
         on a.id = b.product_id
         
         left join
