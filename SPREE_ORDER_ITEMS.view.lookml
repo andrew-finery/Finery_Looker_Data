@@ -10,8 +10,12 @@
         c.sku,
         b.price,
         b.currency,
+        f.exchange_rate,
+        b.price*f.exchange_rate as price_gbp,
         b.quantity,
-        d.max_selling_price_gbp
+        d.max_selling_price_gbp,
+        e.items_returned,
+        e.return_reason
         
         from
 
@@ -25,6 +29,14 @@
         left join
         (select variant_id, max(amount) as max_selling_price_gbp from (select * from daily_snapshot.spree_prices where date(spree_timestamp) = current_date) where currency = 'GBP' group by 1) d
         on b.variant_id = d.variant_id
+        left join
+        (select order_id, sku, count(*) as items_returned, max(name) as return_reason from ${returns.SQL_TABLE_NAME} where reception_status = 'received' and acceptance_status = 'accepted' and reimbursement_status = 'reimbursed' group by 1,2) e
+        on a.order_id = e.order_id
+        and c.sku = e.sku
+        left join lookup.exchange_rates f
+        on date_trunc ('day', a.completed_at) = f."date"
+        and a.currency = f.currency
+
         
     sql_trigger_value: SELECT COUNT(*) FROM ${spree_orders.SQL_TABLE_NAME}
     distkey: order_id
@@ -71,23 +83,13 @@
   - dimension: price_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${price}*1.00
-          when ${TABLE}.currency = 'USD' then ${price}*0.64
-          when ${TABLE}.currency = 'CAD' then ${price}*0.56
-          else ${gross_revenue} end
+    sql: ${TABLE}.price_gbp
     format: "£%0.2f"
   
   - dimension: gross_item_revenue_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${gross_revenue}*1.00
-          when ${TABLE}.currency = 'USD' then ${gross_revenue}*0.64
-          when ${TABLE}.currency = 'CAD' then ${gross_revenue}*0.56
-          else ${gross_revenue} end
+    sql: ${TABLE}.price_gbp * ${TABLE}.quantity
     format: "£%0.2f"
   
   - dimension: max_selling_price_gbp
@@ -96,10 +98,22 @@
     sql: ${TABLE}.max_selling_price_gbp
     format: "£%0.2f"
   
-  - dimension: selling_price_tiered
+  - dimension: max_selling_price_tiered
     type: tier
     tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
     sql: ${max_selling_price_gbp}
+
+  - dimension: items_returned
+    sql: ${TABLE}.items_returned
+  
+  - dimension: return_reason
+    sql: ${TABLE}.return_reason
+    
+  - dimension: net_reveune_after_returns_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.price_gbp * (${TABLE}.quantity - ${TABLE}.items_returned)
+    format: "£%0.2f"
 
    # MEASURES #
   
@@ -115,20 +129,32 @@
     type: count_distinct
     sql: ${TABLE}.sku
   
-  - measure: items_sold
+  - measure: total_items_sold
     type: sum
     sql: ${TABLE}.quantity
+    
+  - measure: total_items_returned
+    type: sum
+    sql: ${TABLE}.items_returned
+  
+  - measure: net_items_sold
+    type: number
+    sql: ${total_items_sold} - ${total_items_returned}
+    
+  - measure: return_rate
+    type: number
+    decimals: 2
+    sql: 100.0 * ${total_items_returned}/NULLIF(${total_items_sold},0)::REAL
+    format: "%0.2f%"
     
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
     sql: ${gross_item_revenue_in_gbp}
     format: "£%0.2f"
     
-  - measure: gross_revenue_last_7_days
+  - dimension: net_item_reveune_after_returns_gbp
     type: sum
-    sql: ${gross_item_revenue_in_gbp}
-    filters:
-      order_time_date: 7 days ago for 7 days
+    sql: ${net_reveune_after_returns_gbp}
     format: "£%0.2f"
     
 
