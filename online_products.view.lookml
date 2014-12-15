@@ -108,31 +108,18 @@
        type: time
        timeframes: [date, week, month]
        sql: ${TABLE}.available_on
-
-     - dimension: option_image
+    
+     - dimension: image_location
        type: string
-       sql: ${TABLE}.image_origin_id || '/single/' || ${TABLE}.attachment_file_name
-       html: |
-          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/> {{value}}
+       sql: ${origin_id} || '/single/' || ${attachment_file_name}
 
 # measures
 
-     - measure: max_origin_id
-       type: max
-       sql: ${TABLE}.master_origin_id
-       #filters:
-        # attachment_file_name: ${image_file_attachment}
-         
-     - measure: image_file_attachment
+     - measure: image
        type: string
-       sql: max(${attachment_file_name})
-
-       
-     - measure: web_image
-       type: string
-       sql: ${max_origin_id} || '/single/' || ${image_file_attachment}
+       sql: max(${image_location})
        html: |
-          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/> {{value}}
+          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
 
        
      - measure: number_of_skus
