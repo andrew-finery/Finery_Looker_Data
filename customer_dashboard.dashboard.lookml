@@ -38,7 +38,7 @@
     width: 3
     
   - name: number_of_orders
-    title: Number_of_Orders
+    title: Number of Orders
     type: single_value
     model: finery_data
     explore: spree_orders
@@ -55,7 +55,7 @@
     dimensions: [leads.created_at_hour]
     measures: [leads.leads_running_total]
     sorts: [leads.created_at_hour]
-    limit: 500
+    limit: 2000
     show_null_points: true
     stacking: ''
     show_value_labels: false
@@ -74,7 +74,7 @@
     dimensions: [users_signup.created_at_hour]
     measures: [users_signup.sign_ups_running_total]
     sorts: [users_signup.created_at_hour]
-    limit: 500
+    limit: 2000
     show_value_labels: false
     show_view_names: true
     y_axis_combined: false
