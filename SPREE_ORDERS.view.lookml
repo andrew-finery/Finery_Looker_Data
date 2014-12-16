@@ -265,6 +265,12 @@
   - measure: count_orders
     type: count_distinct
     sql: ${TABLE}.order_id
+  
+  - measure: total_orders_after_returns
+    type: count_distinct
+    sql: ${TABLE}.order_id
+    filters:
+      state: -returned
     
   - measure: count_customers
     type: count_distinct
