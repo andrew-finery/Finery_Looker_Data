@@ -39,11 +39,10 @@
                 coalesce(d.returns_included_tax*c.exchange_rate, '0') as returns_included_tax_gbp,
                 coalesce(d.returns_additional_tax*c.exchange_rate, '0') as returns_additional_tax_gbp,
                 
-                coalesce(a.item_count - d.items_returned, '0') as items_purchased_post_returns,
-                coalesce((a.item_total - d.return_item_total)*c.exchange_rate, '0') as item_total_post_returns_gbp,
-                coalesce((a.total - d.total_amount_refunded)*c.exchange_rate, '0') as order_total_post_returns_gbp,
-                coalesce((a.total - d.total_amount_refunded - a.shipment_total)*c.exchange_rate, '0') as ord_tot_post_ship_and_returns_gbp,
-                coalesce((a.total - d.total_amount_refunded)*c.exchange_rate, '0') as total_paid_after_returns_gbp
+                a.item_count - coalesce(d.items_returned, '0') as items_purchased_post_returns,
+                (a.item_total - coalesce(d.return_item_total, '0'))*c.exchange_rate as item_total_post_returns_gbp,
+                (a.total - coalesce(d.total_amount_refunded, '0'))*c.exchange_rate as order_total_post_returns_gbp,
+                (a.total - coalesce(d.total_amount_refunded, '0') - a.shipment_total)*c.exchange_rate as ord_tot_post_ship_and_returns_gbp
                 
 
  
@@ -162,86 +161,104 @@
     sql: ${discount} > 0
 
 
-# Revenue Measures Converted into GBP
+# Revenue Dimensions Converted into GBP
 
   - dimension: gross_revenue_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${gross_revenue}*1.00
-          when ${TABLE}.currency = 'USD' then ${gross_revenue}*0.64
-          when ${TABLE}.currency = 'CAD' then ${gross_revenue}*0.56
-          else ${gross_revenue} end
+    sql: ${TABLE}.item_total_gbp + ${TABLE}.shipment_total_gbp
     format: "£%0.2f"
   
   - dimension: total_of_items_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${TABLE}.item_total*1.00
-          when ${TABLE}.currency = 'USD' then ${TABLE}.item_total*0.64
-          when ${TABLE}.currency = 'CAD' then ${TABLE}.item_total*0.56
-          else ${TABLE}.item_total end
+    sql: ${TABLE}.item_total_gbp 
     format: "£%0.2f"
           
   
   - dimension: shipping_total_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${TABLE}.shipment_total*1.00
-          when ${TABLE}.currency = 'USD' then ${TABLE}.shipment_total*0.64
-          when ${TABLE}.currency = 'CAD' then ${TABLE}.shipment_total*0.56
-          else ${TABLE}.shipment_total end
+    sql:  ${TABLE}.shipment_total_gbp
     format: "£%0.2f"
           
    
   - dimension: total_discount_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${TABLE}.adjustment_total*(-1.00)
-          when ${TABLE}.currency = 'USD' then ${TABLE}.adjustment_total*(-0.64)
-          when ${TABLE}.currency = 'CAD' then ${TABLE}.adjustment_total*(-0.56)
-          else ${TABLE}.adjustment_total*(-1.00) end
+    sql:  ${TABLE}.adjustment_total_gbp * (-1)
     format: "£%0.2f"
           
   - dimension: net_revenue_ex_tax_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${net_revenue_ex_tax}*1.00
-          when ${TABLE}.currency = 'USD' then ${net_revenue_ex_tax}*0.64
-          when ${TABLE}.currency = 'CAD' then ${net_revenue_ex_tax}*0.56
-          else ${net_revenue_ex_tax} end
+    sql:  ${gross_revenue_in_gbp} - ${TABLE}.included_tax_total_gbp - ${TABLE}.additional_tax_total_gbp
     format: "£%0.2f"
 
   - dimension: net_revenue_ex_tax_and_discount_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${net_revenue_ex_tax_and_discount}*1.00
-          when ${TABLE}.currency = 'USD' then ${net_revenue_ex_tax_and_discount}*0.64
-          when ${TABLE}.currency = 'CAD' then ${net_revenue_ex_tax_and_discount}*0.56
-          else ${net_revenue_ex_tax_and_discount} end
+    sql:  ${net_revenue_ex_tax_in_gbp} - ${total_discount_in_gbp}
     format: "£%0.2f"
     
   - dimension: store_credit_used_in_gbp
     type: number
     decimals: 2
-    sql:  |
-          case
-          when ${TABLE}.currency = 'GBP' then ${store_credit_used}*1.00
-          when ${TABLE}.currency = 'USD' then ${store_credit_used}*0.64
-          when ${TABLE}.currency = 'CAD' then ${store_credit_used}*0.56
-          else ${store_credit_used} end
+    sql:  ${TABLE}.store_credit_used_gbp
     format: "£%0.2f"
+
+# Returns Dimensions
+
+  - dimension: items_returned
+    sql:  ${TABLE}.items_returned
+
+  - dimension: return_item_total_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.return_item_total_gbp
+    format: "£%0.2f"
+
+  - dimension: total_amount_refunded_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.total_amount_refunded_gbp
+    format: "£%0.2f"
+
+# Revenue dimensions post returns
+
+  - dimension: items_purchased_post_returns
+    sql:  ${TABLE}.items_purchased_post_returns
+
+  - dimension: revenue_post_returns_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.item_total_post_returns_gbp + ${TABLE}.shipment_total_gbp
+    format: "£%0.2f"
+      
+  - dimension: item_total_post_returns_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.item_total_post_returns_gbp
+    format: "£%0.2f"
+    
+  - dimension: order_total_post_returns_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.order_total_post_returns_gbp
+    format: "£%0.2f"
+    
+  - dimension: ord_tot_post_ship_and_returns_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.ord_tot_post_ship_and_returns_gbp
+    format: "£%0.2f"
+
+  - dimension: discount_used_post_returns
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.item_total_post_returns_gbp + ${TABLE}.shipment_total_gbp - ${TABLE}.order_total_post_returns_gbp
+    format: "£%0.2f"
+
 
 # MEASURES #
   
@@ -334,5 +351,42 @@
     type: average
     sql: ${store_credit_used_in_gbp}
     format: "£%0.2f"
+
+
+# revenue after returns
     
+  - measure: sum_revenue_post_returns_gbp
+    type: sum
+    sql: ${revenue_post_returns_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_item_total_post_returns_gbp
+    type: sum
+    sql: ${item_total_post_returns_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_total_discount_post_returns_gbp
+    type: sum
+    sql: ${discount_used_post_returns}
+    format: "£%0.2f"
   
+  - measure: sum_revenue_post_returns_and_discount_gbp
+    type: sum
+    sql: ${revenue_post_returns_gbp} - ${discount_used_post_returns}
+    format: "£%0.2f"
+    
+    # returns totals
+
+  - measure: sum_items_returned
+    type: sum
+    sql: ${items_returned}
+
+  - measure: sum_return_item_total_gbp
+    type: sum
+    sql: ${return_item_total_gbp}
+    format: "£%0.2f"
+    
+  - measure: sum_total_amount_refunded_gbp
+    type: sum
+    sql: ${total_amount_refunded_gbp}
+    format: "£%0.2f"
