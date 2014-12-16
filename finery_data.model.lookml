@@ -80,7 +80,7 @@
       spree_orders.order_id = returns.order_id
   - join: users_signup
     sql_on: |
-      spree_orders.customer_id = users_signup.id
+      returns.user_id = users_signup.id
       
 - explore: online_products
 

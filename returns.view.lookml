@@ -2,11 +2,12 @@
 
   derived_table:
      sql: |
-       select
+        select
         a.created_at,
         a.updated_at,
         a.id as return_id,
         c.order_id,
+        h.user_id,
         c.variant_id,
         g.sku,
         g.product_id,
@@ -43,8 +44,10 @@
         left join
         (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) g
         on c.variant_id = g.id
-        
-        where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
+        left join
+        (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) h
+        on c.order_id = h.id
+          where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
         and a.id <> 1 --removing test return
         
      sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_return_authorizations
