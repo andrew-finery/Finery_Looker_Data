@@ -226,8 +226,8 @@
   - measure: count_referrals
     type: count_distinct
     sql: ${event_id_ref}
-    #filters:
-    #  email_subject: '%exclusive invitation%'
+    filters:
+      email_subject: '%exclusive invitation%'
 
   - measure: latest_update
     type: string
