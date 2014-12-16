@@ -17,18 +17,60 @@
                  a.shipment_state,
                  a.currency,
                  a.item_count,
-                 CASE
-                   WHEN b.store_credit IS NULL THEN 0
-                   ELSE b.store_credit
-                 END AS store_credit_used
+                 CASE WHEN b.store_credit IS NULL THEN 0 ELSE b.store_credit END AS store_credit_used,
+                 
+                 c.exchange_rate,
+                 a.item_total*c.exchange_rate AS item_total_gbp,
+                 a.total*c.exchange_rate AS order_total_gbp,
+                 adjustment_total*c.exchange_rate as adjustment_total_gbp,
+                 shipment_total*c.exchange_rate as shipment_total_gbp,
+                 a.included_tax_total*c.exchange_rate as included_tax_total_gbp,
+                 a.additional_tax_total*c.exchange_rate as additional_tax_total_gbp,
+                 CASE WHEN b.store_credit IS NULL THEN 0 ELSE b.store_credit*c.exchange_rate END AS store_credit_used_gbp,
+                 
+                coalesce(d.return_item_total, '0') as return_item_total,
+                coalesce(d.total_amount_refunded, '0') as total_amount_refunded,
+                coalesce(d.returns_included_tax, '0') as returns_included_tax,
+                coalesce(d.returns_additional_tax, '0') as returns_additional_tax,
+                coalesce(d.items_returned, '0') as items_returned,
+                
+                coalesce(d.return_item_total*c.exchange_rate, '0') as return_item_total_gbp,
+                coalesce(d.total_amount_refunded*c.exchange_rate, '0') as total_amount_refunded_gbp,
+                coalesce(d.returns_included_tax*c.exchange_rate, '0') as returns_included_tax_gbp,
+                coalesce(d.returns_additional_tax*c.exchange_rate, '0') as returns_additional_tax_gbp,
+                
+                coalesce(a.item_count - d.items_returned, '0') as items_purchased_post_returns,
+                coalesce((a.item_total - d.return_item_total)*c.exchange_rate, '0') as item_total_post_returns_gbp,
+                coalesce((a.total - d.total_amount_refunded)*c.exchange_rate, '0') as order_total_post_returns_gbp,
+                coalesce((a.total - d.total_amount_refunded - a.shipment_total)*c.exchange_rate, '0') as ord_tot_post_ship_and_returns_gbp,
+                coalesce((a.total - d.total_amount_refunded)*c.exchange_rate, '0') as total_paid_after_returns_gbp
+                
+
+ 
           FROM (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) a
             LEFT JOIN (SELECT order_id,
                               SUM(amount) AS store_credit
                        FROM (select * from daily_snapshot.spree_payments where date(spree_timestamp) = current_date)
                        WHERE source_type = 'Spree::StoreCredit'
                        GROUP BY 1) b ON a.id = b.order_id
+                       
+            left join lookup.exchange_rates c
+            on date_trunc ('day', a.completed_at) = c."date"
+            and a.currency = c.currency
+            
+            left join (select aaa.order_id, sum(bbb.price) as return_item_total, sum(aaa.pre_tax_amount) as total_amount_refunded, sum(aaa.included_tax_total) as returns_included_tax, sum(aaa.additional_tax_total) as returns_additional_tax, count(*) as items_returned
+                      from ${returns.SQL_TABLE_NAME} aaa
+                      left join
+                      (select * from daily_snapshot.spree_line_items where date(spree_timestamp) = current_date) bbb
+                      on aaa.order_id = bbb.order_id
+                      and aaa.variant_id = bbb.variant_id
+                      where aaa.reception_status = 'received' and aaa.acceptance_status = 'accepted' and aaa.reimbursement_status = 'reimbursed'
+                      group by 1) d
+                      on a.id = d.order_id
+
           WHERE a.state in ('complete', 'returned')
           AND a.created_at > DATE '2014-11-22'
+
     
     sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_orders
     distkey: order_id
