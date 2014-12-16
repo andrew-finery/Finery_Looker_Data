@@ -11,42 +11,34 @@
         b.id as variant_id,
         b.sku as ean,
         c.amount as current_price,
-        case when d.origin_id is null then d.id else d.origin_id end as image_origin_id,
-        h.origin_id as master_origin_id,
-        d.attachment_file_name,
+        h.option_image,
         f.colour,
         g.size,
-        a.name || ' ' || coalesce(f.colour, '') as option
+        a.name || ' ' || coalesce(f.colour, '') as option,
+        case when c.amount is null then 'No' else (case when a.deleted_at is null then 'Yes' else 'No' end) end as online_flag,
+        j.name as department
         
         
         
         from
-        (select * from daily_snapshot.spree_products where date(spree_timestamp) = current_date) a
+        (select * from daily_snapshot.spree_products where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products)) a
         
         inner join
-        (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date and is_master <>1) b
+        (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <>1) b
         on a.id = b.product_id
         
         left join
-        (select variant_id, amount from (select * from daily_snapshot.spree_prices where date(spree_timestamp) = current_date) where currency = 'GBP' and deleted_at is null group  by 1,2) c
+        (select variant_id, amount from (select * from daily_snapshot.spree_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_prices)) where currency = 'GBP' and deleted_at is null group  by 1,2) c
         on c.variant_id = b.id
         
         left join
-            (select bbb.id, bbb.viewable_id as variant_id, bbb.attachment_file_name, bbb.origin_id from
-              (select viewable_id, min("position") as "position" from (select * from daily_snapshot.spree_assets where date(spree_timestamp) = current_date and viewable_type = 'Spree::Variant') group by 1) aaa
-              inner join
-              (select * from daily_snapshot.spree_assets where date(spree_timestamp) = current_date) bbb
-              on aaa.viewable_id = bbb.viewable_id and aaa."position" = bbb."position") d
-        on d.variant_id = b.id
-        
-        left join
             (select aaa.variant_id, bbb.name as colour from
-              (select * from daily_snapshot.spree_option_values_variants where date(spree_timestamp) = current_date) aaa
+              (select * from daily_snapshot.spree_option_values_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values_variants)) aaa
               left join
-              (select * from daily_snapshot.spree_option_values where date(spree_timestamp) = current_date) bbb
+              (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values)) bbb
               on aaa.option_value_id = bbb.id
               left join
-              (select * from daily_snapshot.spree_option_types where date(spree_timestamp) = current_date) ccc
+              (select * from daily_snapshot.spree_option_types where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_types)) ccc
               on bbb.option_type_id = ccc.id
               where ccc.id = 3) f --only return the colour
         
@@ -54,12 +46,12 @@
         
         left join
             (select aaa.variant_id, max(bbb.name) as size from
-              (select * from daily_snapshot.spree_option_values_variants where date(spree_timestamp) = current_date) aaa
+              (select * from daily_snapshot.spree_option_values_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values_variants)) aaa
               left join
-              (select * from daily_snapshot.spree_option_values where date(spree_timestamp) = current_date) bbb
+              (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values)) bbb
               on aaa.option_value_id = bbb.id
               left join
-              (select * from daily_snapshot.spree_option_types where date(spree_timestamp) = current_date) ccc
+              (select * from daily_snapshot.spree_option_types where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_types)) ccc
               on bbb.option_type_id = ccc.id
               where ccc.id <> 3 -- get the size
               group by 1) g
@@ -67,14 +59,71 @@
         on b.id = g.variant_id
         
         left join
-        (select attachment_file_name, case when max(origin_id)is null then max(id) else max(origin_id) end as origin_id from 
-        (select * from daily_snapshot.spree_assets where date(spree_timestamp) = current_date)
-        group by 1) h
-        on d.attachment_file_name = h.attachment_file_name
+                 (select
+                  bbb.id as variant_id,
+                  aaa.id as style_id,
+                  aaa.id || '-' || ccc.colour as option_id,
+                  eee.style_image,
+                  case when max(coalesce(ddd.origin_id, ddd.id) || '/single/' || ddd.attachment_file_name) is null then max(eee.style_image) else max(coalesce(ddd.origin_id, ddd.id) || '/single/' || ddd.attachment_file_name) end as option_image
+                  from
+                  (select * from daily_snapshot.spree_products where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products)) aaa
+                  inner join
+                  (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) bbb
+                  on aaa.id = bbb.product_id
+                  left join
+                                 (select aaa.variant_id, bbb.name as colour from
+                                (select * from daily_snapshot.spree_option_values_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values_variants)) aaa
+                                left join
+                                (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values)) bbb
+                                on aaa.option_value_id = bbb.id
+                                left join
+                                (select * from daily_snapshot.spree_option_types where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_types)) ccc
+                                on bbb.option_type_id = ccc.id
+                                where ccc.id = 3) ccc
+                  on ccc.variant_id = bbb.id
+                  left join
+                                (select * from (select * from daily_snapshot.spree_assets where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_assets) and viewable_type = 'Spree::Variant')) ddd
+                  on ddd.viewable_id = bbb.id
+                  left join
+                                (select
+                                  aaa.id as style_id,
+                                  max(coalesce(ddd.origin_id, ddd.id) || '/single/' || ddd.attachment_file_name) as style_image
+                                  from
+                                  (select * from daily_snapshot.spree_products where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products)) aaa
+                                  inner join
+                                  (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) bbb
+                                  on aaa.id = bbb.product_id
+                                  left join
+                                                 (select aaa.variant_id, bbb.name as colour from
+                                                (select * from daily_snapshot.spree_option_values_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values_variants)) aaa
+                                                left join
+                                                (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values)) bbb
+                                                on aaa.option_value_id = bbb.id
+                                                left join
+                                                (select * from daily_snapshot.spree_option_types where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_types)) ccc
+                                                on bbb.option_type_id = ccc.id
+                                                where ccc.id = 3) ccc
+                                  on ccc.variant_id = bbb.id
+                                  left join
+                                                (select * from (select * from daily_snapshot.spree_assets where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_assets) and viewable_type = 'Spree::Variant')) ddd
+                                  on ddd.viewable_id = bbb.id
+                                  group by 1) eee
+                  on aaa.id = eee.style_id
+
+                  group by 1,2,3,4) h
+                  
+                  on h.variant_id = b.id
+                
+        left join (select * from daily_snapshot.spree_products_taxons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products_taxons)) i
+        on a.id = i.product_id
+        
+        left join (select * from daily_snapshot.spree_taxons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_taxons)) j
+        on i.taxon_id = j.id
         
         where date(a.available_on) <= current_date --available before today
-        and a.deleted_at is null -- product hasn't been deleted
-        and b.deleted_at is null -- variant hasn't been deleted
+        and a.available_on is not null -- product has a start date
+        and j.taxonomy_id = 1 -- only include the taxonomy department
+
 
      sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_products
      distkey: ean
@@ -95,23 +144,29 @@
      - dimension: colour
        sql: ${TABLE}.colour
     
+     - dimension: online_department
+       sql: ${TABLE}.department
+    
      - dimension: size
        sql: ${TABLE}.size
-
-     - dimension: origin_id
-       sql: ${TABLE}.master_origin_id
-       
-     - dimension: attachment_file_name
-       sql: ${TABLE}.attachment_file_name
-
+    
+     - dimension: current_price_gbp
+       type: number
+       decimals: 2
+       sql: ${TABLE}.current_price
+       format: "£%0.2f"
+    
      - dimension_group: available_on
        type: time
        timeframes: [date, week, month]
        sql: ${TABLE}.available_on
     
      - dimension: image_location
-       type: string
-       sql: ${origin_id} || '/single/' || ${attachment_file_name}
+       sql: ${TABLE}.option_image
+       
+     - dimension: online_flag
+       type: yesno
+       sql: ${TABLE}.online_flag = 'Yes'
 
 # measures
 
@@ -121,9 +176,22 @@
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
 
-       
-     - measure: number_of_skus
+     - measure: skus_online
        type: count_distinct
        sql: ${ean}
+       filters:
+        online_flag: Yes 
+        
+     - measure: options_online
+       type: count_distinct
+       sql: ${option}
+       filters:
+        online_flag: Yes 
+       
+     - measure: styles_online
+       type: count_distinct
+       sql: ${style}
+       filters:
+        online_flag: Yes 
     
 
