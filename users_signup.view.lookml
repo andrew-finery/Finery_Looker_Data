@@ -40,7 +40,28 @@
                 union
                 (select lower(email_address) as email_address from mailchimp.initial_invites)
                 union
-                (select lower(email_address) as email_address from mandrill.referrals where status = 'sent'))
+                (select lower(email_address) as email_address from (select * from
+                                                                    mandrill.referrals
+                                                                    union
+                                                                    (select
+                                                                    a.ts as referral_sent_at,
+                                                                    a."msg.email" as email_address,
+                                                                    a."msg.sender" as message_sender,
+                                                                    a."msg.subject" as subject,
+                                                                    case when max(e._id) is not null then 'hard bounced' else (case when max(d._id) is not null then 'soft bounced' else 'sent' end)end as status,
+                                                                    '' as tags,
+                                                                    count(b._id) as count_opens,
+                                                                    count(c._id) as count_clicks,
+                                                                    ' ' as bounce_details
+                                                                    from atomic.com_mandrill_message_sent_1 a
+                                                                    left join atomic.com_mandrill_message_opened_1 b on a._id = b._id
+                                                                    left join atomic.com_mandrill_message_clicked_1 c on a._id = c._id
+                                                                    left join atomic.com_mandrill_message_soft_bounced_1 d on a._id = d._id
+                                                                    left join atomic.com_mandrill_message_bounced_1 e on a._id = e._id
+                                                                    left join atomic.events f on a.root_id = f.event_id
+                                                                    where f.app_id = 'production' and a."msg.subject" like '%exclusive invitation%'
+                                                                    group by 1,2,3,4,6,9))
+                where status = 'sent'))
                 group by 1) all_emails
                 
            LEFT JOIN (SELECT lower(email_address) as email_address,
@@ -57,7 +78,27 @@
                        
           LEFT JOIN (SELECT CAST(DATE AS datetime) AS referral_sent_at,
                               lower(Email_Address) AS email_address
-                       FROM mandrill.referrals
+                       FROM (select * from
+                              mandrill.referrals
+                              union
+                              (select
+                              a.ts as referral_sent_at,
+                              a."msg.email" as email_address,
+                              a."msg.sender" as message_sender,
+                              a."msg.subject" as subject,
+                              case when max(e._id) is not null then 'hard bounced' else (case when max(d._id) is not null then 'soft bounced' else 'sent' end)end as status,
+                              '' as tags,
+                              count(b._id) as count_opens,
+                              count(c._id) as count_clicks,
+                              ' ' as bounce_details
+                              from atomic.com_mandrill_message_sent_1 a
+                              left join atomic.com_mandrill_message_opened_1 b on a._id = b._id
+                              left join atomic.com_mandrill_message_clicked_1 c on a._id = c._id
+                              left join atomic.com_mandrill_message_soft_bounced_1 d on a._id = d._id
+                              left join atomic.com_mandrill_message_bounced_1 e on a._id = e._id
+                              left join atomic.events f on a.root_id = f.event_id
+                              where f.app_id = 'production' and a."msg.subject" like '%exclusive invitation%'
+                              group by 1,2,3,4,6,9))
                        WHERE status = 'sent'
                        GROUP BY 1,
                                 2) AS mandrill ON all_emails.email_address = mandrill.email_address
