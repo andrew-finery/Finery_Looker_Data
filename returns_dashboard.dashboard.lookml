@@ -97,8 +97,8 @@
     top: 5
     left: 0
 
-  - name: returns_by_reason_and_category
-    title: Returns by Reason for each category
+  - name: returns_by_reason_and_department
+    title: Returns by Reason for each Department
     type: looker_column
     model: finery_data
     explore: spree_order_items
