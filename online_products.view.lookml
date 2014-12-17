@@ -82,7 +82,7 @@
                                 where ccc.id = 3) ccc
                   on ccc.variant_id = bbb.id
                   left join
-                                (select * from (select * from daily_snapshot.spree_assets where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_assets) and viewable_type = 'Spree::Variant')) ddd
+                                (select * from (select * from daily_snapshot.spree_assets where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_assets) and viewable_type = 'Spree::Variant' and packshot <> 1)) ddd
                   on ddd.viewable_id = bbb.id
                   left join
                                 (select
