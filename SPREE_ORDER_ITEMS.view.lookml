@@ -137,7 +137,7 @@
     type: sum
     sql: ${TABLE}.items_returned
   
-  - measure: net_items_sold
+  - measure: items_sold_after_returns
     type: number
     sql: ${total_items_sold} - ${total_items_returned}
     

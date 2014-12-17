@@ -42,6 +42,9 @@
   - join: sales_snapshot
     sql_on: |
       sales_snapshot.sku = spree_stock_items.sku
+  - join: online_products
+    sql_on: |
+      spree_stock_items.sku = online_products.ean
       
       
 - explore: sales_snapshot
@@ -55,6 +58,9 @@
   - join: product_lookup
     sql_on: |
       sales_snapshot.sku = product_lookup.ean
+  - join: online_products
+    sql_on: |
+      sales_snapshot.sku = online_products.ean
       
 - explore: spree_order_items
   joins:
@@ -67,6 +73,9 @@
   - join: users_signup
     sql_on: |
       spree_orders.customer_id = users_signup.id
+  - join: online_products
+    sql_on: |
+      spree_order_items.sku  = online_products.ean
 
 - explore: daily_data
 
@@ -81,6 +90,9 @@
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
+  - join: online_products
+    sql_on: |
+      returns.sku = online_products.ean
       
 - explore: online_products
 

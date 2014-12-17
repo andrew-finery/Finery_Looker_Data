@@ -99,3 +99,13 @@
        
      - dimension: reimbursemenet_code
        sql: ${TABLE}.reimbursemenet_code
+       
+    # Measures
+       
+     - measure: number_of_returns
+       type: count_distinct
+       sql: ${return_id}
+       
+     - measure: number_of_orders_with_returns
+       type: count_distinct
+       sql: ${order_id}
