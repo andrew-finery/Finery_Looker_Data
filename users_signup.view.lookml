@@ -257,4 +257,10 @@
     sql: 100.0 * ${count_customers}/NULLIF(${emails_sent},0)::REAL
     format: "%0.2f%"
     
+  - measure: gross_revenue_after_returns
+    type: sum
+    decimals: 2
+    sql: ${spree_orders.revenue_post_returns_gbp}
+    format: "£%0.2f"
+    
 
