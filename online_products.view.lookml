@@ -14,7 +14,7 @@
         max(size) as size,
         max(option) as option,
         min(online_flag) as online_flag,
-        max(department) as department
+        min(department) as department
         
         from
         
