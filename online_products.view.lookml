@@ -141,13 +141,6 @@
         
         group by 1
 
-
-
-
-
-
-
-
      sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_products
      distkey: ean
      sortkeys: [ean]
