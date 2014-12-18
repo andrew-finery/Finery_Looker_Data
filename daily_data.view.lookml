@@ -64,7 +64,7 @@
          
          on aaa.session_date = eee.created_date
          
-     sql_trigger_value: SELECT COUNT(*) FROM ${spree_orders.SQL_TABLE_NAME}
+     sql_trigger_value: SELECT COUNT(*) FROM ${users_signup.SQL_TABLE_NAME}
      distkey: date
      sortkeys: [date]
 
