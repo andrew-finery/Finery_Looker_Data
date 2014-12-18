@@ -3,6 +3,7 @@
   derived_table:
      sql: |
         select
+        a.spree_timestamp,
         a.created_at,
         a.updated_at,
         a.id as return_id,
@@ -50,7 +51,7 @@
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
         and a.id <> 1 --removing test return
         
-     sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_return_authorizations
+     sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_users.SQL_TABLE_NAME}
      distkey: return_id
      sortkeys: [return_id, created_at]
 

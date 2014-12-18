@@ -2,6 +2,7 @@
   derived_table:
     sql: |
       select
+      a.spree_timestamp,
       a.stock_location_id,
       b.sku,
       a.count_on_hand,
@@ -19,7 +20,7 @@
       where a.deleted_at is null
       and a.updated_at > date '2014-11-11'
     
-    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_stock_items
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_users.SQL_TABLE_NAME}
     sortkeys: [sku]
 
         

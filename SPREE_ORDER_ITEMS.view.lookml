@@ -2,7 +2,7 @@
   derived_table:
     sql: |
       select 
-
+        a.spree_timestamp,
         a.completed_at as order_tstamp,
         b.order_id as order_id,
         a.customer_id as customer_id,
@@ -38,7 +38,7 @@
         and a.currency = f.currency
 
         
-    sql_trigger_value: SELECT COUNT(*) FROM ${spree_orders.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_orders.SQL_TABLE_NAME}
     distkey: order_id
     sortkeys: [order_id, order_tstamp]
 

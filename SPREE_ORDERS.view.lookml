@@ -1,7 +1,8 @@
 - view: spree_orders
   derived_table:
     sql: |
-     SELECT a.id AS order_id,
+     SELECT a.spree_timestamp,
+                 a.id AS order_id,
                  a."number" AS order_code,
                  a.user_id AS customer_id,
                  a.bill_address_id,
@@ -71,7 +72,7 @@
           AND a.created_at > DATE '2014-11-22'
 
     
-    sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_orders
+    sql_trigger_value: SSELECT max(spree_timestamp) FROM ${returns.SQL_TABLE_NAME}
     distkey: order_id
     sortkeys: [order_id, completed_at]
 
