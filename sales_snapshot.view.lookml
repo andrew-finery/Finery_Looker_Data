@@ -168,7 +168,7 @@
   - measure: sum_sales_previous_7_days
     type: sum
     sql: ${sales_previous_7_days}
-    format: "%0.2f"
+    format: "£%0.2f"
     
   
   - measure: sum_sales_last_28_days
