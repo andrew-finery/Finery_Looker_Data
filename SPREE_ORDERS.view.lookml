@@ -68,7 +68,7 @@
                       group by 1) d
                       on a.id = d.order_id
 
-          WHERE a.state in ('complete', 'returned')
+          WHERE a.state in ('complete', 'returned', 'canceled')
           AND a.created_at > DATE '2014-11-22'
 
     
@@ -266,20 +266,26 @@
   - measure: count_orders
     type: count_distinct
     sql: ${TABLE}.order_id
+    filters:
+      state: -canceled
   
-  - measure: total_orders_after_returns
+  - measure: total_orders_after_returns_and_canceled
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
-      state: -returned
-    
+      state: -returned, -canceled
+
   - measure: count_customers
     type: count_distinct
-    sql: ${TABLE}.customer_id  
+    sql: ${TABLE}.customer_id
+    filters:
+      state: -canceled
     
   - measure: total_items
     type: sum
     sql: ${TABLE}.item_count
+    filters:
+      state: -canceled
 
   # revenue sums
 
@@ -287,16 +293,22 @@
     type: sum
     sql: ${gross_revenue_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: sum_total_of_items_gbp
     type: sum
     sql: ${total_of_items_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: sum_shipping_total_gbp
     type: sum
     sql: ${shipping_total_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: sum_total_discount_gbp
     type: sum
@@ -307,16 +319,22 @@
     type: sum
     sql: ${net_revenue_ex_tax_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   - measure: sum_net_revenue_ex_tax_and_discount_gbp
     type: sum
     sql: ${net_revenue_ex_tax_and_discount_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   - measure: sum_store_credit_used_gbp
     type: sum
     sql: ${store_credit_used_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   # revenue averages
 
@@ -324,16 +342,22 @@
     type: average
     sql: ${gross_revenue_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
       
   - measure: avg_net_revenue_ex_tax_in_gbp
     type: average
     sql: ${net_revenue_ex_tax_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   - measure: avg_net_revenue_ex_tax_and_discount_gbp
     type: average
     sql: ${net_revenue_ex_tax_and_discount_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   # revenue running totals
   
@@ -353,11 +377,15 @@
     type: average
     sql: ${total_discount_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: avg_store_credit_used_gbp
     type: average
     sql: ${store_credit_used_in_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
 
 # revenue after returns
@@ -366,34 +394,142 @@
     type: sum
     sql: ${revenue_post_returns_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: sum_item_total_post_returns_gbp
     type: sum
     sql: ${item_total_post_returns_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
 
   - measure: sum_total_discount_post_returns_gbp
     type: sum
     sql: ${discount_used_post_returns}
     format: "£%0.2f"
+    filters:
+      state: -canceled
   
   - measure: sum_revenue_post_returns_and_discount_gbp
     type: sum
     sql: ${revenue_post_returns_gbp} - ${discount_used_post_returns}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
     # returns totals
 
   - measure: sum_items_returned
     type: sum
     sql: ${items_returned}
+    filters:
+      state: -canceled
 
   - measure: sum_return_item_total_gbp
     type: sum
     sql: ${return_item_total_gbp}
     format: "£%0.2f"
+    filters:
+      state: -canceled
     
   - measure: sum_total_amount_refunded_gbp
     type: sum
     sql: ${total_amount_refunded_gbp}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+    
+    
+    
+# MEASURES INCLUDING CANCELLED ORDERS#
+  
+  - measure: count_orders_inc_canceled
+    type: count_distinct
+    sql: ${TABLE}.order_id
+
+  - measure: count_customers_inc_canceled
+    type: count_distinct
+    sql: ${TABLE}.customer_id  
+
+  - measure: total_items_inc_canceled
+    type: sum
+    sql: ${TABLE}.item_count
+
+  # revenue sums
+
+  - measure: sum_gross_revenue_gbp_inc_canceled
+    type: sum
+    sql: ${gross_revenue_in_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_total_of_items_gbp_inc_canceled
+    type: sum
+    sql: ${total_of_items_in_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_shipping_total_gbp_inc_canceled
+    type: sum
+    sql: ${shipping_total_in_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_total_discount_gbp_inc_canceled
+    type: sum
+    sql: ${total_discount_in_gbp}
+    format: "£%0.2f"
+  
+  - measure: sum_net_revenue_ex_tax_gbp_inc_canceled
+    type: sum
+    sql: ${net_revenue_ex_tax_in_gbp}
+    format: "£%0.2f"
+    
+  - measure: sum_net_revenue_ex_tax_and_discount_gbp_inc_canceled
+    type: sum
+    sql: ${net_revenue_ex_tax_and_discount_in_gbp}
+    format: "£%0.2f"
+    
+  - measure: sum_store_credit_used_gbp_inc_canceled
+    type: sum
+    sql: ${store_credit_used_in_gbp}
+    format: "£%0.2f"
+    
+  # revenue averages
+
+  - measure: avg_gross_revenue_gbp_inc_canceled
+    type: average
+    sql: ${gross_revenue_in_gbp}
+    format: "£%0.2f"
+      
+  - measure: avg_net_revenue_ex_tax_in_gbp_inc_canceled
+    type: average
+    sql: ${net_revenue_ex_tax_in_gbp}
+    format: "£%0.2f"
+    
+  - measure: avg_net_revenue_ex_tax_and_discount_gbp_inc_canceled
+    type: average
+    sql: ${net_revenue_ex_tax_and_discount_in_gbp}
+    format: "£%0.2f"
+    
+  # revenue running totals
+  
+  - measure: gross_revenue_gbp_running_total_inc_canceled
+    type: running_total
+    sql: ${sum_gross_revenue_gbp}
+    format: "£%0.2f"
+      
+   # basket size averages
+  - measure: avg_items_in_bag_inc_canceled
+    type: number
+    decimals: 2
+    sql: ${total_items}/${count_orders}
+    format: "%0.2f"
+    
+  - measure: avg_discount_in_gbp_inc_canceled
+    type: average
+    sql: ${total_discount_in_gbp}
+    format: "£%0.2f"
+
+  - measure: avg_store_credit_used_gbp_inc_canceled
+    type: average
+    sql: ${store_credit_used_in_gbp}
     format: "£%0.2f"

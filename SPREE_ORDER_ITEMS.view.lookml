@@ -36,6 +36,7 @@
         left join lookup.exchange_rates f
         on date_trunc ('day', a.completed_at) = f."date"
         and a.currency = f.currency
+        where a.state not in ('canceled')
 
         
     sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_orders.SQL_TABLE_NAME}
