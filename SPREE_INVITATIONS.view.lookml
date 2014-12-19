@@ -11,7 +11,7 @@
         left join
         lookup.exchange_rates bbb
         on date(aaa.created_at) = bbb."date"
-        and aaa.currency = bbb.currency) c
+        and aaa.currency = bbb.currency
         
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_invitations
     distkey: email
