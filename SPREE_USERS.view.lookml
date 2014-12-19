@@ -1,7 +1,7 @@
 - view: spree_users
   derived_table:
-     sql: |
-       select
+    sql: |
+      select
         a.spree_timestamp,
         a.id as user_id,
         a.email as email_address,
@@ -27,16 +27,14 @@
         (select sent_by_id as user_id, count(*) as referrals_sent from daily_snapshot.spree_invitations where date(spree_timestamp) = (select max(date(spree_timestamp)) from daily_snapshot.spree_invitations) and sent_by_id is not null group by 1) c
         on a.id = c.user_id
         
-  sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
-  distkey: user_id
-  sortkeys: [user_id]
+    sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
+    distkey: user_id
+    sortkeys: [user_id]
 
 
   fields:
-# #     Define your dimensions and measures here, like this:
-#     - dimension: profit
-#       type: number
-#       sql: ${TABLE}.profit
+     - dimension: user_id
+       sql: ${TABLE}.user_id
 #
 #     - measure: total_profit
 #       type: sum
