@@ -14,7 +14,11 @@
       sessions.domain_userid = payment_funnel.domain_userid and sessions.domain_sessionidx = payment_funnel.domain_sessionidx
     join_type: one_to_one
 
-- explore: visitors
+- explore: spree_invitations
+  joins:
+  - join: spree_users
+    sql_on: |
+      lower(spree_invitations.email) = lower(spree_users.email_address)
 
 - explore: atomic_events
 

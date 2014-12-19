@@ -13,19 +13,28 @@
         a.last_sign_in_at,
         a.birth_date,
         a.permitted_referrals,
-        coalesce(b.current_credit, '0') as current_credit,
-        c.referrals_sent 
+        c.credit_amount as signup_credit,
+        c.currency as signup_credit_currency,
+        c.credit_amount_gbp as sign_credit_gbp,
+        coalesce(b.total_credit_granted_gbp, '0') as total_credit_granted_gbp,
+        coalesce(b.total_credit_used_gbp, '0') as total_credit_used_gbp,
+        coalesce(b.current_credit_gbp, '0') as current_credit_gbp,
+        d.referrals_sent 
         
         from
         
         (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date) a
         left join
-        (select user_id, sum(amount) - sum(amount_used) as current_credit from (select * from daily_snapshot.spree_store_credits where date(spree_timestamp) = current_date) group by 1) b
+        (select aaa.user_id, sum(aaa.amount * bbb.exchange_rate) as total_credit_granted_gbp, sum(aaa.amount_used * bbb.exchange_rate) as total_credit_used_gbp, sum(aaa.amount * bbb.exchange_rate) - sum(aaa.amount_used * bbb.exchange_rate) as current_credit_gbp from (select * from daily_snapshot.spree_store_credits where date(spree_timestamp) = current_date) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency group by 1) b
         on a.id = b.user_id
         
         left join
-        (select sent_by_id as user_id, count(*) as referrals_sent from daily_snapshot.spree_invitations where date(spree_timestamp) = (select max(date(spree_timestamp)) from daily_snapshot.spree_invitations) and sent_by_id is not null group by 1) c
-        on a.id = c.user_id
+        (select aaa.email, aaa.credit_amount, aaa.currency, aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp from (select * from daily_snapshot.spree_user_signup_awards where date(spree_timestamp) = current_date) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency) c
+        on lower(a.email) = lower(c.email)
+        
+        left join
+        (select sent_by_id as user_id, count(*) as referrals_sent from daily_snapshot.spree_invitations where date(spree_timestamp) = (select max(date(spree_timestamp)) from daily_snapshot.spree_invitations) and sent_by_id is not null group by 1) d
+        on a.id = d.user_id
         
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
     distkey: user_id
