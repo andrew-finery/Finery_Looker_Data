@@ -28,8 +28,6 @@
 
 - explore: leads
 
-- explore: spree_users
-
 - explore: spree_orders
   joins:
   - join: users_signup
