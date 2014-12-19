@@ -216,7 +216,7 @@
     sql: ${TABLE}.nr_reference
   
   - dimension: time_for_welcome_e_mail
-    sql: ${TABLE}.time_for_welcome_e_mail
+    sql: ${TABLE}.time_for_welcome_email
     
   - dimension: valid_email
     type: yesno
