@@ -19,6 +19,8 @@
   - join: spree_users
     sql_on: |
       lower(spree_invitations.email) = lower(spree_users.email_address)
+      
+- explore: spree_users
 
 - explore: atomic_events
 

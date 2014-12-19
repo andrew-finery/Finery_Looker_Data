@@ -12,14 +12,14 @@
         a.sign_in_count,
         a.last_sign_in_at,
         a.birth_date,
-        a.permitted_referrals,
+        coalesce(a.permitted_referrals, '0') as permitted_referrals,
         c.credit_amount as signup_credit,
         c.currency as signup_credit_currency,
-        c.credit_amount_gbp as sign_credit_gbp,
+        c.credit_amount_gbp as signup_credit_gbp,
         coalesce(b.total_credit_granted_gbp, '0') as total_credit_granted_gbp,
         coalesce(b.total_credit_used_gbp, '0') as total_credit_used_gbp,
         coalesce(b.current_credit_gbp, '0') as current_credit_gbp,
-        d.referrals_sent 
+        coalesce(d.referrals_sent, '0') as referrals_sent
         
         from
         
@@ -42,9 +42,138 @@
 
 
   fields:
-     - dimension: user_id
-       sql: ${TABLE}.user_id
-#
-#     - measure: total_profit
-#       type: sum
-#       sql: ${profit}
+  - dimension: email_address
+    sql: ${TABLE}.email_address
+  
+  - dimension: customer_id
+    type: int
+    sql: ${TABLE}.user_id
+    
+  - dimension_group: account_created_at
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.created_at
+    
+  - dimension: first_name
+    sql: ${TABLE}.first_name
+    
+  - dimension: last_name
+    sql: ${TABLE}.last_name
+    
+  - dimension: newsletter_opt_in
+    type: yesno
+    sql: ${TABLE}.newsletter_opt_in = 1
+    
+  - dimension: sign_in_count
+    sql: ${TABLE}.sign_in_count
+  
+  - dimension_group: birth_date
+    type: time
+    timeframes: [date, month, year]
+    sql: ${TABLE}.birth_date
+  
+  - dimension_group: last_sign_in_at
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.last_sign_in_at
+    
+  - dimension: permitted_referrals
+    sql: ${TABLE}.permitted_referrals
+  
+  - dimension: referrals_sent
+    sql: ${TABLE}.referrals_sent
+  
+  - dimension: referrals_left
+    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent
+    
+  - dimension: used_all_referrals
+    type: yesno
+    sql: ${referrals_left} = 0
+  
+  - dimension: signup_credit
+    type: number
+    decimals: 2
+    sql: ${TABLE}.signup_credit
+    format: "%0.2f"
+       
+  - dimension: signup_credit_currency
+    sql: ${TABLE}.signup_credit_currency
+       
+  - dimension: signup_credit_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.signup_credit_gbp
+    format: "£%0.2f"
+    
+  - dimension: total_credit_granted_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_credit_granted_gbp
+    format: "£%0.2f"
+    
+  - dimension: total_credit_used_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_credit_used_gbp
+    format: "£%0.2f"
+    
+  - dimension: current_credit_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.current_credit_gbp
+    format: "£%0.2f"
+    
+  # Measures
+  
+  - measure: count_users
+    type: count_distinct
+    sql: ${customer_id}
+  
+  - measure: count_newsletter_subscribers
+    type: count_distinct
+    sql: ${customer_id}
+    filters:
+      newsletter_opt_in: yes
+  
+  - measure: sum_referrals_sent
+    type: sum
+    sql: ${referrals_sent}
+  
+  - measure: sum_referrals_permitted
+    type: sum
+    sql: ${permitted_referrals}
+    
+  - measure: sum_referrals_left
+    type: sum
+    sql: ${referrals_left}
+  
+  - measure: percentage_referrals_sent
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_referrals_sent}/NULLIF(${sum_referrals_permitted},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: sum_signup_credit_granted
+    type: sum
+    sql: ${signup_credit}
+    format: "%0.2f"
+  
+  - measure: sum_signup_credit_granted_gbp
+    type: sum
+    sql: ${signup_credit_gbp}
+    format: "£%0.2f"
+  
+  - measure: sum_total_credit_granted_gbp
+    type: sum
+    sql: ${total_credit_granted_gbp}
+    format: "£%0.2f"
+    
+  - measure: sum_total_credit_used_gbp
+    type: sum
+    sql: ${total_credit_used_gbp}
+    format: "£%0.2f"
+    
+  - measure: sum_current_live_credit_gbp
+    type: sum
+    sql: ${current_credit_gbp}
+    format: "£%0.2f"
