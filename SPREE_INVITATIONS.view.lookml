@@ -10,7 +10,7 @@
         (select * from daily_snapshot.spree_user_signup_awards where date(spree_timestamp) = current_date) aaa
         left join
         lookup.exchange_rates bbb
-        on date(aaa.created_at) = bbb."date"
+        on coalesce(date(aaa.created_at), '2014-11-23') = bbb."date"
         and aaa.currency = bbb.currency
         
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_invitations
