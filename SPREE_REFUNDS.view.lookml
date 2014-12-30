@@ -1,6 +1,6 @@
 - view: spree_refunds
   derived_table:
-     sql: |
+    sql: |
         select  c.order_id,
         d.source_type,
         coalesce(d.created_at, a.created_at) as refund_processed_at, -- if there is a return authorisation with no associated payment, assume refund made at time return authorization created
@@ -39,52 +39,57 @@
           and b.acceptance_status = 'accepted'        
 
         group by 1,2,3,4,6,7
+        
+        
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${returns.SQL_TABLE_NAME}
+    distkey: order_id
+    sortkeys: [order_id, refund_processed_at]
 
   fields:
 #  Dimensions
-     - dimension: order_id
-       sql: ${TABLE}.order_id
+  - dimension: order_id
+    sql: ${TABLE}.order_id
     
-     - dimension: currency
-       sql: ${TABLE}.currency
+  - dimension: currency
+    sql: ${TABLE}.currency
        
-     - dimension: refund_method
-       sql_case:
-        Credit Card: ${TABLE}.payment_method_id = 1
-        PayPal: ${TABLE}.payment_method_id = 2
-        Store Credit: ${TABLE}.payment_method_id = 3
+  - dimension: refund_method
+    sql_case:
+      Credit Card: ${TABLE}.payment_method_id = 1
+      PayPal: ${TABLE}.payment_method_id = 2
+      Store Credit: ${TABLE}.payment_method_id = 3
     
-     - dimension_group: refund_processed_at
-       type: time
-       timeframes: [time, date, hod, hour, week, month]
-       sql: ${TABLE}.refund_processed_at
+  - dimension_group: refund_processed_at
+    type: time
+    timeframes: [time, date, hod, hour, week, month]
+    sql: ${TABLE}.refund_processed_at
        
-     - dimension: amount_refunded
-       type: number
-       decimals: 2
-       sql: ${TABLE}.amount_refunded
-       format: "%0.2f"
+  - dimension: amount_refunded
+    type: number
+    decimals: 2
+    sql: ${TABLE}.amount_refunded
+    format: "%0.2f"
        
-     - dimension: amount_refunded_gbp
-       type: number
-       decimals: 2
-       sql: ${TABLE}.amount_refunded_gbp
-       format: "£%0.2f"
+  - dimension: amount_refunded_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.amount_refunded_gbp
+    format: "£%0.2f"
   
     
 
 
 #  Measures
-     - measure: count_orders
-       type: count_distinct
-       sql: ${order_id}
+  - measure: count_orders
+    type: count_distinct
+    sql: ${order_id}
        
-     - measure: total_refunded
-       type: sum
-       sql: ${amount_refunded}
-       format: "%0.2f"
+  - measure: total_refunded
+    type: sum
+    sql: ${amount_refunded}
+    format: "%0.2f"
            
-     - measure: total_refunded_gbp
-       type: sum
-       sql: ${amount_refunded_gbp}
-       format: "£%0.2f"
+  - measure: total_refunded_gbp
+    type: sum
+    sql: ${amount_refunded_gbp}
+    format: "£%0.2f"

@@ -260,7 +260,7 @@
   - measure: gross_revenue_after_returns
     type: sum
     decimals: 2
-    sql: ${spree_orders.revenue_post_returns_gbp}
+    sql: ${spree_orders.gross_revenue_post_returns_gbp}
     format: "£%0.2f"
     
 
