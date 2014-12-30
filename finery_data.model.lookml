@@ -102,4 +102,6 @@
       
 - explore: online_products
 
+- explore: spree_refunds
+
 
