@@ -8,7 +8,8 @@
         coalesce(max(d.amount),  sum(b.pre_tax_amount)) as amount_refunded, -- if there is a return authorisation with no associated payment, assume full payment made in store credits
         e.currency,
         f.exchange_rate,
-        coalesce(max(d.amount*f.exchange_rate),  sum(b.pre_tax_amount*f.exchange_rate)) as amount_refunded_gbp
+        coalesce(max(d.amount*f.exchange_rate),  sum(b.pre_tax_amount*f.exchange_rate)) as amount_refunded_gbp,
+        max(a.spree_timestamp) as spree_timestamp
                 
       
         from

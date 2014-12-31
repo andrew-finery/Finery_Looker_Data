@@ -81,7 +81,7 @@
           AND a.created_at > DATE '2014-11-22'
 
     
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${returns.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}
     distkey: order_id
     sortkeys: [order_id, completed_at]
 
