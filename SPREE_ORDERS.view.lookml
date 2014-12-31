@@ -530,7 +530,7 @@
   - measure: sum_revenue_ex_discount_store_credit_and_refund_gbp
     type: sum
     sql: ${revenue_ex_discount_store_credit_and_refund_gbp}
-    format: "%0.2f"
+    format: "£%0.2f"
     filters:
       state: -canceled
 
