@@ -211,6 +211,13 @@
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
   
+  - measure: count_new_sessions
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: 1
+  
   - measure: count_logins
     type: count_distinct
     sql: ${session_id}
