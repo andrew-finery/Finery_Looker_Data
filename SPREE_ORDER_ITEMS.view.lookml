@@ -13,7 +13,10 @@
         f.exchange_rate,
         b.price*f.exchange_rate as price_gbp,
         b.quantity,
-        d.max_selling_price_gbp,
+        d.max_selling_price,
+        d.max_selling_price* f.exchange_rate as max_selling_price_gbp,
+        (d.max_selling_price - b.price) as discount,
+        (d.max_selling_price - b.price)*f.exchange_rate as discount_gbp,
         e.items_returned,
         e.return_reason
         
@@ -27,8 +30,9 @@
         (select id, sku from (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) group by 1,2) c
         on b.variant_id = c.id
         left join
-        (select variant_id, max(amount) as max_selling_price_gbp from (select * from daily_snapshot.spree_prices where date(spree_timestamp) = current_date) where currency = 'GBP' group by 1) d
+        (select variant_id, currency, max(amount) as max_selling_price from daily_snapshot.spree_prices group by 1,2) d
         on b.variant_id = d.variant_id
+        and d.currency = a.currency
         left join
         (select order_id, sku, count(*) as items_returned, max(name) as return_reason from ${returns.SQL_TABLE_NAME} where reception_status = 'received' and acceptance_status = 'accepted' and reimbursement_status = 'reimbursed' group by 1,2) e
         on a.order_id = e.order_id
