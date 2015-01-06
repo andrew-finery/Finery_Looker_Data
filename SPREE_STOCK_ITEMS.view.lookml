@@ -29,6 +29,9 @@
   - dimension: backorderable
     type: number
     sql: ${TABLE}.backorderable
+  
+  - dimension: ean
+    sql: ${TABLE}.sku
 
   - dimension: count_on_hand
     type: int
