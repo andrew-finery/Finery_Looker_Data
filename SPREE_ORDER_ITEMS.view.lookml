@@ -17,7 +17,7 @@
         d.max_selling_price* f.exchange_rate as max_selling_price_gbp,
         (d.max_selling_price - b.price) as discount,
         (d.max_selling_price - b.price)*f.exchange_rate as discount_gbp,
-        e.items_returned,
+        coalesce(e.items_returned, '0'),
         e.return_reason
         
         from
