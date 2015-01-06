@@ -91,6 +91,8 @@
 
 - explore: daily_data
 
+- explore: daily_sales
+
 - explore: returns
   joins:
   - join: product_lookup
