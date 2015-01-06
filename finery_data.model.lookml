@@ -54,6 +54,9 @@
   - join: online_products
     sql_on: |
       spree_stock_items.sku = online_products.ean
+  - join: product_lookup
+    sql_on: |
+      spree_stock_items.sku = product_lookup.ean
       
       
 - explore: sales_snapshot
