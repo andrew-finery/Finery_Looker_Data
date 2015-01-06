@@ -136,7 +136,7 @@
     
   - measure: total_items_returned
     type: sum
-    sql: ${TABLE}.items_returned
+    sql: coalesce(${TABLE}.items_returned, 0)
   
   - measure: items_sold_after_returns
     type: number
