@@ -149,6 +149,48 @@
   
   # Measures
   
+  - measure: sum_items_sold
+    type: sum
+    sql: ${items_sold}
+
+  - dimension: sum_items_returned
+    type: sum
+    sql: ${items_returned}
+    
+  - dimension: sum_items_sold_after_returns
+    type: sum
+    sql: ${items_sold_after_returns}
+    
+  - dimension: sum_gross_item_revenue_gbp
+    type: sum
+    sql: ${gross_item_revenue_gbp}
+    format: "£%0.2f"
+    
+  - dimension: sum_net_item_revenue_gbp
+    type: sum
+    sql: ${net_item_revenue_gbp}
+    format: "£%0.2f"
+
+  - dimension: sum_gross_item_revenue_post_returns_gbp
+    type: sum
+    sql: ${gross_item_revenue_post_returns_gbp}
+    format: "£%0.2f"
+    
+  - dimension: sum_net_item_revenue_post_returns_gbp
+    type: sum
+    sql: ${net_item_revenue_post_returns_gbp}
+    format: "£%0.2f"
+  
+  - dimension: sum_gross_revenue_returned_items_gbp
+    type: sum
+    sql: ${gross_revenue_returned_items_gbp}
+    format: "£%0.2f"
+    
+  - dimension: sum_net_revenue_returned_items_gbp
+    type: sum
+    sql: ${net_revenue_returned_items_gbp}
+    format: "£%0.2f"
+  
   - measure: first_date
     type: date
     sql: MIN(${calendar_date_date})

@@ -92,6 +92,10 @@
 - explore: daily_data
 
 - explore: daily_sales
+  joins:
+  - join: product_lookup
+    sql_on: |
+      daily_sales.sku = product_lookup.ean
 
 - explore: opening_stock
 
