@@ -1,6 +1,6 @@
 - view: daily_sales
   derived_table:
-     sql: |
+   sql: |
           select
             matrix.calendar_date,
             matrix.year_week_number,
@@ -71,9 +71,9 @@
             on sales.sales_date = matrix.calendar_date
             and sales.sku = matrix.sku
             
-  sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
-  distkey: sku
-  sortkeys: [sku]
+   sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
+   distkey: sku
+   sortkeys: [sku]
 
 
 
