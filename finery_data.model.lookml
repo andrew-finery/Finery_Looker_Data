@@ -97,6 +97,12 @@
     sql_on: |
       daily_sales.sku = product_lookup.ean
 
+- explore: weekly_sales
+  joins:
+  - join: product_lookup
+    sql_on: |
+      weekly_sales.sku = product_lookup.ean
+      
 - explore: opening_stock
 
 - explore: sales_budgets
