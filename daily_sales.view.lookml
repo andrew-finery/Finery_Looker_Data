@@ -21,7 +21,7 @@
             (select a.variant_id, b.sku from      
             (select * from daily_snapshot.spree_stock_items where date(spree_timestamp) = current_date) a
             inner join
-            (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) b
+            (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date and deleted_at is null) b
             on a.variant_id = b.id
             and a.updated_at > date '2014-11-11'
             and b.sku <> ' '
