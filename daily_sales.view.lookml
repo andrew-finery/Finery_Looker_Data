@@ -154,6 +154,13 @@
     type: date
     sql: MAX(${calendar_date_date})
     convert_tz: false
+    
+    #Nicole Trying Stuff
+  - measure: start_week_value
+    type: number
+    required_fields: [year_week_number, opening_stock]
+    sql: FIRST_VALUE(${opening_stock}) OVER (PARTITION BY ${year_week_number}) # ORDER BY ${calendar_date_date} rows between unbounded preceding and unbounded following)
+    
   
      
     

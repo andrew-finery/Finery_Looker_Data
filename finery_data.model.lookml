@@ -93,6 +93,8 @@
 
 - explore: daily_sales
 
+- explore: opening_stock
+
 - explore: returns
   joins:
   - join: product_lookup
