@@ -70,6 +70,10 @@
             group by 1,2) sales
             on sales.sales_date = matrix.calendar_date
             and sales.sku = matrix.sku
+            
+  sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
+  distkey: sku
+  sortkeys: [sku]
 
 
 
