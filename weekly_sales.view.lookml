@@ -44,7 +44,7 @@
         sum(gross_item_revenue_post_returns_gbp) as gross_item_revenue_post_returns_gbp,
         sum(net_item_revenue_post_returns_gbp) as net_item_revenue_post_returns_gbp
         from
-        looker_scratch.LKR$G27AYBYCK26P3NF5VXF_daily_sales
+        ${daily_sales.SQL_TABLE_NAME}
         group by 1,2) tw
         
         inner join
@@ -76,7 +76,7 @@
         sum(gross_item_revenue_post_returns_gbp) as gross_item_revenue_post_returns_gbp,
         sum(net_item_revenue_post_returns_gbp) as net_item_revenue_post_returns_gbp
         from
-        looker_scratch.LKR$G27AYBYCK26P3NF5VXF_daily_sales
+        ${daily_sales.SQL_TABLE_NAME}
         group by 1,2) lw
         on week_matrix.year_week_number_lw = lw.year_week_number
         and tw.sku = lw.sku
@@ -93,7 +93,7 @@
         sum(gross_item_revenue_post_returns_gbp) as gross_item_revenue_post_returns_gbp,
         sum(net_item_revenue_post_returns_gbp) as net_item_revenue_post_returns_gbp
         from
-        looker_scratch.LKR$G27AYBYCK26P3NF5VXF_daily_sales
+        ${daily_sales.SQL_TABLE_NAME}
         group by 1,2) tw_ly
         on week_matrix.year_week_number_tw_ly = tw_ly.year_week_number
         and tw.sku = tw_ly.sku

@@ -30,7 +30,7 @@
                 f.colour,
                 g.size,
                 a.name || ' ' || coalesce(f.colour, '') as option,
-                case when c.amount is null then 'No' else (case when a.deleted_at is null then 'Yes' else 'No' end) end as online_flag,
+                case when c.amount is null then 'Yes' else (case when date(a.available_on) <= current_date then 'Yes' else 'No' end) end as online_flag,
                 j.name as department
                 
                 
@@ -128,6 +128,11 @@
                           group by 1,2,3,4) h
                           
                           on h.variant_id = b.id
+                          
+
+
+
+
                         
                 left join (select * from daily_snapshot.spree_products_taxons where date(spree_timestamp) = (select max(date(spree_timestamp)) from daily_snapshot.spree_products_taxons)) i
                 on a.id = i.product_id
@@ -135,8 +140,7 @@
                 left join (select * from daily_snapshot.spree_taxons where date(spree_timestamp) = (select max(date(spree_timestamp)) from daily_snapshot.spree_taxons)) j
                 on i.taxon_id = j.id
                 
-                where date(a.available_on) <= current_date --available before today
-                and a.available_on is not null -- product has a start date
+                where a.available_on is not null -- product has a start date
                 and j.taxonomy_id = 1) -- only include the taxonomy department
         
         group by 1
