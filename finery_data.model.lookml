@@ -104,7 +104,7 @@
       weekly_sales.sku = product_lookup.ean
   - join: online_products
     sql_on: |
-      weekly_sales.sku = online_products.sku
+      weekly_sales.sku = online_products.ean
       
 - explore: opening_stock
 
