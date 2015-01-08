@@ -148,95 +148,329 @@
     
   - dimension: sku
     sql: ${TABLE}.sku
+  
+  # THIS WEEK dimensions
     
-  - dimension: items_sold
+  - dimension: items_sold_tw
     type: int
-    sql: ${TABLE}.items_sold
+    sql: ${TABLE}.items_sold_tw
 
-  - dimension: items_returned
+  - dimension: items_returned_tw
     type: int
-    sql: ${TABLE}.items_returned
+    sql: ${TABLE}.items_returned_tw
     
-  - dimension: items_sold_after_returns
+  - dimension: items_sold_after_returns_tw
     type: int
-    sql: ${TABLE}.items_sold_after_returns
+    sql: ${TABLE}.items_sold_after_returns_tw
     
-  - dimension: gross_item_revenue_gbp
+  - dimension: gross_item_revenue_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.gross_item_revenue_gbp
+    sql: ${TABLE}.gross_item_revenue_gbp_tw
     format: "£%0.2f"
     
-  - dimension: net_item_revenue_gbp
+  - dimension: net_item_revenue_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.net_item_revenue_gbp
+    sql: ${TABLE}.net_item_revenue_gbp_tw
     format: "£%0.2f"
 
-  - dimension: gross_item_revenue_post_returns_gbp
+  - dimension: gross_item_revenue_post_returns_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.gross_item_revenue_post_returns_gbp
+    sql: ${TABLE}.gross_item_revenue_post_returns_gbp_tw
     format: "£%0.2f"
     
-  - dimension: net_item_revenue_post_returns_gbp
+  - dimension: net_item_revenue_post_returns_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.net_item_revenue_post_returns_gbp
+    sql: ${TABLE}.net_item_revenue_post_returns_gbp_tw
     format: "£%0.2f"
   
-  - dimension: gross_revenue_returned_items_gbp
+  - dimension: gross_revenue_returned_items_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.gross_item_revenue_gbp - ${TABLE}.gross_item_revenue_post_returns_gbp
+    sql: ${TABLE}.gross_item_revenue_gbp_tw - ${TABLE}.gross_item_revenue_post_returns_gbp_tw
     format: "£%0.2f"
     
-  - dimension: net_revenue_returned_items_gbp
+  - dimension: net_revenue_returned_items_gbp_tw
     type: number
     decimals: 2
-    sql: ${TABLE}.net_item_revenue_gbp - ${TABLE}.net_item_revenue_post_returns_gbp
+    sql: ${TABLE}.net_item_revenue_gbp_tw - ${TABLE}.net_item_revenue_post_returns_gbp_tw
     format: "£%0.2f"
   
-  # Measures
-  
-  - measure: sum_items_sold
-    type: sum
-    sql: ${items_sold}
+  # LAST WEEK dimensions
+    
+  - dimension: items_sold_lw
+    type: int
+    sql: ${TABLE}.items_sold_lw
 
-  - dimension: sum_items_returned
-    type: sum
-    sql: ${items_returned}
+  - dimension: items_returned_lw
+    type: int
+    sql: ${TABLE}.items_returned_lw
     
-  - dimension: sum_items_sold_after_returns
-    type: sum
-    sql: ${items_sold_after_returns}
+  - dimension: items_sold_after_returns_lw
+    type: int
+    sql: ${TABLE}.items_sold_after_returns_lw
     
-  - dimension: sum_gross_item_revenue_gbp
-    type: sum
-    sql: ${gross_item_revenue_gbp}
+  - dimension: gross_item_revenue_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_gbp_lw
     format: "£%0.2f"
     
-  - dimension: sum_net_item_revenue_gbp
-    type: sum
-    sql: ${net_item_revenue_gbp}
+  - dimension: net_item_revenue_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_gbp_lw
     format: "£%0.2f"
 
-  - dimension: sum_gross_item_revenue_post_returns_gbp
-    type: sum
-    sql: ${gross_item_revenue_post_returns_gbp}
+  - dimension: gross_item_revenue_post_returns_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_post_returns_gbp_lw
     format: "£%0.2f"
     
-  - dimension: sum_net_item_revenue_post_returns_gbp
-    type: sum
-    sql: ${net_item_revenue_post_returns_gbp}
+  - dimension: net_item_revenue_post_returns_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_post_returns_gbp_lw
     format: "£%0.2f"
   
-  - dimension: sum_gross_revenue_returned_items_gbp
-    type: sum
-    sql: ${gross_revenue_returned_items_gbp}
+  - dimension: gross_revenue_returned_items_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_gbp_lw - ${TABLE}.gross_item_revenue_post_returns_gbp_lw
     format: "£%0.2f"
     
-  - dimension: sum_net_revenue_returned_items_gbp
-    type: sum
-    sql: ${net_revenue_returned_items_gbp}
+  - dimension: net_revenue_returned_items_gbp_lw
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_gbp_lw - ${TABLE}.net_item_revenue_post_returns_gbp_lw
     format: "£%0.2f"
+  
+  # THIS WEEK LAST YEAR dimensions
+    
+  - dimension: items_sold_tw_ly
+    type: int
+    sql: ${TABLE}.items_sold_tw_ly
+
+  - dimension: items_returned_tw_ly
+    type: int
+    sql: ${TABLE}.items_returned_tw_ly
+    
+  - dimension: items_sold_after_returns_tw_ly
+    type: int
+    sql: ${TABLE}.items_sold_after_returns_tw_ly
+    
+  - dimension: gross_item_revenue_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_gbp_tw_ly
+    format: "£%0.2f"
+    
+  - dimension: net_item_revenue_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_gbp_tw_ly
+    format: "£%0.2f"
+
+  - dimension: gross_item_revenue_post_returns_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_post_returns_gbp_tw_ly
+    format: "£%0.2f"
+    
+  - dimension: net_item_revenue_post_returns_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_post_returns_gbp_tw_ly
+    format: "£%0.2f"
+  
+  - dimension: gross_revenue_returned_items_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_item_revenue_gbp_tw_ly - ${TABLE}.gross_item_revenue_post_returns_gbp_tw_ly
+    format: "£%0.2f"
+    
+  - dimension: net_revenue_returned_items_gbp_tw_ly
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_item_revenue_gbp_tw_ly - ${TABLE}.net_item_revenue_post_returns_gbp_tw_ly
+    format: "£%0.2f"
+  
+  
+  # THIS WEEK measures
+  
+  - measure: sum_items_sold_tw
+    type: sum
+    sql: ${items_sold_tw}
+
+  - measure: sum_items_returned_tw
+    type: sum
+    sql: ${items_returned_tw}
+    
+  - measure: sum_items_sold_after_returns_tw
+    type: sum
+    sql: ${items_sold_after_returns_tw}
+    
+  - measure: sum_gross_item_revenue_gbp_tw
+    type: sum
+    sql: ${gross_item_revenue_gbp_tw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_gbp_tw
+    type: sum
+    sql: ${net_item_revenue_gbp_tw}
+    format: "£%0.2f"
+
+  - measure: sum_gross_item_revenue_post_returns_gbp_tw
+    type: sum
+    sql: ${gross_item_revenue_post_returns_gbp_tw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_post_returns_gbp_tw
+    type: sum
+    sql: ${net_item_revenue_post_returns_gbp_tw}
+    format: "£%0.2f"
+  
+  - measure: sum_gross_revenue_returned_items_gbp_tw
+    type: sum
+    sql: ${gross_revenue_returned_items_gbp_tw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_revenue_returned_items_gbp_tw
+    type: sum
+    sql: ${net_revenue_returned_items_gbp_tw}
+    format: "£%0.2f"
+    
+   # LAST WEEK measures
+  
+  - measure: sum_items_sold_lw
+    type: sum
+    sql: ${items_sold_lw}
+
+  - measure: sum_items_returned_lw
+    type: sum
+    sql: ${items_returned_lw}
+    
+  - measure: sum_items_sold_after_returns_lw
+    type: sum
+    sql: ${items_sold_after_returns_lw}
+    
+  - measure: sum_gross_item_revenue_gbp_lw
+    type: sum
+    sql: ${gross_item_revenue_gbp_lw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_gbp_lw
+    type: sum
+    sql: ${net_item_revenue_gbp_lw}
+    format: "£%0.2f"
+
+  - measure: sum_gross_item_revenue_post_returns_gbp_lw
+    type: sum
+    sql: ${gross_item_revenue_post_returns_gbp_lw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_post_returns_gbp_lw
+    type: sum
+    sql: ${net_item_revenue_post_returns_gbp_lw}
+    format: "£%0.2f"
+  
+  - measure: sum_gross_revenue_returned_items_gbp_lw
+    type: sum
+    sql: ${gross_revenue_returned_items_gbp_lw}
+    format: "£%0.2f"
+    
+  - measure: sum_net_revenue_returned_items_gbp_lw
+    type: sum
+    sql: ${net_revenue_returned_items_gbp_lw}
+    format: "£%0.2f"
+    
+ # THIS WEEK LAST YEAR measures
+  
+  - measure: sum_items_sold_tw_ly
+    type: sum
+    sql: ${items_sold_tw_ly}
+
+  - measure: sum_items_returned_tw_ly
+    type: sum
+    sql: ${items_returned_tw_ly}
+    
+  - measure: sum_items_sold_after_returns_tw_ly
+    type: sum
+    sql: ${items_sold_after_returns_tw_ly}
+    
+  - measure: sum_gross_item_revenue_gbp_tw_ly
+    type: sum
+    sql: ${gross_item_revenue_gbp_tw_ly}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_gbp_tw_ly
+    type: sum
+    sql: ${net_item_revenue_gbp_tw_ly}
+    format: "£%0.2f"
+
+  - measure: sum_gross_item_revenue_post_returns_gbp_tw_ly
+    type: sum
+    sql: ${gross_item_revenue_post_returns_gbp_tw_ly}
+    format: "£%0.2f"
+    
+  - measure: sum_net_item_revenue_post_returns_gbp_tw_ly
+    type: sum
+    sql: ${net_item_revenue_post_returns_gbp_tw_ly}
+    format: "£%0.2f"
+  
+  - measure: sum_gross_revenue_returned_items_gbp_tw_ly
+    type: sum
+    sql: ${gross_revenue_returned_items_gbp_tw_ly}
+    format: "£%0.2f"
+    
+  - measure: sum_net_revenue_returned_items_gbp_tw_ly
+    type: sum
+    sql: ${net_revenue_returned_items_gbp_tw_ly}
+    format: "£%0.2f"
+    
+  # WEEK ON WEEK measures
+  
+  - measure: gross_item_revenue_wow
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_gross_item_revenue_gbp_tw}/NULLIF(${sum_gross_item_revenue_gbp_lw},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: net_item_revenue_wow
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_net_item_revenue_gbp_tw}/NULLIF(${sum_net_item_revenue_gbp_lw},0)::REAL
+    format: "%0.2f%"
+  
+  # YEAR ON YEAR measures
+  
+  
+  - measure: gross_item_revenue_yoy
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_gross_item_revenue_gbp_tw}/NULLIF(${sum_gross_item_revenue_gbp_tw_ly},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: net_item_revenue_yoy
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_net_item_revenue_gbp_tw}/NULLIF(${sum_net_item_revenue_gbp_tw_ly},0)::REAL
+    format: "%0.2f%"
+    
+  # Other measures
+  
+  - measure: return_rate_items
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_items_returned_tw}/NULLIF(${sum_items_sold_tw},0)::REAL
+    format: "%0.2f%"
+    
+  - measure: return_rate_value
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_gross_revenue_returned_items_gbp_tw}/NULLIF(${sum_gross_item_revenue_gbp_tw},0)::REAL
+    format: "%0.2f%"
