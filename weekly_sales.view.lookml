@@ -5,6 +5,13 @@
         tw.year_week_number,
         tw.sku,
         
+        week_info_tw.week_start_date as week_start_date_tw,
+        week_info_tw.week_end_date as week_end_date_tw,
+        week_info_lw.week_start_date as week_start_date_lw,
+        week_info_lw.week_end_date as week_end_date_lw,
+        week_info_tw_ly.week_start_date as week_start_date_tw_ly,
+        week_info_tw_ly.week_end_date as week_end_date_tw_ly,
+        
         tw.items_sold as items_sold_tw,
         tw.items_returned as items_returned_tw,
         tw.items_sold_after_returns as items_sold_after_returns_tw,
@@ -36,12 +43,6 @@
         (select
         year_week_number,
         sku,
-        week_info_tw.week_start_date as week_start_date_tw,
-        week_info_tw.week_end_date as week_end_date_tw,
-        week_info_lw.week_start_date as week_start_date_lw,
-        week_info_lw.week_end_date as week_end_date_lw,
-        week_info_tw_ly.week_start_date as week_start_date_tw_ly,
-        week_info_tw_ly.week_end_date as week_end_date_tw_ly,
         sum(items_sold) as items_sold,
         sum(items_returned) as items_returned,
         sum(items_sold_after_returns) as items_sold_after_returns,
@@ -154,6 +155,8 @@
         on aaa.variant_id = conv.id) closing_stock_wb
         on closing_stock_wb.year_week_number = week_matrix.year_week_number_wb
         and closing_stock_wb.sku = tw.sku
+        
+        where tw.year_week_number > 201446 -- when finery started trading
 
 
   fields:
@@ -173,6 +176,26 @@
   - dimension: week_start_date_tw
     type: date
     sql: ${TABLE}.week_start_date_tw
+  
+  - dimension: week_end_date_tw
+    type: date
+    sql: ${TABLE}.week_end_date_tw
+    
+  - dimension: week_start_date_lw
+    type: date
+    sql: ${TABLE}.week_start_date_lw
+  
+  - dimension: week_end_date_lw
+    type: date
+    sql: ${TABLE}.week_end_date_lw
+    
+  - dimension: week_start_date_tw_ly
+    type: date
+    sql: ${TABLE}.week_start_date_tw_ly
+    
+  - dimension: week_end_date_tw_ly
+    type: date
+    sql: ${TABLE}.week_end_date_tw_ly
   
   # THIS WEEK dimensions
     
