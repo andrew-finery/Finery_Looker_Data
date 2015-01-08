@@ -909,13 +909,13 @@
   - measure: gross_item_revenue_wow
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_gross_item_revenue_gbp_tw}/NULLIF(${sum_gross_item_revenue_gbp_lw},0)::REAL
+    sql: 100.0 * (${sum_gross_item_revenue_gbp_tw} - ${sum_gross_item_revenue_gbp_lw})/NULLIF(${sum_gross_item_revenue_gbp_lw},0)::REAL
     format: "%0.2f%"
   
   - measure: net_item_revenue_wow
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_net_item_revenue_gbp_tw}/NULLIF(${sum_net_item_revenue_gbp_lw},0)::REAL
+    sql: 100.0 * (${sum_net_item_revenue_gbp_tw} - ${sum_net_item_revenue_gbp_lw})/NULLIF(${sum_net_item_revenue_gbp_lw},0)::REAL
     format: "%0.2f%"
   
   
@@ -924,19 +924,19 @@
   - measure: gross_item_revenue_yoy
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_gross_item_revenue_gbp_tw}/NULLIF(${sum_gross_item_revenue_gbp_tw_ly},0)::REAL
+    sql: 100.0 * (${sum_gross_item_revenue_gbp_tw} - ${sum_gross_item_revenue_gbp_tw_ly})/NULLIF(${sum_gross_item_revenue_gbp_tw_ly},0)::REAL
     format: "%0.2f%"
   
   - measure: net_item_revenue_yoy
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_net_item_revenue_gbp_tw}/NULLIF(${sum_net_item_revenue_gbp_tw_ly},0)::REAL
+    sql: 100.0 * (${sum_net_item_revenue_gbp_tw} - ${sum_net_item_revenue_gbp_tw_ly})/NULLIF(${sum_net_item_revenue_gbp_tw_ly},0)::REAL
     format: "%0.2f%"
     
   - measure: stock_value_yoy
     type: number
     decimals: 2
-    sql: 100.0 * ${sum_stock_value_gbp_tw}/NULLIF(${sum_stock_value_gbp_tw_ly},0)::REAL
+    sql: 100.0 * (${sum_stock_value_gbp_tw} - ${sum_stock_value_gbp_tw_ly}) /NULLIF(${sum_stock_value_gbp_tw_ly},0)::REAL
     format: "%0.2f%"
     
   # RETURNS measures
@@ -1003,4 +1003,15 @@
     sql: 100.0 * ${sum_profit_gbp_tw_ly}/NULLIF(${sum_net_item_revenue_gbp_tw_ly},0)::REAL
     format: "%0.2f%"
   
+  # MIX measures
+  - measure: mix_gross_item_revenue_gbp_tw
+    type: percent_of_total
+    decimals: 1
+    sql: ${sum_gross_item_revenue_gbp_tw}
+    
+  - measure: mix_net_item_revenue_gbp_tw
+    type: percent_of_total
+    decimals: 1
+    sql: ${sum_net_item_revenue_gbp_tw}
+    
  
