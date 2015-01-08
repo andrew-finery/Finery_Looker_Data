@@ -106,7 +106,6 @@
     explore: spree_orders
     dimensions: [users_signup.source]
     measures: [spree_orders.count_customers, spree_orders.count_orders, spree_orders.avg_gross_revenue_gbp,
-    spree_orders.avg_net_revenue_ex_tax_in_gbp, spree_orders.avg_net_revenue_ex_tax_and_discount_gbp,
     spree_orders.avg_store_credit_used_gbp, spree_orders.avg_discount_in_gbp]
     sorts: [spree_orders.count_customers desc]
     limit: 500
@@ -119,7 +118,7 @@
     model: finery_data
     explore: spree_orders
     dimensions: [spree_orders.completed_date]
-    measures: [spree_orders.sum_gross_revenue_gbp]
+    measures: [spree_orders.sum_gross_revenue_in_gbp]
     filters:
       spree_orders.completed_date: before 0 days ago
     sorts: [spree_orders.completed_date]
@@ -145,7 +144,7 @@
     dimensions: [users_signup.email_address, users_signup.first_name, users_signup.last_name,
       users_signup.source]
     measures: [spree_orders.count_orders, spree_orders.total_items, spree_orders.avg_gross_revenue_gbp,
-      spree_orders.sum_gross_revenue_gbp]
+      spree_orders.sum_gross_revenue_in_gbp]
     filters:
       spree_orders.count_orders: '>1'
     sorts: [spree_orders.sum_gross_revenue_gbp desc]
