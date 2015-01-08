@@ -36,6 +36,12 @@
         (select
         year_week_number,
         sku,
+        week_info_tw.week_start_date as week_start_date_tw,
+        week_info_tw.week_end_date as week_end_date_tw,
+        week_info_lw.week_start_date as week_start_date_lw,
+        week_info_lw.week_end_date as week_end_date_lw,
+        week_info_tw_ly.week_start_date as week_start_date_tw_ly,
+        week_info_tw_ly.week_end_date as week_end_date_tw_ly,
         sum(items_sold) as items_sold,
         sum(items_returned) as items_returned,
         sum(items_sold_after_returns) as items_sold_after_returns,
@@ -63,6 +69,15 @@
         (select year_week_number as year_week_number_wb, rank() over (order by year_week_number) + 2 as wb_week_index from lookup.calendar group by 1) wb
         on tw.tw_week_index = wb.wb_week_index) week_matrix
         on week_matrix.year_week_number_tw = tw.year_week_number
+        
+        left join (select year_week_number, min(calendar_date) as week_start_date, max(calendar_date) as week_end_date from lookup.calendar group by 1) week_info_tw
+        on week_matrix.year_week_number_tw = week_info_tw.year_week_number
+        
+        left join (select year_week_number, min(calendar_date) as week_start_date, max(calendar_date) as week_end_date from lookup.calendar group by 1) week_info_lw
+        on week_matrix.year_week_number_lw = week_info_lw.year_week_number
+        
+        left join (select year_week_number, min(calendar_date) as week_start_date, max(calendar_date) as week_end_date from lookup.calendar group by 1) week_info_tw_ly
+        on week_matrix.year_week_number_tw_ly = week_info_tw_ly.year_week_number
         
         left join
         (select
@@ -145,9 +160,19 @@
   
   - dimension: year_week_number
     sql: ${TABLE}.year_week_number
-    
+  
+  - dimension: year
+    sql: left(${TABLE}.year_week_number, 4)
+  
+  - dimension: week_number
+    sql: right(${TABLE}.year_week_number, 2)
+  
   - dimension: sku
     sql: ${TABLE}.sku
+  
+  - dimension: week_start_date_tw
+    type: date
+    sql: ${TABLE}.week_start_date_tw
   
   # THIS WEEK dimensions
     
@@ -299,6 +324,13 @@
     sql: ${TABLE}.net_item_revenue_gbp_tw_ly - ${TABLE}.net_item_revenue_post_returns_gbp_tw_ly
     format: "£%0.2f"
   
+  # Other Dimensions
+  
+  - dimension: available_on
+    type: date
+    
+  
+  - dimension: online_flag
   
   # THIS WEEK measures
   
