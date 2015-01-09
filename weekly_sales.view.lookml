@@ -202,7 +202,7 @@
         
         where tw.year_week_number > 201446 -- when finery started trading
 
-     sql_trigger_value: SELECT max(calendar_date) FROM ${daily_saless.SQL_TABLE_NAME}
+     sql_trigger_value: SELECT max(calendar_date) FROM ${daily_sales.SQL_TABLE_NAME}
      distkey: sku
      sortkeys: [sku, year_week_number]
 
