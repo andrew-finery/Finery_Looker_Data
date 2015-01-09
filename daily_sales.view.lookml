@@ -73,7 +73,7 @@
             
    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
    distkey: sku
-   sortkeys: [sku]
+   sortkeys: [sku, calendar_date]
 
 
 
