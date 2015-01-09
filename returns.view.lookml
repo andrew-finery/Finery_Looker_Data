@@ -49,7 +49,6 @@
         (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) h
         on c.order_id = h.id
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
-        and a.id <> 1 --removing test return
         
      sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_stock_items.SQL_TABLE_NAME}
      distkey: return_id
