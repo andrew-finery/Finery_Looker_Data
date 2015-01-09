@@ -195,6 +195,10 @@
        sql: max(${image_location})
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
+          
+     - measure: image_path
+       type: string
+       sql: max(${image_location})
 
      - measure: skus_online
        type: count_distinct
