@@ -49,6 +49,8 @@
 
   fields:
 
+# Order dimensions
+
   - dimension_group: order_time
     type: time
     timeframes: [time, date, hod, week, month]
@@ -64,6 +66,11 @@
   - dimension: order_code
     sql: ${TABLE}.order_code
 
+  - dimension: currency
+    sql: ${TABLE}.currency
+
+# Product Dimensions
+
   - dimension: sku
     sql: ${TABLE}.sku
     
@@ -72,31 +79,19 @@
     decimals: 2
     sql: ${TABLE}.price
     format: "%0.2f"
-    
-  - dimension: currency
-    sql: ${TABLE}.currency
-  
-  - dimension: quantity
-    sql: ${TABLE}.quantity
-  
-  - dimension: gross_revenue
-    type: number
-    decimals: 2
-    sql: ${TABLE}.price * ${TABLE}.quantity
-    format: "%0.2f"
-    
+
   - dimension: price_in_gbp
     type: number
     decimals: 2
     sql: ${TABLE}.price_gbp
     format: "£%0.2f"
-  
-  - dimension: gross_item_revenue_in_gbp
+
+  - dimension: max_selling_price
     type: number
     decimals: 2
-    sql: ${TABLE}.price_gbp * ${TABLE}.quantity
+    sql: ${TABLE}.max_selling_price
     format: "£%0.2f"
-  
+
   - dimension: max_selling_price_gbp
     type: number
     decimals: 2
@@ -108,6 +103,63 @@
     tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
     sql: ${max_selling_price_gbp}
 
+  - dimension: selling_price_tiered
+    sql_case:
+      £0 - £20: ${price_in_gbp} < 20
+      £20 - £40: ${price_in_gbp} < 40
+      £40 - £60: ${price_in_gbp} < 60
+      £60 - £80: ${price_in_gbp} < 80
+      £80 - £100: ${price_in_gbp} < 100
+      £100 - £150: ${price_in_gbp} < 150
+      £150 - £200: ${price_in_gbp} < 200
+      £200 - £300: ${price_in_gbp} < 300
+      else: '£300 and over'
+
+  - dimension: quantity
+    sql: ${TABLE}.quantity
+  
+  - dimension: landed_cost_per_unit_gbp
+    type: number
+    decimals: 2
+    sql: ${product_lookup.total_landed_cost_gbp}
+    format: "£%0.2f"
+  
+  - dimension: discount_level_tier
+    sql_case:
+      0% - 7.5%: ${price}/${max_selling_price} > 0.925
+      7.5% - 17.5%: ${price}/${max_selling_price} > 0.825
+      17.5% - 27.5%: ${price}/${max_selling_price} > 0.725
+      27.5% - 37.5%: ${price}/${max_selling_price} > 0.625
+      else: '37.5% and over'
+  
+  # Revenue Dimensions
+  - dimension: gross_revenue
+    type: number
+    decimals: 2
+    sql: ${TABLE}.price * ${TABLE}.quantity
+    format: "%0.2f"
+  
+  - dimension: gross_item_revenue_in_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.price_gbp * ${TABLE}.quantity
+    format: "£%0.2f"
+  
+  # Margin Dimensions
+  - dimension: landed_cost_gbp
+    type: number
+    decimals: 2
+    sql: ${landed_cost_per_unit_gbp} * ${quantity}
+    format: "£%0.2f"
+  
+  - dimension: gross_margin_gbp
+    type: number
+    decimals: 2
+    sql: ${gross_item_revenue_in_gbp} -${landed_cost_gbp}
+    format: "£%0.2f"  
+    
+ # Returns Dimensions
+ 
   - dimension: items_returned
     sql: ${TABLE}.items_returned
   
@@ -120,7 +172,7 @@
     sql: ${TABLE}.price_gbp * (${TABLE}.quantity - ${TABLE}.items_returned)
     format: "£%0.2f"
 
-   # MEASURES #
+############################################################ MEASURES #########################################################################################################
   
   - measure: count_orders
     type: count_distinct
@@ -137,6 +189,8 @@
   - measure: total_items_sold
     type: sum
     sql: ${TABLE}.quantity
+  
+  # Returns Measures
     
   - measure: total_items_returned
     type: sum
@@ -151,6 +205,8 @@
     decimals: 2
     sql: 100.0 * ${total_items_returned}/NULLIF(${total_items_sold},0)::REAL
     format: "%0.2f%"
+  
+  # Revenue Measures
     
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
@@ -162,5 +218,36 @@
     sql: ${net_reveune_after_returns_gbp}
     format: "£%0.2f"
     
+  # Margin Measures
+  
+  - dimension: sum_landed_cost_gbp
+    type: sum
+    sql: ${landed_cost_gbp}
+    format: "£%0.2f"
+  
+  - dimension: sum_gross_margin_gbp
+    type: sum
+    sql: ${gross_margin_gbp}
+    format: "£%0.2f" 
+  
+  - measure: gross_margin_percent
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_gross_margin_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
+    format: "%0.2f%"
+  
+  # Basket Averages
+  
+  - measure: avg_items_in_basket
+    type: number
+    decimals: 2
+    sql: ${total_items_sold}/NULLIF(${count_orders},0)::REAL
+    format: "%0.2f" 
+  
+  - measure: avg_basket_size_gbp
+    type: number
+    decimals: 2
+    sql: ${sum_gross_item_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f" 
 
 

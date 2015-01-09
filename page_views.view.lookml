@@ -173,6 +173,12 @@
     type: yesno
     sql: ${TABLE}.exit_page_flag = 1
   
+  - dimension_group: page_viewed_at
+    type: time
+    timeframes: [time, hour, date, hod, dow, week, month]
+    sql: ${TABLE}.dvce_tstamp
+    
+  
   # OS fields #  
   
   - dimension: operating_system

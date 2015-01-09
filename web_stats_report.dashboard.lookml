@@ -163,7 +163,7 @@
     filters:
      page_views.browser_family: '"Apple WebKit","Chrome","Firefox","Internet Explorer","Safari"'
     listen:
-     date: sessions.start_date
+     date: page_views.page_viewed_at_date
     sorts: [page_views.page_type]
     limit: 500
     show_null_labels: false

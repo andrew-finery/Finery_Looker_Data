@@ -88,7 +88,14 @@
   - join: online_products
     sql_on: |
       spree_order_items.sku  = online_products.ean
-
+  - join: product_lookup
+    sql_on: |
+      spree_order_items.sku = product_lookup.ean
+  - join: calendar_weeks
+    sql_on: |
+      date(spree_order_items.order_tstamp) = calendar_weeks.calendar_date
+      
+      
 - explore: daily_data
 
 - explore: daily_sales

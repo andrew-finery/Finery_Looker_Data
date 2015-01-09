@@ -298,7 +298,7 @@
     sql:  ${gross_revenue_ex_discount_and_store_credit_in_gbp} - ${cash_refunded_gbp}
     format: "£%0.2f"
 
-# MEASURES #
+####################################################### MEASURES ################################################################################################################
   
   - measure: count_orders
     type: count_distinct
@@ -455,25 +455,22 @@
   # revenue averages
 
   - measure: avg_gross_revenue_gbp
-    type: average
-    sql: ${gross_revenue_in_gbp}
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
       
   - measure: avg_gross_revenue_ex_discount_in_gbp
-    type: average
-    sql: ${gross_revenue_ex_discount_in_gbp}
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp
-    type: average
-    sql: ${gross_revenue_ex_discount_and_store_credit_in_gbp}
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
     
   # revenue running totals
   
@@ -483,25 +480,24 @@
     format: "£%0.2f"
       
    # basket size averages
+   
   - measure: avg_items_in_bag
     type: number
     decimals: 2
-    sql: ${total_items}/${count_orders}
+    sql: ${total_items}/NULLIF(${count_orders},0)::REAL
     format: "%0.2f"
-    
+
   - measure: avg_discount_in_gbp
-    type: average
-    sql: ${total_discount_in_gbp}
+    type: number
+    decimals: 2
+    sql: ${sum_total_discount_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
 
   - measure: avg_store_credit_used_gbp
-    type: average
-    sql: ${store_credit_used_in_gbp}
+    type: number
+    decimals: 2
+    sql: ${sum_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
 
 
 # revenue after returns
