@@ -166,6 +166,12 @@
   - dimension: return_reason
     sql: ${TABLE}.return_reason
     
+  - dimension: return_item_value_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.price_gbp * ${TABLE}.items_returned
+    format: "£%0.2f"
+    
   - dimension: net_reveune_after_returns_gbp
     type: number
     decimals: 2
@@ -204,6 +210,18 @@
     type: number
     decimals: 2
     sql: 100.0 * ${total_items_returned}/NULLIF(${total_items_sold},0)::REAL
+    format: "%0.2f%"
+    
+  - measure: sum_return_item_value_gbp
+    type: sum
+    decimals: 2
+    sql: ${return_item_value_gbp}
+    format: "£%0.2f"
+  
+  - measure: return_rate_value
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_return_item_value_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
     format: "%0.2f%"
   
   # Revenue Measures
