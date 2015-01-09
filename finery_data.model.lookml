@@ -136,4 +136,6 @@
 
 - explore: spree_refunds
 
+- explore: finery_budgets
+
 
