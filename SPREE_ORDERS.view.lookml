@@ -314,7 +314,7 @@
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
-      items_returned: '>0'
+      items_returned: -0, -NULL
   
   - measure: count_customers
     type: count_distinct
