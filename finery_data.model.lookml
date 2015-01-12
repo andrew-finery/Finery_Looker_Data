@@ -115,8 +115,6 @@
       
 - explore: opening_stock
 
-- explore: sales_budgets
-
 - explore: returns
   joins:
   - join: product_lookup

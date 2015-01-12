@@ -30,7 +30,8 @@
                  ord.first_order,
                  ord.last_order,
                  case when ord.customer_id is not null then 'Yes' else 'No' end as purchased_flag,
-                 case when exc.email_address is not null then 'Exclude' else 'Include' end as incexc
+                 case when exc.email_address is not null then 'Exclude' else 'Include' end as incexc,
+                 spree_users.spree_timestamp
           
           from
                 
@@ -103,7 +104,8 @@
                        GROUP BY 1,
                                 2) AS mandrill ON all_emails.email_address = mandrill.email_address
                                 
-          LEFT JOIN (SELECT id AS id,
+          LEFT JOIN (SELECT   spree_timestamp,
+                              id AS id,
                               lower(email) AS email_address,
                               created_at AS created_at,
                               CASE
@@ -135,7 +137,7 @@
                       on mailchimp_diff.email_address = all_emails.email_address
           left join emails_to_exclude exc on lower(all_emails.email_address) = lower(exc.email_address)
                       
-              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22
+              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
 
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
     distkey: id

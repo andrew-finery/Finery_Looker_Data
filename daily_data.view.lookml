@@ -29,7 +29,7 @@
           and a.domain_sessionidx = b.domain_sessionidx
           group by 1) aaa
           
-         inner join
+         left join
          
          (select date(referral_sent_at) as referral_date,
          count(distinct email_address) as count_referrals
@@ -38,7 +38,7 @@
          group by 1) bbb
          on aaa.session_date = bbb.referral_date
          
-         inner join
+         left join
          
          (select date(created_at) as sign_up_date,
          count(distinct email_address) as count_sign_ups
@@ -47,7 +47,7 @@
          group by 1) ccc
          on aaa.session_date = ccc.sign_up_date
          
-         inner join
+         left join
          
          (select date(completed_at) as order_date,
          count(distinct order_id) as count_orders
@@ -55,7 +55,7 @@
          group by 1) ddd
          on aaa.session_date = ddd.order_date
          
-         inner join
+         left join
          
          (select date(created_at) as created_date,
          count(email_address) as count_leads
@@ -64,7 +64,9 @@
          
          on aaa.session_date = eee.created_date
          
-     sql_trigger_value: SELECT max(created_at) || max(last_order) FROM ${users_signup.SQL_TABLE_NAME}
+         where aaa.session_date < current_date
+         
+     sql_trigger_value: SELECT max(spree_timestamp) FROM ${users_signup.SQL_TABLE_NAME}
      distkey: date
      sortkeys: [date]
 
