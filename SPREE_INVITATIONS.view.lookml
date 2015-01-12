@@ -7,7 +7,7 @@
         aaa.currency,
         aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp
         from
-        (select * from daily_snapshot.spree_user_signup_awards where date(spree_timestamp) = current_date) aaa
+        (select * from daily_snapshot.spree_user_signup_awards where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_user_signup_awards)) aaa
         left join
         lookup.exchange_rates bbb
         on coalesce(date(aaa.created_at), '2014-11-23') = bbb."date"

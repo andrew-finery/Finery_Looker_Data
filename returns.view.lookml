@@ -26,27 +26,27 @@
         e.total as total_reimbursed
         
         from
-        (select * from daily_snapshot.spree_return_authorizations where date(spree_timestamp) = current_date) a
+        (select * from daily_snapshot.spree_return_authorizations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorizations)) a
         left join
-        (select * from daily_snapshot.spree_return_items where date(spree_timestamp) = current_date) b
+        (select * from daily_snapshot.spree_return_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_items)) b
         on a.id = b.return_authorization_id
         left join
-        (select * from daily_snapshot.spree_inventory_units where date(spree_timestamp) = current_date) c
+        (select * from daily_snapshot.spree_inventory_units where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_inventory_units)) c
         on b.inventory_unit_id = c.id
         left join
-        (select * from daily_snapshot.spree_return_authorization_reasons where date(spree_timestamp) = current_date) d
+        (select * from daily_snapshot.spree_return_authorization_reasons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorization_reasons)) d
         on a.return_authorization_reason_id = d.id
         left join
-        (select * from daily_snapshot.spree_reimbursements where date(spree_timestamp) = current_date) e
+        (select * from daily_snapshot.spree_reimbursements where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_reimbursements)) e
         on b.reimbursement_id = e.id
         left join
-        (select * from daily_snapshot.spree_customer_returns where date(spree_timestamp) = current_date) f
+        (select * from daily_snapshot.spree_customer_returns where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_customer_returns)) f
         on b.customer_return_id = f.id
         left join
-        (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) g
+        (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) g
         on c.variant_id = g.id
         left join
-        (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) h
+        (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) h
         on c.order_id = h.id
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
         

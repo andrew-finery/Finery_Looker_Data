@@ -12,9 +12,9 @@
           
           (select aaa.sku, aaa.variant_id, bbb.calendar_date, bbb.year_week_number from
           (select a.variant_id, b.sku from      
-          (select * from daily_snapshot.spree_stock_items where date(spree_timestamp) = current_date) a
+          (select * from daily_snapshot.spree_stock_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_stock_items)) a
           inner join
-          (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) b
+          (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) b
           on a.variant_id = b.id
           and a.updated_at > date '2014-11-11'
           and b.sku <> ' '

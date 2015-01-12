@@ -44,10 +44,10 @@
                 
 
  
-          FROM (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) a
+          FROM (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) a
             LEFT JOIN (SELECT order_id,
                               SUM(amount) AS store_credit
-                       FROM (select * from daily_snapshot.spree_payments where date(spree_timestamp) = current_date)
+                       FROM (select * from daily_snapshot.spree_payments where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_payments))
                        WHERE source_type = 'Spree::StoreCredit'
                        GROUP BY 1) b ON a.id = b.order_id
                        
@@ -58,7 +58,7 @@
             left join (select aaa.order_id, sum(bbb.price) as return_item_total, sum(aaa.pre_tax_amount) as total_amount_refunded, sum(aaa.included_tax_total) as returns_included_tax, sum(aaa.additional_tax_total) as returns_additional_tax, count(*) as items_returned
                       from ${returns.SQL_TABLE_NAME} aaa
                       left join
-                      (select * from daily_snapshot.spree_line_items where date(spree_timestamp) = current_date) bbb
+                      (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) bbb
                       on aaa.order_id = bbb.order_id
                       and aaa.variant_id = bbb.variant_id
                       where aaa.reception_status = 'received' and aaa.acceptance_status = 'accepted' and aaa.reimbursement_status = 'reimbursed'

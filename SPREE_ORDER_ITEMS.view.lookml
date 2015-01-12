@@ -24,10 +24,10 @@
 
         ${spree_orders.SQL_TABLE_NAME} a
         inner join
-        (select * from daily_snapshot.spree_line_items where date(spree_timestamp) = current_date) b
+        (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) b
         on a.order_id = b.order_id
         left join 
-        (select id, sku from (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) group by 1,2) c
+        (select id, sku from (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) group by 1,2) c
         on b.variant_id = c.id
         left join
         (select variant_id, currency, max(amount) as max_selling_price from daily_snapshot.spree_prices group by 1,2) d

@@ -8,7 +8,7 @@
       (select
       left(right(email, len(email)-1), len(email)-2) as email_address,
       min(created_at) as created_at
-      from (select * from daily_snapshot.spree_leads where date(spree_timestamp) = current_date)
+      from (select * from daily_snapshot.spree_leads where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_leads))
       group by 1) a
       
       left join ${users_signup.SQL_TABLE_NAME} b
