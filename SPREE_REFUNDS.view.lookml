@@ -13,22 +13,22 @@
                 
       
         from
-        (select * from daily_snapshot.spree_return_authorizations where date(spree_timestamp) = current_date) a
+        (select * from daily_snapshot.spree_return_authorizations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorizations)) a
         left join
-        (select * from daily_snapshot.spree_return_items where date(spree_timestamp) = current_date) b
+        (select * from daily_snapshot.spree_return_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_items)) b
         on a.id = b.return_authorization_id
         left join
-        (select * from daily_snapshot.spree_inventory_units where date(spree_timestamp) = current_date) c
+        (select * from daily_snapshot.spree_inventory_units where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_inventory_units)) c
         on b.inventory_unit_id = c.id
         LEFT JOIN
         (select aaa.created_at, bbb.order_id, bbb.source_type, bbb.payment_method_id, sum(aaa.amount) as amount from 
-            (select * from daily_snapshot.spree_refunds where date(spree_timestamp) = current_date) aaa
+            (select * from daily_snapshot.spree_refunds where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_refunds)) aaa
             left join
-            (select * from daily_snapshot.spree_payments where date(spree_timestamp) = current_date) bbb
+            (select * from daily_snapshot.spree_payments where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_payments)) bbb
             on aaa.payment_id = bbb.id group by 1,2,3,4) d
         on c.order_id = d.order_id
         left join 
-        (select * from daily_snapshot.spree_orders where date(spree_timestamp) = current_date) e
+        (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) e
         on e.id = c.order_id
         left join
         lookup.exchange_rates f

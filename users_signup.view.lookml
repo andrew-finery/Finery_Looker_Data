@@ -37,7 +37,7 @@
                 
                 (select lower(email_address) as email_address
                 from
-                ((select lower(email) as email_address from (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date))
+                ((select lower(email) as email_address from (select * from daily_snapshot.spree_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_users)))
                 union
                 (select lower(email_address) as email_address from mailchimp.initial_invites)
                 union
@@ -116,7 +116,7 @@
                                 WHEN last_name = 'NULL' THEN 'N/A'
                                 ELSE last_name
                               END AS last_name
-                       FROM (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date)
+                       FROM (select * from daily_snapshot.spree_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_users))
                        WHERE email <> 'NULL') spree_users ON spree_users.email_address = all_emails.email_address
                        
           LEFT JOIN (SELECT customer_id as customer_id,
@@ -128,7 +128,7 @@
                       on ord.customer_id = spree_users.id
           left join (select
                       lower(mailchimp.email_address) as email_address
-                      from (select * from daily_snapshot.spree_users where date(spree_timestamp) = current_date) users
+                      from (select * from daily_snapshot.spree_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_users)) users
                       inner join (select first_name, last_name, email_address from mailchimp.initial_invites group by 1,2,3) mailchimp
                       on lower(users.first_name) = lower(mailchimp.first_name)
                       and lower(users.last_name) = lower(mailchimp.last_name)

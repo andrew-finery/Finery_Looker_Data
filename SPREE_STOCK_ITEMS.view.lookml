@@ -11,10 +11,10 @@
       
       from
       
-      (select * from daily_snapshot.spree_stock_items where date(spree_timestamp) = current_date) a
+      (select * from daily_snapshot.spree_stock_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_stock_items)) a
       
       inner join
-      (select * from daily_snapshot.spree_variants where date(spree_timestamp) = current_date) b
+      (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) b
       on a.variant_id = b.id
       
       where a.deleted_at is null
