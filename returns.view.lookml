@@ -49,6 +49,7 @@
         (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) h
         on c.order_id = h.id
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
+          and b.reception_status = 'received' and b.acceptance_status = 'accepted'
         
      sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_stock_items.SQL_TABLE_NAME}
      distkey: return_id
@@ -103,8 +104,8 @@
     # Measures
        
      - measure: number_of_returns
-       type: count_distinct
-       sql: ${return_id}
+       type: count
+       sql: (*)
        
      - measure: number_of_orders_with_returns
        type: count_distinct

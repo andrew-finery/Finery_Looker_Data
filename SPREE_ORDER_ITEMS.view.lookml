@@ -34,7 +34,7 @@
         on b.variant_id = d.variant_id
         and d.currency = a.currency
         left join
-        (select order_id, sku, count(*) as items_returned, max(name) as return_reason from ${returns.SQL_TABLE_NAME} where reception_status = 'received' and acceptance_status = 'accepted' and reimbursement_status = 'reimbursed' group by 1,2) e
+        (select order_id, sku, count(*) as items_returned, max(name) as return_reason from ${returns.SQL_TABLE_NAME} group by 1,2) e
         on a.order_id = e.order_id
         and c.sku = e.sku
         left join lookup.exchange_rates f

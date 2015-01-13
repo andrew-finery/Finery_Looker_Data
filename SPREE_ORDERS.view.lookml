@@ -61,7 +61,6 @@
                       (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) bbb
                       on aaa.order_id = bbb.order_id
                       and aaa.variant_id = bbb.variant_id
-                      where aaa.reception_status = 'received' and aaa.acceptance_status = 'accepted' and aaa.reimbursement_status = 'reimbursed'
                       group by 1) d
                       on a.id = d.order_id
                       
