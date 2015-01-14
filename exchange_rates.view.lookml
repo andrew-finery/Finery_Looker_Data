@@ -13,5 +13,10 @@
 
   - dimension: exchange_rate
     type: number
+    decimals: 4
     sql: ${TABLE}.exchange_rate
+    
+  - measure: count
+    type: count
+    sql: (*)
 

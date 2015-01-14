@@ -136,4 +136,6 @@
 
 - explore: finery_budgets
 
+- explore: exchange_rates
+
 
