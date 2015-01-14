@@ -1,83 +1,63 @@
 - view: spree_orders
   derived_table:
     sql: |
-     SELECT a.spree_timestamp,
-                 a.id AS order_id,
-                 a."number" AS order_code,
-                 a.user_id AS customer_id,
-                 a.bill_address_id,
-                 a.ship_address_id,
-                 a.item_total,
-                 a.total AS order_total,
-                 a.state,
-                 adjustment_total,
-                 shipment_total,
-                 a.included_tax_total,
-                 a.additional_tax_total,
-                 a.completed_at,
-                 a.shipment_state,
-                 a.currency,
-                 a.item_count,
-                 CASE WHEN b.store_credit IS NULL THEN 0 ELSE b.store_credit END AS store_credit_used,
-                 
-                 c.exchange_rate,
-                 a.item_total*c.exchange_rate AS item_total_gbp,
-                 a.total*c.exchange_rate AS order_total_gbp,
-                 adjustment_total*c.exchange_rate as adjustment_total_gbp,
-                 shipment_total*c.exchange_rate as shipment_total_gbp,
-                 a.included_tax_total*c.exchange_rate as included_tax_total_gbp,
-                 a.additional_tax_total*c.exchange_rate as additional_tax_total_gbp,
-                 CASE WHEN b.store_credit IS NULL THEN 0 ELSE b.store_credit*c.exchange_rate END AS store_credit_used_gbp,
-                 
-                coalesce(d.return_item_total, '0') as return_item_total,
-                coalesce(d.items_returned, '0') as items_returned,
-                coalesce(d.return_item_total*c.exchange_rate, '0') as return_item_total_gbp,
-                
-                a.item_count - coalesce(d.items_returned, '0') as items_purchased_post_returns,
-                
-                coalesce(e.amount_refunded, '0') as amount_refunded,
-                coalesce(e.store_credit_refunded, '0') as store_credit_refunded,
-                coalesce(e.cash_refunded, '0') as cash_refunded,
-                coalesce(e.amount_refunded_gbp, '0') as amount_refunded_gbp,
-                coalesce(e.store_credit_refunded_gbp, '0') as store_credit_refunded_gbp,
-                coalesce(e.cash_refunded_gbp, '0') as cash_refunded_gbp
-                
-
- 
-          FROM (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) a
-            LEFT JOIN (SELECT order_id,
-                              SUM(amount) AS store_credit
-                       FROM (select * from daily_snapshot.spree_payments where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_payments))
-                       WHERE source_type = 'Spree::StoreCredit'
-                       GROUP BY 1) b ON a.id = b.order_id
-                       
-            left join lookup.exchange_rates c
-            on date_trunc ('day', a.completed_at) = c."date"
-            and a.currency = c.currency
-            
-            left join (select aaa.order_id, sum(bbb.price) as return_item_total, sum(aaa.pre_tax_amount) as total_amount_refunded, sum(aaa.included_tax_total) as returns_included_tax, sum(aaa.additional_tax_total) as returns_additional_tax, count(*) as items_returned
-                      from ${returns.SQL_TABLE_NAME} aaa
-                      left join
-                      (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) bbb
-                      on aaa.order_id = bbb.order_id
-                      and aaa.variant_id = bbb.variant_id
-                      group by 1) d
-                      on a.id = d.order_id
-                      
-            left join (select
-                      bbb.order_id,
-                      sum(bbb.amount_refunded) as amount_refunded,
-                      sum(bbb.amount_refunded) - sum(case when bbb.payment_method_id = 3 then bbb.amount_refunded else 0 end) as cash_refunded,
-                      sum(case when bbb.payment_method_id = 3 then bbb.amount_refunded else 0 end) as store_credit_refunded,
-                      sum(bbb.amount_refunded_gbp) as amount_refunded_gbp,
-                      sum(bbb.amount_refunded_gbp) - sum(case when bbb.payment_method_id = 3 then bbb.amount_refunded_gbp else 0 end) as cash_refunded_gbp,
-                      sum(case when bbb.payment_method_id = 3 then bbb.amount_refunded_gbp else 0 end) as store_credit_refunded_gbp
-                      from ${spree_refunds.SQL_TABLE_NAME} bbb
-                      group by 1) e
-                      on a.id = e.order_id
-
-          WHERE a.state in ('complete', 'returned', 'canceled')
-          AND a.created_at > DATE '2014-11-22'
+     SELECT  a.spree_timestamp,
+             a.id AS order_id,
+             a. "number" AS order_code,
+             a.user_id AS customer_id,
+             a.bill_address_id,
+             a.ship_address_id,
+             a.item_total,
+             a.total AS order_total,
+             a.state,
+             adjustment_total,
+             shipment_total,
+             a.included_tax_total,
+             a.additional_tax_total,
+             a.completed_at,
+             a.shipment_state,
+             a.currency,
+             a.item_count,
+             COALESCE(b.store_credit,'0') AS store_credit_used,
+             c.exchange_rate,
+             COALESCE(d.return_item_total,'0') AS return_item_total,
+             COALESCE(d.items_returned,'0') AS items_returned,
+             COALESCE(e.amount_refunded,'0') AS amount_refunded,
+             COALESCE(e.store_credit_refunded,'0') AS store_credit_refunded,
+             COALESCE(e.cash_refunded,'0') AS cash_refunded
+      FROM (SELECT *
+            FROM daily_snapshot.spree_orders
+            WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_orders)) a
+        LEFT JOIN (SELECT order_id,
+                          SUM(amount) AS store_credit
+                   FROM (SELECT *
+                         FROM daily_snapshot.spree_payments
+                         WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                  FROM daily_snapshot.spree_payments))
+                   WHERE source_type = 'Spree::StoreCredit'
+                   GROUP BY 1) b ON a.id = b.order_id
+        LEFT JOIN lookup.exchange_rates c
+               ON DATE_TRUNC ('day',a.completed_at) = c. "date"
+              AND a.currency = c.currency
+        LEFT JOIN (SELECT aaa.order_id,
+                          SUM(bbb.price) AS return_item_total,
+                          COUNT(*) AS items_returned
+                   FROM ${returns.SQL_TABLE_NAME} aaa
+                     LEFT JOIN (SELECT *
+                                FROM daily_snapshot.spree_line_items
+                                WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                         FROM daily_snapshot.spree_line_items)) bbb
+                            ON aaa.order_id = bbb.order_id
+                           AND aaa.variant_id = bbb.variant_id
+                   GROUP BY 1) d ON a.id = d.order_id
+        LEFT JOIN (SELECT bbb.order_id,
+                          SUM(bbb.amount_refunded) AS amount_refunded,
+                          SUM(bbb.amount_refunded) - SUM(CASE WHEN bbb.payment_method_id = 3 THEN bbb.amount_refunded ELSE 0 END) AS cash_refunded,
+                          SUM(CASE WHEN bbb.payment_method_id = 3 THEN bbb.amount_refunded ELSE 0 END) AS store_credit_refunded
+                   FROM ${spree_refunds.SQL_TABLE_NAME} bbb
+                   GROUP BY 1) e ON a.id = e.order_id
+      WHERE a.state IN ('complete','returned','canceled')
+      AND   a.created_at > DATE '2014-11-22'
 
     
     sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}
@@ -85,53 +65,30 @@
     sortkeys: [order_id, completed_at]
 
   fields:
+#################################################################################################################################################################################
+####################################################### DIMENSIONS ##############################################################################################################
+#################################################################################################################################################################################
+
+
+
+############################ BASIC ORDER DIMENSIONS #######################################################
 
   - dimension: order_id
     primary_key: true
     type: int
     sql: ${TABLE}.order_id
 
-  - dimension: discount
-    type: number
-    decimals: 2
-    sql: ${TABLE}.adjustment_total * (-1)
-    format: "£%0.2f"
-
   - dimension_group: completed
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.completed_at
 
-  - dimension: currency
-    sql: ${TABLE}.currency
-
   - dimension: item_count
     type: int
     sql: ${TABLE}.item_count
 
-  - dimension: item_total
-    type: number
-    decimals: 2
-    sql: ${TABLE}.item_total
-    format: "%0.2f"
- 
-  - dimension: payment_total
-    type: number
-    decimals: 2
-    sql: ${TABLE}.order_total
-    format: "%0.2f"
-
   - dimension: order_code
     sql: ${TABLE}.order_code
-
-  - dimension: shipment_state
-    sql: ${TABLE}.shipment_state
-
-  - dimension: shipping_total
-    type: number
-    decimals: 2
-    sql: ${TABLE}.shipment_total
-    format: "%0.2f"
 
   - dimension: state
     sql: ${TABLE}.state
@@ -140,26 +97,45 @@
     type: int
     sql: ${TABLE}.customer_id
 
-  - dimension: gross_revenue
+##################################### REVENUE DIMENSIONS ##########################################################
+  
+  - dimension: currency
+    sql: ${TABLE}.currency
+  
+  - dimension: exchange_rate
+    sql: ${TABLE}.exchange_rate
+
+  - dimension: payment_total
     type: number
     decimals: 2
-    sql: ${TABLE}.item_total + ${TABLE}.shipment_total
+    sql: ${TABLE}.order_total
+    format: "%0.2f"
+
+  - dimension: item_total
+    type: number
+    decimals: 2
+    sql: ${TABLE}.item_total
     format: "%0.2f"
     
-  - dimension: gross_revenue_ex_discount
+  - dimension: shipping_total
     type: number
-    sql: ${gross_revenue} - ${discount}
+    decimals: 2
+    sql: ${TABLE}.shipment_total
     format: "%0.2f"
+
+  - dimension: discount
+    type: number
+    decimals: 2
+    sql: ${TABLE}.adjustment_total * (-1)
+    format: "£%0.2f"
   
   - dimension: store_credit_used
     type: number
     sql: ${TABLE}.store_credit_used
     format: "%0.2f"
-    
-  - dimension: gross_revenue_ex_discount_and_store_credit
-    type: number
-    sql: ${gross_revenue_ex_discount} - ${store_credit_used}
-    format: "%0.2f"
+  
+  
+####################### FLAGS ######################################################################################
 
   - dimension: store_credit_used_boolean
     type: yesno
@@ -169,53 +145,7 @@
     type: yesno
     sql: ${discount} > 0
 
-
-# Revenue Dimensions Converted into GBP
-
-  - dimension: gross_revenue_in_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.item_total_gbp + ${TABLE}.shipment_total_gbp
-    format: "£%0.2f"
-  
-  - dimension: total_of_items_in_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.item_total_gbp 
-    format: "£%0.2f"
-
-  - dimension: shipping_total_in_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.shipment_total_gbp
-    format: "£%0.2f"
-
-  - dimension: total_discount_in_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.adjustment_total_gbp * (-1)
-    format: "£%0.2f"
-          
-  - dimension: gross_revenue_ex_discount_in_gbp
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue_in_gbp} - ${total_discount_in_gbp}
-    format: "£%0.2f"
-    
-  - dimension: store_credit_used_in_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.store_credit_used_gbp
-    format: "£%0.2f"
-
-  - dimension: gross_revenue_ex_discount_and_store_credit_in_gbp
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue_ex_discount_in_gbp} - ${store_credit_used_in_gbp}
-    format: "£%0.2f"
-
-
-# Returns Dimensions
+####################### Returns Dimensions ##########################################################################
 
   - dimension: items_returned
     sql:  ${TABLE}.items_returned
@@ -226,23 +156,11 @@
     sql:  ${TABLE}.return_item_total
     format: "%0.2f"
 
-  - dimension: return_item_total_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.return_item_total_gbp
-    format: "£%0.2f"
-
   - dimension: amount_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.amount_refunded
     format: "%0.2f"
-
-  - dimension: amount_refunded_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.amount_refunded_gbp
-    format: "£%0.2f"
 
   - dimension: store_credit_refunded
     type: number
@@ -250,54 +168,19 @@
     sql:  ${TABLE}.store_credit_refunded
     format: "%0.2f"
 
-  - dimension: store_credit_refunded_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.store_credit_refunded_gbp
-    format: "£%0.2f"
-
   - dimension: cash_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.cash_refunded
     format: "%0.2f"
 
-  - dimension: cash_refunded_gbp
-    type: number
-    decimals: 2
-    sql:  ${TABLE}.cash_refunded_gbp
-    format: "£%0.2f"
 
-# Revenue dimensions post returns
-
-  - dimension: items_purchased_post_returns
-    sql:  ${TABLE}.items_purchased_post_returns
-
-  - dimension: gross_revenue_post_returns
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue} - ${return_item_total}
-    format: "%0.2f"
-      
-  - dimension: gross_revenue_post_returns_gbp
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue_in_gbp} - ${return_item_total_gbp}
-    format: "£%0.2f"
     
-  - dimension: revenue_ex_discount_store_credit_and_refund
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue_ex_discount_and_store_credit} - ${cash_refunded}
-    format: "%0.2f"
-    
-  - dimension: revenue_ex_discount_store_credit_and_refund_gbp
-    type: number
-    decimals: 2
-    sql:  ${gross_revenue_ex_discount_and_store_credit_in_gbp} - ${cash_refunded_gbp}
-    format: "£%0.2f"
-
+#################################################################################################################################################################################
 ####################################################### MEASURES ################################################################################################################
+#################################################################################################################################################################################
+
+################################################## BASIC ORDER MEASURES ################################################################
   
   - measure: count_orders
     type: count_distinct
@@ -305,9 +188,15 @@
     filters:
       state: -canceled
 
-  - measure: count_orders_inc_canceled
+  - measure: count_orders_inc_cancelled
     type: count_distinct
     sql: ${TABLE}.order_id
+    
+  - measure: cancellation_rate
+    type: number
+    decimals: 2
+    sql: 100.0 * (1 - (${count_orders})/${count_orders_inc_cancelled}::REAL)
+    format: "%0.2f%"
 
   - measure: orders_with_returns
     type: count_distinct
@@ -321,107 +210,59 @@
     filters:
       state: -canceled
   
-  - measure: count_customers_inc_canceled
-    type: count_distinct
-    sql: ${TABLE}.customer_id  
-    
   - measure: total_items
     type: sum
     sql: ${TABLE}.item_count
     filters:
       state: -canceled
+  
+  - measure: avg_items_in_basket
+    type: number
+    decimals: 2
+    sql: ${total_items}/${count_orders}::REAL
+    format: "%0.2f"
 
-  - measure: total_items_inc_canceled
-    type: sum
-    sql: ${TABLE}.item_count
-
-  # SUM GROSS REVENUE
+################################################# GROSS REVENUE MEASURES ##############################################################
 
   - measure: sum_gross_revenue
     type: sum
-    sql: ${gross_revenue}
+    sql: ${item_total} + ${shipping_total}
     format: "%0.2f"
     filters:
       state: -canceled
   
   - measure: sum_gross_revenue_in_gbp
     type: sum
-    sql: ${gross_revenue_in_gbp}
+    sql: (${item_total} + ${shipping_total})*${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
+  - measure: sum_gross_revenue_ex_vat
+    type: sum
+    sql: (${item_total}*5/6) + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+  
+  - measure: sum_gross_revenue_in_gbp_ex_vat
+    type: sum
+    sql: ((${item_total}*5/6) + ${shipping_total})*${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+  
   - measure: sum_gross_revenue_inc_canceled
     type: sum
-    sql: ${gross_revenue}
+    sql: ${item_total} + ${shipping_total}
     format: "%0.2f"
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
     type: sum
-    sql: ${gross_revenue_in_gbp}
+    sql: (${item_total} + ${shipping_total})*${exchange_rate}
     format: "£%0.2f"
 
-  # SUM GROSS REVENUE EX DISCOUNT
-
-  - measure: sum_gross_revenue_ex_discount
-    type: sum
-    sql: ${gross_revenue_ex_discount}
-    format: "%0.2f"
-    filters:
-      state: -canceled
-  
-  - measure: sum_gross_revenue_ex_discount_in_gbp
-    type: sum
-    sql: ${gross_revenue_ex_discount_in_gbp}
-    format: "£%0.2f"
-    filters:
-      state: -canceled
-
- # SUM GROSS REVENUE EX DISCOUNT AND STORE CREDIT
-
-  - measure: sum_gross_revenue_ex_discount_and_store_credit
-    type: sum
-    sql: ${gross_revenue_ex_discount_and_store_credit}
-    format: "%0.2f"
-    filters:
-      state: -canceled
-  
-  - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
-    type: sum
-    sql: ${gross_revenue_ex_discount_and_store_credit_in_gbp}
-    format: "£%0.2f"
-    filters:
-      state: -canceled
-
- # OTHER SUMS
-
-  - measure: sum_total_of_items
-    type: sum
-    sql: ${item_total}
-    format: "%0.2f"
-    filters:
-      state: -canceled
-
-  - measure: sum_total_of_items_gbp
-    type: sum
-    sql: ${total_of_items_in_gbp}
-    format: "£%0.2f"
-    filters:
-      state: -canceled
-
-  - measure: sum_shipping_total
-    type: sum
-    sql: ${shipping_total}
-    format: "%0.2f"
-    filters:
-      state: -canceled
-
-  - measure: sum_shipping_total_gbp
-    type: sum
-    sql: ${shipping_total_in_gbp}
-    format: "£%0.2f"
-    filters:
-      state: -canceled
+################################################# DISCOUNT/STORE CREDIT MEASURES ##############################################################
 
   - measure: sum_total_discount
     type: sum
@@ -432,7 +273,7 @@
 
   - measure: sum_total_discount_gbp
     type: sum
-    sql: ${total_discount_in_gbp}
+    sql: ${discount} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -446,12 +287,114 @@
   
   - measure: sum_store_credit_used_gbp
     type: sum
-    sql: ${store_credit_used_in_gbp}
+    sql: ${store_credit_used} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
-    
-  # revenue averages
+
+  - measure: sum_total_discount_ex_vat
+    type: sum
+    sql: ${discount}*5/6
+    format: "%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_total_discount_gbp_ex_vat
+    type: sum
+    sql: ${discount} * ${exchange_rate}*5/6
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+  
+  - measure: sum_store_credit_used_ex_vat
+    type: sum
+    sql: ${store_credit_used}*5/6
+    format: "%0.2f"
+    filters:
+      state: -canceled
+  
+  - measure: sum_store_credit_used_gbp_ex_vat
+    type: sum
+    sql: ${store_credit_used} * ${exchange_rate}*5/6
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+################################################ GROSS REVENUE EX DISCOUNT/STORE CREDIT MEASURES ##############################################################
+
+
+  - measure: sum_gross_revenue_ex_discount
+    type: number
+    sql: ${sum_gross_revenue} - ${sum_total_discount}
+    format: "%0.2f"
+  
+  - measure: sum_gross_revenue_ex_discount_in_gbp
+    type: number
+    sql: ${sum_gross_revenue_in_gbp} - ${sum_total_discount_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_gross_revenue_ex_discount_ex_vat
+    type: number
+    sql: ${sum_gross_revenue_ex_vat} - ${sum_total_discount_ex_vat}
+    format: "%0.2f"
+  
+  - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat
+    type: number
+    sql: ${sum_gross_revenue_in_gbp_ex_vat} - ${sum_total_discount_gbp_ex_vat}
+    format: "£%0.2f"
+
+  - measure: sum_gross_revenue_ex_discount_and_store_credit
+    type: number
+    sql: ${sum_gross_revenue} - ${sum_total_discount} - ${sum_store_credit_used}
+    format: "%0.2f"
+  
+  - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
+    type: number
+    sql: ${sum_gross_revenue_in_gbp} - ${sum_total_discount_gbp} - ${sum_store_credit_used_gbp}
+    format: "£%0.2f"
+
+  - measure: sum_gross_revenue_ex_discount_and_store_credit_ex_vat
+    type: number
+    sql: ${sum_gross_revenue_ex_vat} - ${sum_total_discount_ex_vat} - ${sum_store_credit_used_ex_vat}
+    format: "%0.2f"
+  
+  - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
+    type: number
+    sql: ${sum_gross_revenue_in_gbp_ex_vat} - ${sum_total_discount_gbp_ex_vat} - ${sum_store_credit_used_gbp_ex_vat}
+    format: "£%0.2f"
+
+
+############################ OTHER GROSS REVENUE SUMS ###################################################################################################
+
+  - measure: sum_total_of_items
+    type: sum
+    sql: ${item_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_total_of_items_gbp
+    type: sum
+    sql: ${item_total} * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_shipping_total
+    type: sum
+    sql: ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_shipping_total_gbp
+    type: sum
+    sql: ${shipping_total} * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+  ############################################################## REVENUE AVERAGES ##############################################################################
 
   - measure: avg_gross_revenue_gbp
     type: number
@@ -471,20 +414,23 @@
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
     
-  # revenue running totals
-  
-  - measure: gross_revenue_gbp_running_total
-    type: running_total
-    sql: ${sum_gross_revenue_in_gbp}
-    format: "£%0.2f"
-      
-   # basket size averages
-   
-  - measure: avg_items_in_bag
+  - measure: avg_gross_revenue_gbp_ex_vat
     type: number
     decimals: 2
-    sql: ${total_items}/NULLIF(${count_orders},0)::REAL
-    format: "%0.2f"
+    sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f"
+      
+  - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f"
+    
+  - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f"
 
   - measure: avg_discount_in_gbp
     type: number
@@ -492,44 +438,25 @@
     sql: ${sum_total_discount_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
 
+  - measure: avg_discount_in_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_total_discount_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f"
+
   - measure: avg_store_credit_used_gbp
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-
-
-# revenue after returns
-  
-  - measure: sum_gross_revenue_post_returns
-    type: sum
-    sql: ${gross_revenue_post_returns}
-    format: "%0.2f"
-    filters:
-      state: -canceled  
-  
-  - measure: sum_gross_revenue_post_returns_gbp
-    type: sum
-    sql: ${gross_revenue_post_returns_gbp}
+    
+  - measure: avg_store_credit_used_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_store_credit_used_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
     format: "£%0.2f"
-    filters:
-      state: -canceled
 
-  - measure: sum_revenue_ex_discount_store_credit_and_refund
-    type: sum
-    sql: ${revenue_ex_discount_store_credit_and_refund}
-    format: "%0.2f"
-    filters:
-      state: -canceled
-  
-  - measure: sum_revenue_ex_discount_store_credit_and_refund_gbp
-    type: sum
-    sql: ${revenue_ex_discount_store_credit_and_refund_gbp}
-    format: "£%0.2f"
-    filters:
-      state: -canceled
-
-    # returns totals
+############################################################## RETURNS MEASUERS #############################################################################################
 
   - measure: sum_items_returned
     type: sum
@@ -546,7 +473,7 @@
 
   - measure: sum_return_item_total_gbp
     type: sum
-    sql: ${return_item_total_gbp}
+    sql: ${return_item_total} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -554,13 +481,13 @@
   - measure: sum_amount_refunded
     type: sum
     sql: ${amount_refunded}
-    format: "£%0.2f"
+    format: "%0.2f"
     filters:
       state: -canceled
     
   - measure: sum_amount_refunded_gbp
     type: sum
-    sql: ${amount_refunded_gbp}
+    sql: ${amount_refunded} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -568,13 +495,13 @@
   - measure: sum_cash_refunded
     type: sum
     sql: ${cash_refunded}
-    format: "£%0.2f"
+    format: "%0.2f"
     filters:
       state: -canceled
     
   - measure: sum_cash_refunded_gbp
     type: sum
-    sql: ${cash_refunded_gbp}
+    sql: ${cash_refunded} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -582,15 +509,106 @@
   - measure: sum_store_credit_refunded
     type: sum
     sql: ${store_credit_refunded}
-    format: "£%0.2f"
+    format: "%0.2f"
     filters:
       state: -canceled
     
   - measure: sum_store_credit_refunded_gbp
     type: sum
-    sql: ${store_credit_refunded_gbp}
+    sql: ${store_credit_refunded} * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
+
+
+############################################################## NET REVENUE MEASURES (POST RETURNS) #############################################################################################
+  
+  - measure: sum_net_revenue
+    type: sum
+    sql: ${item_total} + ${shipping_total} - ${return_item_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled  
+  
+  - measure: sum_net_revenue_gbp
+    type: sum
+    sql: (${item_total} + ${shipping_total} - ${return_item_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+      
+  - measure: sum_net_revenue_ex_vat
+    type: sum
+    sql: ((${item_total} - ${return_item_total})*5/6) + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled  
+  
+  - measure: sum_net_revenue_gbp_ex_vat
+    type: sum
+    sql: (((${item_total} - ${return_item_total})*5/6) + ${shipping_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_net_revenue_ex_discount
+    type: sum
+    sql: ${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+      
+  - measure: sum_net_revenue_ex_discount_gbp
+    type: sum
+    sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_net_revenue_ex_discount_ex_vat
+    type: sum
+    sql: ((${item_total} - ${discount} - ${amount_refunded})*5/6) + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+      
+  - measure: sum_net_revenue_ex_discount_gbp_ex_vat
+    type: sum
+    sql: (((${item_total} - ${discount} - ${amount_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+  - measure: sum_net_revenue_ex_discount_ex_store_credit
+    type: sum
+    sql: ${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+  
+  - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp
+    type: sum
+    sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+  
+  
+  - measure: sum_net_revenue_ex_discount_ex_store_credit_ex_vat
+    type: sum
+    sql: ((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}
+    format: "%0.2f"
+    filters:
+      state: -canceled
+  
+  - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat
+    type: sum
+    sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+
+
+  
   
  

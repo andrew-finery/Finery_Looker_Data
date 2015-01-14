@@ -1,21 +1,21 @@
 - view: leads
   derived_table:
     sql: |
-      select a.email_address, a.created_at
-
-      from
-      
-      (select
-      left(right(email, len(email)-1), len(email)-2) as email_address,
-      min(created_at) as created_at
-      from (select * from daily_snapshot.spree_leads where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_leads))
-      group by 1) a
-      
-      left join ${users_signup.SQL_TABLE_NAME} b
-      
-      on a.email_address = b.email_address
-      
-      where b.email_address is null
+      select
+        lower(leads.email) as email_address,
+        min(date(leads.created_at)) as created_at
+        
+        from
+        
+        (select * from daily_snapshot.spree_leads where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_leads)) leads
+        left join
+        (select * from daily_snapshot.spree_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_users)) users
+        on lower(leads.email) = lower(users.email)
+        
+        where users.email is null -- user hasn't signed up
+        
+        group by 1
+        order by 2 asc
 
     sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_leads
     distkey: email_address
