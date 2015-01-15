@@ -49,7 +49,12 @@
 
   fields:
 
-# Order dimensions
+#################################################################################################################################################################################
+############################################################ DIMENSIONS #########################################################################################################
+#################################################################################################################################################################################
+
+
+###########################################Order dimensions######################################################################################################################
 
   - dimension_group: order_time
     type: time
@@ -68,9 +73,11 @@
 
   - dimension: currency
     sql: ${TABLE}.currency
+    
+  - dimension: exchange_rate
+    sql: ${TABLE}.exchange_rate
 
-# Product Dimensions
-
+########################################Product Dimensions###########################################################################################################################
   - dimension: sku
     sql: ${TABLE}.sku
     
@@ -83,7 +90,7 @@
   - dimension: price_in_gbp
     type: number
     decimals: 2
-    sql: ${TABLE}.price_gbp
+    sql: ${price} * ${exchange_rate}
     format: "£%0.2f"
 
   - dimension: max_selling_price
@@ -95,13 +102,8 @@
   - dimension: max_selling_price_gbp
     type: number
     decimals: 2
-    sql: ${TABLE}.max_selling_price_gbp
+    sql: ${max_selling_price} * ${exchange_rate}
     format: "£%0.2f"
-  
-  - dimension: max_selling_price_tiered
-    type: tier
-    tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
-    sql: ${max_selling_price_gbp}
 
   - dimension: selling_price_tiered
     sql_case:
@@ -132,8 +134,9 @@
       27.5% - 37.5%: ${price}/${max_selling_price} > 0.625
       else: '37.5% and over'
   
-  # Revenue Dimensions
-  - dimension: gross_revenue
+  ####################### REVENUE DIMENSIONS ##########################################################################################################################################
+  
+  - dimension: gross_item_revenue
     type: number
     decimals: 2
     sql: ${TABLE}.price * ${TABLE}.quantity
@@ -151,14 +154,9 @@
     decimals: 2
     sql: ${landed_cost_per_unit_gbp} * ${quantity}
     format: "£%0.2f"
-  
-  - dimension: gross_margin_gbp
-    type: number
-    decimals: 2
-    sql: ${gross_item_revenue_in_gbp} -${landed_cost_gbp}
-    format: "£%0.2f"  
+
     
- # Returns Dimensions
+ #################################### Returns Dimensions #########################################################################################################################
  
   - dimension: items_returned
     sql: ${TABLE}.items_returned
@@ -178,7 +176,10 @@
     sql: ${TABLE}.price_gbp * (${TABLE}.quantity - ${TABLE}.items_returned)
     format: "£%0.2f"
 
-############################################################ MEASURES #########################################################################################################
+
+#################################################################################################################################################################################
+############################################################ MEASURES ###########################################################################################################
+#################################################################################################################################################################################
   
   - measure: count_orders
     type: count_distinct
@@ -196,15 +197,15 @@
     type: sum
     sql: ${TABLE}.quantity
   
-  # Returns Measures
+  ########################################### Returns Measures #################################################################################################################
     
   - measure: total_items_returned
     type: sum
-    sql: coalesce(${TABLE}.items_returned, 0)
+    sql: coalesce(${items_returned}, 0)
   
   - measure: items_sold_after_returns
-    type: number
-    sql: ${total_items_sold} - ${total_items_returned}
+    type: sum
+    sql: ${quantity} - ${items_returned}
     
   - measure: return_rate
     type: number
@@ -215,7 +216,13 @@
   - measure: sum_return_item_value_gbp
     type: sum
     decimals: 2
-    sql: ${return_item_value_gbp}
+    sql: ${price} * ${items_returned} * ${exchange_rate}
+    format: "£%0.2f"
+  
+  - measure: sum_return_item_value_gbp_ex_vat
+    type: sum
+    decimals: 2
+    sql: ${price} * ${items_returned} * ${exchange_rate}*5/6
     format: "£%0.2f"
   
   - measure: return_rate_value
@@ -224,48 +231,63 @@
     sql: 100.0 * ${sum_return_item_value_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
     format: "%0.2f%"
   
-  # Revenue Measures
+  ######################################################## GROSS Revenue Measures #######################################################################################################
     
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
-    sql: ${gross_item_revenue_in_gbp}
+    sql: ${price} * ${quantity} * ${exchange_rate}
+    format: "%0.2f"
+    
+  - dimension: sum_net_item_revenue_gbp
+    type: sum
+    sql: ${price} * (${quantity} - ${items_returned}) * ${exchange_rate}
+    format: "£%0.2f"
+  
+  - measure: sum_gross_item_revenue_in_gbp_ex_vat
+    type: sum
+    sql: ${price} * ${quantity} * ${exchange_rate} * 5/6
     format: "£%0.2f"
     
-  - dimension: net_item_reveune_after_returns_gbp
+  - dimension: sum_net_item_revenue_gbp_ex_vat
     type: sum
-    sql: ${net_reveune_after_returns_gbp}
-    format: "£%0.2f"
-    
-  # Margin Measures
-  
-  - dimension: sum_landed_cost_gbp
-    type: sum
-    sql: ${landed_cost_gbp}
+    sql: ${price} * (${quantity} - ${items_returned}) * ${exchange_rate} * 5/6
     format: "£%0.2f"
   
-  - dimension: sum_gross_margin_gbp
+  ########################################################## GROSS Margin Measures ########################################################################################################
+  
+  - dimension: sum_gross_landed_cost_gbp
     type: sum
-    sql: ${gross_margin_gbp}
-    format: "£%0.2f" 
-  
-  - measure: gross_margin_percent
-    type: number
-    decimals: 2
-    sql: 100.0 * ${sum_gross_margin_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
-    format: "%0.2f%"
-  
-  # Basket Averages
-  
-  - measure: avg_items_in_basket
-    type: number
-    decimals: 2
-    sql: ${total_items_sold}/NULLIF(${count_orders},0)::REAL
-    format: "%0.2f" 
-  
-  - measure: avg_basket_size_gbp
-    type: number
-    decimals: 2
-    sql: ${sum_gross_item_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f" 
+    sql: ${product_lookup.total_landed_cost_gbp} * ${quantity}
+    format: "£%0.2f"
 
+  - dimension: sum_gross_margin_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_gross_item_revenue_in_gbp_ex_vat} - ${sum_gross_landed_cost_gbp}
+    format: "£%0.2f" 
+  
+  - measure: gross_margin_percent_ex_vat
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_gross_margin_gbp_ex_vat}/NULLIF(${sum_gross_item_revenue_in_gbp_ex_vat},0)::REAL
+    format: "%0.2f%"
+    
+  ########################################################## NET Margin Measures ########################################################################################################
+  
+  - dimension: sum_net_landed_cost_gbp
+    type: sum
+    sql: ${product_lookup.total_landed_cost_gbp} * (${quantity} - ${items_returned})
+    format: "£%0.2f"
+
+  - dimension: sum_net_margin_gbp_ex_vat
+    type: number
+    decimals: 2
+    sql: ${sum_net_item_revenue_gbp_ex_vat} - ${sum_net_landed_cost_gbp}
+    format: "£%0.2f" 
+  
+  - measure: net_margin_percent_ex_vat
+    type: number
+    decimals: 2
+    sql: 100.0 * ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
+    format: "%0.2f%"
 
