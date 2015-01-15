@@ -7,16 +7,16 @@
             b.max_selling_price_gbp,
             
             --yesterday vs day before
-            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 1 then price*quantity*exchange_rate else 0 end) as sales_yesterday,
-            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 2 then price*quantity*exchange_rate else 0 end) as sales_day_before_yest,
+            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 1 then price*quantity*exchange_rate*5/6 else 0 end) as sales_yesterday,
+            sum(case when date_trunc ('day', order_tstamp) = date_trunc('day', current_date) - 2 then price*quantity*exchange_rate*5/6 else 0 end) as sales_day_before_yest,
             
             --last 7 days vs previous 7 days
-            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 7 and date_trunc('day', current_date) - 1 then price*quantity*exchange_rate else 0 end) as sales_last_7_days,
-            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 14 and date_trunc('day', current_date) - 8 then price*quantity*exchange_rate else 0 end) as sales_previous_7_days,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 7 and date_trunc('day', current_date) - 1 then price*quantity*exchange_rate*5/6 else 0 end) as sales_last_7_days,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 14 and date_trunc('day', current_date) - 8 then price*quantity*exchange_rate*5/6 else 0 end) as sales_previous_7_days,
             
             --last 28 days vs previous 28 days
-            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 28 and date_trunc('day', current_date) - 1 then price*quantity*exchange_rate else 0 end) as sales_last_28_days,
-            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 56 and date_trunc('day', current_date) - 29 then price*quantity*exchange_rate else 0 end) as sales_previous_28_days,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 28 and date_trunc('day', current_date) - 1 then price*quantity*exchange_rate*5/6 else 0 end) as sales_last_28_days,
+            sum(case when date_trunc ('day', order_tstamp) between date_trunc('day', current_date) - 56 and date_trunc('day', current_date) - 29 then price*quantity*exchange_rate*5/6 else 0 end) as sales_previous_28_days,
             
             --QUANTITIES
             --yesterday vs day before
@@ -76,136 +76,76 @@
     type: tier
     tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
     sql: ${max_selling_price_gbp}
-   
-  - dimension: sales_yesterday
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_yesterday
-    format: "£%0.2f"
-   
-  - dimension: sales_day_before_yest
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_day_before_yest
-    format: "£%0.2f"
-    
-  - dimension: sales_last_7_days
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_last_7_days
-    format: "£%0.2f"
-    
-  - dimension: sales_previous_7_days
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_previous_7_days
-    format: "£%0.2f"
 
-  - dimension: sales_last_28_days
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_last_28_days
-    format: "£%0.2f"
-  
-  - dimension: sales_previous_28_days
-    type: number
-    decimals: 2
-    sql: ${TABLE}.sales_previous_28_days
-    format: "£%0.2f"
-  
-  - dimension: sales_yesterday_qty
-    type: int
-    sql: ${TABLE}.sales_yesterday_qty
-
-  - dimension: sales_day_before_yest_qty
-    type: int
-    sql: ${TABLE}.sales_day_before_yest_qty
-
-  - dimension: sales_last_7_days_qty
-    type: int
-    sql: ${TABLE}.sales_last_7_days_qty
-
-  - dimension: sales_previous_7_days_qty
-    type: int
-    sql: ${TABLE}.sales_previous_7_days_qty
-
-  - dimension: sales_last_28_days_qty
-    type: int
-    sql: ${TABLE}.sales_last_28_days_qty
-
-  - dimension: sales_previous_28_days_qty
-    type: int
-    sql: ${TABLE}.sales_previous_28_days_qty
-  
   - dimension: count_on_hand_qty
     sql: ${TABLE}.count_on_hand  
   
   - dimension: count_on_hand_gbp
     sql: ${TABLE}.count_on_hand*${line_detail_re15.uk_selling_price}
-  
-  - dimension: days_cover
-    type: number
-    decimals: 2
-    sql: 7.0 * ${count_on_hand_qty}/NULLIF(${sales_last_7_days_qty},0)::REAL
 
-  #measures#
+  ###########################################################################################################################################################################################
+  #################################################################### MEASURES #############################################################################################################
+  ###########################################################################################################################################################################################
+  
+  ########### Sales Value Measures ###########################################
   
   - measure: sum_sales_yesterday
     type: sum
-    sql: ${sales_yesterday}
+    sql: ${TABLE}.sales_yesterday
     format: "£%0.2f"
   
   - measure: sum_sales_day_before_yest
     type: sum
-    sql: ${sales_day_before_yest}
+    sql: ${TABLE}.sales_day_before_yest
     format: "£%0.2f"
   
   - measure: sum_sales_last_7_days
     type: sum
-    sql: ${sales_last_7_days}
+    sql: ${TABLE}.sales_last_7_days
     format: "£%0.2f"
     
   - measure: sum_sales_previous_7_days
     type: sum
-    sql: ${sales_previous_7_days}
+    sql: ${TABLE}.sales_previous_7_days
     format: "£%0.2f"
-    
-  
+
   - measure: sum_sales_last_28_days
     type: sum
-    sql: ${sales_last_28_days}
+    sql: ${TABLE}.sales_last_28_days
     format: "£%0.2f"
     
   - measure: sum_sales_previous_28_days
     type: sum
-    sql: ${sales_previous_28_days}
+    sql: ${TABLE}.sales_previous_28_days
     format: "£%0.2f"
+  
+   ########### Sales Quantity Measures ###########################################
     
   - measure: sum_sales_yesterday_qty
     type: sum
-    sql: ${sales_yesterday_qty}
+    sql: ${TABLE}.sales_yesterday_qty
   
   - measure: sum_sales_day_before_yest_qty
     type: sum
-    sql: ${sales_day_before_yest_qty}
+    sql: ${TABLE}.sales_day_before_yest_qty
   
   - measure: sum_sales_last_7_days_qty
     type: sum
-    sql: ${sales_last_7_days_qty}
+    sql: ${TABLE}.sales_last_7_days_qty
     
   - measure: sum_sales_previous_7_days_qty
     type: sum
-    sql: ${sales_previous_7_days_qty}
+    sql: ${TABLE}.sales_previous_7_days_qty
   
   - measure: sum_sales_last_28_days_qty
     type: sum
-    sql: ${sales_last_28_days_qty}
+    sql: ${TABLE}.sales_last_28_days_qty
     
   - measure: sum_sales_previous_28_days_qty
     type: sum
-    sql: ${sales_previous_28_days_qty}
+    sql: ${TABLE}.sales_previous_28_days_qty
     
-  # comparison measures
+  ################### Comparison Measures #############################################
   
   - measure: day_on_day
     type: number
@@ -249,9 +189,11 @@
         <p style="color: black; background-color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
       {% endif %}
       
+  ################################## Stock Measures #############################################    
+      
   - measure: sum_count_on_hand_qty
     type: sum
-    sql: ${count_on_hand_qty}
+    sql: ${TABLE}.count_on_hand 
     
   - measure: sum_count_on_hand_gbp
     type: sum
