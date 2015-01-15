@@ -229,6 +229,10 @@
   - measure: count_leads
     type: count_distinct
     sql: ${event_id_lead}
+  
+  - measure: count_new_leads
+    type: number
+    sql: ${count_leads} - ${count_signups}
     
   - measure: count_referrals
     type: count_distinct
