@@ -262,7 +262,7 @@
   - measure: net_revenue_gbp_ex_vat
     type: sum
     decimals: 2
-    sql: ${spree_orders.sum_net_revenue_gbp_ex_vat}
+    sql: (((${spree_orders.item_total} + ${spree_orders.shipping_total})*5/6) - ${spree_orders.return_item_total}) * ${spree_orders.exchange_rate}
     format: "£%0.2f"
     
 
