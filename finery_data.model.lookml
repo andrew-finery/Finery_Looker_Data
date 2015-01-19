@@ -134,8 +134,8 @@
 
 - explore: spree_refunds
 
-- explore: finery_budgets
+- explore: daily_closing_stock
 
-- explore: exchange_rates
+- explore: weekly_closing_stock
 
 
