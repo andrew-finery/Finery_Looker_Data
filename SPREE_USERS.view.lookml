@@ -19,7 +19,10 @@
         coalesce(b.total_credit_granted_gbp, '0') as total_credit_granted_gbp,
         coalesce(b.total_credit_used_gbp, '0') as total_credit_used_gbp,
         coalesce(b.current_credit_gbp, '0') as current_credit_gbp,
-        coalesce(d.referrals_sent, '0') as referrals_sent
+        coalesce(d.referrals_sent, '0') as referrals_sent,
+        e.code as invite_code_used,
+        e.invitation_id as invitation_id,
+        e.sent_by_id as invitation_sent_by_user_id
         
         from
         
@@ -29,12 +32,25 @@
         on a.id = b.user_id
         
         left join
-        (select aaa.email, aaa.credit_amount, aaa.currency, aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp from (select * from daily_snapshot.spree_user_signup_awards where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_user_signup_awards)) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency) c
+        (select aaa.email, aaa.credit_amount, aaa.currency, aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp from (select * from daily_snapshot.spree_user_signup_awards where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_user_signup_awards) and created_at is not null) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency) c
         on lower(a.email) = lower(c.email)
         
         left join
         (select sent_by_id as user_id, count(*) as referrals_sent from daily_snapshot.spree_invitations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations) and sent_by_id is not null group by 1) d
         on a.id = d.user_id
+        
+        left join
+        (select
+        invitations_users.user_id,
+        invitations.id as invitation_id,
+        invitations.code,
+        invitations.sent_by_id
+        from
+        (select user_id, invitation_id from daily_snapshot.spree_invitations_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations_users)) invitations_users
+        left join
+        (select * from daily_snapshot.spree_invitations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations)) invitations
+        on invitations_users.invitation_id = invitations.id) e
+        on e.user_id = a.id
         
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
     distkey: user_id
@@ -42,6 +58,11 @@
 
 
   fields:
+
+##############################################################################################################################################################################
+#################################################################### DIMENSIONS ##############################################################################################
+##############################################################################################################################################################################
+
   - dimension: email_address
     sql: ${TABLE}.email_address
   
@@ -76,54 +97,17 @@
     type: time
     timeframes: [time, date, hod, hour, week, month]
     sql: ${TABLE}.last_sign_in_at
-    
-  - dimension: permitted_referrals
-    sql: ${TABLE}.permitted_referrals
-  
-  - dimension: referrals_sent
-    sql: ${TABLE}.referrals_sent
-  
-  - dimension: referrals_left
-    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent
-    
+
   - dimension: used_all_referrals
     type: yesno
-    sql: ${referrals_left} = 0
-  
-  - dimension: signup_credit
-    type: number
-    decimals: 2
-    sql: ${TABLE}.signup_credit
-    format: "%0.2f"
-       
+    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent = 0
+
   - dimension: signup_credit_currency
     sql: ${TABLE}.signup_credit_currency
-       
-  - dimension: signup_credit_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.signup_credit_gbp
-    format: "£%0.2f"
-    
-  - dimension: total_credit_granted_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.total_credit_granted_gbp
-    format: "£%0.2f"
-    
-  - dimension: total_credit_used_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.total_credit_used_gbp
-    format: "£%0.2f"
-    
-  - dimension: current_credit_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.current_credit_gbp
-    format: "£%0.2f"
-    
-  # Measures
+
+##############################################################################################################################################################################
+#################################################################### MEASURES ################################################################################################
+##############################################################################################################################################################################
   
   - measure: count_users
     type: count_distinct
@@ -137,15 +121,15 @@
   
   - measure: sum_referrals_sent
     type: sum
-    sql: ${referrals_sent}
+    sql: ${TABLE}.referrals_sent
   
   - measure: sum_referrals_permitted
     type: sum
-    sql: ${permitted_referrals}
+    sql: ${TABLE}.permitted_referrals
     
   - measure: sum_referrals_left
     type: sum
-    sql: ${referrals_left}
+    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent
   
   - measure: percentage_referrals_sent
     type: number
@@ -155,25 +139,25 @@
   
   - measure: sum_signup_credit_granted
     type: sum
-    sql: ${signup_credit}
+    sql: ${TABLE}.signup_credit
     format: "%0.2f"
   
   - measure: sum_signup_credit_granted_gbp
     type: sum
-    sql: ${signup_credit_gbp}
+    sql: ${TABLE}.signup_credit_gbp
     format: "£%0.2f"
   
   - measure: sum_total_credit_granted_gbp
     type: sum
-    sql: ${total_credit_granted_gbp}
+    sql: ${TABLE}.total_credit_granted_gbp
     format: "£%0.2f"
     
   - measure: sum_total_credit_used_gbp
     type: sum
-    sql: ${total_credit_used_gbp}
+    sql: ${TABLE}.total_credit_used_gbp
     format: "£%0.2f"
     
   - measure: sum_current_live_credit_gbp
     type: sum
-    sql: ${current_credit_gbp}
+    sql: ${TABLE}.current_credit_gbp
     format: "£%0.2f"
