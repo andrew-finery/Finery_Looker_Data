@@ -21,6 +21,14 @@
       lower(spree_invitations.email) = lower(spree_users.email_address)
       
 - explore: spree_users
+  joins:
+  - join: users_signup
+    sql_on: |
+      spree_users.invitation_sent_by_user_id = users_signup.id
+  - join: spree_orders
+    sql_on: |
+      spree_users.user_id = spree_orders.customer_id
+    
 
 - explore: atomic_events
 
