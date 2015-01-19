@@ -5,52 +5,45 @@
             matrix.calendar_date,
             matrix.year_week_number,
             matrix.sku,
-            coalesce(opening.opening_stock, '0') as opening_stock,
-            coalesce(closing.closing_stock, '0') as closing_stock,
+            coalesce(closing.count_on_hand, '0') as closing_stock,
             coalesce(sales.items_sold, '0') as items_sold,
             coalesce(sales.items_returned, '0') as items_returned,
-            coalesce(sales.items_sold_after_returns, '0') as items_sold_after_returns,
-            coalesce(sales.gross_item_revenue_gbp, '0') as gross_item_revenue_gbp,
-            coalesce(sales.net_item_revenue_gbp, '0') as net_item_revenue_gbp,
-            coalesce(sales.gross_item_revenue_post_returns_gbp, '0') as gross_item_revenue_post_returns_gbp,
-            coalesce(sales.net_item_revenue_post_returns_gbp, '0') as net_item_revenue_post_returns_gbp
+            coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns,
+            coalesce(sales.gross_item_revenue_gbp_ex_vat, '0') as gross_item_revenue_gbp_ex_vat,
+            coalesce(sales.net_item_revenue_gbp_ex_vat, '0') as net_item_revenue_gbp_ex_vat
             
             from 
-            
-            (select aaa.sku, aaa.variant_id, bbb.calendar_date, bbb.year_week_number from
-            (select a.variant_id, b.sku from      
-            (select * from daily_snapshot.spree_stock_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_stock_items)) a
-            inner join
-            (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and deleted_at is null) b
-            on a.variant_id = b.id
-            and a.updated_at > date '2014-11-11'
-            and b.sku <> ' '
-            group by 1,2) aaa
+
+            (select aaa.sku, bbb.calendar_date, bbb.year_week_number from
+            (select sku from atomic.com_finerylondon_stock_updated_1 stock_updated
+            left join atomic.events events
+            on stock_updated.root_id = events.event_id
+            where events.app_id = 'production'
+            group by 1) aaa
             cross join
             (select calendar_date, year_week_number from lookup.calendar)bbb
             where bbb.calendar_date < current_date) matrix
             
             left join
             
-            (select abc.calendar_date, abc.variant_id, def.count_on_hand as opening_stock from
-            (select date(spree_timestamp) as calendar_date, variant_id, min(spree_timestamp) as spree_timestamp from daily_snapshot.spree_stock_items group by 1,2) abc
+            (select
+            cls.closing_stock_date,
+            cls.sku,
+            stk.count_on_hand
+            from
+            (select sku, date(root_tstamp) - 1 as closing_stock_date, min(root_tstamp) as root_tstamp
+            from atomic.com_finerylondon_stock_updated_1 stock_updated
+            left join atomic.events events
+            on stock_updated.root_id = events.event_id
+            where events.app_id = 'production'
+            group by 1,2) cls
             left join
-            daily_snapshot.spree_stock_items def
-            on abc.variant_id = def.variant_id
-            and abc.spree_timestamp = def.spree_timestamp) opening
-            on opening.calendar_date = matrix.calendar_date
-            and opening.variant_id = matrix.variant_id
+            atomic.com_finerylondon_stock_updated_1 stk
+            on cls.root_tstamp = stk.root_tstamp
+            and cls.sku = stk.sku) closing
             
-            left join
-            
-            (select abc.calendar_date - 1 as calendar_date, abc.variant_id, def.count_on_hand as closing_stock from
-            (select date(spree_timestamp) as calendar_date, variant_id, min(spree_timestamp) as spree_timestamp from daily_snapshot.spree_stock_items group by 1,2) abc
-            left join
-            daily_snapshot.spree_stock_items def
-            on abc.variant_id = def.variant_id
-            and abc.spree_timestamp = def.spree_timestamp) closing
-            on closing.calendar_date = matrix.calendar_date
-            and closing.variant_id = matrix.variant_id
+            on closing.closing_stock_date = matrix.calendar_date
+            and closing.sku = matrix.sku
             
             left join
             
@@ -59,12 +52,8 @@
             sku,
             sum(quantity) as items_sold,
             sum(items_returned) as items_returned,
-            sum(quantity - items_returned) as items_sold_after_returns,
-            count(distinct order_id) as orders_placed,
-            sum(max_selling_price_gbp * quantity) as gross_item_revenue_gbp,
-            sum(price_gbp * quantity) as net_item_revenue_gbp,
-            sum(max_selling_price_gbp * (quantity - items_returned)) as gross_item_revenue_post_returns_gbp,
-            sum(price_gbp * (quantity - items_returned)) as net_item_revenue_post_returns_gbp
+            sum(price_gbp * quantity*5/6) as gross_item_revenue_gbp_ex_vat,
+            sum(price_gbp *5/6 * (quantity - items_returned)) as net_item_revenue_gbp_ex_vat
             from
             ${spree_order_items.SQL_TABLE_NAME}
             group by 1,2) sales
@@ -80,7 +69,11 @@
 
 
   fields:
-  
+
+#################################################################################################################################################################################################
+########################################################## DIMENSIONS ###########################################################################################################################
+#################################################################################################################################################################################################
+
   - dimension_group: calendar_date
     type: time
     timeframes: [date, dow, dow_num, week, dom, month, month_num]
@@ -92,124 +85,45 @@
     
   - dimension: sku
     sql: ${TABLE}.sku
-    
-  - dimension: opening_stock
-    type: int
-    sql: ${TABLE}.opening_stock
-    
-  - dimension: closing_stock
-    type: int
-    sql: ${TABLE}.closing_stock
-    
-  - dimension: items_sold
-    type: int
-    sql: ${TABLE}.items_sold
 
-  - dimension: items_returned
-    type: int
-    sql: ${TABLE}.items_returned
-    
-  - dimension: items_sold_after_returns
-    type: int
-    sql: ${TABLE}.items_sold_after_returns
-    
-  - dimension: gross_item_revenue_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_item_revenue_gbp
-    format: "£%0.2f"
-    
-  - dimension: net_item_revenue_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.net_item_revenue_gbp
-    format: "£%0.2f"
+#################################################################################################################################################################################################
+########################################################## MEASURES #############################################################################################################################
+#################################################################################################################################################################################################
 
-  - dimension: gross_item_revenue_post_returns_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_item_revenue_post_returns_gbp
-    format: "£%0.2f"
-    
-  - dimension: net_item_revenue_post_returns_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.net_item_revenue_post_returns_gbp
-    format: "£%0.2f"
-  
-  - dimension: gross_revenue_returned_items_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_item_revenue_gbp - ${TABLE}.gross_item_revenue_post_returns_gbp
-    format: "£%0.2f"
-    
-  - dimension: net_revenue_returned_items_gbp
-    type: number
-    decimals: 2
-    sql: ${TABLE}.net_item_revenue_gbp - ${TABLE}.net_item_revenue_post_returns_gbp
-    format: "£%0.2f"
-  
-  # Measures
-  
+# Item Measures  
   - measure: sum_items_sold
     type: sum
-    sql: ${items_sold}
+    sql: ${TABLE}.items_sold
 
   - dimension: sum_items_returned
     type: sum
-    sql: ${items_returned}
+    sql: ${TABLE}.items_returned
     
   - dimension: sum_items_sold_after_returns
     type: sum
-    sql: ${items_sold_after_returns}
-    
-  - dimension: sum_gross_item_revenue_gbp
-    type: sum
-    sql: ${gross_item_revenue_gbp}
-    format: "£%0.2f"
-    
-  - dimension: sum_net_item_revenue_gbp
-    type: sum
-    sql: ${net_item_revenue_gbp}
-    format: "£%0.2f"
+    sql: ${TABLE}.items_sold_after_returns
 
-  - dimension: sum_gross_item_revenue_post_returns_gbp
+# Value Measures
+  - dimension: sum_gross_item_revenue_gbp_ex_vat
     type: sum
-    sql: ${gross_item_revenue_post_returns_gbp}
+    sql: ${TABLE}.gross_item_revenue_gbp_ex_vat
     format: "£%0.2f"
     
-  - dimension: sum_net_item_revenue_post_returns_gbp
+  - dimension: sum_net_item_revenue_gbp_ex_vat
     type: sum
-    sql: ${net_item_revenue_post_returns_gbp}
-    format: "£%0.2f"
-  
-  - dimension: sum_gross_revenue_returned_items_gbp
-    type: sum
-    sql: ${gross_revenue_returned_items_gbp}
-    format: "£%0.2f"
-    
-  - dimension: sum_net_revenue_returned_items_gbp
-    type: sum
-    sql: ${net_revenue_returned_items_gbp}
+    sql: ${TABLE}.net_item_revenue_gbp_ex_vat
     format: "£%0.2f"
   
-  - measure: first_date
-    type: date
-    sql: MIN(${calendar_date_date})
-    convert_tz: false
+  - dimension: sum_return_item_value_ex_vat
+    type: sum
+    sql: ${TABLE}.gross_item_revenue_gbp_ex_vat - ${TABLE}.net_item_revenue_gbp_ex_vat
+    format: "£%0.2f"
     
-  - measure: last_date
-    type: date
-    sql: MAX(${calendar_date_date})
-    convert_tz: false
-    
-    #Nicole Trying Stuff
-  - measure: start_week_value
-    type: number
-    required_fields: [year_week_number, opening_stock]
-    sql: FIRST_VALUE(${opening_stock}) OVER (PARTITION BY ${year_week_number}) # ORDER BY ${calendar_date_date} rows between unbounded preceding and unbounded following)
-    
-  
+# Stock Measures
+  - dimension: sum_closing_stock
+    type: sum
+    sql: ${TABLE}.closing_stock
+
      
     
   
