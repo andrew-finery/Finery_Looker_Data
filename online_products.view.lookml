@@ -102,13 +102,14 @@
         
         
         left join
-        (select product_taxons.product_id, taxons.name as department, taxons.permalink as permalink  from
+        (select product_id, department, permalink from 
+        (select product_taxons.product_id, FIRST_VALUE(taxons.name) OVER (PARTITION BY PRODUCT_TAXONS.PRODUCT_ID ORDER BY TAXONS.NAME ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as department, FIRST_VALUE(taxons.permalink) OVER (PARTITION BY PRODUCT_TAXONS.PRODUCT_ID ORDER BY TAXONS.NAME ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as permalink  from
         (select * from daily_snapshot.spree_products_taxons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products_taxons)) product_taxons
         left join
         (select * from daily_snapshot.spree_taxons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_taxons)) taxons
         on product_taxons.taxon_id = taxons.id
         where taxonomy_id = 1 -- only get department taxons
-        ) departments
+        )group by 1,2,3) departments
         on departments.product_id = variants.product_id
 
 
