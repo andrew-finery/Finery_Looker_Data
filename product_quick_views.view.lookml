@@ -1,4 +1,4 @@
-- view: product_impressions
+- view: product_quick_views
   derived_table:
      sql: |
           SELECT events.domain_userid,
