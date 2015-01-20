@@ -1,4 +1,4 @@
-- view: spree_users
+- view: spree_users_2
   derived_table:
     sql: |
        select
