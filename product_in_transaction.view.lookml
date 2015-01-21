@@ -19,7 +19,7 @@
      - dimension: domain_userid
        sql: ${TABLE}.domain_userid
 
-     - measure: domain_sessionidx
+     - dimension: domain_sessionidx
        sql: ${TABLE}.domain_sessionidx
     
      - dimension: session_id

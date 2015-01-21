@@ -144,11 +144,30 @@
       returns.sku = online_products.ean
       
 - explore: online_products
+  joins:
+  - join: product_impressions
+    sql_on: |
+      product_impressions.id = page_view_events.prod_id
+  - join: product_quick_views
+    sql_on: |
+      product_impressions.id = page_view_events.prod_id
+  - join: page_view_events
+    sql_on: |
+      online_products.product_id = page_view_events.prod_id
+  - join: product_in_cart
+    sql_on: |
+      products_in_cart.id = page_view_events.prod_id
+  - join: product_in_transaction
+    sql_on: |
+      products_in_transaction.id = page_view_events.prod_id
+  
 
 - explore: spree_refunds
 
 - explore: daily_closing_stock
 
 - explore: weekly_closing_stock
+
+- explore: page_view_events
 
 
