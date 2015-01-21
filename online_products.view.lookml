@@ -209,5 +209,4 @@
        sql: ${TABLE}.product_group_id
        filters:
         online_flag: Yes 
-    
 

@@ -5,7 +5,6 @@
                  events.domain_sessionidx,
                  events.collector_tstamp,
                  events.event_id,
-                 events.collector_tstamp,
                  quick_view.currency_code,
                  product_context.brand,
                  product_context.category,
@@ -19,7 +18,7 @@
           FROM atomic.com_finerylondon_product_quick_view_1 quick_view
             LEFT JOIN atomic.com_finerylondon_product_impression_context_1 product_context ON quick_view.root_id = product_context.root_id
             LEFT JOIN atomic.events events ON quick_view.root_id = events.event_id
-          WHERE events.app_id = 'production';
+          WHERE events.app_id = 'production'
 
   fields:
   

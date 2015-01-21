@@ -5,7 +5,6 @@
                  events.domain_sessionidx,
                  events.collector_tstamp,
                  events.event_id,
-                 events.collector_tstamp,
                  impressions.currency_code,
                  impressions_context.brand,
                  impressions_context.category,
