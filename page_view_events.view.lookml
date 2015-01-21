@@ -5,6 +5,7 @@
             all_page_views.domain_userid,
             all_page_views.domain_sessionidx,
             all_page_views.event_id,
+            all_page_views.collector_tstamp,
             all_page_views.page_type,
             all_page_views.page_type_primary,
             all_page_views.page_type_secondary,
@@ -22,6 +23,7 @@
             events.domain_userid,
             events.domain_sessionidx,
             events.event_id,
+            events.collector_tstamp,
             pageview.page_type,
             left(pageview.page_type, charindex('/', pageview.page_type) - 1) as page_type_primary,
             right(pageview.page_type, len(page_type) - charindex ('/', pageview.page_type)) as page_type_secondary,
@@ -45,6 +47,10 @@
             (select permalink, first_value(name) over (partition by permalink order by spree_timestamp desc ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as taxon_name from daily_snapshot.spree_taxons)
             group by 1,2) taxons
             on taxons.permalink = all_page_views.taxon_permalink
+            
+     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     distkey: domain_userid
+     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
             
   fields:
 

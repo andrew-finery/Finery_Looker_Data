@@ -4,6 +4,7 @@
           SELECT events.domain_userid,
                  events.domain_sessionidx,
                  events.event_id,
+                 events.collector_tstamp,
                  product_context.id,
                  product_context.variant,
                  trans.root_tstamp,
@@ -13,6 +14,10 @@
             LEFT JOIN atomic.events events ON events.event_id = trans.root_id
           WHERE events.app_id = 'production'
           AND   product_context.id IS NOT NULL
+          
+     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     distkey: domain_userid
+     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 
   fields:
   

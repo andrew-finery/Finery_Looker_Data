@@ -3,19 +3,19 @@
      sql: |
           SELECT events.domain_userid,
                  events.domain_sessionidx,
+                 events.event_id,
+                 events.collector_tstamp,
                  product_context.id,
-                 product_context.variant,
-                 MAX(cart.root_tstamp) AS last_cart_timestamp,
-                 MAX(product_context.quantity) AS added_to_cart_quantity
+                 product_context.variant
           FROM atomic.com_finerylondon_cart_1 cart
             LEFT JOIN atomic.com_finerylondon_product_2 product_context ON cart.root_id = product_context.root_id
             LEFT JOIN atomic.events events ON events.event_id = cart.root_id
           WHERE events.app_id = 'production'
           AND   product_context.id IS NOT NULL
-          GROUP BY 1,
-                   2,
-                   3,
-                   4
+
+     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     distkey: domain_userid
+     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 
   fields:
   

@@ -154,9 +154,9 @@
 - explore: page_view_events
 
 - explore: product_funnel
-
-- explore: product_impressions
-
-- explore: product_quick_views
+  joins:
+  - join: online_products
+    sql_on: |
+      product_funnel.product_id = online_products.product_id
 
 

@@ -1,5 +1,4 @@
 - view: online_products
-# View of all products currently live on the website
 
   derived_table:
      sql: |
