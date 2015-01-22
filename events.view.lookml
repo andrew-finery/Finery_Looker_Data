@@ -180,7 +180,7 @@
     filters:
       session_index: 1
 
-  - measure: approx_user_usage_time
+  - measure: approx_total_usage_time_minutes
     type: number
     decimals: 2
     sql: APPROXIMATE COUNT( DISTINCT CONCAT(FLOOR(EXTRACT (EPOCH FROM ${TABLE}.collector_tstamp)/10), ${TABLE}.domain_userid) ) /6    
@@ -196,7 +196,7 @@
   - measure: approx_usage_per_visit_in_minutes
     type: number
     decimals: 2
-    sql: ${approx_user_usage_in_minutes}/NULLIF(${sessions_count}, 0)::REAL    
+    sql: ${approx_total_usage_time_minutes}/NULLIF(${sessions_count}, 0)::REAL    
 
 
 ######### Per Visitor Measures
@@ -209,4 +209,4 @@
   - measure: approx_usage_per_visitor_in_minutes
     type: number
     decimals: 2
-    sql: ${approx_user_usage_in_minutes}/NULLIF(${visitors_count}, 0)::REAL
+    sql: ${approx_total_usage_time_minutes}/NULLIF(${visitors_count}, 0)::REAL
