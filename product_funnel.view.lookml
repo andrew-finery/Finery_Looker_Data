@@ -16,6 +16,7 @@
        SELECT
         'Product Page View' as event_type, domain_userid, domain_sessionidx,collector_tstamp, event_id, cast(prod_id as integer) as product_id
         from ${page_view_events.SQL_TABLE_NAME}
+        where prod_id is not null
         
         union
         
@@ -47,6 +48,9 @@
     
      - dimension: domain_sessionidx
        sql: ${TABLE}.domain_sessionidx
+
+     - dimension: blended_user_id
+       sql: ${identity_stitching.blended_user_id}
        
      - dimension: product_id
        sql: ${TABLE}.product_id
@@ -55,41 +59,46 @@
        type: time
        timeframes: [time, hour, date, hod, dow, week, month]
        sql: ${TABLE}.collector_tstamp
+    
+     - dimension: product_user_id
+       sql: ${blended_user_id}||${TABLE}.product_id
 
     ###########################################################################################################################################
   ####################################################  MEASURES  ###########################################################################
 ###########################################################################################################################################
 
-     - measure: count_users_temp
+     - measure: distinct_product_impressions
        type: count_distinct
-       sql: ${domain_userid}
-     
-     - measure: product_impressions
-       type: count_distinct
-       sql: ${TABLE}.domain_userid||${TABLE}.product_id
+       sql: ${product_user_id}
        filters:
          event_type: Product Impression, Product Quick View, Product Page View, Product Added to Cart, Product Purchased
     
-     - measure: product_quick_views
+     - measure: distinct_product_quick_views
        type: count_distinct
-       sql: ${TABLE}.domain_userid||${TABLE}.product_id
+       sql: ${product_user_id}
        filters:
          event_type: Product Quick View, Product Page View, Product Added to Cart, Product Purchased
 
-     - measure: product_views
+     - measure: distinct_product_views
        type: count_distinct
-       sql: ${TABLE}.domain_userid||${TABLE}.product_id
+       sql: ${product_user_id}
        filters:
          event_type: Product Page View, Product Added to Cart, Product Purchased
         
-     - measure: product_added_to_cart
+     - measure: distinct_product_added_to_cart
        type: count_distinct
-       sql: ${TABLE}.domain_userid||${TABLE}.product_id
+       sql: ${product_user_id}
        filters:
          event_type: Product Added to Cart, Product Purchased
 
-     - measure: product_purchases
+     - measure: distinct_product_purchases
        type: count_distinct
-       sql: ${TABLE}.domain_userid||${TABLE}.product_id
+       sql: ${product_user_id}
        filters:
          event_type: Product Purchased
+    
+     - measure: product_conversion_rate_from_view
+       type: number
+       decimals: 2
+       sql: 100.0 * ${distinct_product_purchases}/NULLIF(${distinct_product_views},0)::REAL
+       format: "%0.2f%"

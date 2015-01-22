@@ -42,6 +42,13 @@
     
 
 - explore: atomic_events
+  joins:
+  - join: identity_stitching
+    sql_on: |
+      identity_stitching.domain_userid = atomic_events.domain_userid
+  - join: product_funnel
+    sql_on: |
+      product_funnel.event_id = atomic_events.event_id
 
 - explore: page_views
 
@@ -164,3 +171,6 @@
   - join: online_products
     sql_on: |
       product_funnel.product_id = online_products.product_id
+  - join: identity_stitching
+    sql_on: |
+      product_funnel.domain_userid = identity_stitching.domain_userid

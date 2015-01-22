@@ -137,7 +137,9 @@
     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
     
   fields:
-  # DIMENSIONS #
+    ###################################################################################################################################################################
+  ########################################################################## DIMENSIONS #############################################################################
+###################################################################################################################################################################
   
   - dimension: event_id
     primary_key: true
@@ -159,12 +161,10 @@
     type: time
     timeframes: [time, hour, date, hod, dow, week, month]
     sql: ${TABLE}.collector_tstamp
-  
-  - dimension: event_time_tier
-    type: tier
-    tiers: [0,8,12,16,20]
-    sql: ${event_time_hod}
-    
+
+  - dimension: email_subject
+    sql: ${TABLE}."msg.subject"
+
   - dimension: time_period
     sql_case:
       00-00 to 08-00: ${event_time_hod} between 0 and 7
@@ -172,12 +172,14 @@
       12-00 to 16-00: ${event_time_hod} between 12 and 15
       16-00 to 20-00: ${event_time_hod} between 16 and 19
       20-00 to 00-00: ${event_time_hod} > 19
+  
+  ########### User and Session Dimensions
     
   - dimension: user_id
     sql: ${TABLE}.user_id
-    
-  - dimension: email_subject
-    sql: ${TABLE}."msg.subject"
+
+  - dimension: blended_user_id
+    sql: ${identity_stitching.blended_user_id}
   
   - dimension: domain_sessionidx
     sql: ${TABLE}.domain_sessionidx
@@ -188,21 +190,26 @@
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
   
-  # MEASURES #
   
-  - measure: count_orders
+###################################################################################################################################################################
+  ########################################################################## MEASURES ###############################################################################
+    ###################################################################################################################################################################
+
+################### Users and Sessions Counts
+
+  - measure: count_users
     type: count_distinct
-    sql: ${event_id_trans}
+    sql: ${blended_user_id}
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
-  
-  - measure: count_signups
+
+  - measure: count_new_users
     type: count_distinct
-    sql: ${event_id_reg}
+    sql: ${blended_user_id}
     filters:
       domain_userid: -EMPTY
-      domain_sessionidx: -EMPTY
+      domain_sessionidx: 1
   
   - measure: count_sessions
     type: count_distinct
@@ -210,14 +217,30 @@
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
-  
+
   - measure: count_new_sessions
     type: count_distinct
     sql: ${session_id}
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: 1
-  
+
+############### Count number of different events
+
+  - measure: count_orders
+    type: count_distinct
+    sql: ${event_id_trans}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
+
+  - measure: count_signups
+    type: count_distinct
+    sql: ${event_id_reg}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
+
   - measure: count_logins
     type: count_distinct
     sql: ${session_id}
@@ -244,6 +267,52 @@
     type: string
     sql: max(${event_time_time})
     
+########################################################################### Product Payment Funnel Measures #################################################################
 
+  - measure: distinct_product_impressions
+    type: count_distinct
+    sql: ${product_funnel.product_user_id}
+    filters:
+      product_funnel.event_type: Product Impression, Product Quick View, Product Page View, Product Added to Cart, Product Purchased
+  
+  - measure: distinct_quick_views
+    type: count_distinct
+    sql: ${product_funnel.product_user_id}
+    filters:
+      product_funnel.event_type: Product Quick View
+  
+  - measure: distinct_product_page_views
+    type: count_distinct
+    sql: ${product_funnel.product_user_id}
+    filters:
+      product_funnel.event_type: Product Page View
 
-    
+  - measure: avg_product_impressions_per_user
+    type: number
+    decimals: 2
+    sql: ${distinct_product_impressions}/NULLIF(${count_users},0)::REAL
+    format: "%0.2f"
+  
+  - measure: avg_product_quick_views_per_user
+    type: number
+    decimals: 2
+    sql: ${distinct_quick_views}/NULLIF(${count_users},0)::REAL
+    format: "%0.2f"
+  
+  - measure: avg_product_page_views_per_user
+    type: number
+    decimals: 2
+    sql: ${distinct_product_page_views}/NULLIF(${count_users},0)::REAL
+    format: "%0.2f"
+  
+  - measure: count_users_with_product_view
+    type: count_distinct
+    sql: ${blended_user_id}
+    filters:
+      product_funnel.event_type: Product Page View
+  
+  - measure: percentage_of_users_who_viewed_product
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_users_with_product_view}/NULLIF(${count_users},0)::REAL
+    format: "%0.2f%"
