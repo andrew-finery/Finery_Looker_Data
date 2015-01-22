@@ -174,3 +174,12 @@
   - join: identity_stitching
     sql_on: |
       product_funnel.domain_userid = identity_stitching.domain_userid
+
+- explore: goods_in
+  joins:
+  - join: product_lookup
+    sql_on: |
+      goods_in.ean = product_lookup.ean
+  - join: calendar_weeks
+    sql_on: |
+      goods_in.confirm_date = calendar_weeks.calendar_date
