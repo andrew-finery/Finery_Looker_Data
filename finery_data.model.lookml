@@ -14,6 +14,12 @@
       sessions.domain_userid = payment_funnel.domain_userid and sessions.domain_sessionidx = payment_funnel.domain_sessionidx
     join_type: one_to_one
 
+- explore: events
+  joins:
+  - join: identity_stitching
+    sql_on: |
+      identity_stitching.domain_userid = events.domain_userid
+      
 - explore: spree_invitations
   joins:
   - join: spree_users
@@ -158,5 +164,3 @@
   - join: online_products
     sql_on: |
       product_funnel.product_id = online_products.product_id
-
-

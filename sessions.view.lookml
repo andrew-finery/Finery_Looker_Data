@@ -6,7 +6,7 @@
         s.domain_userid,
         s.domain_sessionidx,
         s.session_start_ts,
-        case when id.domain_userid is null then s.domain_userid else id.user_id end as blended_user_id,
+        id.blended_user_id,
         s.session_end_ts,
         s.number_of_events,
         s.distinct_pages_viewed,
