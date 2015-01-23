@@ -157,6 +157,9 @@
        type: time
        timeframes: [date, week, month]
        sql: ${TABLE}.available_on
+
+     - dimension: weeks_online
+       sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on) as integer) / 7 end
     
      - dimension: image_location
        sql: ${TABLE}.option_image
