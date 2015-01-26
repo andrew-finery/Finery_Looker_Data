@@ -55,7 +55,7 @@
      - dimension: product_id
        sql: ${TABLE}.product_id
 
-     - dimension_group: time_period
+     - dimension_group: occurred_at
        type: time
        timeframes: [time, hour, date, hod, dow, week, month]
        sql: ${TABLE}.collector_tstamp
