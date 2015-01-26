@@ -183,9 +183,15 @@
   - join: calendar_weeks
     sql_on: |
       goods_in.confirm_date = calendar_weeks.calendar_date
+  - join: online_products
+    sql_on: |
+      goods_in.ean = online_products.ean
 
 - explore: goods_commitment
   joins:
   - join: product_lookup
     sql_on: |
       goods_commitment.ean = product_lookup.ean
+  - join: online_products
+    sql_on: |
+      goods_commitment.ean = online_products.ean
