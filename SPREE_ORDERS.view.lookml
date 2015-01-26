@@ -132,6 +132,7 @@
     sql: ${TABLE}.shipping_method
 
   - dimension: tracking_number
+    type: string
     sql: ${TABLE}.tracking_number
 
 ##################################### REVENUE DIMENSIONS ##########################################################
