@@ -13,6 +13,7 @@
              adjustment_total,
              shipment_total,
              shipments.name as shipping_method,
+             shipments.tracking as tracking_number,
              a.included_tax_total,
              a.additional_tax_total,
              a.completed_at,
@@ -129,6 +130,9 @@
 
   - dimension: shipping_method
     sql: ${TABLE}.shipping_method
+
+  - dimension: tracking_number
+    sql: ${TABLE}.tracking_number
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
