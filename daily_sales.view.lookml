@@ -90,7 +90,8 @@
 ########################################################## MEASURES #############################################################################################################################
 #################################################################################################################################################################################################
 
-# Item Measures  
+# Item Measures 
+
   - measure: sum_items_sold
     type: sum
     sql: ${TABLE}.items_sold
@@ -104,6 +105,7 @@
     sql: ${TABLE}.items_sold_after_returns
 
 # Value Measures
+
   - dimension: sum_gross_item_revenue_gbp_ex_vat
     type: sum
     sql: ${TABLE}.gross_item_revenue_gbp_ex_vat
@@ -118,8 +120,19 @@
     type: sum
     sql: ${TABLE}.gross_item_revenue_gbp_ex_vat - ${TABLE}.net_item_revenue_gbp_ex_vat
     format: "£%0.2f"
-    
+
+# Margin Measures
+
+  - measure: sum_cost_gbp
+    type: sum
+    sql: ${product_lookup.total_landed_cost_gbp} * ${TABLE}.items_sold
+    format: "£%0.2f"
+  
+  - measure: profit_gbp
+    type: ${TABLE}.gross_item_revenue_gbp_ex_vat - (coalesce(${product_lookup.total_landed_cost_gbp},0) * ${TABLE}.items_sold)
+
 # Stock Measures
+
   - dimension: sum_closing_stock
     type: sum
     sql: ${TABLE}.closing_stock
