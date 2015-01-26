@@ -96,27 +96,27 @@
     type: sum
     sql: ${TABLE}.items_sold
 
-  - dimension: sum_items_returned
+  - measure: sum_items_returned
     type: sum
     sql: ${TABLE}.items_returned
     
-  - dimension: sum_items_sold_after_returns
+  - measure: sum_items_sold_after_returns
     type: sum
     sql: ${TABLE}.items_sold_after_returns
 
 # Value Measures
 
-  - dimension: sum_gross_item_revenue_gbp_ex_vat
+  - measure: sum_gross_item_revenue_gbp_ex_vat
     type: sum
     sql: ${TABLE}.gross_item_revenue_gbp_ex_vat
     format: "£%0.2f"
     
-  - dimension: sum_net_item_revenue_gbp_ex_vat
+  - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
     sql: ${TABLE}.net_item_revenue_gbp_ex_vat
     format: "£%0.2f"
   
-  - dimension: sum_return_item_value_ex_vat
+  - measure: sum_return_item_value_ex_vat
     type: sum
     sql: ${TABLE}.gross_item_revenue_gbp_ex_vat - ${TABLE}.net_item_revenue_gbp_ex_vat
     format: "£%0.2f"
@@ -125,15 +125,12 @@
 
   - measure: sum_cost_gbp
     type: sum
-    sql: ${product_lookup.total_landed_cost_gbp} * ${TABLE}.items_sold
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     format: "£%0.2f"
-  
-  - measure: profit_gbp
-    type: ${TABLE}.gross_item_revenue_gbp_ex_vat - (coalesce(${product_lookup.total_landed_cost_gbp},0) * ${TABLE}.items_sold)
 
 # Stock Measures
 
-  - dimension: sum_closing_stock
+  - measure: sum_closing_stock
     type: sum
     sql: ${TABLE}.closing_stock
 
