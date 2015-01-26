@@ -36,7 +36,8 @@
         
         prices_tw.price as price_gbp_tw,
         prices_lw.price as price_gbp_lw,
-        prices_tw_ly.price as price_gbp_tw_ly
+        prices_tw_ly.price as price_gbp_tw_ly,
+        max_prices.max_selling_price_gbp
         
         from
         
@@ -185,6 +186,16 @@
         on closing_stock_tw_ly.year_week_number = week_matrix.year_week_number_tw_ly
         and closing_stock_tw_ly.sku = tw.sku
         
+        left join
+        (select          
+         variants.sku, max(prices.amount) as max_selling_price_gbp from
+         daily_snapshot.spree_prices prices
+         inner join (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <>1 ) variants
+         on prices.variant_id = variants.id
+         where prices.currency = 'GBP' and prices.deleted_at is null 
+         group  by 1) max_prices
+         on max_prices.sku = tw.sku
+        
         where tw.year_week_number > 201446 -- when finery started trading
 
      sql_trigger_value: SELECT max(calendar_date) FROM ${daily_sales.SQL_TABLE_NAME}
@@ -253,6 +264,75 @@
     decimals: 2
     sql: ${TABLE}.price_gbp_tw_ly
     format: "£%0.2f"
+    
+  - dimension: max_selling_price_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.max_selling_price_gbp
+    format: "£%0.2f"
+    
+  - dimension: selling_price_tw_tiered
+    sql_case:
+      £0 - £20: ${price_gbp_tw} < 20
+      £20 - £40: ${price_gbp_tw} < 40
+      £40 - £60: ${price_gbp_tw} < 60
+      £60 - £80: ${price_gbp_tw} < 80
+      £80 - £100: ${price_gbp_tw} < 100
+      £100 - £150: ${price_gbp_tw} < 150
+      £150 - £200: ${price_gbp_tw} < 200
+      £200 - £300: ${price_gbp_tw} < 300
+      £300 and over: ${price_gbp_tw} >= 300
+      else: 'No Selling Price'
+  
+  - dimension: selling_price_lw_tiered
+    sql_case:
+      £0 - £20: ${price_gbp_lw} < 20
+      £20 - £40: ${price_gbp_lw} < 40
+      £40 - £60: ${price_gbp_lw} < 60
+      £60 - £80: ${price_gbp_lw} < 80
+      £80 - £100: ${price_gbp_lw} < 100
+      £100 - £150: ${price_gbp_lw} < 150
+      £150 - £200: ${price_gbp_lw} < 200
+      £200 - £300: ${price_gbp_lw} < 300
+      £300 and over: ${price_gbp_lw} >= 300
+      else: 'No Selling Price'
+      
+  - dimension: selling_price_tw_ly_tiered
+    sql_case:
+      £0 - £20: ${price_gbp_tw_ly} < 20
+      £20 - £40: ${price_gbp_tw_ly} < 40
+      £40 - £60: ${price_gbp_tw_ly} < 60
+      £60 - £80: ${price_gbp_tw_ly} < 80
+      £80 - £100: ${price_gbp_tw_ly} < 100
+      £100 - £150: ${price_gbp_tw_ly} < 150
+      £150 - £200: ${price_gbp_tw_ly} < 200
+      £200 - £300: ${price_gbp_tw_ly} < 300
+      £300 and over: ${price_gbp_tw_ly} >= 300
+      else: 'No Selling Price'
+  
+  - dimension: discount_level_tw_tier
+    sql_case:
+      0% - 7.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.925
+      7.5% - 17.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.825
+      17.5% - 27.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.725
+      27.5% - 37.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.625
+      else: '37.5% and over'
+
+  - dimension: discount_level_lw_tier
+    sql_case:
+      0% - 7.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.925
+      7.5% - 17.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.825
+      17.5% - 27.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.725
+      27.5% - 37.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.625
+      else: '37.5% and over'
+
+  - dimension: discount_level_tw_ly_tier
+    sql_case:
+      0% - 7.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.925
+      7.5% - 17.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.825
+      17.5% - 27.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.725
+      27.5% - 37.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.625
+      else: '37.5% and over'
 
   ####################################### Availability Dimensions ##################################################
   

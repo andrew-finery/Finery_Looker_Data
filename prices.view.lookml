@@ -4,7 +4,7 @@
       select
           prices.currency, variants.sku, prices.variant_id, date(prices.spree_timestamp) as calendar_date, max(prices.amount) as price from
           daily_snapshot.spree_prices prices
-          inner join (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) variants
+          inner join (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <> 1) variants
           on prices.variant_id = variants.id
           where prices.currency = 'GBP' and prices.deleted_at is null 
           group  by 1,2,3,4
