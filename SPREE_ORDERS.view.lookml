@@ -133,7 +133,7 @@
 
   - dimension: tracking_number
     type: string
-    sql: ${TABLE}.tracking_number
+    sql: ${TABLE}.tracking_number || 'a'
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
