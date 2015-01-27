@@ -130,9 +130,15 @@
 
 # Stock Measures
 
-  - measure: sum_closing_stock
+  - measure: closing_stock
     type: sum
     sql: ${TABLE}.closing_stock
+
+  - measure: closing_stock_yesterday
+    type: sum
+    sql: ${TABLE}.closing_stock
+    filters:
+      calendar_date_date: 1 day ago for 1 day
 
      
     
