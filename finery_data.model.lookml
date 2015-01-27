@@ -129,6 +129,9 @@
   - join: product_lookup
     sql_on: |
       daily_sales.sku = product_lookup.ean
+  - join: online_products
+    sql_on: |
+      daily_sales.sku = online_products.ean
 
 - explore: weekly_sales
   joins:
