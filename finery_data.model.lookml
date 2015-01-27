@@ -71,6 +71,9 @@
   - join: delivery_tracking_current_status
     sql_on: |
       delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+  - join: spree_users
+    sql_on: |
+      spree_orders.customer_id = spree_users.user_id
 
 - explore: spree_stock_items
   joins:
