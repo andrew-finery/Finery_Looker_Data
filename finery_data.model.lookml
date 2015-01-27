@@ -68,6 +68,9 @@
   - join: calendar_weeks
     sql_on: |
       date(spree_orders.completed_at) = calendar_weeks.calendar_date
+  - join: delivery_tracking_current_status
+    sql_on: |
+      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
 
 - explore: spree_stock_items
   joins:
@@ -204,3 +207,5 @@
   - join: online_products
     sql_on: |
       goods_commitment.ean = online_products.ean
+      
+- explore: delivery_tracking_current_status

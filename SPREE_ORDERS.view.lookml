@@ -14,6 +14,8 @@
              shipment_total,
              shipments.name as shipping_method,
              shipments.tracking as tracking_number,
+             shipments.consignee,
+             shipments.name as delivery_type,
              a.included_tax_total,
              a.additional_tax_total,
              a.completed_at,
@@ -128,12 +130,24 @@
     type: int
     sql: ${TABLE}.customer_id
 
+# Shipping Dimensions
+
   - dimension: shipping_method
     sql: ${TABLE}.shipping_method
 
   - dimension: tracking_number
     type: string
     sql: ${TABLE}.tracking_number || 'a'
+  
+  - dimension: delivery_company
+    sql: ${TABLE}.consignee
+  
+  - dimension: delivery_type
+    sql: ${TABLE}.delivery_type
+  
+  - dimension: tracking_info_available
+    type: yesno
+    sql: ${tracking_number} <> 'a'
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
