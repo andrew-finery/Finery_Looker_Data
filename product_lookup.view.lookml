@@ -36,8 +36,8 @@
   
   - dimension: product_area
     sql_case:
-      Clothing: ${TABLE}.product_type = 'Apparel'
-      Non-Clothing: ${TABLE}.product_type in ('Accessories', 'Shoes')
+      Clothing: ${TABLE}.category in ('Evening Dresses', 'Outerwear & Blazers', 'Skirts', 'Woven Tops', 'Day Dresses', 'Knitwear', 'Trousers & Shorts', 'Jersey Tops')
+      Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
   - dimension: cloth_composition
