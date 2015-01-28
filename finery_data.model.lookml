@@ -162,8 +162,6 @@
   - join: online_products
     sql_on: |
       weekly_sales.sku = online_products.ean
-      
-- explore: opening_stock
 
 - explore: returns
   joins:

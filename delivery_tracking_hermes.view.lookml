@@ -15,7 +15,7 @@
         -- NB. must group as the same records get loaded multiple times into the staging table
 
 
-   sql_trigger_value: select max(cast(calendar_date || ' ' || event_time as datetime)) from finery.delivery_tracking_information_staging
+   sql_trigger_value: select count(*) from finery.delivery_tracking_information_staging
    distkey: tracking_code
    sortkeys: [tracking_code, event_timestamp]
    

@@ -9,7 +9,7 @@
           FROM cml.goods_in
           WHERE confirm_date IS NOT NULL
 
-     sql_trigger_value: SELECT max(confirm_date from cml.goods_in
+     sql_trigger_value: SELECT count(*) from cml.goods_in
      distkey: ean
      sortkeys: [confirm_date, ean]
 

@@ -17,7 +17,7 @@
                     WHERE confirm_date IS NOT NULL
                     GROUP BY 1) goods_in ON brightpearl.ean = goods_in.ean
 
-     sql_trigger_value: SELECT max(confirm_date) from cml.goods_in
+     sql_trigger_value: SELECT count(*) from ${goods_in.SQL_TABLE_NAME}
      distkey: ean
      sortkeys: [ean]
 

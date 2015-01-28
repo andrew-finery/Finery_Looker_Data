@@ -5,7 +5,7 @@
             matrix.calendar_date,
             matrix.year_week_number,
             matrix.sku,
-            coalesce(closing.count_on_hand, '0') as closing_stock,
+            coalesce(closing.closing_stock, '0') as closing_stock,
             coalesce(sales.items_sold, '0') as items_sold,
             coalesce(sales.items_returned, '0') as items_returned,
             coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns,
@@ -15,10 +15,7 @@
             from 
 
             (select aaa.sku, bbb.calendar_date, bbb.year_week_number from
-            (select sku from atomic.com_finerylondon_stock_updated_1 stock_updated
-            left join atomic.events events
-            on stock_updated.root_id = events.event_id
-            where events.app_id = 'production'
+            (select sku from ${daily_closing_stock.SQL_TABLE_NAME}
             group by 1) aaa
             cross join
             (select calendar_date, year_week_number from lookup.calendar)bbb
@@ -26,21 +23,7 @@
             
             left join
             
-            (select
-            cls.closing_stock_date,
-            cls.sku,
-            stk.count_on_hand
-            from
-            (select sku, date(root_tstamp) - 1 as closing_stock_date, min(root_tstamp) as root_tstamp
-            from atomic.com_finerylondon_stock_updated_1 stock_updated
-            left join atomic.events events
-            on stock_updated.root_id = events.event_id
-            where events.app_id = 'production'
-            group by 1,2) cls
-            left join
-            atomic.com_finerylondon_stock_updated_1 stk
-            on cls.root_tstamp = stk.root_tstamp
-            and cls.sku = stk.sku) closing
+            ${daily_closing_stock.SQL_TABLE_NAME} closing
             
             on closing.closing_stock_date = matrix.calendar_date
             and closing.sku = matrix.sku
@@ -62,7 +45,8 @@
             
             where matrix.calendar_date > date '2014-11-17'
             
-   sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
+   sql_trigger_value: |
+                      SELECT concat(max(a.spree_timestamp), max(b.closing_stock_date)) FROM ${spree_order_items.SQL_TABLE_NAME} a, ${daily_closing_stock.SQL_TABLE_NAME} b
    distkey: sku
    sortkeys: [sku, calendar_date]
 
