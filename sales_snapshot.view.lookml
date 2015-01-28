@@ -3,7 +3,7 @@
     sql: |
         select
             a.sku,
-            a.count_on_hand,
+            a.closing_stock as count_on_hand,
             b.max_selling_price_gbp,
             
             --yesterday vs day before
@@ -34,7 +34,8 @@
             
             from
             
-            ${spree_stock_items.SQL_TABLE_NAME} a
+            (select sku, closing_stock from ${daily_closing_stock.SQL_TABLE_NAME}
+            where closing_stock_date = (select max(closing_stock_date) from ${daily_closing_stock.SQL_TABLE_NAME})) a
             
             left join
             
@@ -56,7 +57,7 @@
             
             group by 1,2,3
 
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT concat(max(a.spree_timestamp), max(b.closing_stock_date)) FROM ${spree_order_items.SQL_TABLE_NAME} a, ${daily_closing_stock.SQL_TABLE_NAME} b
     distkey: sku
     sortkeys: [sku]
 

@@ -11,6 +11,10 @@
         AND   created_at > DATE '2015-01-01'
         AND   sent_by_id IS NOT NULL
 
+     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_invitations
+     distkey: sent_by_id
+     sortkeys: [sent_by_id]
+
   fields:
 
 ############################################################################################################################################

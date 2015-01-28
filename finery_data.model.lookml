@@ -85,27 +85,9 @@
     sql_on: |
       spree_orders.customer_id = spree_users.user_id
 
-- explore: spree_stock_items
-  joins:
-  - join: line_detail_re15
-    sql_on: |
-      spree_stock_items.sku = line_detail_re15.ean
-  - join: sales_snapshot
-    sql_on: |
-      sales_snapshot.sku = spree_stock_items.sku
-  - join: online_products
-    sql_on: |
-      spree_stock_items.sku = online_products.ean
-  - join: product_lookup
-    sql_on: |
-      spree_stock_items.sku = product_lookup.ean
-      
       
 - explore: sales_snapshot
   joins:
-  - join: spree_stock_items
-    sql_on: |
-      sales_snapshot.sku = spree_stock_items.sku
   - join: line_detail_re15
     sql_on: |
       sales_snapshot.sku = line_detail_re15.ean

@@ -31,7 +31,8 @@
         from ${product_in_transaction.SQL_TABLE_NAME}
 
      sql_trigger_value: |
-                        SELECT MAX(collector_tstamp) FROM ${product_impressions.SQL_TABLE_NAME}
+                        SELECT concat(MAX(a.collector_tstamp), MAX(b.collector_tstamp), MAX(c.collector_tstamp), MAX(d.collector_tstamp), MAX(e.collector_tstamp)) 
+                        FROM ${product_impressions.SQL_TABLE_NAME} a, ${product_quick_views.SQL_TABLE_NAME} b, ${page_view_events.SQL_TABLE_NAME} c, ${product_in_cart.SQL_TABLE_NAME} d, ${product_in_transaction.SQL_TABLE_NAME} e 
      distkey: event_id
      sortkeys: [event_id]
       

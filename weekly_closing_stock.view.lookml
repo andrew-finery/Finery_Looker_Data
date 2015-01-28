@@ -17,6 +17,11 @@
                   AND closing_stock.root_tstamp = stock_updated.root_tstamp
             LEFT JOIN lookup.calendar calendar ON closing_stock.closing_stock_date = calendar.calendar_date
             where calendar.dow = 'Sunday'
+            
+     sql_trigger_value: |
+                        SELECT MAX(root_tstamp) FROM atomic.com_finerylondon_stock_updated_1
+     distkey: sku
+     sortkeys: [sku, year_week_number]
 
   fields:
   
