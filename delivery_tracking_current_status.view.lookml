@@ -91,15 +91,5 @@
   - dimension_group: return_confirmed_time
     type: time
     timeframes: [time, hour, date, week, month]
-    sql: ${TABLE}.latest_event_time
-
-# Basic Status Flags
-
-  - dimension: delivered_flag
-    type: yesno
-    sql: ${TABLE}.delivery_confirmed_time is not null
-  
-  - dimension: returned_flag
-    type: yesno
-    sql: ${TABLE}.return_confirmed_time is not null  
+    sql: ${TABLE}.return_confirmed_time
 

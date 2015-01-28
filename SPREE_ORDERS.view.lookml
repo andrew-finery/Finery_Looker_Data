@@ -148,6 +148,27 @@
   - dimension: tracking_info_available
     type: yesno
     sql: ${tracking_number} <> 'a'
+  
+  - dimension: delivered_flag
+    type: yesno
+    sql: |
+        ${delivery_tracking_current_status.delivery_confirmed_time_time} is not null
+        or ${TABLE}.tracking_number in
+        ('7817394680536081',
+        '3901472680538288',
+        '3910172680538186',
+        '1149738680537787',
+        '6801279680535086',
+        '6820375680535387',
+        '6004675499',
+        '6004676013',
+        '1381987680535888',
+        '1181887680535289')
+  # NB. Manually entered tracking codes. These are parcels that Hermes website has lost trackon of but we have confirmed as delivered
+  
+  - dimension: returned_flag
+    type: yesno
+    sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
