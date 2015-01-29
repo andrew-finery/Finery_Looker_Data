@@ -23,8 +23,8 @@
         from 
         ${delivery_tracking_hermes.SQL_TABLE_NAME}
         where event_description like '%Signature%'
-        or event_description like '%Delivered%'
-        or event_description like '%Delivery Confirmed by Courier%'
+        or event_description like '%Delivered to%'
+        or event_description like '%Delivery Confirmed%'
         group by 1) confirmed_deliveries
         on all_deliveries.tracking_code = confirmed_deliveries.tracking_code
         
@@ -35,8 +35,8 @@
         from 
         ${delivery_tracking_hermes.SQL_TABLE_NAME}
         where event_description like '%Signature%'
-        or event_description like '%Delivered%'
-        or event_description like '%Delivery Confirmed by Courier%'
+        or event_description like '%Delivered to%'
+        or event_description like '%Delivery Confirmed%'
         or event_description like '%Courier to Re-attempt%'
         group by 1) first_attempts
         on all_deliveries.tracking_code = first_attempts.tracking_code
