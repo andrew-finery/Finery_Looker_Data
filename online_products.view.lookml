@@ -11,6 +11,7 @@
         products.product_group_id as product_group_id,
         product_group.sku as parent_sku,
         prices.amount as current_price,
+        max_prices.amount as max_price,
         colours.name as colour,
         sizes.name as size,
         product_images.origin_id || '/single/' || product_images.attachment_file_name as option_image,
@@ -37,6 +38,10 @@
         left join
         (select * from daily_snapshot.spree_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_prices) and currency = 'GBP' and deleted_at is null) prices
         on prices.variant_id = variants.id
+        
+        left join
+        (select variant_id, max(amount) as amount from daily_snapshot.spree_prices where currency = 'GBP'  and deleted_at is null group by 1) max_prices
+        on max_prices.variant_id = variants.id
         
         
         left join
@@ -152,6 +157,11 @@
        decimals: 2
        sql: ${TABLE}.current_price
        format: "£%0.2f"
+
+     - dimension: max_price
+       type: number
+       decimals: 2
+       sql: ${TABLE}.max_price
     
      - dimension_group: available_on
        type: time

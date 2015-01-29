@@ -25,6 +25,12 @@
   - join: spree_users
     sql_on: |
       lower(spree_invitations.email) = lower(spree_users.email_address)
+
+- explore: product_lookup
+  joins:
+  - join: online_products
+    sql_on: |
+      product_lookup.ean = online_products.ean
       
 - explore: spree_users
 
@@ -150,6 +156,9 @@
   - join: product_lookup
     sql_on: |
       returns.sku = product_lookup.ean
+  - join: online_products
+    sql_on: |
+      returns.sku = online_products.ean
   - join: spree_orders
     sql_on: |
       spree_orders.order_id = returns.order_id

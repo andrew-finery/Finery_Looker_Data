@@ -163,7 +163,9 @@
     sql: ${TABLE}.product_type
 
   - dimension: retail_markup_inc_vat
-    sql: ${TABLE}.retail_markup_inc_vat
+    type: number
+    decimals: 2
+    sql: case when ${TABLE}.retail_markup_inc_vat = ' ' then '0' else left(${TABLE}.retail_markup_inc_vat, charindex('.',${TABLE}.retail_markup_inc_vat) + 2) end
 
   - dimension: sell_code
     sql: ${TABLE}.sell_code
@@ -209,6 +211,7 @@
 
   - dimension: total_landed_cost_gbp
     type: number
+    decimals: 2
     sql: ${TABLE}.total_landed_cost_gbp
 
   - dimension: upc
@@ -222,3 +225,30 @@
 
   - dimension: width
     sql: ${TABLE}.width
+
+  - dimension: max_selling_price
+    sql: coalesce(${online_products.max_price}, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+ 
+  - dimension: current_price
+    sql: coalesce(${online_products.current_price_gbp}, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    
+  - dimension: selling_price_tiered
+    sql_case:
+      £0 - £20: ${current_price} < 20
+      £20 - £40: ${current_price} < 40
+      £40 - £60: ${current_price} < 60
+      £60 - £80: ${current_price} < 80
+      £80 - £100: ${current_price} < 100
+      £100 - £150: ${current_price} < 150
+      £150 - £200: ${current_price} < 200
+      £200 - £300: ${current_price} < 300
+      else: '£300 and over'
+  
+  - dimension: discount_level_tier
+    sql_case:
+      0% - 7.5%: ${current_price}/${max_selling_price} > 0.925 or ${max_selling_price} = 0
+      7.5% - 17.5%: ${current_price}/${max_selling_price} > 0.825
+      17.5% - 27.5%: ${current_price}/${max_selling_price} > 0.725
+      27.5% - 37.5%: ${current_price}/${max_selling_price} > 0.625
+      37.5% and over: (${current_price}/${max_selling_price}) > 0 and (${current_price}/${max_selling_price}) <= 0.625
+      else: '0% - 7.5%'
