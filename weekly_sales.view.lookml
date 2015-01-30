@@ -272,67 +272,73 @@
     format: "£%0.2f"
     
   - dimension: selling_price_tw_tiered
-    sql_case:
-      £0 - £20: ${price_gbp_tw} < 20
-      £20 - £40: ${price_gbp_tw} < 40
-      £40 - £60: ${price_gbp_tw} < 60
-      £60 - £80: ${price_gbp_tw} < 80
-      £80 - £100: ${price_gbp_tw} < 100
-      £100 - £150: ${price_gbp_tw} < 150
-      £150 - £200: ${price_gbp_tw} < 200
-      £200 - £300: ${price_gbp_tw} < 300
-      £300 and over: ${price_gbp_tw} >= 300
-      else: 'No Selling Price'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_tw < 20 THEN '£0 - £20' 
+      WHEN weekly_sales.price_gbp_tw < 40 THEN '£20 - £40' 
+      WHEN weekly_sales.price_gbp_tw < 60 THEN '£40 - £60' 
+      WHEN weekly_sales.price_gbp_tw < 80 THEN '£60 - £80' 
+      WHEN weekly_sales.price_gbp_tw < 100 THEN '£80 - £100' 
+      WHEN weekly_sales.price_gbp_tw < 150 THEN '£100 - £150' 
+      WHEN weekly_sales.price_gbp_tw < 200 THEN '£150 - £200' 
+      WHEN weekly_sales.price_gbp_tw < 300 THEN '£200 - £300' 
+      WHEN weekly_sales.price_gbp_tw >= 300 THEN '£300 and over' 
+      ELSE ${product_lookup.selling_price_tiered} END
   
   - dimension: selling_price_lw_tiered
-    sql_case:
-      £0 - £20: ${price_gbp_lw} < 20
-      £20 - £40: ${price_gbp_lw} < 40
-      £40 - £60: ${price_gbp_lw} < 60
-      £60 - £80: ${price_gbp_lw} < 80
-      £80 - £100: ${price_gbp_lw} < 100
-      £100 - £150: ${price_gbp_lw} < 150
-      £150 - £200: ${price_gbp_lw} < 200
-      £200 - £300: ${price_gbp_lw} < 300
-      £300 and over: ${price_gbp_lw} >= 300
-      else: 'No Selling Price'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_lw < 20 THEN '£0 - £20' 
+      WHEN weekly_sales.price_gbp_lw < 40 THEN '£20 - £40' 
+      WHEN weekly_sales.price_gbp_lw < 60 THEN '£40 - £60' 
+      WHEN weekly_sales.price_gbp_lw < 80 THEN '£60 - £80' 
+      WHEN weekly_sales.price_gbp_lw < 100 THEN '£80 - £100' 
+      WHEN weekly_sales.price_gbp_lw < 150 THEN '£100 - £150' 
+      WHEN weekly_sales.price_gbp_lw < 200 THEN '£150 - £200' 
+      WHEN weekly_sales.price_gbp_lw < 300 THEN '£200 - £300' 
+      WHEN weekly_sales.price_gbp_lw >= 300 THEN '£300 and over' 
+      ELSE ${product_lookup.selling_price_tiered} END
       
   - dimension: selling_price_tw_ly_tiered
-    sql_case:
-      £0 - £20: ${price_gbp_tw_ly} < 20
-      £20 - £40: ${price_gbp_tw_ly} < 40
-      £40 - £60: ${price_gbp_tw_ly} < 60
-      £60 - £80: ${price_gbp_tw_ly} < 80
-      £80 - £100: ${price_gbp_tw_ly} < 100
-      £100 - £150: ${price_gbp_tw_ly} < 150
-      £150 - £200: ${price_gbp_tw_ly} < 200
-      £200 - £300: ${price_gbp_tw_ly} < 300
-      £300 and over: ${price_gbp_tw_ly} >= 300
-      else: 'No Selling Price'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_tw_ly < 20 THEN '£0 - £20' 
+      WHEN weekly_sales.price_gbp_tw_ly < 40 THEN '£20 - £40' 
+      WHEN weekly_sales.price_gbp_tw_ly < 60 THEN '£40 - £60' 
+      WHEN weekly_sales.price_gbp_tw_ly < 80 THEN '£60 - £80' 
+      WHEN weekly_sales.price_gbp_tw_ly < 100 THEN '£80 - £100' 
+      WHEN weekly_sales.price_gbp_tw_ly < 150 THEN '£100 - £150' 
+      WHEN weekly_sales.price_gbp_tw_ly < 200 THEN '£150 - £200' 
+      WHEN weekly_sales.price_gbp_tw_ly < 300 THEN '£200 - £300' 
+      WHEN weekly_sales.price_gbp_tw_ly >= 300 THEN '£300 and over' 
+      ELSE ${product_lookup.selling_price_tiered} END
   
   - dimension: discount_level_tw_tier
-    sql_case:
-      0% - 7.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.925
-      7.5% - 17.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.825
-      17.5% - 27.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.725
-      27.5% - 37.5%: ${price_gbp_tw}/${max_selling_price_gbp} > 0.625
-      else: '37.5% and over'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_tw/weekly_sales.max_selling_price_gbp > 0.925 THEN '0% - 7.5%' 
+      WHEN weekly_sales.price_gbp_tw/weekly_sales.max_selling_price_gbp > 0.825 THEN '7.5% - 17.5%' 
+      WHEN weekly_sales.price_gbp_tw/weekly_sales.max_selling_price_gbp > 0.725 THEN '17.5% - 27.5%' 
+      WHEN weekly_sales.price_gbp_tw/weekly_sales.max_selling_price_gbp > 0.625 THEN '27.5% - 37.5%' 
+      ELSE ${product_lookup.discount_level_tier} END
 
   - dimension: discount_level_lw_tier
-    sql_case:
-      0% - 7.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.925
-      7.5% - 17.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.825
-      17.5% - 27.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.725
-      27.5% - 37.5%: ${price_gbp_lw}/${max_selling_price_gbp} > 0.625
-      else: '37.5% and over'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_lw/weekly_sales.max_selling_price_gbp > 0.925 THEN '0% - 7.5%' 
+      WHEN weekly_sales.price_gbp_lw/weekly_sales.max_selling_price_gbp > 0.825 THEN '7.5% - 17.5%' 
+      WHEN weekly_sales.price_gbp_lw/weekly_sales.max_selling_price_gbp > 0.725 THEN '17.5% - 27.5%' 
+      WHEN weekly_sales.price_gbp_lw/weekly_sales.max_selling_price_gbp > 0.625 THEN '27.5% - 37.5%' 
+      ELSE ${product_lookup.discount_level_tier} END
 
   - dimension: discount_level_tw_ly_tier
-    sql_case:
-      0% - 7.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.925
-      7.5% - 17.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.825
-      17.5% - 27.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.725
-      27.5% - 37.5%: ${price_gbp_tw_ly}/${max_selling_price_gbp} > 0.625
-      else: '37.5% and over'
+    sql: |
+      CASE
+      WHEN weekly_sales.price_gbp_tw_ly/weekly_sales.max_selling_price_gbp > 0.925 THEN '0% - 7.5%' 
+      WHEN weekly_sales.price_gbp_tw_ly/weekly_sales.max_selling_price_gbp > 0.825 THEN '7.5% - 17.5%' 
+      WHEN weekly_sales.price_gbp_tw_ly/weekly_sales.max_selling_price_gbp > 0.725 THEN '17.5% - 27.5%' 
+      WHEN weekly_sales.price_gbp_tw_ly/weekly_sales.max_selling_price_gbp > 0.625 THEN '27.5% - 37.5%' 
+      ELSE ${product_lookup.discount_level_tier} END
 
   ####################################### Availability Dimensions ##################################################
   
