@@ -170,9 +170,6 @@
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
-  - join: online_products
-    sql_on: |
-      returns.sku = online_products.ean
       
 - explore: online_products
 
