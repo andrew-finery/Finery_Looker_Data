@@ -148,7 +148,7 @@
   - dimension: tracking_info_available
     type: yesno
     sql: ${tracking_number} <> 'a'
-  
+
   - dimension: delivered_flag
     type: yesno
     sql: |
@@ -164,7 +164,18 @@
         '6004676013',
         '1381987680535888',
         '1181887680535289')
-  # NB. Manually entered tracking codes. These are parcels that Hermes website has lost trackon of but we have confirmed as delivered
+        or ${TABLE}.order_code in
+        ('R734499812',
+        'R943850231',
+        'R616072248',
+        'R759284769',
+        'R164515611',
+        'R633214240',
+        'R864835650',
+        'R644319374',
+        'R870765040',
+        'R408945061')
+  # NB. Manually entered tracking codes. These are parcels that Hermes website has lost track of but we have confirmed as delivered
   
   - dimension: returned_flag
     type: yesno
