@@ -46,7 +46,7 @@
             where matrix.calendar_date > date '2014-11-17'
             
    sql_trigger_value: |
-                      SELECT concat(max(a.spree_timestamp), max(b.closing_stock_date)) FROM ${spree_order_items.SQL_TABLE_NAME} a, ${daily_closing_stock.SQL_TABLE_NAME} b
+                      SELECT max(closing_stock_date) FROM ${daily_closing_stock.SQL_TABLE_NAME}
    distkey: sku
    sortkeys: [sku, calendar_date]
 

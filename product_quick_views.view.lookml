@@ -1,7 +1,9 @@
 - view: product_quick_views
   derived_table:
      sql: |
-          SELECT events.domain_userid,
+          SELECT (SELECT MAX(collector_tstamp) FROM atomic.events)
+          AS max_timestamp,
+                 events.domain_userid,
                  events.domain_sessionidx,
                  events.collector_tstamp,
                  events.event_id,
@@ -20,7 +22,7 @@
             LEFT JOIN atomic.events events ON quick_view.root_id = events.event_id
           WHERE events.app_id = 'production'
           
-     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     sql_trigger_value: SELECT MAX(max_timestamp) from ${product_impressions.SQL_TABLE_NAME}
      distkey: domain_userid
      sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 

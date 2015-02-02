@@ -30,9 +30,7 @@
         'Product Purchased' as event_type, domain_userid, domain_sessionidx,collector_tstamp, event_id, cast(id as integer) as product_id
         from ${product_in_transaction.SQL_TABLE_NAME}
 
-     sql_trigger_value: |
-                        SELECT concat(MAX(a.collector_tstamp), MAX(b.collector_tstamp), MAX(c.collector_tstamp), MAX(d.collector_tstamp), MAX(e.collector_tstamp)) 
-                        FROM ${product_impressions.SQL_TABLE_NAME} a, ${product_quick_views.SQL_TABLE_NAME} b, ${page_view_events.SQL_TABLE_NAME} c, ${product_in_cart.SQL_TABLE_NAME} d, ${product_in_transaction.SQL_TABLE_NAME} e 
+     sql_trigger_value: SELECT MAX(max_timestamp) from ${product_in_transaction.SQL_TABLE_NAME}
      distkey: event_id
      sortkeys: [event_id]
       

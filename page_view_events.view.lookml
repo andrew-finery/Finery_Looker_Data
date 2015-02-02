@@ -1,7 +1,8 @@
 - view: page_view_events
   derived_table:
      sql: |
-          select
+          select(SELECT MAX(collector_tstamp) FROM atomic.events)
+          AS max_timestamp,
             all_page_views.domain_userid,
             all_page_views.domain_sessionidx,
             all_page_views.event_id,
@@ -48,7 +49,7 @@
             group by 1,2) taxons
             on taxons.permalink = all_page_views.taxon_permalink
             
-     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     sql_trigger_value: SELECT MAX(max_timestamp) from ${product_quick_views.SQL_TABLE_NAME}
      distkey: domain_userid
      sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
             

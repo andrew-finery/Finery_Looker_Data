@@ -1,7 +1,9 @@
 - view: product_in_cart
   derived_table:
      sql: |
-          SELECT events.domain_userid,
+          SELECT (SELECT MAX(collector_tstamp) FROM atomic.events)
+          AS max_timestamp,
+                 events.domain_userid,
                  events.domain_sessionidx,
                  events.event_id,
                  events.collector_tstamp,
@@ -13,7 +15,7 @@
           WHERE events.app_id = 'production'
           AND   product_context.id IS NOT NULL
 
-     sql_trigger_value: SELECT max(collector_tstamp) from atomic.events
+     sql_trigger_value: SELECT MAX(max_timestamp) from ${page_view_events.SQL_TABLE_NAME}
      distkey: domain_userid
      sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 
