@@ -210,3 +210,8 @@
     type: number
     decimals: 2
     sql: ${approx_total_usage_time_minutes}/NULLIF(${visitors_count}, 0)::REAL
+
+  - measure: engagement_time_per_visitor
+    type: string
+    sql: floor(${approx_usage_per_visitor_in_minutes}) || ':' || right(cast('00' as varchar) || cast(((${approx_usage_per_visitor_in_minutes} - floor(${approx_usage_per_visitor_in_minutes})) * 60) as integer), 2)
+
