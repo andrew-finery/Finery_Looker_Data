@@ -72,17 +72,18 @@
     decimals: 2
     sql: ${TABLE}.max_selling_price_gbp
     format: "£%0.2f"
-  
-  - dimension: selling_price_tiered
-    type: tier
-    tiers: [0, 20, 40, 60, 80, 100, 150, 200, 250, 300]
-    sql: ${max_selling_price_gbp}
 
+  - dimension: current_price
+    type: number
+    decimals: 2
+    sql: ${product_lookup.current_price}
+    format: "£%0.2f"  
+  
   - dimension: count_on_hand_qty
     sql: ${TABLE}.count_on_hand  
   
   - dimension: count_on_hand_gbp
-    sql: ${TABLE}.count_on_hand*${line_detail_re15.uk_selling_price}
+    sql: ${TABLE}.count_on_hand*${product_lookup.current_price}
 
   ###########################################################################################################################################################################################
   #################################################################### MEASURES #############################################################################################################
