@@ -45,12 +45,9 @@
   - join: spree_orders
     sql_on: |
       spree_users_2.user_id = spree_orders.customer_id
-  ###
   - join: delivery_tracking_current_status
     sql_on: |
       delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
-  ###
-    
 
 - explore: atomic_events
   joins:
@@ -68,11 +65,9 @@
   - join: spree_orders
     sql_on: |
       spree_orders.customer_id = users_signup.id
-  ###
   - join: delivery_tracking_current_status
     sql_on: |
       delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
-  ###
   
 - explore: leads
 
@@ -94,9 +89,6 @@
       
 - explore: sales_snapshot
   joins:
-  - join: line_detail_re15
-    sql_on: |
-      sales_snapshot.sku = line_detail_re15.ean
   - join: product_lookup
     sql_on: |
       sales_snapshot.sku = product_lookup.ean
@@ -106,17 +98,12 @@
       
 - explore: spree_order_items
   joins:
-  - join: line_detail_re15
-    sql_on: |
-      spree_order_items.sku = line_detail_re15.ean
   - join: spree_orders
     sql_on: |
       spree_orders.order_id = spree_order_items.order_id
-  ###
   - join: delivery_tracking_current_status
     sql_on: |
       delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
-  ###
   - join: users_signup
     sql_on: |
       spree_orders.customer_id = users_signup.id
