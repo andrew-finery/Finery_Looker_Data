@@ -316,3 +316,9 @@
     decimals: 2
     sql: 100.0 * ${count_users_with_product_view}/NULLIF(${count_users},0)::REAL
     format: "%0.2f%"
+  
+  ##### TRANSACTION MEASURES
+  
+  - measure: sum_revenue_ex_coupon_and_vat
+    type: sum
+    sql: ${transactions.revenue_ex_coupon_and_vat}

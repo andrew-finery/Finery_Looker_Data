@@ -12,7 +12,6 @@
   - join: payment_funnel
     sql_on: |
       sessions.domain_userid = payment_funnel.domain_userid and sessions.domain_sessionidx = payment_funnel.domain_sessionidx
-    join_type: one_to_one
 
 - explore: events
   joins:
@@ -57,7 +56,18 @@
   - join: product_funnel
     sql_on: |
       product_funnel.event_id = atomic_events.event_id
-
+  - join: transactions
+    sql_on: |
+      transactions.event_id = atomic_events.event_id
+  - join: page_view_events
+    sql_on: |
+      page_view_events.event_id = atomic_events.event_id
+  - join: sessions_source
+    sql_on: |
+      sessions_source.domain_userid = atomic_events.domain_userid
+      and sessions_source.domain_sessionidx = atomic_events.domain_sessionidx
+    join_type: one_to_one
+    
 - explore: page_views
 
 - explore: users_signup
@@ -149,11 +159,9 @@
   - join: spree_orders
     sql_on: |
       spree_orders.order_id = returns.order_id
-  ###
   - join: delivery_tracking_current_status
     sql_on: |
       delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
-  ###
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
