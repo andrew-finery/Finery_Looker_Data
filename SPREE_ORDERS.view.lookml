@@ -180,6 +180,42 @@
   - dimension: returned_flag
     type: yesno
     sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
+    
+  - dimension_group: expected_delivery
+    type: time
+    timeframes: [date]
+    sql: |
+        case
+        --- 48 HOUR DELIVERY CASES
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 0 then ${completed_date} + 3                                                  -- 48h Orders on Sunday delivered on Wednesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} between 1 and 3 and ${completed_tod} < '16:00' then ${completed_date} + 2       -- 48h Orders Mon-Wed before 4 delivered 2 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} between 1 and 3 and ${completed_tod} >= '16:00' then ${completed_date} + 3      -- 48h Orders Mon-Wed after 4 delivered 3 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 4 and ${completed_tod} < '16:00' then ${completed_date} + 2                   -- 48h Order on Thursday before 4 delivered on Saturday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 4 and ${completed_tod} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Thursday after 4 delivered Monday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 3                   -- 48h Orders on Friday before 4 delivered Monday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Friday after 4 delivered Tuesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 6 and ${completed_tod} < '17:00' then ${completed_date} + 3                   -- 48h Orders on Saturday before 5 delivered Tuesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 6 and ${completed_tod} >= '17:00' then ${completed_date} + 4                  -- 48h Orders on Saturday after 5 delivered Wednesday
+        --- NEXT DAY DELIVERY CASES
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 0 then ${completed_date} + 2                                                 -- 24h Orders on Sunday delivered on Tuesday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} between 1 and 4 and ${completed_tod} < '16:00' then ${completed_date} + 1      -- 24h Orders Mon-Thu before 4 delivered the next day
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} between 1 and 4 and ${completed_tod} >= '16:00' then ${completed_date} + 2     -- 24h Orders Mon-Thu after 4 delivered 2 days later
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 1                  -- 24h Orders Fri before 4 delivered Saturday                   
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 3                 -- 24h Orders Fri after 4 delivered Monday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 6 and ${completed_tod} < '17:00' then ${completed_date} + 2                  -- 24h Orders on Saturday before 5 delivered Monday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 6 and ${completed_tod} >= '17:00' then ${completed_date} + 3                 -- 24h Orders on Saturday after 5 delivered Tuesday
+        --- SUNDAY DELIVERY CASES
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 1 then ${completed_date} + 6                                                   -- Sunday Delivery Orders on Monday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 2 then ${completed_date} + 5                                                   -- Sunday Delivery Orders on Tuesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 3 then ${completed_date} + 4                                                   -- Sunday Delivery Orders on Wednesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 4 then ${completed_date} + 3                                                   -- Sunday Delivery Orders on Thursday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 2                    -- Sunday Delivery Orders on Friday before 4 delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 9                   -- Sunday Delivery Orders on Friday after 4 delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 6 then ${completed_date} + 8                                                   -- Sunday Delivery Orders on Saturday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 0 then ${completed_date} + 7                                                   -- Sunday Delivery Orders on Sunday delivered next Sunday
+        --- OTHER DELIVERIES
+        else ${completed_date} + 7                                                                                                                      -- Assume all other deliveries DHL and get there within a week of order
+        end
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
