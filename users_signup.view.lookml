@@ -17,6 +17,7 @@
                  spree_users.first_name AS first_name,
                  spree_users.last_name AS last_name,
                  min(mandrill.referral_sent_at) as referral_sent_at,
+                 min(mandrill.referrer) as mandrill_referrer,
                  mailchimp.first_name AS mailchimp_first_name,
                  mailchimp.last_name AS mailchimp_last_name,
                  mailchimp.INVITECODE,
@@ -78,7 +79,8 @@
                        FROM mailchimp.initial_invites) AS mailchimp ON all_emails.email_address = mailchimp.email_address
                        
           LEFT JOIN (SELECT CAST(DATE AS datetime) AS referral_sent_at,
-                              lower(Email_Address) AS email_address
+                              lower(Email_Address) AS email_address,
+                              trim( '!' from right(subject, len(subject)-31)) as referrer
                        FROM (select * from
                               mandrill.referrals
                               union
@@ -102,7 +104,8 @@
                               group by 1,2,3,4,6,9))
                        WHERE status = 'sent'
                        GROUP BY 1,
-                                2) AS mandrill ON all_emails.email_address = mandrill.email_address
+                                2,
+                                3) AS mandrill ON all_emails.email_address = mandrill.email_address
                                 
           LEFT JOIN (SELECT   spree_timestamp,
                               id AS id,
@@ -137,7 +140,7 @@
                       on mailchimp_diff.email_address = all_emails.email_address
           left join emails_to_exclude exc on lower(all_emails.email_address) = lower(exc.email_address)
                       
-              group by 1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
+              group by 1,2,3,4,5,6,7,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 
     sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
     distkey: id
@@ -223,6 +226,10 @@
   - dimension: valid_email
     type: yesno
     sql: ${TABLE}.incexc = 'Include'
+
+  - dimension: mandrill_referrer
+    sql: ${TABLE}.mandrill_referrer
+ 
   # MEASURES #
   
   - measure: sign_ups
