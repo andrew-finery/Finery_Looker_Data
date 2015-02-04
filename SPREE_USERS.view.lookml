@@ -1,65 +1,89 @@
 - view: spree_users
   derived_table:
     sql: |
-       select
-        a.spree_timestamp,
-        a.id as user_id,
-        a.email as email_address,
-        a.created_at,
-        a.first_name,
-        a.last_name,
-        a.newsletter_opt_in,
-        a.sign_in_count,
-        a.last_sign_in_at,
-        a.birth_date,
-        coalesce(a.permitted_referrals, '0') as permitted_referrals,
-        c.credit_amount as signup_credit,
-        c.currency as signup_credit_currency,
-        c.credit_amount_gbp as signup_credit_gbp,
-        coalesce(b.total_credit_granted_gbp, '0') as total_credit_granted_gbp,
-        coalesce(b.total_credit_used_gbp, '0') as total_credit_used_gbp,
-        coalesce(b.current_credit_gbp, '0') as current_credit_gbp,
-        coalesce(d.referrals_sent, '0') as referrals_sent,
-        e.code as invite_code_used,
-        e.invitation_id as invitation_id,
-        e.sent_by_id as invitation_sent_by_user_id,
-        roles.name as role
-        
-        from
-        
-        (select * from daily_snapshot.spree_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_users)) a
-        left join
-        (select aaa.user_id, sum(aaa.amount * bbb.exchange_rate) as total_credit_granted_gbp, sum(aaa.amount_used * bbb.exchange_rate) as total_credit_used_gbp, sum(aaa.amount * bbb.exchange_rate) - sum(aaa.amount_used * bbb.exchange_rate) as current_credit_gbp from (select * from daily_snapshot.spree_store_credits where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_store_credits)) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency group by 1) b
-        on a.id = b.user_id
-        
-        left join
-        (select aaa.email, aaa.credit_amount, aaa.currency, aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp from (select * from daily_snapshot.spree_user_signup_awards where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_user_signup_awards) and created_at is not null) aaa left join lookup.exchange_rates bbb on date(aaa.created_at) = bbb."date" and aaa.currency = bbb.currency) c
-        on lower(a.email) = lower(c.email)
-        
-        left join
-        (select sent_by_id as user_id, count(*) as referrals_sent from daily_snapshot.spree_invitations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations) and sent_by_id is not null group by 1) d
-        on a.id = d.user_id
-        
-        left join
-        (select
-        invitations_users.user_id,
-        invitations.id as invitation_id,
-        invitations.code,
-        invitations.sent_by_id
-        from
-        (select user_id, invitation_id from daily_snapshot.spree_invitations_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations_users)) invitations_users
-        left join
-        (select * from daily_snapshot.spree_invitations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_invitations)) invitations
-        on invitations_users.invitation_id = invitations.id) e
-        on e.user_id = a.id
-        
-        left join
-        (select * from daily_snapshot.spree_roles_users where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_roles_users)) roles_users
-        on a.id = roles_users.user_id
-        left join
-        (select * from daily_snapshot.spree_roles where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_roles)) roles
-        on roles_users.role_id = roles.id
-        
+       SELECT a.spree_timestamp,
+              a.id AS user_id,
+              a.email AS email_address,
+              a.created_at,
+              a.first_name,
+              a.last_name,
+              a.newsletter_opt_in,
+              users_yesterday.newsletter_opt_in AS newsletter_opt_in_yest,
+              a.sign_in_count,
+              a.last_sign_in_at,
+              a.birth_date,
+              COALESCE(a.permitted_referrals,'0') AS permitted_referrals,
+              c.credit_amount AS signup_credit,
+              c.currency AS signup_credit_currency,
+              c.credit_amount_gbp AS signup_credit_gbp,
+              COALESCE(b.total_credit_granted_gbp,'0') AS total_credit_granted_gbp,
+              COALESCE(b.total_credit_used_gbp,'0') AS total_credit_used_gbp,
+              COALESCE(b.current_credit_gbp,'0') AS current_credit_gbp,
+              COALESCE(d.referrals_sent,'0') AS referrals_sent,
+              e.code AS invite_code_used,
+              e.invitation_id AS invitation_id,
+              e.sent_by_id AS invitation_sent_by_user_id,
+              roles.name AS role
+       FROM (SELECT *
+             FROM daily_snapshot.spree_users
+             WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users)) a
+         LEFT JOIN (SELECT aaa.user_id,
+                           SUM(aaa.amount*bbb.exchange_rate) AS total_credit_granted_gbp,
+                           SUM(aaa.amount_used*bbb.exchange_rate) AS total_credit_used_gbp,
+                           SUM(aaa.amount*bbb.exchange_rate) - SUM(aaa.amount_used*bbb.exchange_rate) AS current_credit_gbp
+                    FROM (SELECT *
+                          FROM daily_snapshot.spree_store_credits
+                          WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                   FROM daily_snapshot.spree_store_credits)) aaa
+                      LEFT JOIN lookup.exchange_rates bbb
+                             ON DATE (aaa.created_at) = bbb. "date"
+                            AND aaa.currency = bbb.currency
+                    GROUP BY 1) b ON a.id = b.user_id
+         LEFT JOIN (SELECT aaa.email,
+                           aaa.credit_amount,
+                           aaa.currency,
+                           aaa.credit_amount*bbb.exchange_rate AS credit_amount_gbp
+                    FROM (SELECT *
+                          FROM daily_snapshot.spree_user_signup_awards
+                          WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                   FROM daily_snapshot.spree_user_signup_awards)
+                          AND   created_at IS NOT NULL) aaa
+                      LEFT JOIN lookup.exchange_rates bbb
+                             ON DATE (aaa.created_at) = bbb. "date"
+                            AND aaa.currency = bbb.currency) c ON lower (a.email) = lower (c.email)
+         LEFT JOIN (SELECT sent_by_id AS user_id,
+                           COUNT(*) AS referrals_sent
+                    FROM daily_snapshot.spree_invitations
+                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                             FROM daily_snapshot.spree_invitations)
+                    AND   sent_by_id IS NOT NULL
+                    GROUP BY 1) d ON a.id = d.user_id
+         LEFT JOIN (SELECT invitations_users.user_id,
+                           invitations.id AS invitation_id,
+                           invitations.code,
+                           invitations.sent_by_id
+                    FROM (SELECT user_id,
+                                 invitation_id
+                          FROM daily_snapshot.spree_invitations_users
+                           WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                   FROM daily_snapshot.spree_invitations_users)) invitations_users
+                      LEFT JOIN (SELECT *
+                                 FROM daily_snapshot.spree_invitations
+                                 WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                          FROM daily_snapshot.spree_invitations)) invitations ON invitations_users.invitation_id = invitations.id) e ON e.user_id = a.id
+         LEFT JOIN (SELECT *
+                    FROM daily_snapshot.spree_roles_users
+                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                             FROM daily_snapshot.spree_roles_users)) roles_users ON a.id = roles_users.user_id
+         LEFT JOIN (SELECT *
+                    FROM daily_snapshot.spree_roles
+                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_roles)) roles ON roles_users.role_id = roles.id
+         LEFT JOIN (SELECT id,
+                           MAX(newsletter_opt_in) AS newsletter_opt_in
+                    FROM daily_snapshot.spree_users
+                    WHERE DATE (spree_timestamp) = CURRENT_DATE- 1
+                    GROUP BY 1) users_yesterday ON users_yesterday.id = a.id
+
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
     distkey: user_id
     sortkeys: [user_id]
@@ -95,6 +119,10 @@
   - dimension: newsletter_opt_in
     type: yesno
     sql: ${TABLE}.newsletter_opt_in = 1
+
+  - dimension: newsletter_opt_in_yesterday
+    type: yesno
+    sql: ${TABLE}.newsletter_opt_in_yest = 1
     
   - dimension: sign_in_count
     sql: ${TABLE}.sign_in_count
