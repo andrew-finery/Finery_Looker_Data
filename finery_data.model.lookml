@@ -26,6 +26,13 @@
       lower(spree_invitations.email) = lower(spree_users.email_address)
 
 - explore: spree_users
+  joins:
+  - join: spree_orders
+    sql_on: |
+      spree_orders.customer_id = spree_users.user_id
+  - join: delivery_tracking_current_status
+    sql_on: |
+      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
 
 - explore: referrals
   joins:
