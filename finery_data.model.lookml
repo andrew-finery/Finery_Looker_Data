@@ -25,12 +25,6 @@
     sql_on: |
       lower(spree_invitations.email) = lower(spree_users.email_address)
 
-- explore: product_lookup
-  joins:
-  - join: online_products
-    sql_on: |
-      product_lookup.ean = online_products.ean
-      
 - explore: spree_users
 
 - explore: referrals
@@ -66,7 +60,6 @@
     sql_on: |
       sessions_source.domain_userid = atomic_events.domain_userid
       and sessions_source.domain_sessionidx = atomic_events.domain_sessionidx
-    join_type: one_to_one
     
 - explore: page_views
 
@@ -96,7 +89,6 @@
     sql_on: |
       spree_orders.customer_id = spree_users.user_id
 
-      
 - explore: sales_snapshot
   joins:
   - join: product_lookup
@@ -165,14 +157,8 @@
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
-      
-- explore: online_products
 
 - explore: spree_refunds
-
-- explore: daily_closing_stock
-
-- explore: weekly_closing_stock
 
 - explore: page_view_events
 
