@@ -12,7 +12,6 @@
         a.sign_in_count,
         a.last_sign_in_at,
         a.birth_date,
-        coalesce(a.permitted_referrals, '0') as permitted_referrals,
         c.credit_amount as signup_credit,
         c.currency as signup_credit_currency,
         c.credit_amount_gbp as signup_credit_gbp,
@@ -109,10 +108,6 @@
     timeframes: [time, date, hod, hour, week, month]
     sql: ${TABLE}.last_sign_in_at
 
-  - dimension: used_all_referrals
-    type: yesno
-    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent = 0
-
   - dimension: signup_credit_currency
     sql: ${TABLE}.signup_credit_currency
 
@@ -133,15 +128,7 @@
   - measure: sum_referrals_sent
     type: sum
     sql: ${TABLE}.referrals_sent
-  
-  - measure: sum_referrals_permitted
-    type: sum
-    sql: ${TABLE}.permitted_referrals
-    
-  - measure: sum_referrals_left
-    type: sum
-    sql: ${TABLE}.permitted_referrals - ${TABLE}.referrals_sent
-  
+
   - measure: percentage_referrals_sent
     type: number
     decimals: 2
