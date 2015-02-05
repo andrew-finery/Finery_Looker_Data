@@ -5,9 +5,13 @@
                  style AS parent_sku,
                  ean,
                  receieved_qty AS received_quantity,
-                 TRIM('UN' FROM expected_qty) AS expected_quantity
-          FROM cml.goods_in
-          WHERE confirm_date IS NOT NULL
+                 rcpt_ref_num,
+                 CASE
+                   WHEN rcpt_ref_num LIKE '%(W)%' THEN 'Wholesale'
+                   WHEN rcpt_ref_num LIKE '%(WH)%' THEN 'Wholesale'
+                   ELSE 'Ecom' end as stock_type,         
+          TRIM('UN' FROM expected_qty) AS expected_quantity FROM finery.goods_in WHERE confirm_date IS NOT NULL
+
 
      sql_trigger_value: SELECT count(*) from cml.goods_in
      distkey: ean
@@ -34,7 +38,10 @@
   
   - dimension: expected_quantity
     sql: ${TABLE}.expected_quantity
-
+  
+  - dimension: stock_type
+    sql: ${TABLE}.stock_type
+    
 ##################################################################################################################################################################################
   ######################################################################  MEASURES  ################################################################################################
     ##################################################################################################################################################################################
@@ -42,3 +49,7 @@
   - measure: sum_received_quantity
     type: sum
     sql: ${TABLE}.received_quantity
+ 
+  - measure: sum_expected_quantity_quantity
+    type: sum
+    sql: ${TABLE}.expected_quantity
