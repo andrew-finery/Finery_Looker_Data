@@ -9,7 +9,7 @@
              a.ship_address_id,
              a.item_total,
              a.total AS order_total,
-             a.state,
+             case when voids.order_id is not null then 'canceled' else a.state end as state,
              adjustment_total,
              shipment_total,
              shipments.name as shipping_method,
@@ -31,6 +31,7 @@
       FROM (SELECT *
             FROM daily_snapshot.spree_orders
             WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_orders)) a
+            
         LEFT JOIN (SELECT order_id,
                           SUM(amount) AS store_credit
                    FROM (SELECT *
@@ -39,9 +40,24 @@
                                                   FROM daily_snapshot.spree_payments))
                    WHERE source_type = 'Spree::StoreCredit'
                    GROUP BY 1) b ON a.id = b.order_id
+                   
         LEFT JOIN lookup.exchange_rates c
                ON DATE_TRUNC ('day',a.completed_at) = c. "date"
               AND a.currency = c.currency
+              
+        LEFT JOIN (SELECT order_id
+                    FROM (SELECT order_id,
+                                 FIRST_VALUE(source_type) OVER (PARTITION BY order_id ORDER BY created_at DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS source_type,
+                                 FIRST_VALUE(payment_method_id) OVER (PARTITION BY order_id ORDER BY created_at DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS payment_method_id,
+                                 FIRST_VALUE(state) OVER (PARTITION BY order_id ORDER BY created_at DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS state
+                          FROM (SELECT *
+                                FROM daily_snapshot.spree_payments
+                                WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                         FROM daily_snapshot.spree_payments)))
+                    WHERE payment_method_id = 4
+                    AND   state = 'void'
+                    GROUP BY 1) voids ON voids.order_id = a.id
+        
         LEFT JOIN (SELECT aaa.order_id,
                           SUM(bbb.price) AS return_item_total,
                           COUNT(*) AS items_returned
