@@ -157,12 +157,6 @@
     type: sum
     sql: ${TABLE}.referrals_sent
 
-  - measure: percentage_referrals_sent
-    type: number
-    decimals: 2
-    sql: 100.0 * ${sum_referrals_sent}/NULLIF(${sum_referrals_permitted},0)::REAL
-    format: "%0.2f%"
-  
   - measure: sum_signup_credit_granted
     type: sum
     sql: ${TABLE}.signup_credit
