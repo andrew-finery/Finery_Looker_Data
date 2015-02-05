@@ -5,6 +5,7 @@
              a.id AS order_id,
              a. "number" AS order_code,
              a.user_id AS customer_id,
+             a.email as email,
              a.bill_address_id,
              a.ship_address_id,
              a.item_total,
@@ -145,6 +146,9 @@
   - dimension: customer_id
     type: int
     sql: ${TABLE}.customer_id
+  
+  - dimension: order_email
+    sql: ${TABLE}.email
 
 # Shipping Dimensions
 
