@@ -56,7 +56,7 @@
                                 WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
                                                          FROM daily_snapshot.spree_payments)))
                     WHERE payment_method_id = 4
-                    AND   state = 'void'
+                    AND   state in ('void', 'checkout')
                     GROUP BY 1) voids ON voids.order_id = a.id
         
         LEFT JOIN (SELECT aaa.order_id,
