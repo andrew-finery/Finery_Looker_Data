@@ -147,6 +147,12 @@
     decimals: 2
     sql: ${TABLE}.price_gbp * ${TABLE}.quantity
     format: "£%0.2f"
+    
+  - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
+    type: number
+    decimals: 2
+    sql: (${gross_item_revenue_in_gbp}/(${spree_orders.item_total}*${spree_orders.exchange_rate})) * ((${spree_orders.item_total} - ${spree_orders.discount})*${spree_orders.exchange_rate}*5/6)
+    format: "£%0.2f"
   
   # Margin Dimensions
   - dimension: landed_cost_gbp
@@ -238,9 +244,14 @@
     sql: ${price} * ${quantity} * ${exchange_rate}
     format: "%0.2f"
     
-  - dimension: sum_net_item_revenue_gbp
+  - measure: sum_net_item_revenue_gbp
     type: sum
     sql: ${price} * (${quantity} - ${items_returned}) * ${exchange_rate}
+    format: "£%0.2f"
+
+  - measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
     format: "£%0.2f"
   
   - measure: sum_gross_item_revenue_in_gbp_ex_vat
@@ -248,19 +259,19 @@
     sql: ${price} * ${quantity} * ${exchange_rate} * 5/6
     format: "£%0.2f"
     
-  - dimension: sum_net_item_revenue_gbp_ex_vat
+  - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
     sql: ${price} * (${quantity} - ${items_returned}) * ${exchange_rate} * 5/6
     format: "£%0.2f"
   
   ########################################################## GROSS Margin Measures ########################################################################################################
   
-  - dimension: sum_gross_landed_cost_gbp
+  - measure: sum_gross_landed_cost_gbp
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * ${quantity}
     format: "£%0.2f"
 
-  - dimension: sum_gross_margin_gbp_ex_vat
+  - measure: sum_gross_margin_gbp_ex_vat
     type: number
     decimals: 2
     sql: ${sum_gross_item_revenue_in_gbp_ex_vat} - ${sum_gross_landed_cost_gbp}
@@ -274,12 +285,12 @@
     
   ########################################################## NET Margin Measures ########################################################################################################
   
-  - dimension: sum_net_landed_cost_gbp
+  - measure: sum_net_landed_cost_gbp
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * (${quantity} - ${items_returned})
     format: "£%0.2f"
 
-  - dimension: sum_net_margin_gbp_ex_vat
+  - measure: sum_net_margin_gbp_ex_vat
     type: number
     decimals: 2
     sql: ${sum_net_item_revenue_gbp_ex_vat} - ${sum_net_landed_cost_gbp}
@@ -290,4 +301,27 @@
     decimals: 2
     sql: 100.0 * ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
     format: "%0.2f%"
+    
+  ############################################### Gross Revenue over different time periods 
+  
+  - measure: gross_rev_ex_discount_ex_vat_tw
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: last week
+ 
+  - measure: gross_rev_ex_discount_ex_vat_lw
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: "2 weeks ago"
+  
+  - measure: gross_rev_ex_discount_ex_vat_l4w
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: 5 weeks ago for 4 weeks
 
