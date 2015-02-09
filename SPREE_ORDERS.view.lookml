@@ -88,6 +88,20 @@
         GROUP BY 1) in_store_orders
         on in_store_orders.order_id = a.id
         
+        LEFT JOIN
+        (SELECT orders_promotions.order_id
+        FROM (SELECT *
+              FROM daily_snapshot.spree_orders_promotions
+              WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                       FROM daily_snapshot.spree_orders_promotions)) orders_promotions
+          LEFT JOIN (SELECT *
+                     FROM daily_snapshot.spree_promotions
+                     WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                              FROM daily_snapshot.spree_promotions)) promotions ON orders_promotions.promotion_id = promotions.id
+        WHERE promotions.code IN ('finerymerch1!','finerycare1!','pressdiscount1!')
+        GROUP BY 1) orders_to_strip_out
+        on orders_to_strip_out.order_id = a.id
+        
         LEFT JOIN (SELECT spree_shipments.order_id,
                            spree_shipments.tracking,
                            spree_shipments. "number",
@@ -118,6 +132,8 @@
                             
       WHERE a.state IN ('complete','returned','canceled')
       AND   a.created_at > DATE '2014-11-22'
+      AND orders_to_strip_out.order_id is null
+      AND a.email not like '%shaun+cml%'
 
     
     sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}

@@ -302,7 +302,7 @@
     sql: 100.0 * ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
     format: "%0.2f%"
     
-  ############################################### Gross Revenue over different time periods 
+  ############################################### TW, LW, L4W, MTD, STD
   
   - measure: gross_rev_ex_discount_ex_vat_tw
     type: sum
@@ -335,6 +335,46 @@
   - measure: gross_rev_ex_discount_ex_vat_std
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: after 2014/11/20
+
+  - measure: pc1_profit_tw
+    type: sum
+    decimals: 2
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    format: "£%0.2f"
+    filters:
+      order_time_date: last week
+      
+  - measure: pc1_profit_lw
+    type: sum
+    decimals: 2
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    format: "£%0.2f"
+    filters:
+      order_time_date: 2 weeks ago
+
+  - measure: pc1_profit_l4w
+    type: sum
+    decimals: 2
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    format: "£%0.2f"
+    filters:
+      order_time_date: 5 weeks ago for 4 weeks
+
+  - measure: pc1_profit_mtd
+    type: sum
+    decimals: 2
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    format: "£%0.2f"
+    filters:
+      order_time_date: this month
+ 
+  - measure: pc1_profit_std
+    type: sum
+    decimals: 2
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
     format: "£%0.2f"
     filters:
       order_time_date: after 2014/11/20
