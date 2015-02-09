@@ -3,6 +3,7 @@
     sql: |
      SELECT  a.spree_timestamp,
              a.id AS order_id,
+             case when in_store_orders.order_id is not null then 1 else 0 end as in_store_flag,
              a. "number" AS order_code,
              a.user_id AS customer_id,
              a.email as email,
@@ -77,6 +78,15 @@
                    FROM ${spree_refunds.SQL_TABLE_NAME} bbb
                    GROUP BY 1) e ON a.id = e.order_id
                    
+        LEFT JOIN
+        (SELECT order_id
+        FROM (SELECT *
+              FROM daily_snapshot.spree_payments
+              WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                       FROM daily_snapshot.spree_payments))
+        WHERE payment_method_id = 4
+        GROUP BY 1) in_store_orders
+        on in_store_orders.order_id = a.id
         
         LEFT JOIN (SELECT spree_shipments.order_id,
                            spree_shipments.tracking,
@@ -115,8 +125,8 @@
     sortkeys: [order_id, completed_at]
 
   fields:
-#################################################################################################################################################################################
-####################################################### DIMENSIONS ##############################################################################################################
+    #################################################################################################################################################################################
+  ####################################################### DIMENSIONS ##############################################################################################################
 #################################################################################################################################################################################
 
 
@@ -149,6 +159,10 @@
   
   - dimension: order_email
     sql: ${TABLE}.email
+  
+  - dimension: in_store_flag
+    type: yesno
+    sql: ${TABLE}.in_store_flag = 1
 
 # Shipping Dimensions
 
