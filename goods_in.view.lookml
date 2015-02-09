@@ -13,7 +13,7 @@
           TRIM('UN' FROM expected_qty) AS expected_quantity FROM finery.goods_in WHERE confirm_date IS NOT NULL
 
 
-     sql_trigger_value: SELECT count(*) from cml.goods_in
+     sql_trigger_value: SELECT count(*) from finery.goods_in
      distkey: ean
      sortkeys: [confirm_date, ean]
 
