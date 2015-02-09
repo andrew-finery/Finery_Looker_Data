@@ -325,3 +325,16 @@
     filters:
       order_time_date: 5 weeks ago for 4 weeks
 
+  - measure: gross_rev_ex_discount_ex_vat_mtd
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: this month
+      
+  - measure: gross_rev_ex_discount_ex_vat_std
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    format: "£%0.2f"
+    filters:
+      order_time_date: after 2014/11/20
