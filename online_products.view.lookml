@@ -19,7 +19,8 @@
         departments.department as department,
         departments.permalink as permalink,
         products.name || ' ' || coalesce(colours.name, '') as option,
-        case when date(products.available_on) <= current_date then 'Yes' else 'No' end as online_flag
+        case when date(products.available_on) <= current_date then 'Yes' else 'No' end as online_flag,
+        products.is_coming_soon
         
         from
         (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and deleted_at is null and is_master <> 1) variants
@@ -177,6 +178,10 @@
      - dimension: online_flag
        type: yesno
        sql: ${TABLE}.online_flag = 'Yes'
+
+     - dimension: coming_soon_flag
+       type: yesno
+       sql: ${TABLE}.is_coming_soon = 'true'
      
      - dimension: option_image
        type: string
