@@ -13,7 +13,7 @@
          LEFT JOIN (SELECT ean,
                            SUM(receieved_qty) AS received_quantity,
                            SUM(TRIM('UN' FROM expected_qty)) AS expected_quantity
-                    FROM cml.goods_in
+                    FROM finery.goods_in
                     WHERE confirm_date IS NOT NULL
                     GROUP BY 1) goods_in ON brightpearl.ean = goods_in.ean
 
