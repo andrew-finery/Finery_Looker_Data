@@ -1,21 +1,22 @@
 - view: goods_commitment
   derived_table:
      sql: |
-       SELECT COALESCE(brightpearl.ean,'0') AS ean,
-              COALESCE(brightpearl.on_order,'0') AS on_order_qty,
-              COALESCE(goods_in.received_quantity,'0') AS received_qty,
-              COALESCE(goods_in.expected_quantity,'0') AS expected_qty,
-              CASE
-                WHEN COALESCE(goods_in.received_quantity,'0') >COALESCE(brightpearl.on_order,'0') THEN 0
-                ELSE COALESCE(brightpearl.on_order,'0') -COALESCE(goods_in.received_quantity,'0')
-              END AS outstanding_commitment
-       FROM brightpearl.all_products brightpearl
-         LEFT JOIN (SELECT ean,
-                           SUM(receieved_qty) AS received_quantity,
-                           SUM(TRIM('UN' FROM expected_qty)) AS expected_quantity
-                    FROM finery.goods_in
-                    WHERE confirm_date IS NOT NULL
-                    GROUP BY 1) goods_in ON brightpearl.ean = goods_in.ean
+          SELECT COALESCE(brightpearl.ean,'0') AS ean,
+                 COALESCE(brightpearl.on_order,'0') AS on_order_qty,
+                 COALESCE(goods_in.received_quantity,'0') AS received_qty,
+                 COALESCE(goods_in.expected_quantity,'0') AS expected_qty,
+                 CASE
+                   WHEN (COALESCE(brightpearl.on_order,'0') -COALESCE(goods_in.received_quantity,'0')) < 0 THEN 0
+                   ELSE (COALESCE(brightpearl.on_order,'0') -COALESCE(goods_in.received_quantity,'0'))
+                 END AS outstanding_commitment
+          FROM brightpearl.all_products brightpearl
+            LEFT JOIN (SELECT ean,
+                              SUM(receieved_qty) AS received_quantity,
+                              SUM(TRIM('UN' FROM expected_qty)) AS expected_quantity
+                       FROM finery.goods_in
+                       WHERE confirm_date IS NOT NULL
+                       GROUP BY 1) goods_in ON brightpearl.ean = goods_in.ean
+
 
      sql_trigger_value: SELECT count(*) from ${goods_in.SQL_TABLE_NAME}
      distkey: ean
