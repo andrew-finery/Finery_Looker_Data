@@ -331,6 +331,7 @@
     format: "£%0.2f"
     filters:
       order_time_date: this month
+      order_time_time: before this week
       
   - measure: gross_rev_ex_discount_ex_vat_std
     type: sum
@@ -338,6 +339,7 @@
     format: "£%0.2f"
     filters:
       order_time_date: after 2014/11/20
+      order_time_time: before this week
 
   - measure: pc1_profit_tw
     type: sum
@@ -370,6 +372,7 @@
     format: "£%0.2f"
     filters:
       order_time_date: this month
+      order_time_time: before this week
  
   - measure: pc1_profit_std
     type: sum
@@ -378,3 +381,4 @@
     format: "£%0.2f"
     filters:
       order_time_date: after 2014/11/20
+      order_time_time: before this week
