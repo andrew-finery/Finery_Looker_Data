@@ -69,6 +69,9 @@
     
   - dimension: sku
     sql: ${TABLE}.sku
+    
+  - dimension: count_on_hand
+    sql: ${TABLE}.closing_stock
 
 #################################################################################################################################################################################################
 ########################################################## MEASURES #############################################################################################################################
@@ -137,9 +140,32 @@
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_dow: 0
-     
-    
+
+### Number of sku's in stock measures
   
+  - measure: skus_in_stock_last_week
+    type: count_distinct
+    sql: ${TABLE}.sku
+    filters:
+      count_on_hand: -NULL, -0
+      calendar_date_date: last week
+      calendar_date_dow: 0    
+
+  - measure: skus_in_stock_week_before
+    type: count_distinct
+    sql: ${TABLE}.sku
+    filters:
+      count_on_hand: -NULL, -0
+      calendar_date_date: last week
+      calendar_date_dow: 0 
+  
+  - measure: skus_in_stock_yesterday
+    type: count_distinct
+    sql: ${TABLE}.sku
+    filters:
+      count_on_hand: -NULL, -0
+      calendar_date_date: last week
+      calendar_date_dow: 0
     
     
     
