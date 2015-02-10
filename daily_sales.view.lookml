@@ -131,7 +131,7 @@
       calendar_date_date: last week
       calendar_date_dow: 0
 
-  - measure: closing_stock_lweek_before_last
+  - measure: closing_stock_week_before_last
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
