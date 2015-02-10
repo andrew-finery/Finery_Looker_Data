@@ -1,23 +1,36 @@
 - view: daily_closing_stock
   derived_table:
      sql: |
-          SELECT closing_stock.closing_stock_date,
-                 closing_stock.sku,
-                 stock_updated.count_on_hand AS closing_stock
+          SELECT sku,
+                 calendar_date - 1 AS closing_stock_date,
+                 closing_stock
           FROM (SELECT sku,
-                       DATE (root_tstamp) - 1 AS closing_stock_date,
-                       MIN(root_tstamp) AS root_tstamp
-                FROM atomic.com_finerylondon_stock_updated_1 stock_updated
-                  LEFT JOIN atomic.events events ON stock_updated.root_id = events.event_id
-                WHERE events.app_id = 'production'
-                GROUP BY 1,
-                         2) closing_stock
-            LEFT JOIN atomic.com_finerylondon_stock_updated_1 stock_updated
-                   ON closing_stock.sku = stock_updated.sku
-                  AND closing_stock.root_tstamp = stock_updated.root_tstamp
+                       DATE (root_tstamp) AS calendar_date,
+                       FIRST_VALUE(count_on_hand) OVER (PARTITION BY sku,DATE (root_tstamp) ORDER BY root_tstamp ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS closing_stock
+                FROM (SELECT *
+                      FROM (SELECT stock_updated.sku,
+                                   stock_updated.count_on_hand,
+                                   stock_updated.root_tstamp
+                            FROM atomic.com_finerylondon_stock_updated_1 stock_updated
+                              LEFT JOIN atomic.events events ON stock_updated.root_id = events.event_id
+                            WHERE events.app_id = 'production')
+                      UNION
+                      (SELECT variants.sku,
+                             stock_items.count_on_hand,
+                             stock_items.spree_timestamp
+                      FROM daily_snapshot.spree_stock_items stock_items
+                        LEFT JOIN (SELECT *
+                                   FROM daily_snapshot.spree_variants
+                                   WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
+                                                            FROM daily_snapshot.spree_variants)) variants ON stock_items.variant_id = variants.id
+                      WHERE stock_items.deleted_at IS NULL
+                      AND   variants.deleted_at IS NULL
+                      AND   variants.is_master = 0)))
+          GROUP BY 1,
+                   2,
+                   3
 
-     sql_trigger_value: |
-                        SELECT MAX(root_tstamp) FROM atomic.com_finerylondon_stock_updated_1
+     sql_trigger_value: select max(tstamp) from (select * from (select max(root_tstamp) as tstamp from atomic.com_finerylondon_stock_updated_1 stock_updated) union (select max(spree_timestamp) as tstamp from daily_snapshot.spree_stock_items))
      distkey: sku
      sortkeys: [sku, closing_stock_date]
 

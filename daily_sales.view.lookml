@@ -123,7 +123,20 @@
     sql: ${TABLE}.closing_stock
     filters:
       calendar_date_date: 1 day ago for 1 day
+  
+  - measure: closing_stock_last_week
+    type: sum
+    sql: ${TABLE}.closing_stock
+    filters:
+      calendar_date_date: last week
+      calendar_date_dow: 0
 
+  - measure: closing_stock_lweek_before_last
+    type: sum
+    sql: ${TABLE}.closing_stock
+    filters:
+      calendar_date_date: 2 weeks ago
+      calendar_date_dow: 0
      
     
   
