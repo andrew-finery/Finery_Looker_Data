@@ -181,6 +181,11 @@
       In-Store: ${TABLE}.in_store_flag = 1
       else: Online
 
+  - dimension: guest_checkout_flag
+    sql_case:
+      Guest Checkout: ${TABLE}.customer_id is null
+      else: Logged In
+
 # Shipping Dimensions
 
   - dimension: shipping_method
