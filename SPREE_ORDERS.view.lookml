@@ -156,7 +156,7 @@
 
   - dimension_group: completed
     type: time
-    timeframes: [time, date, week, month, tod, dow]
+    timeframes: [time, date, week, month, tod, hod, dow]
     sql: ${TABLE}.completed_at
 
   - dimension: item_count
@@ -177,8 +177,9 @@
     sql: ${TABLE}.email
   
   - dimension: in_store_flag
-    type: yesno
-    sql: ${TABLE}.in_store_flag = 1
+    sql_case:
+      In-Store: ${TABLE}.in_store_flag = 1
+      else: Online
 
 # Shipping Dimensions
 
@@ -303,6 +304,11 @@
     type: number
     sql: ${TABLE}.store_credit_used
     format: "%0.2f"
+
+  - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
+    type: tier
+    tiers: [20,40,60,80,100,120,140,160,180,200]
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate
   
   
 ####################### FLAGS ######################################################################################
@@ -521,6 +527,13 @@
     filters:
       state: -canceled
 
+  - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k
+    type: sum
+    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate / 1000
+    format: "£%0.1fk"
+    filters:
+      state: -canceled
+
   - measure: sum_gross_revenue_ex_discount_and_store_credit
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used
@@ -548,6 +561,44 @@
     format: "£%0.2f"
     filters:
       state: -canceled
+
+################################################# GROSS REVENUE MEASURES EXCLUDING SHIPPING ############################################################
+
+  - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
+    type: sum
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate
+    format: "£%0.2f"
+    filters:
+      state: -canceled
+    
+  - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k
+    type: sum
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate / 1000
+    format: "£%0.1fk"
+    filters:
+      state: -canceled
+  
+  - measure: average_discount
+    type: number
+    sql: 100.0 * (${sum_total_discount_gbp}/${sum_total_of_items_gbp})::REAL
+    format: "%0.1f%"
+ 
+  - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL
+    format: "£%0.2f"
+  
+################################################ COUNT DAYS AND MEASURES PER DAY #######################################################################
+
+  - measure: count_days
+    type: count_distinct
+    sql: ${completed_date}
+
+  - measure: orders_per_day
+    type: number
+    decimals: 0
+    sql: ${count_orders}/${count_days}::REAL
 
 
 ############################ OTHER GROSS REVENUE SUMS ###################################################################################################
