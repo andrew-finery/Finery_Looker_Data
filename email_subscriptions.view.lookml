@@ -43,6 +43,14 @@
   ######################################################################  MEASURES  ################################################################################################
     ##################################################################################################################################################################################
 
-   - measure: count_subscribers
+   - measure: count_newsletter_subscribers
      type: count_distinct
      sql: ${TABLE}.email_id
+     filters:
+      email_list_name: Newsletter
+  
+   - measure: count_referrals
+     type: count_distinct
+     sql: ${TABLE}.email_id
+     filters:
+      email_list_name: Referrals
