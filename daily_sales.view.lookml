@@ -72,6 +72,9 @@
     
   - dimension: count_on_hand
     sql: ${TABLE}.closing_stock
+  
+  - dimension: items_sold
+    sql: ${TABLE}.items_sold
 
 #################################################################################################################################################################################################
 ########################################################## MEASURES #############################################################################################################################
@@ -90,6 +93,14 @@
   - measure: sum_items_sold_after_returns
     type: sum
     sql: ${TABLE}.items_sold_after_returns
+    
+  - measure: first_sale_date
+    type: date
+    sql: MIN(case when items_sold > 0 then ${calendar_date_date} else null end)
+    convert_tz: false
+#     filters:
+#       items_sold: -0, -NULL
+      
 
 # Value Measures
 
