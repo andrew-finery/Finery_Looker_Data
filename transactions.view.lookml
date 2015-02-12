@@ -74,6 +74,10 @@
     
   - dimension: number_of_items
     sql: ${TABLE}.number_of_items
+  
+  - dimension: guest_checkout_flag
+    type: yesno
+    sql: ${TABLE}.customer_id is null
 
 ###########################################################################################################################################################
   #############################################################  MEASURES  ##################################################################################
@@ -82,4 +86,17 @@
   - measure: count_transactions
     type: count_distinct
     sql: ${order_id}
+  
+  - measure: count_guest_checkouts
+    type: count_distinct
+    sql: ${order_id}
+    filters:
+      guest_checkout_flag: Yes
+  
+  - measure: guest_checkout_percentage
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_guest_checkouts}/${count_transactions}::REAL
+    format: "%0.1f%"
+    
   

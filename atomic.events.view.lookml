@@ -110,17 +110,13 @@
           a.doc_charset,
           a.doc_width,
           a.doc_height,
-          b.root_id as root_id_trans,
           c.root_id as root_id_reg,
           d.root_id as root_id_lead,
           e.root_id as root_id_ref,
           e."msg.subject"
           
           from atomic.events a
-          
-          left join atomic.com_finerylondon_transaction_1 b
-          on a.event_id = b.root_id
-          
+
           left join atomic.com_finerylondon_registration_success_1 c
           on a.event_id = c.root_id
           
@@ -144,9 +140,6 @@
   - dimension: event_id
     primary_key: true
     sql: ${TABLE}.event_id
-  
-  - dimension: event_id_trans
-    sql: ${TABLE}.root_id_trans
 
   - dimension: event_id_reg
     sql: ${TABLE}.root_id_reg
@@ -225,14 +218,31 @@
       domain_userid: -EMPTY
       domain_sessionidx: 1
 
-############### Count number of different events
-
-  - measure: count_orders
+  - measure: count_session_logged_in
     type: count_distinct
-    sql: ${event_id_trans}
+    sql: ${session_id}
     filters:
+      user_id: -NULL
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
+
+  - measure: count_users_logged_in
+    type: count_distinct
+    sql: ${user_id}
+    
+  - measure: new_user_percentage
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_new_users}/${count_users}::REAL
+    format: "%0.1f%"
+  
+  - measure: user_logged_in_percentage
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_users_logged_in}/${count_users}::REAL
+    format: "%0.1f%"
+
+############### Count number of different events
 
   - measure: count_signups
     type: count_distinct
@@ -241,27 +251,6 @@
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
 
-  - measure: count_logins
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      user_id: -NULL
-      domain_userid: -EMPTY
-      domain_sessionidx: -EMPTY
-      
-  - measure: count_leads
-    type: count_distinct
-    sql: ${event_id_lead}
-  
-  - measure: count_new_leads
-    type: number
-    sql: ${count_leads} - ${count_signups}
-    
-  - measure: count_referrals
-    type: count_distinct
-    sql: ${event_id_ref}
-    filters:
-      email_subject: '%exclusive invitation%'
 
   - measure: latest_update
     type: string
@@ -317,8 +306,28 @@
     sql: 100.0 * ${count_users_with_product_view}/NULLIF(${count_users},0)::REAL
     format: "%0.2f%"
   
-  ##### TRANSACTION MEASURES
+############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat}
+  
+  - measure: conversion_rate
+    type: number
+    decimals: 1
+    sql: 100.0 * ${transactions.count_transactions}/${count_users}
+    format: "%0.1f%"
+
+############################################################################## EMAIL MEASURES ####################################################################################
+    
+  - measure: newsletter_signup_rate
+    type: number
+    decimals: 1
+    sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/${count_new_users}::REAL
+    format: "%0.1f%"
+    
+  - measure: referral_rate
+    type: number
+    decimals: 1
+    sql: 100.0 * ${email_subscriptions.count_referrals}/${count_users_logged_in}::REAL
+    format: "%0.1f%"
