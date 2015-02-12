@@ -233,13 +233,13 @@
   - measure: new_user_percentage
     type: number
     decimals: 2
-    sql: 100.0 * ${count_new_users}/${count_users}::REAL
+    sql: 100.0 * ${count_new_users}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
   
   - measure: user_logged_in_percentage
     type: number
     decimals: 2
-    sql: 100.0 * ${count_users_logged_in}/${count_users}::REAL
+    sql: 100.0 * ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
 
 ############### Count number of different events
@@ -315,7 +315,7 @@
   - measure: conversion_rate
     type: number
     decimals: 1
-    sql: 100.0 * ${transactions.count_transactions}/${count_users}
+    sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
 
 ############################################################################## EMAIL MEASURES ####################################################################################
@@ -323,11 +323,11 @@
   - measure: newsletter_signup_rate
     type: number
     decimals: 1
-    sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/${count_new_users}::REAL
+    sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
     format: "%0.1f%"
     
   - measure: referral_rate
     type: number
     decimals: 1
-    sql: 100.0 * ${email_subscriptions.count_referrals}/${count_users_logged_in}::REAL
+    sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
     format: "%0.1f%"

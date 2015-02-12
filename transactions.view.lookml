@@ -96,7 +96,7 @@
   - measure: guest_checkout_percentage
     type: number
     decimals: 2
-    sql: 100.0 * ${count_guest_checkouts}/${count_transactions}::REAL
+    sql: 100.0 * ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
     format: "%0.1f%"
     
   
