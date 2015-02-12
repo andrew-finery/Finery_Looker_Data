@@ -63,6 +63,9 @@
   - join: page_view_events
     sql_on: |
       page_view_events.event_id = atomic_events.event_id
+  - join: email_subscriptions
+    sql_on: |
+      email_subscriptions.root_id = atomic_events.event_id
   - join: sessions_source
     sql_on: |
       sessions_source.domain_userid = atomic_events.domain_userid
