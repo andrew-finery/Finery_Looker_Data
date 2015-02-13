@@ -312,7 +312,7 @@
 
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
     type: tier
-    tiers: [20,40,60,80,100,120,140,160,180,200]
+    tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate
   
   
