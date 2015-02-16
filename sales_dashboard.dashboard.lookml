@@ -14,7 +14,7 @@
 
 ################################ Line 1: Yesterday Tiles #########################################################
 
-  - name: add_a_unique_name_280
+  - name: total_orders_yesterday
     title: Total Orders Yesterday
     type: single_value
     model: finery_data
@@ -29,7 +29,7 @@
     top: 0
     left: 0
     
-  - name: add_a_unique_name_829
+  - name: basket_size_yesterday
     title: Basket Size Yesterday (excluding Coupons,VAT,Shipping)
     type: single_value
     model: finery_data
@@ -43,7 +43,7 @@
     top: 0
     left: 3
   
-  - name: add_a_unique_name_194
+  - name: gross_revenue_yesterday
     title: Gross Revenue Yesterday (excluding Coupons,VAT,Shipping)
     type: single_value
     model: finery_data
@@ -57,7 +57,7 @@
     top: 0
     left: 6
 
-  - name: add_a_unique_name_829
+  - name: average_discount_yesterday
     title: Average Discount Yesterday
     type: single_value
     model: finery_data
@@ -73,7 +73,7 @@
     
 ############################ Line 2: Tiles Listening to Filer ####################################################### 
 
-  - name: add_a_unique_name_280
+  - name: total_orders
     title: Total Orders
     type: single_value
     model: finery_data
@@ -87,7 +87,7 @@
     top: 2
     left: 0
     
-  - name: add_a_unique_name_829
+  - name: basket_size
     title: Basket Size (excluding Coupons,VAT,Shipping)
     type: single_value
     model: finery_data
@@ -101,7 +101,7 @@
     top: 2
     left: 3
   
-  - name: add_a_unique_name_194
+  - name: gross_revenue
     title: Gross Revenue (excluding Coupons,VAT,Shipping)
     type: single_value
     model: finery_data
@@ -115,7 +115,7 @@
     top: 2
     left: 6
 
-  - name: add_a_unique_name_194
+  - name: average_discount
     title: Average Discount
     type: single_value
     model: finery_data

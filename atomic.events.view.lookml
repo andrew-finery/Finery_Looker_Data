@@ -109,24 +109,11 @@
           a.dvce_screenheight,
           a.doc_charset,
           a.doc_width,
-          a.doc_height,
-          c.root_id as root_id_reg,
-          d.root_id as root_id_lead,
-          e.root_id as root_id_ref,
-          e."msg.subject"
+          a.doc_height
           
           from atomic.events a
 
-          left join atomic.com_finerylondon_registration_success_1 c
-          on a.event_id = c.root_id
-          
-          left join atomic.com_finerylondon_lead_created_1 d
-          on a.event_id = d.root_id
-          
-          left join atomic.com_mandrill_message_sent_1 e
-          on a.event_id = e.root_id
-          
-           WHERE a.app_id = 'production'
+          WHERE a.app_id = 'production'
           
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
     distkey: event_id
@@ -141,22 +128,10 @@
     primary_key: true
     sql: ${TABLE}.event_id
 
-  - dimension: event_id_reg
-    sql: ${TABLE}.root_id_reg
-    
-  - dimension: event_id_lead
-    sql: ${TABLE}.root_id_lead
-  
-  - dimension: event_id_ref
-    sql: ${TABLE}.root_id_ref
-  
   - dimension_group: event_time
     type: time
     timeframes: [time, hour, date, hod, dow, week, month]
     sql: ${TABLE}.collector_tstamp
-
-  - dimension: email_subject
-    sql: ${TABLE}."msg.subject"
 
   - dimension: time_period
     sql_case:
@@ -243,14 +218,6 @@
     format: "%0.1f%"
 
 ############### Count number of different events
-
-  - measure: count_signups
-    type: count_distinct
-    sql: ${event_id_reg}
-    filters:
-      domain_userid: -EMPTY
-      domain_sessionidx: -EMPTY
-
 
   - measure: latest_update
     type: string
