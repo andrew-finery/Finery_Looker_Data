@@ -1,5 +1,5 @@
 - dashboard: web_traffic_dashboard
-  title: Marketing Overview Dashboard
+  title: Web Traffic Dashboard
   layout: static
   show_applied_filters: true
   tile_size: 50
