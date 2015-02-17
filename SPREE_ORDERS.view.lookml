@@ -15,6 +15,7 @@
              adjustment_total,
              shipment_total,
              shipments.name as shipping_method,
+             shipments.shipped_at_date,
              shipments.tracking as tracking_number,
              shipments.consignee,
              shipments.name as delivery_type,
@@ -106,6 +107,7 @@
                            spree_shipments.tracking,
                            spree_shipments. "number",
                            spree_shipments.consignee,
+                           date(spree_shipments.shipped_at) - 1 as shipped_at_date,
                            spree_shipping_methods.name,
                            spree_shipping_methods.admin_name,
                            spree_shipping_methods.carrier_description
@@ -181,11 +183,6 @@
       In-Store: ${TABLE}.in_store_flag = 1
       else: Online
 
-  - dimension: guest_checkout_flag
-    sql_case:
-      Guest Checkout: ${TABLE}.customer_id is null
-      else: Logged In
-
 # Shipping Dimensions
 
   - dimension: shipping_method
@@ -194,6 +191,11 @@
   - dimension: tracking_number
     type: string
     sql: ${TABLE}.tracking_number || 'a'
+
+  - dimension_group: shipped_at
+    type: time
+    timeframes: [time, date, week, month, tod, hod, dow]
+    sql: ${TABLE}.shipped_at_date
   
   - dimension: delivery_company
     sql: ${TABLE}.consignee
@@ -232,14 +234,41 @@
         'R870765040',
         'R408945061')
   # NB. Manually entered tracking codes. These are parcels that Hermes website has lost track of but we have confirmed as delivered
+
+
+  - dimension: currently_late_flag
+    sql: |
+      case when ${delivered_flag} or ${expected_delivery_date} >= current_date then 'No' else 'Yes' end
+
   
   - dimension: returned_flag
     type: yesno
     sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
     
-  - dimension_group: expected_delivery
-    type: time
-    timeframes: [date]
+  - dimension_group: expected_delivery_date_hermes
+    type: date
+    sql: |
+        case
+        --- 48 HOUR DELIVERY CASES
+        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_dow} in (1,2,3,4) then ${shipped_at_date} + 2                                       -- 48h Orders Shipped Mon-Thu arrive 2 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_dow} in (5,6,0) then ${shipped_at_date} + 3                                         -- 48h Order  Shipped Fri-Sun arrive 3 days later
+        --- NEXT DAY DELIVERY CASES
+        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_dow} in (1,2,3,4,5) then ${shipped_at_date} + 1                                    -- 24h Orders Shipped Mon-Fri arrive 1 day later
+        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_dow} in (6,0) then ${shipped_at_date} + 2                                          -- 24h Order  Shipped Sat-Sun arrive 2 days later
+        --- SUNDAY DELIVERY CASES
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 1 then ${shipped_at_date} + 6                                                   -- Sunday Delivery Orders Shipped on Monday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 2 then ${shipped_at_date} + 5                                                   -- Sunday Delivery Orders Shipped on Tuesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 3 then ${shipped_at_date} + 4                                                   -- Sunday Delivery Orders Shipped on Wednesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 4 then ${shipped_at_date} + 3                                                   -- Sunday Delivery Orders Shipped on Thursday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 5 then ${shipped_at_date} + 2                                                   -- Sunday Delivery Orders Shipped on Friday before 4 delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 6 then ${shipped_at_date} + 8                                                   -- Sunday Delivery Orders Shipped on Saturday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 0 then ${shipped_at_date} + 7                                                   -- Sunday Delivery Orders Shipped on Sunday delivered next Sunday
+        --- OTHER DELIVERIES
+        else ${completed_date} + 7                                                                                                                      -- Assume all other deliveries DHL and get there within a week of order
+        end
+  
+  - dimension: expected_delivery_date
+    type: date
     sql: |
         case
         --- 48 HOUR DELIVERY CASES
@@ -272,6 +301,8 @@
         --- OTHER DELIVERIES
         else ${completed_date} + 7                                                                                                                      -- Assume all other deliveries DHL and get there within a week of order
         end
+
+    
 
 ##################################### REVENUE DIMENSIONS ##########################################################
   
