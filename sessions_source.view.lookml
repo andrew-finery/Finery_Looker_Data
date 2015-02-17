@@ -50,6 +50,17 @@
     
   
   # Referer fields (all acquisition channels) #
+
+  - dimension: session_source
+    sql_case:
+      Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
+      Email - from Finery: ${TABLE}.mkt_source in ('crm', 'newsletter') and ${TABLE}.mkt_medium = 'email'
+      Other Marketing: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null
+      Social: ${TABLE}.refr_medium = 'social'
+      Search: ${TABLE}.refr_medium = 'search'
+      Affiliates: ${TABLE}.refr_medium = 'unknown'
+      Email - Other: ${TABLE}.refr_medium = 'email'
+      else: Direct
     
   - dimension: referer_medium
     sql_case:
