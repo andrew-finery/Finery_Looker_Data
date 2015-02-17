@@ -1,4 +1,4 @@
-- dashboard: marketing_overview_dashboard
+- dashboard: web_traffic_dashboard
   title: Marketing Overview Dashboard
   layout: static
   show_applied_filters: true
@@ -86,13 +86,13 @@
     y_axis_combined: false
     x_axis_scale: auto
     width: 28
-    height: 9
+    height: 7
     top: 6
     left: 0
 
 ################################ Line 3: Revenue trend
   - name: add_a_unique_name_212
-    title: Users by Source Trend
+    title: Revenue by Source Trend
     type: looker_area
     model: finery_data
     explore: atomic_events
@@ -123,8 +123,8 @@
     y_axis_combined: false
     x_axis_scale: auto
     width: 28
-    height: 9
-    top: 15
+    height: 7
+    top: 13
     left: 0
 ############################## Line 4: Conversion Rates and Revenue by Source
     
@@ -160,7 +160,7 @@
     interpolation: linear
     width: 8
     height: 8
-    top: 24
+    top: 22
     left: 0
 
   - name: add_a_unique_name_200
@@ -195,7 +195,7 @@
     interpolation: linear
     width: 20
     height: 8
-    top: 24
+    top: 22
     left: 8
 
 ################# Line 5: Facebook - Paid Marketing Section
@@ -218,7 +218,7 @@
     total: true
     width: 16
     height: 6
-    top: 34
+    top: 32
     left: 0
     
   - name: add_a_unique_name_25
@@ -255,7 +255,7 @@
     show_dropoff: false
     width: 12
     height: 6
-    top: 34
+    top: 32
     left: 16
     
 ########################### Line 6: Emails - From Finery
@@ -280,7 +280,7 @@
     show_view_names: false
     width: 16
     height: 12
-    top: 42
+    top: 40
     left: 0
     
   - name: add_a_unique_name_500
@@ -318,7 +318,7 @@
     show_dropoff: false
     width: 12
     height: 12
-    top: 42
+    top: 40
     left: 16
 
 ############################ Line 7: Search Engines
@@ -357,7 +357,7 @@
     x_axis_scale: auto
     width: 12
     height: 6
-    top: 56
+    top: 54
     left: 0
     
   - name: add_a_unique_name_401
@@ -378,7 +378,7 @@
     show_view_names: false
     width: 16
     height: 6
-    top: 56
+    top: 54
     left: 12
     
 ######################## Line 8: Affiliates and Social
@@ -402,7 +402,7 @@
     show_view_names: false
     width: 14
     height: 8
-    top: 64
+    top: 62
     left: 0
 
   - name: add_a_unique_name_644
@@ -424,6 +424,6 @@
     show_view_names: false
     width: 14
     height: 8
-    top: 64
+    top: 62
     left: 14
 
