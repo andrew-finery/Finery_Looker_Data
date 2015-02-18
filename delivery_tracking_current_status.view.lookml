@@ -120,3 +120,61 @@
     timeframes: [time, hour, date, week, month]
     sql: ${TABLE}.return_confirmed_time
 
+  - dimension: hub_received_date
+    type: date
+    sql: ${TABLE}.hub_received_date
+
+  - dimension: misrouted_date
+    type: date
+    sql: ${TABLE}.misrouted_date
+    
+  - dimension: missort_date
+    type: date
+    sql: ${TABLE}.missort_date    
+
+  - dimension: depot_received_date
+    type: date
+    sql: ${TABLE}.depot_received_date    
+    
+  - dimension: missing_pre_advice_date
+    type: date
+    sql: ${TABLE}.missing_pre_advice_date    
+    
+  - dimension: more_info_required_date
+    type: date
+    sql: ${TABLE}.more_info_required_date      
+    
+  - dimension: out_for_delivery_date
+    type: date
+    sql: ${TABLE}.out_for_delivery_date      
+    
+  - dimension: courier_received_date
+    type: date
+    sql: ${TABLE}.courier_received_date        
+
+  - dimension: carried_forward_date
+    type: date
+    sql: ${TABLE}.carried_forward_date 
+
+  - dimension: not_delivered_date
+    type: date
+    sql: date(${TABLE}.not_delivered_tstamp)
+
+  - dimension: refused_date
+    type: date
+    sql: date(${TABLE}.refused_tstamp)
+
+  - dimension: returned_to_sender_date
+    type: date
+    sql: date(${TABLE}.returned_to_sender_tstamp)
+
+  - dimension: delay_date
+    type: date
+    sql: date(${TABLE}.delay_tstamp)    
+    
+    
+    
+    
+    
+    
+    
