@@ -305,62 +305,81 @@
     top: 8
     left: 10
 
-  - name: add_a_unique_name_734
-    title: Next Day Delivery - Late Delivery Reasons Table
-    type: table
-    model: finery_data
-    explore: spree_orders
-    dimensions: [spree_orders.late_delivery_reason]
-    measures: [spree_orders.count_hermes_late_orders]
-    listen:
-      date2: spree_orders.completed_date
-    filters:
-      spree_orders.delivery_type: '"Next Day Delivery"'
-      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
-    sorts: [spree_orders.count_hermes_late_orders desc]
-    limit: 500
-    total: true
-    height: 4
-    width: 5
-    top: 12
-    left: 0
-
-  - name: add_a_unique_name_734
-    title: 48 Hour Delivery - Late Delivery Reasons Table
-    type: table
-    model: finery_data
-    explore: spree_orders
-    dimensions: [spree_orders.late_delivery_reason]
-    measures: [spree_orders.count_hermes_late_orders]
-    listen:
-      date2: spree_orders.completed_date
-    filters:
-      spree_orders.delivery_type: '"48 Hour Delivery"'
-      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
-    sorts: [spree_orders.count_hermes_late_orders desc]
-    limit: 500
-    total: true
-    height: 4
-    width: 5
-    top: 12
-    left: 5
+#  - name: add_a_unique_name_278
+#    title: Untitled Table
+#    type: table
+#    model: finery_data
+#    explore: spree_orders
+#    dimensions: [spree_orders.late_delivery_reason]
+#    measures: [spree_orders.count_hermes_late_orders]
+#    filters:
+#      spree_orders.completed_date: this month
+#      spree_orders.delivery_type: '"Next Day Delivery"'
+#      spree_orders.late_delivery_reason: '"Late to Hub", "Delay at Depot", "Misrouted to Incorrect Depot", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receiving Package", "Hermes Delay", "Missort to Incorrect Courier"'
+#    sorts: [spree_orders.count_hermes_late_orders desc]
+#    limit: 500
+#    total: true
+#    height: 4
+#    width: 5
+#    top: 12
+#    left: 10
     
-  - name: add_a_unique_name_734
-    title: Sunday Delivery - Late Delivery Reasons Table
-    type: table
-    model: finery_data
-    explore: spree_orders
-    dimensions: [spree_orders.late_delivery_reason]
-    measures: [spree_orders.count_hermes_late_orders]
-    listen:
-      date2: spree_orders.completed_date
-    filters:
-      spree_orders.delivery_type: '"Sunday Delivery"'
-      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
-    sorts: [spree_orders.count_hermes_late_orders desc]
-    limit: 500
-    total: true
-    height: 4
-    width: 5
-    top: 12
-    left: 10
+#  - name: add_a_unique_name_734
+#    title: Next Day Delivery - Late Delivery Reasons Table
+#    type: table
+#    model: finery_data
+#    explore: spree_orders
+#    dimensions: [spree_orders.late_delivery_reason]
+#    measures: [spree_orders.count_hermes_late_orders]
+#    listen:
+#      date2: spree_orders.completed_date
+#    filters:
+#      spree_orders.delivery_type: '"Next Day Delivery"'
+#      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+#    sorts: [spree_orders.count_hermes_late_orders desc]
+#    limit: 500
+#    total: true
+#    height: 4
+#    width: 5
+#    top: 12
+#    left: 0
+
+#  - name: add_a_unique_name_734
+#    title: 48 Hour Delivery - Late Delivery Reasons Table
+#    type: table
+#    model: finery_data
+#    explore: spree_orders
+#    dimensions: [spree_orders.late_delivery_reason]
+#    measures: [spree_orders.count_hermes_late_orders]
+#    listen:
+#      date2: spree_orders.completed_date
+#    filters:
+#      spree_orders.delivery_type: '"48 Hour Delivery"'
+#      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+#    sorts: [spree_orders.count_hermes_late_orders desc]
+#    limit: 500
+#    total: true
+#    height: 4
+#    width: 5
+#    top: 12
+#    left: 5
+    
+#  - name: add_a_unique_name_734
+#    title: Sunday Delivery - Late Delivery Reasons Table
+#    type: table
+#    model: finery_data
+#    explore: spree_orders
+#    dimensions: [spree_orders.late_delivery_reason]
+#    measures: [spree_orders.count_hermes_late_orders]
+#    listen:
+#      date2: spree_orders.completed_date
+#    filters:
+#      spree_orders.delivery_type: '"Sunday Delivery"'
+#      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+#    sorts: [spree_orders.count_hermes_late_orders desc]
+#    limit: 500
+#    total: true
+#    height: 4
+#    width: 5
+#    top: 12
+#    left: 10
