@@ -5,9 +5,14 @@
 
   filters:
   - name: date
-    title: "Date Filter"
+    title: "Date Filter - On Time % and Order Volumes"
     type: date_filter
     default_value: 2015
+
+  - name: date2
+    title: "Date Filter - Late Delivery Reasons"
+    type: date_filter
+    default_value: this month
 
   elements:
 
@@ -25,6 +30,7 @@
     sorts: [spree_orders.completed_week desc]
     limit: 500
     total: false
+    show_view_names: false
     show_null_points: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -38,7 +44,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['85']
+    y_axis_min: ['90']
     reference_lines:
       - value: 98.8
         label: Hermes SLA
@@ -64,6 +70,7 @@
     sorts: [spree_orders.completed_week desc]
     limit: 500
     total: false
+    show_view_names: false
     show_null_points: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -77,7 +84,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['85']
+    y_axis_min: ['90']
     reference_lines:
       - value: 99.0
         label: Hermes SLA
@@ -103,6 +110,7 @@
     sorts: [spree_orders.completed_week desc]
     limit: 500
     total: false
+    show_view_names: false
     show_null_points: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -142,6 +150,7 @@
     sorts: [spree_orders.completed_week asc]
     limit: 500
     total: false
+    show_view_names: false
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
@@ -177,6 +186,7 @@
     sorts: [spree_orders.completed_week asc]
     limit: 500
     total: false
+    show_view_names: false
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
@@ -212,6 +222,7 @@
     sorts: [spree_orders.completed_week asc]
     limit: 500
     total: false
+    show_view_names: false
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
@@ -240,7 +251,7 @@
     dimensions: [spree_orders.late_delivery_reason]
     measures: [spree_orders.count_hermes_late_orders]
     listen:
-     date: spree_orders.completed_date
+     date2: spree_orders.completed_date
     filters:
       spree_orders.delivery_type: '"Next Day Delivery"'
       spree_orders.count_hermes_late_orders: '>0'
@@ -260,13 +271,14 @@
     dimensions: [spree_orders.late_delivery_reason]
     measures: [spree_orders.count_hermes_late_orders]
     listen:
-     date: spree_orders.completed_date
+     date2: spree_orders.completed_date
     filters:
       spree_orders.delivery_type: '"48 Hour Delivery"'
       spree_orders.count_hermes_late_orders: '>0'
     sorts: [spree_orders.count_hermes_late_orders desc]
     limit: 500
     total: false
+    show_view_names: false
     height: 4
     width: 5
     top: 8
@@ -280,14 +292,75 @@
     dimensions: [spree_orders.late_delivery_reason]
     measures: [spree_orders.count_hermes_late_orders]
     listen:
-     date: spree_orders.completed_date
+     date2: spree_orders.completed_date
     filters:
       spree_orders.delivery_type: '"Sunday Delivery"'
       spree_orders.count_hermes_late_orders: '>0'
     sorts: [spree_orders.count_hermes_late_orders desc]
     limit: 500
     total: false
+    show_view_names: false
     height: 4
     width: 5
     top: 8
+    left: 10
+
+  - name: add_a_unique_name_734
+    title: Next Day Delivery - Late Delivery Reasons Table
+    type: table
+    model: finery_data
+    explore: spree_orders
+    dimensions: [spree_orders.late_delivery_reason]
+    measures: [spree_orders.count_hermes_late_orders]
+    listen:
+      date2: spree_orders.completed_date
+    filters:
+      spree_orders.delivery_type: '"Next Day Delivery"'
+      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+    sorts: [spree_orders.count_hermes_late_orders desc]
+    limit: 500
+    total: true
+    height: 4
+    width: 5
+    top: 12
+    left: 0
+
+  - name: add_a_unique_name_734
+    title: 48 Hour Delivery - Late Delivery Reasons Table
+    type: table
+    model: finery_data
+    explore: spree_orders
+    dimensions: [spree_orders.late_delivery_reason]
+    measures: [spree_orders.count_hermes_late_orders]
+    listen:
+      date2: spree_orders.completed_date
+    filters:
+      spree_orders.delivery_type: '"48 Hour Delivery"'
+      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+    sorts: [spree_orders.count_hermes_late_orders desc]
+    limit: 500
+    total: true
+    height: 4
+    width: 5
+    top: 12
+    left: 5
+    
+  - name: add_a_unique_name_734
+    title: Sunday Delivery - Late Delivery Reasons Table
+    type: table
+    model: finery_data
+    explore: spree_orders
+    dimensions: [spree_orders.late_delivery_reason]
+    measures: [spree_orders.count_hermes_late_orders]
+    listen:
+      date2: spree_orders.completed_date
+    filters:
+      spree_orders.delivery_type: '"Sunday Delivery"'
+      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
+    sorts: [spree_orders.count_hermes_late_orders desc]
+    limit: 500
+    total: true
+    height: 4
+    width: 5
+    top: 12
     left: 10
