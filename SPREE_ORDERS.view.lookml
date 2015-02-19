@@ -158,7 +158,7 @@
 
   - dimension_group: completed
     type: time
-    timeframes: [time, date, week, month, time_of_day, day_of_week_index]
+    timeframes: [time, date, hour_of_day, week, month, time_of_day, day_of_week_index]
     sql: ${TABLE}.completed_at
 
   - dimension: item_count

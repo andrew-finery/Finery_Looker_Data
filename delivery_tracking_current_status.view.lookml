@@ -82,7 +82,7 @@
 
    sql_trigger_value: select count(*) from finery.delivery_tracking_information_staging
    distkey: tracking_code
-   sortkeys: [tracking_code, event_timestamp]
+   sortkeys: [tracking_code]
    
   fields:
 

@@ -430,7 +430,7 @@
     type: looker_area
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.completed_hod]
+    dimensions: [spree_orders.completed_hour_of_day]
     measures: [spree_orders.orders_per_day]
     listen:
      date: spree_orders.completed_date
