@@ -7,7 +7,7 @@
   filters:
   - name: select_department
     title: "Select Department"
-    type: suggest_filter
+    type: field_filter
     base_view: spree_order_items
     dimension: online_products.online_department
     default_value: null

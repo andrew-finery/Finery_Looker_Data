@@ -127,37 +127,35 @@
   - dimension: event_id
     primary_key: true
     sql: ${TABLE}.event_id
-
+    hidden: true
+    
   - dimension_group: event_time
+    label: EVENT
     type: time
-    timeframes: [time, hour, date, hod, dow, week, month]
+    timeframes: [time, hour, date, hour_of_day, day_of_week_index, week, month]
     sql: ${TABLE}.collector_tstamp
 
-  - dimension: time_period
-    sql_case:
-      00-00 to 08-00: ${event_time_hod} between 0 and 7
-      08-00 to 12-00: ${event_time_hod} between 8 and 11
-      12-00 to 16-00: ${event_time_hod} between 12 and 15
-      16-00 to 20-00: ${event_time_hod} between 16 and 19
-      20-00 to 00-00: ${event_time_hod} > 19
-  
   ########### User and Session Dimensions
     
   - dimension: user_id
     sql: ${TABLE}.user_id
-
+    hidden: true
+    
   - dimension: blended_user_id
     sql: ${identity_stitching.blended_user_id}
-  
+    hidden: true
+    
   - dimension: domain_sessionidx
     sql: ${TABLE}.domain_sessionidx
-  
+    hidden: true
+    
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
-  
+    hidden: true
+    
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
-  
+    hidden: true
   
 ###################################################################################################################################################################
   ########################################################################## MEASURES ###############################################################################
@@ -166,6 +164,7 @@
 ################### Users and Sessions Counts
 
   - measure: count_users
+    label: USERS
     type: count_distinct
     sql: ${blended_user_id}
     filters:
@@ -173,6 +172,7 @@
       domain_sessionidx: -EMPTY
 
   - measure: count_new_users
+    label: NEW USERS
     type: count_distinct
     sql: ${blended_user_id}
     filters:
@@ -180,6 +180,7 @@
       domain_sessionidx: 1
   
   - measure: count_sessions
+    label: SESSIONS
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -187,6 +188,7 @@
       domain_sessionidx: -EMPTY
 
   - measure: count_new_sessions
+    label: NEW SESSIONS
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -194,6 +196,7 @@
       domain_sessionidx: 1
 
   - measure: count_session_logged_in
+    label: LOGGED IN SESSIONS
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -202,27 +205,45 @@
       domain_sessionidx: -EMPTY
 
   - measure: count_users_logged_in
+    label: USERS LOGGED IN
     type: count_distinct
     sql: ${user_id}
     
   - measure: new_user_percentage
+    label: NEW USER %
     type: number
     decimals: 2
     sql: 100.0 * ${count_new_users}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
   
   - measure: user_logged_in_percentage
+    label: LOGGED IN %
     type: number
     decimals: 2
     sql: 100.0 * ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
 
-############### Count number of different events
+  - measure: count_days
+    type: count_distinct
+    sql: date(${TABLE}.collector_tstamp)
+    hidden: true
+    
+  - measure: orders_per_day
+    type: number
+    sql: ${transactions.count_transactions} / ${count_days}
 
   - measure: latest_update
+    label: LATEST UPDATE
     type: string
-    sql: max(${event_time_time})
-    
+    sql: |
+        case
+        when max(date(${TABLE}.collector_tstamp)) < current_date
+        then
+        'Yesterday @ ' || cast(((extract(epoch from max(${TABLE}.collector_tstamp))) - (extract(epoch from max(date(${TABLE}.collector_tstamp)))))/3600 as decimal(8,0)) || ':00'
+        else
+        'Today @ ' || cast(((extract(epoch from max(${TABLE}.collector_tstamp))) - (extract(epoch from max(date(${TABLE}.collector_tstamp)))))/3600 as decimal(8,0)) || ':00'
+        end
+            
 ########################################################################### Product Payment Funnel Measures #################################################################
 
   - measure: distinct_product_impressions
