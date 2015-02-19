@@ -6,6 +6,7 @@
         variants.id as variant_id,
         variants.sku as ean,
         variants.product_id as product_id,
+        variants.deleted_at as deleted_at,
         products.available_on as available_on,
         products.name as style,
         products.product_group_id as product_group_id,
@@ -19,20 +20,27 @@
         departments.department as department,
         departments.permalink as permalink,
         products.name || ' ' || coalesce(colours.name, '') as option,
-        case when date(products.available_on) <= current_date then 'Yes' else 'No' end as online_flag,
+        case when date(products.available_on) > current_date or variants.deleted_at is not null then 'No' else 'Yes' end as online_flag,
         products.is_coming_soon
         
         from
-        (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and deleted_at is null and is_master <> 1) variants
+        
+        (select sku, id, product_id, deleted_at from
+        (select sku,
+        first_value(id) over(partition by sku order by deleted_at desc ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as id,
+        first_value(product_id) over(partition by sku order by deleted_at desc ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as product_id,
+        first_value(deleted_at) over(partition by sku order by deleted_at desc ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as deleted_at
+        from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <>1)
+        group by 1,2,3,4) variants
         
         
         left join 
-        (select * from daily_snapshot.spree_products where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products) and deleted_at is null) products
+        (select * from daily_snapshot.spree_products where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_products)) products
         on variants.product_id = products.id
         
         
         left join
-        (select * from daily_snapshot.spree_product_groups where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_product_groups) and deleted_at is null) product_group
+        (select * from daily_snapshot.spree_product_groups where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_product_groups)) product_group
         on products.product_group_id = product_group.id
         
         
