@@ -80,9 +80,9 @@
         from (SELECT tracking_code,CAST(calendar_date || ' ' || event_time AS datetime) as event_timestamp, event_description from finery.delivery_tracking_information_staging)) group by 1,2,3) latest_event
         on all_codes.tracking_code = latest_event.tracking_code
 
-   sql_trigger_value: select max(event_timestamp) from ${delivery_tracking_hermes.SQL_TABLE_NAME}
+   sql_trigger_value: select count(*) from finery.delivery_tracking_information_staging
    distkey: tracking_code
-   sortkeys: [tracking_code]
+   sortkeys: [tracking_code, event_timestamp]
    
   fields:
 
@@ -92,12 +92,13 @@
 
   - dimension: tracking_code
     sql: ${TABLE}.tracking_code
-
+    hidden: true
+    
 # Time and Description of latest event
     
   - dimension_group: latest_event_time
     type: time
-    timeframes: [time, hour, date, week, month]
+    timeframes: [time, date]
     sql: ${TABLE}.latest_event_time
        
   - dimension: latest_delivery_event
@@ -107,71 +108,83 @@
 
   - dimension_group: first_attempt_time
     type: time
-    timeframes: [time, hour, date, week, month]
+    timeframes: [time, date]
     sql: ${TABLE}.first_attempt_time
 
   - dimension_group: delivery_confirmed_time
     type: time
-    timeframes: [time, hour, date, week, month]
+    timeframes: [time, date]
     sql: ${TABLE}.delivery_confirmed_time
 
   - dimension_group: return_confirmed_time
     type: time
-    timeframes: [time, hour, date, week, month]
+    timeframes: [time, date]
     sql: ${TABLE}.return_confirmed_time
 
   - dimension: hub_received_date
     type: date
     sql: ${TABLE}.hub_received_date
-
+    hidden: true
+    
   - dimension: misrouted_date
     type: date
     sql: ${TABLE}.misrouted_date
+    hidden: true
     
   - dimension: missort_date
     type: date
     sql: ${TABLE}.missort_date    
-
+    hidden: true
+    
   - dimension: depot_received_date
     type: date
     sql: ${TABLE}.depot_received_date    
+    hidden: true
     
   - dimension: missing_pre_advice_date
     type: date
     sql: ${TABLE}.missing_pre_advice_date    
+    hidden: true
     
   - dimension: more_info_required_date
     type: date
     sql: ${TABLE}.more_info_required_date      
+    hidden: true
     
   - dimension: out_for_delivery_date
     type: date
     sql: ${TABLE}.out_for_delivery_date      
+    hidden: true
     
   - dimension: courier_received_date
     type: date
     sql: ${TABLE}.courier_received_date        
-
+    hidden: true
+    
   - dimension: carried_forward_date
     type: date
     sql: ${TABLE}.carried_forward_date 
-
+    hidden: true
+    
   - dimension: not_delivered_date
     type: date
     sql: date(${TABLE}.not_delivered_tstamp)
-
+    hidden: true
+    
   - dimension: refused_date
     type: date
     sql: date(${TABLE}.refused_tstamp)
-
+    hidden: true
+    
   - dimension: returned_to_sender_date
     type: date
     sql: date(${TABLE}.returned_to_sender_tstamp)
-
+    hidden: true
+    
   - dimension: delay_date
     type: date
     sql: date(${TABLE}.delay_tstamp)    
-    
+    hidden: true    
     
     
     

@@ -158,7 +158,7 @@
 
   - dimension_group: completed
     type: time
-    timeframes: [time, date, week, month, tod, hod, dow]
+    timeframes: [time, date, week, month, time_of_day, day_of_week_index]
     sql: ${TABLE}.completed_at
 
   - dimension: item_count
@@ -194,7 +194,7 @@
 
   - dimension_group: shipped_at
     type: time
-    timeframes: [time, date, week, month, tod, hod, dow]
+    timeframes: [date, day_of_week_index]
     sql: ${TABLE}.shipped_at_date
   
   - dimension: delivery_company
@@ -314,19 +314,19 @@
         case
         when ${shipped_at_date} is null then null -- if there is no 'shipped at date', hermes did not recieve teh parcel therefore we can't assign a date we expect the to deliver it by
         --- 48 HOUR DELIVERY CASES
-        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_dow} in (1,2,3,4) then ${shipped_at_date} + 2                                       -- 48h Orders Shipped Mon-Thu arrive 2 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_dow} in (5,6,0) then ${shipped_at_date} + 3                                         -- 48h Order  Shipped Fri-Sun arrive 3 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_day_of_week_index} in (0,1,2,3) then ${shipped_at_date} + 2                                       -- 48h Orders Shipped Mon-Thu arrive 2 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_day_of_week_index} in (4,5,6) then ${shipped_at_date} + 3                                         -- 48h Order  Shipped Fri-Sun arrive 3 days later
         --- NEXT DAY DELIVERY CASES
-        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_dow} in (1,2,3,4,5) then ${shipped_at_date} + 1                                    -- 24h Orders Shipped Mon-Fri arrive 1 day later
-        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_dow} in (6,0) then ${shipped_at_date} + 2                                          -- 24h Order  Shipped Sat-Sun arrive 2 days later
+        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_day_of_week_index} in (0,1,2,3,4) then ${shipped_at_date} + 1                                    -- 24h Orders Shipped Mon-Fri arrive 1 day later
+        when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_day_of_week_index} in (5,6) then ${shipped_at_date} + 2                                          -- 24h Order  Shipped Sat-Sun arrive 2 days later
         --- SUNDAY DELIVERY CASES
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 1 then ${shipped_at_date} + 6                                                   -- Sunday Delivery Orders Shipped on Monday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 2 then ${shipped_at_date} + 5                                                   -- Sunday Delivery Orders Shipped on Tuesday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 3 then ${shipped_at_date} + 4                                                   -- Sunday Delivery Orders Shipped on Wednesday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 4 then ${shipped_at_date} + 3                                                   -- Sunday Delivery Orders Shipped on Thursday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 5 then ${shipped_at_date} + 2                                                   -- Sunday Delivery Orders Shipped on Friday before 4 delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 6 then ${shipped_at_date} + 8                                                   -- Sunday Delivery Orders Shipped on Saturday delivered next Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_dow} = 0 then ${shipped_at_date} + 7                                                   -- Sunday Delivery Orders Shipped on Sunday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 0 then ${shipped_at_date} + 6                                                   -- Sunday Delivery Orders Shipped on Monday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 1 then ${shipped_at_date} + 5                                                   -- Sunday Delivery Orders Shipped on Tuesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 2 then ${shipped_at_date} + 4                                                   -- Sunday Delivery Orders Shipped on Wednesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 3 then ${shipped_at_date} + 3                                                   -- Sunday Delivery Orders Shipped on Thursday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 4 then ${shipped_at_date} + 2                                                   -- Sunday Delivery Orders Shipped on Friday before 4 delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 5 then ${shipped_at_date} + 8                                                   -- Sunday Delivery Orders Shipped on Saturday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${shipped_at_day_of_week_index} = 6 then ${shipped_at_date} + 7                                                   -- Sunday Delivery Orders Shipped on Sunday delivered next Sunday
         --- OTHER DELIVERIES
         else ${completed_date} + 7                                                                                                                      -- Assume all other deliveries DHL and get there within a week of order
         end
@@ -336,32 +336,32 @@
     sql: |
         case
         --- 48 HOUR DELIVERY CASES
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 0 then ${completed_date} + 3                                                  -- 48h Orders on Sunday delivered on Wednesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} between 1 and 3 and ${completed_tod} < '16:00' then ${completed_date} + 2       -- 48h Orders Mon-Wed before 4 delivered 2 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} between 1 and 3 and ${completed_tod} >= '16:00' then ${completed_date} + 3      -- 48h Orders Mon-Wed after 4 delivered 3 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 4 and ${completed_tod} < '16:00' then ${completed_date} + 2                   -- 48h Order on Thursday before 4 delivered on Saturday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 4 and ${completed_tod} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Thursday after 4 delivered Monday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 3                   -- 48h Orders on Friday before 4 delivered Monday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Friday after 4 delivered Tuesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 6 and ${completed_tod} < '17:00' then ${completed_date} + 3                   -- 48h Orders on Saturday before 5 delivered Tuesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_dow} = 6 and ${completed_tod} >= '17:00' then ${completed_date} + 4                  -- 48h Orders on Saturday after 5 delivered Wednesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 3                                                  -- 48h Orders on Sunday delivered on Wednesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2       -- 48h Orders Mon-Wed before 4 delivered 2 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 3      -- 48h Orders Mon-Wed after 4 delivered 3 days later
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2                   -- 48h Order on Thursday before 4 delivered on Saturday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Thursday after 4 delivered Monday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} < '16:00' then ${completed_date} + 3                   -- 48h Orders on Friday before 4 delivered Monday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Friday after 4 delivered Tuesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} < '17:00' then ${completed_date} + 3                   -- 48h Orders on Saturday before 5 delivered Tuesday
+        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} >= '17:00' then ${completed_date} + 4                  -- 48h Orders on Saturday after 5 delivered Wednesday
         --- NEXT DAY DELIVERY CASES
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 0 then ${completed_date} + 2                                                 -- 24h Orders on Sunday delivered on Tuesday
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} between 1 and 4 and ${completed_tod} < '16:00' then ${completed_date} + 1      -- 24h Orders Mon-Thu before 4 delivered the next day
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} between 1 and 4 and ${completed_tod} >= '16:00' then ${completed_date} + 2     -- 24h Orders Mon-Thu after 4 delivered 2 days later
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 1                  -- 24h Orders Fri before 4 delivered Saturday                   
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 3                 -- 24h Orders Fri after 4 delivered Monday
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 6 and ${completed_tod} < '17:00' then ${completed_date} + 2                  -- 24h Orders on Saturday before 5 delivered Monday
-        when ${delivery_type} = 'Next Day Delivery' and ${completed_dow} = 6 and ${completed_tod} >= '17:00' then ${completed_date} + 3                 -- 24h Orders on Saturday after 5 delivered Tuesday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 2                                                 -- 24h Orders on Sunday delivered on Tuesday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} between 0 and 3 and ${completed_time_of_day} < '16:00' then ${completed_date} + 1      -- 24h Orders Mon-Thu before 4 delivered the next day
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} between 0 and 3 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 2     -- 24h Orders Mon-Thu after 4 delivered 2 days later
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} < '16:00' then ${completed_date} + 1                  -- 24h Orders Fri before 4 delivered Saturday                   
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 3                 -- 24h Orders Fri after 4 delivered Monday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} < '17:00' then ${completed_date} + 2                  -- 24h Orders on Saturday before 5 delivered Monday
+        when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} >= '17:00' then ${completed_date} + 3                 -- 24h Orders on Saturday after 5 delivered Tuesday
         --- SUNDAY DELIVERY CASES
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 1 then ${completed_date} + 6                                                   -- Sunday Delivery Orders on Monday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 2 then ${completed_date} + 5                                                   -- Sunday Delivery Orders on Tuesday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 3 then ${completed_date} + 4                                                   -- Sunday Delivery Orders on Wednesday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 4 then ${completed_date} + 3                                                   -- Sunday Delivery Orders on Thursday delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 5 and ${completed_tod} < '16:00' then ${completed_date} + 2                    -- Sunday Delivery Orders on Friday before 4 delivered this Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 5 and ${completed_tod} >= '16:00' then ${completed_date} + 9                   -- Sunday Delivery Orders on Friday after 4 delivered next Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 6 then ${completed_date} + 8                                                   -- Sunday Delivery Orders on Saturday delivered next Sunday
-        when ${delivery_type} = 'Sunday Delivery' and ${completed_dow} = 0 then ${completed_date} + 7                                                   -- Sunday Delivery Orders on Sunday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 0 then ${completed_date} + 6                                                   -- Sunday Delivery Orders on Monday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 1 then ${completed_date} + 5                                                   -- Sunday Delivery Orders on Tuesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 2 then ${completed_date} + 4                                                   -- Sunday Delivery Orders on Wednesday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 3 then ${completed_date} + 3                                                   -- Sunday Delivery Orders on Thursday delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2                    -- Sunday Delivery Orders on Friday before 4 delivered this Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 9                   -- Sunday Delivery Orders on Friday after 4 delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 5 then ${completed_date} + 8                                                   -- Sunday Delivery Orders on Saturday delivered next Sunday
+        when ${delivery_type} = 'Sunday Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 7                                                   -- Sunday Delivery Orders on Sunday delivered next Sunday
         --- OTHER DELIVERIES
         else ${completed_date} + 7                                                                                                                      -- Assume all other deliveries DHL and get there within a week of order
         end
@@ -375,36 +375,42 @@
   
   - dimension: exchange_rate
     sql: ${TABLE}.exchange_rate
-
+    hidden: true
+    
   - dimension: payment_total
     type: number
     decimals: 2
     sql: ${TABLE}.order_total
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: item_total
     type: number
     decimals: 2
     sql: ${TABLE}.item_total
     format: "%0.2f"
+    hidden: true
     
   - dimension: shipping_total
     type: number
     decimals: 2
     sql: ${TABLE}.shipment_total
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: discount
     type: number
     decimals: 2
     sql: ${TABLE}.adjustment_total * (-1)
     format: "£%0.2f"
-  
+    hidden: true
+    
   - dimension: store_credit_used
     type: number
     sql: ${TABLE}.store_credit_used
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
@@ -425,31 +431,35 @@
 
   - dimension: items_returned
     sql:  ${TABLE}.items_returned
-
+    hidden: true
+    
   - dimension: return_item_total
     type: number
     decimals: 2
     sql:  ${TABLE}.return_item_total
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: amount_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.amount_refunded
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: store_credit_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.store_credit_refunded
     format: "%0.2f"
-
+    hidden: true
+    
   - dimension: cash_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.cash_refunded
     format: "%0.2f"
-
+    hidden: true
 
     
 #################################################################################################################################################################################
@@ -506,6 +516,7 @@
     format: "%0.2f"
     filters:
       state: -canceled
+    hidden: true
   
   - measure: sum_gross_revenue_in_gbp
     type: sum
@@ -520,6 +531,7 @@
     format: "%0.2f"
     filters:
       state: -canceled
+    hidden: true
   
   - measure: sum_gross_revenue_in_gbp_ex_vat
     type: sum
@@ -532,6 +544,7 @@
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total
     format: "%0.2f"
+    hidden: true
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
     type: sum
@@ -546,7 +559,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-
+    hidden: true
+    
   - measure: sum_total_discount_gbp
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) * ${TABLE}.exchange_rate
@@ -560,7 +574,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_store_credit_used_gbp
     type: sum
     sql: ${TABLE}.store_credit_used * ${TABLE}.exchange_rate
@@ -574,7 +589,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-
+    hidden: true
+    
   - measure: sum_total_discount_gbp_ex_vat
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) * ${TABLE}.exchange_rate  *5/6
@@ -588,7 +604,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_store_credit_used_gbp_ex_vat
     type: sum
     sql: ${TABLE}.store_credit_used * ${TABLE}.exchange_rate*5/6
@@ -605,7 +622,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_gross_revenue_ex_discount_in_gbp
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) * ${TABLE}.exchange_rate
@@ -619,7 +637,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate
@@ -640,7 +659,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  * ${TABLE}.exchange_rate
@@ -654,7 +674,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*5/6) + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate
@@ -694,7 +715,8 @@
   - measure: count_days
     type: count_distinct
     sql: ${completed_date}
-
+    hidden: true
+    
   - measure: orders_per_day
     type: number
     decimals: 0
@@ -709,7 +731,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-
+    hidden: true
+    
   - measure: sum_total_of_items_gbp
     type: sum
     sql: ${TABLE}.item_total * ${TABLE}.exchange_rate
@@ -723,7 +746,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-
+    hidden: true
+    
   - measure: sum_shipping_total_gbp
     type: sum
     sql: ${TABLE}.shipment_total * ${TABLE}.exchange_rate
@@ -807,7 +831,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-
+    hidden: true
+    
   - measure: sum_return_item_total_gbp
     type: sum
     sql: ${return_item_total} * ${exchange_rate}
@@ -821,6 +846,7 @@
     format: "%0.2f"
     filters:
       state: -canceled
+    hidden: true
     
   - measure: sum_amount_refunded_gbp
     type: sum
@@ -835,6 +861,7 @@
     format: "%0.2f"
     filters:
       state: -canceled
+    hidden: true
     
   - measure: sum_cash_refunded_gbp
     type: sum
@@ -849,6 +876,7 @@
     format: "%0.2f"
     filters:
       state: -canceled
+    hidden: true
     
   - measure: sum_store_credit_refunded_gbp
     type: sum
@@ -866,7 +894,8 @@
     format: "%0.2f"
     filters:
       state: -canceled  
-  
+    hidden: true
+    
   - measure: sum_net_revenue_gbp
     type: sum
     sql: (${item_total} + ${shipping_total} - ${return_item_total}) * ${exchange_rate}
@@ -880,7 +909,8 @@
     format: "%0.2f"
     filters:
       state: -canceled  
-  
+    hidden: true
+    
   - measure: sum_net_revenue_gbp_ex_vat
     type: sum
     sql: (((${item_total} - ${return_item_total})*5/6) + ${shipping_total}) * ${exchange_rate}
@@ -894,7 +924,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-      
+    hidden: true
+    
   - measure: sum_net_revenue_ex_discount_gbp
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) * ${exchange_rate}
@@ -908,7 +939,8 @@
     format: "%0.2f"
     filters:
       state: -canceled
-      
+    hidden: true
+    
   - measure: sum_net_revenue_ex_discount_gbp_ex_vat
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}
@@ -922,22 +954,23 @@
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
-  
-  
+
   - measure: sum_net_revenue_ex_discount_ex_store_credit_ex_vat
     type: sum
     sql: ((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}
     format: "%0.2f"
     filters:
       state: -canceled
-  
+    hidden: true
+    
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}

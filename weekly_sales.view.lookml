@@ -475,7 +475,7 @@
     type: sum
     sql: ${TABLE}.closing_stock_lw
     
-  - dimension: sum_closing_stock_tw_ly
+  - measure: sum_closing_stock_tw_ly
     type: sum
     sql: ${TABLE}.closing_stock_tw_ly
   

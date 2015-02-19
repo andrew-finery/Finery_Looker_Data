@@ -89,9 +89,6 @@
 
 - explore: spree_orders
   joins:
-  - join: users_signup
-    sql_on: |
-      spree_orders.customer_id = users_signup.id
   - join: calendar_weeks
     sql_on: |
       date(spree_orders.completed_at) = calendar_weeks.calendar_date
