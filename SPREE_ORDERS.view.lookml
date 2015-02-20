@@ -178,7 +178,7 @@
     sql: ${TABLE}.customer_id
   
   - dimension: order_email
-    labe: EMAIL
+    label: EMAIL
     sql: ${TABLE}.email
   
   - dimension: in_store_flag
@@ -212,6 +212,7 @@
     sql: ${TABLE}.consignee
   
   - dimension: delivery_type
+    label: DELIVERY TYPE
     sql: ${TABLE}.delivery_type
   
   - dimension: tracking_info_available
@@ -320,7 +321,8 @@
     type: yesno
     sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
     
-  - dimension_group: expected_delivery_date_hermes
+  - dimension: expected_delivery_date_hermes
+    label: EXPECTED DELIVERY
     type: date
     sql: |
         case
