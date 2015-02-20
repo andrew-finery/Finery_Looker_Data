@@ -154,7 +154,7 @@
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
-    y_axis_labels: [Hermes On-Time Percentage]
+    y_axis_labels: [Order Volume]
     stacking: ''
     show_value_labels: false
     x_axis_gridlines: false
@@ -190,7 +190,7 @@
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
-    y_axis_labels: [Hermes On-Time Percentage]
+    y_axis_labels: [Order Volume]
     stacking: ''
     show_value_labels: false
     x_axis_gridlines: false
@@ -226,7 +226,7 @@
     y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
-    y_axis_labels: [Hermes On-Time Percentage]
+    y_axis_labels: [Order Volume]
     stacking: ''
     show_value_labels: false
     x_axis_gridlines: false
