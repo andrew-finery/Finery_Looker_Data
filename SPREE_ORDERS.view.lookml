@@ -7,6 +7,8 @@
              a. "number" AS order_code,
              a.user_id AS customer_id,
              a.email as email,
+             order_sequence.order_sequence_number,
+             order_sequence.latest_order_id,
              a.bill_address_id,
              a.ship_address_id,
              a.item_total,
@@ -103,6 +105,9 @@
         GROUP BY 1) orders_to_strip_out
         on orders_to_strip_out.order_id = a.id
         
+        LEFT JOIN (select id, last_value(id) over (partition by coalesce(cast(user_id as varchar), lower(email)) order by completed_at asc ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as latest_order_id, rank() over (partition by coalesce(cast(user_id as varchar), lower(email)) order by completed_at asc) as order_sequence_number from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders) and state IN ('complete','returned') and created_at > date '2014-11-22') order_sequence
+        on order_sequence.id = a.id
+        
         LEFT JOIN (SELECT spree_shipments.order_id,
                            spree_shipments.tracking,
                            spree_shipments. "number",
@@ -176,6 +181,26 @@
   - dimension: customer_id
     type: int
     sql: ${TABLE}.customer_id
+    
+  - dimension: blended_customer_id
+    sql: coalesce(cast(${TABLE}.customer_id as varchar), lower(${TABLE}.email))
+  
+  - dimension: order_sequence_number
+    sql: cast(${TABLE}.order_sequence_number as integer)
+    hidden: true
+  
+  - dimension: order_sequence_tier
+    type: string
+    sql: |
+      case when ${TABLE}.order_sequence_number in (1,2,3,4) then cast(${order_sequence_number} as varchar) else '5+' end
+
+  - dimension: first_order_flag
+    type: yesno
+    sql: ${order_sequence_tier} = 1
+
+  - dimension: latest_order_flag
+    type: yesno
+    sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
   
   - dimension: order_email
     label: EMAIL
@@ -506,9 +531,16 @@
   
   - measure: count_customers
     type: count_distinct
-    sql: ${TABLE}.customer_id
+    sql: ${blended_customer_id}
     filters:
       state: -canceled
+
+  - measure: count_new_customers
+    type: count_distinct
+    sql: ${blended_customer_id}
+    filters:
+      state: -canceled
+      order_sequence_number: 1
   
   - measure: total_items
     type: sum
@@ -522,6 +554,18 @@
     sql: ${total_items}/${count_orders}::REAL
     format: "%0.2f"
 
+  - measure: orders_per_customer
+    type: number
+    decimals: 2
+    sql: cast(${count_orders} as decimal(8,2))/cast(${count_customers} as decimal(8,2))::REAL
+    format: "%0.2f"
+
+  - measure: new_customer_percentage
+    type: number
+    decimals: 2
+    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/cast(${count_customers} as decimal(8,2))::REAL
+    format: "%0.2f%"
+    
 ################################################# GROSS REVENUE MEASURES ##############################################################
 
   - measure: sum_gross_revenue
