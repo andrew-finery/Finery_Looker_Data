@@ -322,7 +322,6 @@
     sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
     
   - dimension: expected_delivery_date_hermes
-    label: EXPECTED DELIVERY
     type: date
     sql: |
         case
@@ -346,6 +345,7 @@
         end
   
   - dimension: expected_delivery_date
+    label: EXPECTED DELIVERY
     type: date
     sql: |
         case
