@@ -157,6 +157,7 @@
     sql: ${TABLE}.order_id
 
   - dimension_group: completed
+    label: ORDER PLACED
     type: time
     timeframes: [time, date, hour_of_day, week, month, time_of_day, day_of_week_index]
     sql: ${TABLE}.completed_at
@@ -166,6 +167,7 @@
     sql: ${TABLE}.item_count
 
   - dimension: order_code
+    label: ORDER
     sql: ${TABLE}.order_code
 
   - dimension: state
@@ -176,6 +178,7 @@
     sql: ${TABLE}.customer_id
   
   - dimension: order_email
+    labe: EMAIL
     sql: ${TABLE}.email
   
   - dimension: in_store_flag
