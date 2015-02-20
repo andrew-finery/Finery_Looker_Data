@@ -192,6 +192,14 @@
     type: string
     sql: ${TABLE}.tracking_number || 'a'
 
+  - dimension: tracking_link
+    label: HERMES TRACKING LINK
+    type: string
+    sql: ${TABLE}.tracking_number
+    html: |
+        <a href="http://www.hermes-europe.co.uk/customerparceltrackingservice/trackingDetailsHermes.jsp?barcode={{value}}">{{value}}</a>
+
+
   - dimension_group: shipped_at
     type: time
     timeframes: [date, day_of_week_index]
@@ -213,7 +221,6 @@
         ${delivery_tracking_current_status.delivery_confirmed_time_time} is not null
         or ${TABLE}.tracking_number in
         ('7817394680536081',
-        '3901472680538288',
         '3910172680538186',
         '1149738680537787',
         '6801279680535086',
@@ -256,13 +263,15 @@
         
         when ${delivery_company} = 'DHL' then 'DHL Delivery'
         
-        when ${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date then 'Parcel to be Delivered'
-        
         when ${delivery_tracking_current_status.latest_event_time_date} is null and ${tracking_number} = 'a' then 'No Tracking Info - Warehouse'
+        
+        when (${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date) and ${delivery_tracking_current_status.delivery_confirmed_time_time} is null then 'Parcel to be Delivered'
         
         when ${delivery_tracking_current_status.latest_event_time_date} is null then 'No Tracking Info - Hermes'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} is null then 'Parcel to be Delivered'
+        when ${delivery_tracking_current_status.delivery_confirmed_time_time} is null and ${delivery_tracking_current_status.return_confirmed_time_time} is null and ${expected_delivery_date} < current_date - 14 then 'Parcel Lost by Hermes'
+        
+        when ${delivery_tracking_current_status.first_attempt_time_date} is null then 'Parcel Currently Late - Not Delivered'
         
         when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
         and ${delivery_tracking_current_status.misrouted_date} is not null then 'Misrouted to Incorrect Depot'
@@ -297,7 +306,7 @@
         when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
         then 'Late - Other Reason'
         
-        else 'On Time' end
+        else 'Delivered On Time' end
 
   - dimension: shipped_late_flag
     type: yesno
@@ -982,12 +991,13 @@
 ################################### DELIVERY MEASURES ################################################################################
 
   - measure: count_hermes_completed_orders
+    label: ORDERS SHIPPED WITH HERMES
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
       state: -canceled
       delivery_company: HERM
-      late_delivery_reason: -Parcel to be Delivered
+      late_delivery_reason: -Parcel to be Delivered, -Parcel Currently Late - Not Delivered
       
   - measure: count_hermes_late_orders
     type: count_distinct
@@ -995,7 +1005,7 @@
     filters:
       state: -canceled
       delivery_company: HERM
-      late_delivery_reason: Late to Hub, Delay at Depot, Misrouted to Incorrect Depot, Carried Forward, Late - Other Reason, Late to Depot, Delay in Courier Receiving Package, Hermes Delay, Missort to Incorrect Courier
+      late_delivery_reason: Parcel Lost by Hermes, Late to Hub, Delay at Depot, Misrouted to Incorrect Depot, Carried Forward, Late - Other Reason, Late to Depot, Delay in Courier Receiving Package, Hermes Delay, Missort to Incorrect Courier
 
   - measure: count_hermes_no_tracking_info
     type: count_distinct
@@ -1014,6 +1024,7 @@
       late_delivery_reason: More Info Required
 
   - measure: hermes_on_time_percentage
+    label: HERMES ON TIME %
     type: number
     decimals: 2
     sql: 100.0 * (1 - ${count_hermes_late_orders}/nullif(${count_hermes_completed_orders},0)::REAL)
