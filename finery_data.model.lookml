@@ -98,7 +98,10 @@
   - join: spree_users
     sql_on: |
       spree_orders.customer_id = spree_users.user_id
-
+  - join: addresses
+    sql_on: |
+      spree_orders.ship_address_id = addresses.address_id
+      
 - explore: sales_snapshot
   joins:
   - join: product_lookup
