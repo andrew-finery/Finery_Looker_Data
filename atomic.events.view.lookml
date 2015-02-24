@@ -128,6 +128,10 @@
     primary_key: true
     sql: ${TABLE}.event_id
     hidden: true
+
+  - dimension: structured_event
+    sql: ${TABLE}.se_action
+    hidden: true
     
   - dimension_group: event_time
     label: EVENT
@@ -319,3 +323,19 @@
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
     format: "%0.1f%"
+
+## Customer Service/Contact Form Events
+
+  - measure: count_customer_service_events
+    label: CUSTOMER SERVICE LINK CLICKED
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      structured_event: customerService
+
+  - measure: count_contact_form_events
+    label: CONTACT FORM SUBMITTED
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      structured_event: contactForm
