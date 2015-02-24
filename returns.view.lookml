@@ -74,7 +74,7 @@
 
      - dimension_group: returned_at
        type: time
-       timeframes: [time, hour, date, hod, dow, week, month]
+       timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
        sql: ${TABLE}.created_at
 
      - dimension: reception_status
@@ -104,8 +104,8 @@
     # Measures
        
      - measure: number_of_returns
-       type: count
-       sql: (*)
+       type: count_distinct
+       sql: ${return_id}
        
      - measure: number_of_orders_with_returns
        type: count_distinct

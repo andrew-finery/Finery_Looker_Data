@@ -157,8 +157,8 @@
     sql: ${page_url_path}
   
   - measure: links_clicked
-    type: count
-    sql: (*)
+    type: count_distinct
+    sql: ${event_id}
     filters:
       is_click_event: yes
     

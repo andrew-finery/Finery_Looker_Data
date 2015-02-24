@@ -246,10 +246,10 @@
     type: count
     
   - measure: count_exits
-    type: count
+    type: count_distinct
     filters:
       exit_page_flag: yes
-    sql: ${exit_page_flag}
+    sql: ${event_id}
 
   - measure: exit_rate
     type: number

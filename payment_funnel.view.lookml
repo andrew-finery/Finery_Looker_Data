@@ -91,42 +91,42 @@
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
   
   - measure: logged_in_count
-    type: count
-    sql: ${logged_in}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       logged_in: yes
       
   - measure: added_to_cart_count
-    type: count
-    sql: ${added_to_cart}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       added_to_cart: yes
       
   
   - measure: checkout_started_count
-    type: count
-    sql: ${checkout_started}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       checkout_started: yes
       
   
   - measure: address_entered_count
-    type: count
-    sql: ${address_entered}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       address_entered: yes
       
   
   - measure: delivery_method_count
-    type: count
-    sql: ${delivery_method}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       delivery_method: yes
       
   
   - measure: order_completed_count
-    type: count
-    sql: ${order_completed}
+    type: count_distinct
+    sql: ${user_id}
     filters:
       order_completed: yes
       
