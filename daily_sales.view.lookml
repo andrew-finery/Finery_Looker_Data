@@ -143,14 +143,14 @@
     sql: ${TABLE}.closing_stock
     filters:
       calendar_date_date: last week
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 6
 
   - measure: closing_stock_week_before_last
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
       calendar_date_date: 2 weeks ago
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 6
 
 # stock value @ cost
 
@@ -169,14 +169,14 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: last week
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 6
 
   - measure: closing_stock_value_cost_week_before_last
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 2 weeks ago
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 0
 
 # closing stock @ retail
 
@@ -195,14 +195,14 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_date: last week
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 6
 
   - measure: closing_stock_value_retail_week_before_last
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_date: 2 weeks ago
-      calendar_date_dow: 0
+      calendar_date_day_of_week_index: 6
 
 
 ### Number of sku's in stock measures
@@ -213,7 +213,7 @@
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: last week
-      calendar_date_dow: 0    
+      calendar_date_day_of_week_index: 6
 
   - measure: skus_in_stock_week_before
     type: count_distinct
@@ -221,15 +221,14 @@
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: last week
-      calendar_date_dow: 0 
+      calendar_date_day_of_week_index: 6
   
   - measure: skus_in_stock_yesterday
     type: count_distinct
     sql: ${TABLE}.sku
     filters:
       count_on_hand: -NULL, -0
-      calendar_date_date: last week
-      calendar_date_dow: 0
+      calendar_date_date: yesterday
     
     
     
