@@ -40,6 +40,10 @@
   - dimension: address_id
     sql: ${TABLE}.address_id
     hidden: true
+
+  - dimension: country_id
+    sql: ${TABLE}.country_id
+    hidden: true
     
   - dimension: map_postcode
     label: POSTCODE
@@ -53,7 +57,7 @@
   - dimension: country
     label: COUNTRY
     sql: ${TABLE}.country
-  
+
   - dimension: london_flag
     label: LONDON FLAG
     sql: case when ${TABLE}.map_postcode in ('E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC') then 'London' else 'Non-London' end

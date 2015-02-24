@@ -780,6 +780,10 @@
     decimals: 0
     sql: ${count_orders}/${count_days}::REAL
 
+  - measure: revenue_per_day
+    type: number
+    decimals: 0
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/${count_days}::REAL
 
 ############################ OTHER GROSS REVENUE SUMS ###################################################################################################
 

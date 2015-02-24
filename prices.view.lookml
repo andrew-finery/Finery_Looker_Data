@@ -9,8 +9,7 @@
           where prices.currency = 'GBP' and prices.deleted_at is null 
           group  by 1,2,3,4
 
-    sql_trigger_value: |
-                      SELECT MAX(spree_timestamp) from daily_snapshot.spree_prices
+    sql_trigger_value: SELECT MAX(spree_timestamp) from daily_snapshot.spree_prices
     distkey: sku
     sortkeys: [sku]
 
