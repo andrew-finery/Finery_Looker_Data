@@ -176,7 +176,7 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 2 weeks ago
-      calendar_date_day_of_week_index: 0
+      calendar_date_day_of_week_index: 6
 
 # closing stock @ retail
 
