@@ -13,7 +13,7 @@
   - name: total_visits
     title: Total Visits
     type: single_value
-    base_view: sessions
+    explore: sessions
     measures: [sessions.count]
     listen:
      date: sessions.start_date
@@ -23,7 +23,7 @@
   - name: visitors
     title: Total Visitors
     type: single_value
-    base_view: sessions
+    explore: sessions
     measures: [sessions.sessions_from_new_visitors_count]
     listen:
      date: sessions.start_date
@@ -49,7 +49,7 @@
   - name: conversion_rate
     title: Conversion Rate (from Logins)
     type: single_value
-    base_view: sessions
+    explore: sessions
     measures: [payment_funnel.order_completed_percentage]
     filters:
       payment_funnel.logged_in: yes
@@ -77,7 +77,7 @@
   - name: web_stats_by_device
     title: Web Stats by Device (Logins)
     type: table
-    base_view: sessions
+    explore: sessions
     dimensions: [sessions.device_type]
     measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
     sessions.bounce_rate, sessions.new_visitor_percentage, payment_funnel.order_completed_percentage]
@@ -94,7 +94,7 @@
   - name: web_stats_by_browser
     title: Web Stats by Browser (Logins)
     type: table
-    base_view: sessions
+    explore: sessions
     dimensions: [sessions.browser_family]
     measures: [sessions.count, visitors.count, sessions.pages_per_session, sessions.average_session_duration,
     sessions.bounce_rate, sessions.new_visitor_percentage, payment_funnel.order_completed_percentage]
@@ -110,7 +110,7 @@
   - name: visits_by_day
     title: Visits
     type: looker_line
-    base_view: sessions
+    explore: sessions
     dimensions: [sessions.start_date]
     measures: [sessions.count, sessions.sessions_from_new_visitors_count]
     listen:
@@ -134,7 +134,7 @@
   - name: visits_by_hour
     title: Visits by Hour
     type: looker_line
-    base_view: sessions
+    explore: sessions
     dimensions: [sessions.start_hod]
     measures: [sessions.count]
     listen:
@@ -156,7 +156,7 @@
   - name: exit_rates_by_page_and_browser
     title: Exit Rates by Page and Browser
     type: looker_column
-    base_view: page_views
+    explore: page_views
     dimensions: [page_views.browser_family, page_views.page_type]
     pivots: [page_views.browser_family]
     measures: [page_views.exit_rate]
@@ -181,7 +181,7 @@
   - name: where_do_visitors_reach
     title: How far do Visitors reach on the site? (Once they have logged in)
     type: looker_pie
-    base_view: sessions
+    explore: sessions
     dimensions: [sessions.site_progress]
     measures: [sessions.count_percent_of_total]
     listen:

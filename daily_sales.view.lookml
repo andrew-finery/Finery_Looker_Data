@@ -60,7 +60,7 @@
 
   - dimension_group: calendar_date
     type: time
-    timeframes: [date, dow, dow_num, week, dom, month, month_num]
+    timeframes: [date, day_of_week_index, week, month, month_num]
     convert_tz: false
     sql: ${TABLE}.calendar_date
 
