@@ -164,7 +164,7 @@
   - dimension_group: completed
     label: ORDER PLACED
     type: time
-    timeframes: [time, date, hour_of_day, week, month, time_of_day, day_of_week_index]
+    timeframes: [time, date, hour_of_day, week, month, time_of_day, day_of_week_index, day_of_week]
     sql: ${TABLE}.completed_at
 
   - dimension: item_count
