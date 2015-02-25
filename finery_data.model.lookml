@@ -28,8 +28,8 @@
 - explore: spree_users
   joins:
   - join: spree_orders
-    sql_on: spree_orders.order_id = spree_order_items.order_id
-    relationship: many_to_one
+    sql_on: spree_orders.customer_id = spree_users.user_id
+    relationship: one_to_many
   - join: hermes_delivery_tracking
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
     relationship: one_to_one
@@ -52,8 +52,7 @@
     sql_on: |
       referrals.id = spree_users_2.invitation_id
   - join: spree_orders
-    sql_on: spree_orders.order_id = spree_order_items.order_id
-    relationship: many_to_one
+    sql_on: spree_users_2.user_id = spree_orders.customer_id
   - join: hermes_delivery_tracking
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
     relationship: one_to_one
@@ -97,8 +96,8 @@
 - explore: users_signup
   joins:
   - join: spree_orders
-    sql_on: spree_orders.order_id = spree_order_items.order_id
-    relationship: many_to_one
+    sql_on: spree_orders.customer_id = users_signup.id
+    relationship: one_to_many
   - join: hermes_delivery_tracking
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
     relationship: one_to_one
@@ -198,8 +197,7 @@
     sql_on: |
       returns.sku = online_products.ean
   - join: spree_orders
-    sql_on: spree_orders.order_id = spree_order_items.order_id
-    relationship: many_to_one
+    sql_on: spree_orders.order_id = returns.order_id
   - join: hermes_delivery_tracking
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
     relationship: one_to_one
