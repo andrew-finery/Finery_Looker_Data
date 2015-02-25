@@ -1,4 +1,4 @@
-- view: delivery_tracking_current_status
+- view: hermes_delivery_tracking
   derived_table:
    sql: |
        select

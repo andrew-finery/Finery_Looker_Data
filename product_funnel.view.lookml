@@ -61,7 +61,7 @@
 
      - dimension_group: occurred_at
        type: time
-       timeframes: [time, hour, date, hod, dow, week, month]
+       timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
        sql: ${TABLE}.collector_tstamp
     
      - dimension: product_user_id

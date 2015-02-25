@@ -51,7 +51,7 @@
   
   - dimension_group: trans_time
     type: time
-    timeframes: [time, hour, date, hod, dow, week, month]
+    timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
   
   - dimension: customer_id

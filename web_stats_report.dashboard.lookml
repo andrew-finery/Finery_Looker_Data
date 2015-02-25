@@ -135,7 +135,7 @@
     title: Visits by Hour
     type: looker_line
     explore: sessions
-    dimensions: [sessions.start_hod]
+    dimensions: [sessions.start_hour_of_day]
     measures: [sessions.count]
     listen:
      date: sessions.start_date

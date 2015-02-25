@@ -28,11 +28,20 @@
 - explore: spree_users
   joins:
   - join: spree_orders
-    sql_on: |
-      spree_orders.customer_id = spree_users.user_id
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: spree_orders.order_id = spree_order_items.order_id
+    relationship: many_to_one
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
+    relationship: one_to_one
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+    relationship: many_to_one
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    relationship: many_to_one
 
 - explore: referrals
   joins:
@@ -43,11 +52,20 @@
     sql_on: |
       referrals.id = spree_users_2.invitation_id
   - join: spree_orders
-    sql_on: |
-      spree_users_2.user_id = spree_orders.customer_id
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: spree_orders.order_id = spree_order_items.order_id
+    relationship: many_to_one
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
+    relationship: one_to_one
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+    relationship: many_to_one
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    relationship: many_to_one
 
 - explore: atomic_events
   joins:
@@ -79,29 +97,38 @@
 - explore: users_signup
   joins:
   - join: spree_orders
-    sql_on: |
-      spree_orders.customer_id = users_signup.id
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: spree_orders.order_id = spree_order_items.order_id
+    relationship: many_to_one
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
+    relationship: one_to_one
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+    relationship: many_to_one
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    relationship: many_to_one
   
 - explore: leads
 
 - explore: spree_orders
   joins:
   - join: calendar_weeks
-    sql_on: |
-      date(spree_orders.completed_at) = calendar_weeks.calendar_date
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: date(spree_orders.completed_at) = calendar_weeks.calendar_date
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
   - join: spree_users
-    sql_on: |
-      spree_orders.customer_id = spree_users.user_id
-  - join: addresses
-    sql_on: |
-      spree_orders.ship_address_id = addresses.address_id
-      
+    sql_on: spree_orders.customer_id = spree_users.user_id
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    
 - explore: sales_snapshot
   joins:
   - join: product_lookup
@@ -114,11 +141,20 @@
 - explore: spree_order_items
   joins:
   - join: spree_orders
-    sql_on: |
-      spree_orders.order_id = spree_order_items.order_id
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: spree_orders.order_id = spree_order_items.order_id
+    relationship: many_to_one
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
+    relationship: one_to_one
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+    relationship: many_to_one
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    relationship: many_to_one
   - join: users_signup
     sql_on: |
       spree_orders.customer_id = users_signup.id
@@ -162,11 +198,20 @@
     sql_on: |
       returns.sku = online_products.ean
   - join: spree_orders
-    sql_on: |
-      spree_orders.order_id = returns.order_id
-  - join: delivery_tracking_current_status
-    sql_on: |
-      delivery_tracking_current_status.tracking_code = concat(spree_orders.tracking_number,'a')
+    sql_on: spree_orders.order_id = spree_order_items.order_id
+    relationship: many_to_one
+  - join: hermes_delivery_tracking
+    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
+    relationship: one_to_one
+  - join: spree_addresses
+    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.calendar_date = date(spree_orders.completed_at) and spree_exchange_rates.currency = spree_orders.currency
+    relationship: many_to_one
+  - join: spree_tax_rates
+    sql_on: spree_tax_rates.calendar_date = date(spree_orders.completed_at) and spree_orders.country_id = spree_tax_rates.country_id
+    relationship: many_to_one
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
@@ -211,6 +256,6 @@
     sql_on: |
       goods_commitment.ean = online_products.ean
       
-- explore: delivery_tracking_current_status
+- explore: hermes_delivery_tracking
 
       

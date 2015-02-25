@@ -173,7 +173,7 @@
     type: looker_pie
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.country]
+    dimensions: [spree_addresses.country]
     measures: [spree_orders.count_customers]
     sorts: [spree_orders.count_customers desc]
     limit: 500
@@ -188,7 +188,7 @@
     type: looker_bar
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.country]
+    dimensions: [spree_addresses.country]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days
@@ -238,10 +238,10 @@
     type: looker_geo_choropleth
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.map_postcode]
+    dimensions: [spree_addresses.map_postcode]
     measures: [spree_orders.count_customers]
     filters:
-      addresses.country: '"United Kingdom"'
+      spree_addresses.country: '"United Kingdom"'
     sorts: [spree_orders.count_customers desc]
     limit: 500
     total: false
@@ -268,7 +268,7 @@
     type: looker_pie
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.london_flag]
+    dimensions: [spree_addresses.london_flag]
     measures: [spree_orders.count_customers]
     sorts: [spree_orders.count_customers desc]
     limit: 500
@@ -294,7 +294,7 @@
     type: looker_bar
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.london_flag]
+    dimensions: [spree_addresses.london_flag]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days
@@ -325,7 +325,7 @@
     type: looker_bar
     model: finery_data
     explore: spree_orders
-    dimensions: [addresses.city]
+    dimensions: [spree_addresses.city]
     measures: [spree_orders.count_customers]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days

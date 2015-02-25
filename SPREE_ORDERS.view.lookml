@@ -11,6 +11,7 @@
              order_sequence.latest_order_id,
              a.bill_address_id,
              a.ship_address_id,
+             ship_add.country_id,
              a.item_total,
              a.total AS order_total,
              case when voids.order_id is not null then 'canceled' else a.state end as state,
@@ -27,7 +28,6 @@
              a.currency,
              a.item_count,
              COALESCE(b.store_credit,'0') AS store_credit_used,
-             c.exchange_rate,
              COALESCE(d.return_item_total,'0') AS return_item_total,
              COALESCE(d.items_returned,'0') AS items_returned,
              COALESCE(e.amount_refunded,'0') AS amount_refunded,
@@ -45,11 +45,7 @@
                                                   FROM daily_snapshot.spree_payments))
                    WHERE source_type = 'Spree::StoreCredit'
                    GROUP BY 1) b ON a.id = b.order_id
-                   
-        LEFT JOIN lookup.exchange_rates c
-               ON DATE_TRUNC ('day',a.completed_at) = c. "date"
-              AND a.currency = c.currency
-              
+
         LEFT JOIN (SELECT order_id
                     FROM (SELECT order_id,
                                  FIRST_VALUE(source_type) OVER (PARTITION BY order_id ORDER BY created_at DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS source_type,
@@ -136,6 +132,9 @@
                                  WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
                                                           FROM daily_snapshot.spree_shipping_methods)) spree_shipping_methods ON spree_shipping_methods.id = spree_shipping_rates.shipping_method_id) shipments
                       on a.id = shipments.order_id
+      
+      LEFT JOIN (select id, country_id from daily_snapshot.spree_addresses where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_addresses)) ship_add
+      on ship_add.id = a.ship_address_id
                             
       WHERE a.state IN ('complete','returned','canceled')
       AND   a.created_at > DATE '2014-11-22'
@@ -181,14 +180,16 @@
   - dimension: customer_id
     type: int
     sql: ${TABLE}.customer_id
+    hidden: true
     
   - dimension: blended_customer_id
     sql: coalesce(cast(${TABLE}.customer_id as varchar), lower(${TABLE}.email))
-  
+    hidden: true
+    
   - dimension: order_sequence_number
     sql: cast(${TABLE}.order_sequence_number as integer)
     hidden: true
-  
+    
   - dimension: order_sequence_tier
     type: string
     sql: |
@@ -227,7 +228,6 @@
     html: |
         <a href="http://www.hermes-europe.co.uk/customerparceltrackingservice/trackingDetailsHermes.jsp?barcode={{value}}">{{value}}</a>
 
-
   - dimension_group: shipped_at
     type: time
     timeframes: [date, day_of_week_index]
@@ -247,7 +247,7 @@
   - dimension: delivered_flag
     type: yesno
     sql: |
-        ${delivery_tracking_current_status.delivery_confirmed_time_time} is not null
+        ${hermes_delivery_tracking.delivery_confirmed_time_time} is not null
         or ${TABLE}.tracking_number in
         ('7817394680536081',
         '3910172680538186',
@@ -271,80 +271,60 @@
         'R408945061')
   # NB. Manually entered tracking codes. These are parcels that Hermes website has lost track of but we have confirmed as delivered
 
-
-  - dimension: currently_late_flag
-    sql: |
-      case when ${delivered_flag} or ${expected_delivery_date} >= current_date then 'No' else 'Yes' end
-
-  - dimension: hermes_late_delivery_flag
-    type: yesno
-    sql: |
-      ${delivery_tracking_current_status.delivery_confirmed_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.delivery_confirmed_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.delivery_confirmed_time_date} is not null
-
-  - dimension: customer_late_delivery_flag
-    type: yesno
-    sql: |
-      ${delivery_tracking_current_status.delivery_confirmed_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.delivery_confirmed_time_date} is not null
-
   - dimension: late_delivery_reason
     sql: |
         case
         
         when ${delivery_company} = 'DHL' then 'DHL Delivery'
         
-        when ${delivery_tracking_current_status.latest_event_time_date} is null and ${tracking_number} = 'a' then 'No Tracking Info - Warehouse'
+        when ${hermes_delivery_tracking.latest_event_time_date} is null and ${tracking_number} = 'a' then 'No Tracking Info - Warehouse'
         
-        when (${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date) and ${delivery_tracking_current_status.delivery_confirmed_time_time} is null then 'Parcel to be Delivered'
+        when (${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date) and ${hermes_delivery_tracking.delivery_confirmed_time_time} is null then 'Parcel to be Delivered'
         
-        when ${delivery_tracking_current_status.latest_event_time_date} is null then 'No Tracking Info - Hermes'
+        when ${hermes_delivery_tracking.latest_event_time_date} is null then 'No Tracking Info - Hermes'
         
-        when ${delivery_tracking_current_status.delivery_confirmed_time_time} is null and ${delivery_tracking_current_status.return_confirmed_time_time} is null and ${expected_delivery_date} < current_date - 14 then 'Parcel Lost by Hermes'
+        when ${hermes_delivery_tracking.delivery_confirmed_time_time} is null and ${hermes_delivery_tracking.return_confirmed_time_time} is null and ${expected_delivery_date} < current_date - 14 then 'Parcel Lost by Hermes'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} is null then 'Parcel Currently Late - Not Delivered'
+        when ${hermes_delivery_tracking.first_attempt_time_date} is null then 'Parcel Currently Late - Not Delivered'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.misrouted_date} is not null then 'Misrouted to Incorrect Depot'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.misrouted_date} is not null then 'Misrouted to Incorrect Depot'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.missort_date} is not null then 'Missort to Incorrect Courier'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.missort_date} is not null then 'Missort to Incorrect Courier'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.more_info_required_date} is not null then 'More Info Required'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.more_info_required_date} is not null then 'More Info Required'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.carried_forward_date} is not null then 'Carried Forward'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.carried_forward_date} is not null then 'Carried Forward'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.delay_date} is not null then 'Hermes Delay'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.delay_date} is not null then 'Hermes Delay'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.hub_received_date} > ${completed_date} + 1 then 'Late to Hub'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.hub_received_date} > ${completed_date} + 1 then 'Late to Hub'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.depot_received_date} > ${completed_date} + 2 then 'Late to Depot'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.depot_received_date} > ${completed_date} + 2 then 'Late to Depot'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.out_for_delivery_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.out_for_delivery_date} > ${expected_delivery_date} then 'Delay at Depot'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.out_for_delivery_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.out_for_delivery_date} > ${expected_delivery_date} then 'Delay at Depot'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.courier_received_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.courier_received_date} > ${expected_delivery_date} then 'Delay in Courier Receiving Package'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.courier_received_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.courier_received_date} > ${expected_delivery_date} then 'Delay in Courier Receiving Package'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
-        and ${delivery_tracking_current_status.delay_date} is not null then 'Missing Pre-Advice'
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        and ${hermes_delivery_tracking.delay_date} is not null then 'Missing Pre-Advice'
         
-        when ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${delivery_tracking_current_status.first_attempt_time_date} > ${expected_delivery_date} and ${delivery_tracking_current_status.first_attempt_time_date} is not null
+        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
         then 'Late - Other Reason'
         
         else 'Delivered On Time' end
 
-  - dimension: shipped_late_flag
-    type: yesno
-    sql: |
-      ${shipped_at_date} > ${completed_date} + 1 
-
   - dimension: returned_flag
     type: yesno
-    sql: ${delivery_tracking_current_status.return_confirmed_time_time} is not null  
+    sql: ${hermes_delivery_tracking.return_confirmed_time_time} is not null  
     
   - dimension: expected_delivery_date_hermes
     type: date
@@ -408,12 +388,17 @@
     
 
 ##################################### REVENUE DIMENSIONS ##########################################################
-  
+
   - dimension: currency
     sql: ${TABLE}.currency
   
   - dimension: exchange_rate
-    sql: ${TABLE}.exchange_rate
+    sql: ${spree_exchange_rates.exchange_rate}
+    hidden: true
+
+  - dimension: tax_rate
+    
+    sql: ${spree_tax_rates.tax_rate}
     hidden: true
     
   - dimension: payment_total
@@ -453,7 +438,7 @@
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate}
   
   
 ####################### FLAGS ######################################################################################
@@ -578,14 +563,14 @@
   
   - measure: sum_gross_revenue_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${TABLE}.exchange_rate
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_vat
     type: sum
-    sql: (${TABLE}.item_total*5/6) + ${TABLE}.shipment_total
+    sql: (${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total
     format: "%0.2f"
     filters:
       state: -canceled
@@ -593,7 +578,7 @@
   
   - measure: sum_gross_revenue_in_gbp_ex_vat
     type: sum
-    sql: ((${TABLE}.item_total*5/6) + ${TABLE}.shipment_total)*${TABLE}.exchange_rate
+    sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)*${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -606,7 +591,7 @@
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${TABLE}.exchange_rate
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${exchange_rate}
     format: "£%0.2f"
 
 ################################################# DISCOUNT/STORE CREDIT MEASURES ##############################################################
@@ -621,7 +606,7 @@
     
   - measure: sum_total_discount_gbp
     type: sum
-    sql: ${TABLE}.adjustment_total * (-1) * ${TABLE}.exchange_rate
+    sql: ${TABLE}.adjustment_total * (-1) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -636,14 +621,14 @@
     
   - measure: sum_store_credit_used_gbp
     type: sum
-    sql: ${TABLE}.store_credit_used * ${TABLE}.exchange_rate
+    sql: ${TABLE}.store_credit_used * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_total_discount_ex_vat
     type: sum
-    sql: ${TABLE}.adjustment_total * (-1) * 5/6
+    sql: ${TABLE}.adjustment_total * (-1) * (1/(1+${tax_rate}))
     format: "%0.2f"
     filters:
       state: -canceled
@@ -651,14 +636,14 @@
     
   - measure: sum_total_discount_gbp_ex_vat
     type: sum
-    sql: ${TABLE}.adjustment_total * (-1) * ${TABLE}.exchange_rate  *5/6
+    sql: ${TABLE}.adjustment_total * (-1) * ${exchange_rate}  *(1/(1+${tax_rate}))
     format: "£%0.2f"
     filters:
       state: -canceled
   
   - measure: sum_store_credit_used_ex_vat
     type: sum
-    sql: ${TABLE}.store_credit_used*5/6
+    sql: ${TABLE}.store_credit_used*(1/(1+${tax_rate}))
     format: "%0.2f"
     filters:
       state: -canceled
@@ -666,7 +651,7 @@
     
   - measure: sum_store_credit_used_gbp_ex_vat
     type: sum
-    sql: ${TABLE}.store_credit_used * ${TABLE}.exchange_rate*5/6
+    sql: ${TABLE}.store_credit_used * ${exchange_rate}*(1/(1+${tax_rate}))
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -684,14 +669,14 @@
     
   - measure: sum_gross_revenue_ex_discount_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) * ${TABLE}.exchange_rate
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_ex_vat
     type: sum
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  + ${TABLE}.shipment_total 
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total 
     format: "%0.2f"
     filters:
       state: -canceled
@@ -699,14 +684,14 @@
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat
     type: sum
-    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate
+    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k
     type: sum
-    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate / 1000
+    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  * ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:
       state: -canceled
@@ -721,14 +706,14 @@
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  * ${TABLE}.exchange_rate
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_and_store_credit_ex_vat
     type: sum
-    sql: ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*5/6) + ${TABLE}.shipment_total
+    sql: ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total
     format: "%0.2f"
     filters:
       state: -canceled
@@ -736,7 +721,7 @@
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
     type: sum
-    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*5/6) + ${TABLE}.shipment_total)  * ${TABLE}.exchange_rate
+    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -745,14 +730,14 @@
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
     type: sum
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k
     type: sum
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*5/6)  * ${TABLE}.exchange_rate / 1000
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:
       state: -canceled
@@ -797,7 +782,7 @@
     
   - measure: sum_total_of_items_gbp
     type: sum
-    sql: ${TABLE}.item_total * ${TABLE}.exchange_rate
+    sql: ${TABLE}.item_total * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -812,7 +797,7 @@
     
   - measure: sum_shipping_total_gbp
     type: sum
-    sql: ${TABLE}.shipment_total * ${TABLE}.exchange_rate
+    sql: ${TABLE}.shipment_total * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -967,7 +952,7 @@
       
   - measure: sum_net_revenue_ex_vat
     type: sum
-    sql: ((${item_total} - ${return_item_total})*5/6) + ${shipping_total}
+    sql: ((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}
     format: "%0.2f"
     filters:
       state: -canceled  
@@ -975,7 +960,7 @@
     
   - measure: sum_net_revenue_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${return_item_total})*5/6) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -997,7 +982,7 @@
 
   - measure: sum_net_revenue_ex_discount_ex_vat
     type: sum
-    sql: ((${item_total} - ${discount} - ${amount_refunded})*5/6) + ${shipping_total}
+    sql: ((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}
     format: "%0.2f"
     filters:
       state: -canceled
@@ -1005,7 +990,7 @@
     
   - measure: sum_net_revenue_ex_discount_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${discount} - ${amount_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -1027,7 +1012,7 @@
 
   - measure: sum_net_revenue_ex_discount_ex_store_credit_ex_vat
     type: sum
-    sql: ((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}
+    sql: ((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}
     format: "%0.2f"
     filters:
       state: -canceled
@@ -1035,7 +1020,7 @@
     
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*5/6) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled

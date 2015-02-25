@@ -40,3 +40,9 @@
      decimals: 2
      sql: ${TABLE}.amount
      hidden: true
+
+   - dimension: tax_rate_visible
+     label: TAX RATE
+     type: int
+     sql: 100 * ${TABLE}.amount
+     format: "%0.2f%"

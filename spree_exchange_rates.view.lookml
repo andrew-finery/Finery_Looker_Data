@@ -28,8 +28,8 @@
           (select calendar_date, 'GBP' as currency, cast('1.00' as decimal(8,2)) as rate from lookup.calendar)
 
     sql_trigger_value: SELECT max(spree_timestamp) FROM daily_snapshot.spree_exchange_rates
-    distkey: calendar
-    sortkeys: [root_id, root_tstamp]
+    distkey: calendar_date
+    sortkeys: [calendar_date, currency]
           
   fields:
 

@@ -80,7 +80,7 @@
 
    - dimension_group: date
      type: time
-     timeframes: [date, week, month, dow_num]
+     timeframes: [date, week, month, day_of_week_index]
      sql: ${TABLE}.date
     
    - measure: sum_logged_in_sessions

@@ -1,4 +1,4 @@
-- view: addresses
+- view: spree_addresses
   derived_table:
     sql: |
           select
