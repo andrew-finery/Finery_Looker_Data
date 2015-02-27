@@ -69,7 +69,7 @@
         left join
         (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values)) bbb
         on aaa.option_value_id = bbb.id
-        where bbb.option_type_id in(2,7)) sizes
+        where bbb.option_type_id in(1,5,6,7)) sizes
         on sizes.variant_id = variants.id
         
         

@@ -5,6 +5,8 @@
             matrix.calendar_date,
             matrix.year_week_number,
             matrix.sku,
+            coalesce(option_availability.full_option_availability_flag, '0') as full_option_availability_flag,
+            first_option_sales_date.first_option_sales_date as first_option_sales_date,
             coalesce(closing.closing_stock, '0') as closing_stock,
             coalesce(sales.items_sold, '0') as items_sold,
             coalesce(sales.items_returned, '0') as items_returned,
@@ -39,6 +41,30 @@
             on sales.sales_date = matrix.calendar_date
             and sales.sku = matrix.sku
             
+            left join ${online_products.SQL_TABLE_NAME} online_products
+            on online_products.ean = matrix.sku
+            
+            left join
+              (select
+              online_products.product_id, closing_stock.closing_stock_date,
+              case when cast(sum(case when coalesce(closing_stock.closing_stock,'0') > 0 then 1 else 0 end) as decimal(8,2))/cast(count(distinct closing_stock.sku) as decimal(8,2)) = 1 then 1 else 0 end as full_option_availability_flag
+              from ${daily_closing_stock.SQL_TABLE_NAME} closing_stock
+              left join ${online_products.SQL_TABLE_NAME} online_products
+              on closing_stock.sku = online_products.ean
+              where online_products.ean is not null and online_products.size not in (18)
+              group by 1,2) option_availability
+              on online_products.product_id = option_availability.product_id
+              and matrix.calendar_date = option_availability.closing_stock_date
+            
+            left join
+              (select
+              online_products.product_id, min(date(order_items.order_tstamp)) as first_option_sales_date
+              from ${spree_order_items.SQL_TABLE_NAME} order_items
+              left join ${online_products.SQL_TABLE_NAME} online_products
+              on order_items.sku = online_products.ean
+              group by 1) first_option_sales_date
+              on online_products.product_id = first_option_sales_date.product_id
+            
             where matrix.calendar_date > date '2014-11-17'
             
    sql_trigger_value: SELECT max(closing_stock_date) FROM ${daily_closing_stock.SQL_TABLE_NAME}
@@ -71,6 +97,14 @@
   - dimension: items_sold
     sql: ${TABLE}.items_sold
 
+  - dimension: after_first_option_sales_date_flag
+    type: yesno
+    sql: ${TABLE}.calendar_date >= ${TABLE}.first_option_sales_date
+      
+  - dimension: full_option_availability_flag
+    type: yesno
+    sql: ${TABLE}.full_option_availability_flag = 1
+
 #################################################################################################################################################################################################
 ########################################################## MEASURES #############################################################################################################################
 #################################################################################################################################################################################################
@@ -80,6 +114,10 @@
   - measure: sum_items_sold
     type: sum
     sql: ${TABLE}.items_sold
+
+  - measure: sum_items_sold_as_percent
+    type: percent_of_total
+    sql: ${sum_items_sold}
 
   - measure: sum_items_returned
     type: sum
@@ -106,6 +144,10 @@
     type: sum
     sql: ${TABLE}.items_sold * ${product_lookup.current_price}
     format: "£%0.2f"
+
+  - measure: gross_sales_mix
+    type: percent_of_total
+    sql: ${approx_gross_item_revenue_gbp}
     
   - measure: approx_net_item_revenue_gbp
     type: sum
@@ -187,6 +229,10 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_date: 1 day ago for 1 day
+  
+  - measure: stock_mix_retail_yesterday
+    type: percent_of_total
+    sql: ${closing_stock_value_retail_yesterday}  
   
   - measure: closing_stock_value_retail_last_week
     type: sum
