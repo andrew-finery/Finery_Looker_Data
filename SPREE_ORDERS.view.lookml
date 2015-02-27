@@ -22,6 +22,8 @@
              shipments.tracking as tracking_number,
              shipments.consignee,
              shipments.name as delivery_type,
+             exchange_rates.rate as exchange_rate,
+             tax_rates.amount as tax_rate,
              a.included_tax_total,
              a.additional_tax_total,
              a.completed_at,
@@ -135,6 +137,14 @@
       
       LEFT JOIN (select id, country_id from daily_snapshot.spree_addresses where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_addresses)) ship_add
       on ship_add.id = a.ship_address_id
+      
+      LEFT JOIN ${spree_exchange_rates.SQL_TABLE_NAME} exchange_rates
+      on exchange_rates.calendar_date = date(a.completed_at)
+      and exchange_rates.currency = a.currency
+      
+      LEFT JOIN ${spree_tax_rates.SQL_TABLE_NAME} tax_rates
+      on tax_rates.calendar_date = date(a.completed_at)
+      and tax_rates.country_id = ship_add.country_id
                             
       WHERE a.state IN ('complete','returned','canceled')
       AND   a.created_at > DATE '2014-11-22'
@@ -142,7 +152,7 @@
       AND a.email not like '%shaun+cml%'
 
     
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_tax_rates.SQL_TABLE_NAME}
     distkey: order_id
     sortkeys: [order_id, completed_at]
 
@@ -392,11 +402,11 @@
     sql: ${TABLE}.currency
   
   - dimension: exchange_rate
-    sql: ${spree_exchange_rates.exchange_rate}
+    sql: ${TABLE}.exchange_rate
     hidden: true
 
   - dimension: tax_rate
-    sql: ${spree_tax_rates.tax_rate}
+    sql: ${TABLE}.tax_rate
     hidden: true
     
   - dimension: payment_total

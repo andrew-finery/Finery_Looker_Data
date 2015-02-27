@@ -30,7 +30,7 @@
                    2,
                    3
 
-     sql_trigger_value: select max(tstamp) from (select * from (select max(root_tstamp) as tstamp from atomic.com_finerylondon_stock_updated_1 stock_updated) union (select max(spree_timestamp) as tstamp from daily_snapshot.spree_stock_items))
+     sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_order_items.SQL_TABLE_NAME}
      distkey: sku
      sortkeys: [sku, closing_stock_date]
 

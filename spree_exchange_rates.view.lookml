@@ -1,11 +1,11 @@
 - view: spree_exchange_rates
   derived_table:
     sql: |
-          select calendar_date, currency, rate
+          select calendar_date, currency, rate, spree_timestamp
           
           from
           
-          (select calendar_before.calendar_date, exchange_rates_before.currency, exchange_rates_before.rate from
+          (select calendar_before.calendar_date, exchange_rates_before.currency, exchange_rates_before.rate, cast(null as datetime) as spree_timestamp from
           (select calendar_date from lookup.calendar where calendar_date < (select min(date(spree_timestamp)) from daily_snapshot.spree_exchange_rates)) calendar_before
           cross join
           (select 'USD' as currency, cast('1.60' as decimal(8,2)) as rate union select 'CAD' as currency, cast('1.80' as decimal(8,2)) as rate) exchange_rates_before)
@@ -14,20 +14,20 @@
           
           select * from 
           
-          (select date(spree_timestamp) as calendar_date, currency, max(rate) as rate from daily_snapshot.spree_exchange_rates group by 1,2)
+          (select date(spree_timestamp) as calendar_date, currency, max(rate) as rate, max(spree_timestamp) as spree_timestamp from daily_snapshot.spree_exchange_rates group by 1,2)
           
           union
           
-          (select calendar_after.calendar_date, exchange_rates_after.currency, exchange_rates_after.rate as exchange_rate from
+          (select calendar_after.calendar_date, exchange_rates_after.currency, exchange_rates_after.rate as exchange_rate, cast(null as datetime) as spree_timestamp from
           (select calendar_date from lookup.calendar where calendar_date > (select max(date(spree_timestamp)) from daily_snapshot.spree_exchange_rates)) calendar_after
           cross join
           (select currency, rate from (select currency, first_value(rate) over (partition by currency order by spree_timestamp desc rows between unbounded preceding and unbounded following) as rate from daily_snapshot.spree_exchange_rates) group by 1,2) exchange_rates_after)
           
           union
           
-          (select calendar_date, 'GBP' as currency, cast('1.00' as decimal(8,2)) as rate from lookup.calendar)
+          (select calendar_date, 'GBP' as currency, cast('1.00' as decimal(8,2)) as rate, cast(null as datetime) as spree_timestamp from lookup.calendar)
 
-    sql_trigger_value: SELECT max(spree_timestamp) FROM daily_snapshot.spree_exchange_rates
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}
     distkey: calendar_date
     sortkeys: [calendar_date, currency]
           

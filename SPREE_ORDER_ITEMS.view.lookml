@@ -14,7 +14,11 @@
         d.max_selling_price,
         (d.max_selling_price - b.price) as discount,
         coalesce(e.items_returned, '0') as items_returned,
-        e.return_reason
+        e.return_reason,
+        a.exchange_rate,
+        a.tax_rate,
+        a.item_total as order_total,
+        a.adjustment_total
         
         from
 
@@ -71,7 +75,7 @@
     hidden: true
     
   - dimension: exchange_rate
-    sql: ${spree_orders.exchange_rate}
+    sql: ${TABLE}.exchange_rate
     hidden: true
     
 ########################################Product Dimensions###########################################################################################################################
@@ -87,7 +91,7 @@
   - dimension: price_gbp
     type: number
     decimals: 2
-    sql: ${price} * ${exchange_rate}
+    sql: ${price} / ${exchange_rate}
     format: "£%0.2f"
 
   - dimension: max_selling_price
@@ -138,6 +142,7 @@
     decimals: 2
     sql: ${TABLE}.price * ${TABLE}.quantity
     format: "%0.2f"
+    hidden: true
   
   - dimension: gross_item_revenue_in_gbp
     type: number
@@ -148,7 +153,7 @@
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
     type: number
     decimals: 2
-    sql: (${gross_item_revenue_in_gbp}/(${spree_orders.item_total}/${spree_orders.exchange_rate})) * ((${spree_orders.item_total} - (${spree_orders.discount})/${spree_orders.exchange_rate})*(1/(1+${spree_orders.tax_rate})))
+    sql: ${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))
     format: "£%0.2f"
   
   # Margin Dimensions
