@@ -103,7 +103,7 @@
     
   - dimension_group: account_created_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour_of_day, hour, week, month]
     sql: ${TABLE}.created_at
     
   - dimension: first_name
@@ -133,8 +133,9 @@
   
   - dimension_group: last_sign_in_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.last_sign_in_at
+    hidden: true
 
   - dimension: signup_credit_currency
     sql: ${TABLE}.signup_credit_currency

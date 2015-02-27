@@ -149,14 +149,12 @@
   - measure: count
     type: count_distinct
     sql: ${user_id}
-    detail: individual_detail*
     
   - measure: bounced_visitor_count
     type: count_distinct
     sql: ${user_id}
     filter:
       bounce: yes
-    detail: detail*
     
   - measure: bounce_rate
     type: number
@@ -175,7 +173,6 @@
   - measure: sessions_count
     type: sum
     sql: ${TABLE}.number_of_sessions
-    detail: details*
     
   - measure: sessions_per_visitor
     type: number
@@ -187,98 +184,36 @@
   - measure: landing_page_count
     type: count_distinct
     sql: ${landing_page_url}
-    detail:
-    - landing_page_url
-    - detail*
+
     
   # Traffic source measures #
   
   - measure: campaign_medium_count
     type: count_distinct
     sql: ${campaign_medium}
-    detail: 
-    - campaign_medium
-    - detail*
     
   - measure: campaign_source_count
     type: count_distinct
     sql: ${campaign_source}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - detail*
     
   - measure: campaign_term_count
     type: count_distinct
     sql: ${campaign_term}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - campaign_term
-    - detail*
       
   - measure: campaign_count
     type: count_distinct
     sql: ${campaign_name}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - campaign_term
-    - detail*
     
   - measure: referer_medium_count
     type: count_distinct
     sql: ${referer_medium}
-    detail: 
-    - referer_medium
-    - detail*
     
   - measure: referer_source_count
     type: count_distinct
     sql: ${referer_source}
-    detail: 
-    - referer_medium
-    - referer_source
-    - detail*
     
   - measure: referer_term_count
     type: count_distinct
     sql: ${referer_term}
-    detail: 
-    - referer_medium
-    - referer_source
-    - referer_term
-    - detail*
 
-  sets:    
-    detail:
-      - count
-      - bounce_rate
-      - sessions_per_visitor
-      - events_per_visitor
-      - campaign_medium_count
-      - campaign_source_count
-      - campaign_term_count
-      - campaign_count
-      - referer_medium_count
-      - referer_source_count
-      - referer_term_count
-      
-    individual_detail:
-      - user_id
-      - first_touch
-      - last_touch
-      - referer_medium
-      - referer_source
-      - referer_host
-      - referer_url_host
-      - referer_url_path
-      - campaign_medium
-      - campaign_source
-      - campaign_name
-      - landing_page_url
-      - number_of_sessions
-      - number_of_events
-      - session_stream
-      - event_stream
     

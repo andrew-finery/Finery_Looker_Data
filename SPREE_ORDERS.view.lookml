@@ -192,8 +192,7 @@
     
   - dimension: order_sequence_tier
     type: string
-    sql: |
-      case when ${TABLE}.order_sequence_number in (1,2,3,4) then cast(${order_sequence_number} as varchar) else '5+' end
+    sql: case when ${TABLE}.order_sequence_number in (1,2,3,4) then cast(${order_sequence_number} as varchar) else '5+' end
 
   - dimension: first_order_flag
     type: yesno
@@ -397,7 +396,6 @@
     hidden: true
 
   - dimension: tax_rate
-    
     sql: ${spree_tax_rates.tax_rate}
     hidden: true
     
@@ -438,7 +436,7 @@
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate}
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate}))) / ${exchange_rate}
   
   
 ####################### FLAGS ######################################################################################
@@ -563,7 +561,7 @@
   
   - measure: sum_gross_revenue_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${exchange_rate}
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -578,7 +576,7 @@
   
   - measure: sum_gross_revenue_in_gbp_ex_vat
     type: sum
-    sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)*${exchange_rate}
+    sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -591,7 +589,7 @@
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total)*${exchange_rate}
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
 
 ################################################# DISCOUNT/STORE CREDIT MEASURES ##############################################################
@@ -606,7 +604,7 @@
     
   - measure: sum_total_discount_gbp
     type: sum
-    sql: ${TABLE}.adjustment_total * (-1) * ${exchange_rate}
+    sql: ${TABLE}.adjustment_total * (-1) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -621,7 +619,7 @@
     
   - measure: sum_store_credit_used_gbp
     type: sum
-    sql: ${TABLE}.store_credit_used * ${exchange_rate}
+    sql: ${TABLE}.store_credit_used / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -651,7 +649,7 @@
     
   - measure: sum_store_credit_used_gbp_ex_vat
     type: sum
-    sql: ${TABLE}.store_credit_used * ${exchange_rate}*(1/(1+${tax_rate}))
+    sql: ${TABLE}.store_credit_used / ${exchange_rate} * (1/(1+${tax_rate}))
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -669,7 +667,7 @@
     
   - measure: sum_gross_revenue_ex_discount_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) * ${exchange_rate}
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -684,14 +682,14 @@
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat
     type: sum
-    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  * ${exchange_rate}
+    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k
     type: sum
-    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  * ${exchange_rate} / 1000
+    sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total) / ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:
       state: -canceled
@@ -706,7 +704,7 @@
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
     type: sum
-    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  * ${exchange_rate}
+    sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -721,7 +719,7 @@
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
     type: sum
-    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  * ${exchange_rate}
+    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -730,14 +728,14 @@
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
     type: sum
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate}
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k
     type: sum
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  * ${exchange_rate} / 1000
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:
       state: -canceled
@@ -782,7 +780,7 @@
     
   - measure: sum_total_of_items_gbp
     type: sum
-    sql: ${TABLE}.item_total * ${exchange_rate}
+    sql: ${TABLE}.item_total / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -797,7 +795,7 @@
     
   - measure: sum_shipping_total_gbp
     type: sum
-    sql: ${TABLE}.shipment_total * ${exchange_rate}
+    sql: ${TABLE}.shipment_total / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -882,7 +880,7 @@
     
   - measure: sum_return_item_total_gbp
     type: sum
-    sql: ${return_item_total} * ${exchange_rate}
+    sql: ${return_item_total} / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -897,7 +895,7 @@
     
   - measure: sum_amount_refunded_gbp
     type: sum
-    sql: ${amount_refunded} * ${exchange_rate}
+    sql: ${amount_refunded} / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -912,7 +910,7 @@
     
   - measure: sum_cash_refunded_gbp
     type: sum
-    sql: ${cash_refunded} * ${exchange_rate}
+    sql: ${cash_refunded} / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -927,7 +925,7 @@
     
   - measure: sum_store_credit_refunded_gbp
     type: sum
-    sql: ${store_credit_refunded} * ${exchange_rate}
+    sql: ${store_credit_refunded} / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -945,7 +943,7 @@
     
   - measure: sum_net_revenue_gbp
     type: sum
-    sql: (${item_total} + ${shipping_total} - ${return_item_total}) * ${exchange_rate}
+    sql: (${item_total} + ${shipping_total} - ${return_item_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -960,7 +958,7 @@
     
   - measure: sum_net_revenue_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -975,7 +973,7 @@
     
   - measure: sum_net_revenue_ex_discount_gbp
     type: sum
-    sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) * ${exchange_rate}
+    sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -990,7 +988,7 @@
     
   - measure: sum_net_revenue_ex_discount_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -1005,7 +1003,7 @@
     
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp
     type: sum
-    sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) * ${exchange_rate}
+    sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
@@ -1020,7 +1018,7 @@
     
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat
     type: sum
-    sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) * ${exchange_rate}
+    sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled

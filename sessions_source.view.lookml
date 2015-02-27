@@ -101,39 +101,29 @@
   - measure: campaign_medium_count
     type: count_distinct
     sql: ${campaign_medium}
-    detail: detail*
     
   - measure: campaign_source_count
     type: count_distinct
     sql: ${campaign_source}
-    detail: detail*
     
   - measure: campaign_term_count
     type: count_distinct
     sql: ${campaign_term}
-    detail: detail*
       
   - measure: campaign_count
     type: count_distinct
     sql: ${campaign_name}
-    detail: detail*
     
   - measure: referer_medium_count
     type: count_distinct
     sql: ${referer_medium}
-    detail: detail*
     
   - measure: referer_source_count
     type: count_distinct
     sql: ${referer_source}
-    detail: detail*
     
   - measure: referer_term_count
     type: count_distinct
     sql: ${referer_term}
-    detail: detail*
-    
-  - measure: count
-    type: count
       
     

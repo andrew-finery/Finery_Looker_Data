@@ -159,12 +159,12 @@
     
   - dimension_group: created_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.created_at
   
   - dimension_group: referral_sent_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.referral_sent_at
     
   - dimension: source
@@ -180,12 +180,12 @@
     
   - dimension_group: first_purchase
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.first_order
   
   - dimension_group: last_purchase
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.last_order
 
   - dimension: first_name

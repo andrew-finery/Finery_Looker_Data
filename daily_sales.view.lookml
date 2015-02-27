@@ -8,9 +8,7 @@
             coalesce(closing.closing_stock, '0') as closing_stock,
             coalesce(sales.items_sold, '0') as items_sold,
             coalesce(sales.items_returned, '0') as items_returned,
-            coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns,
-            coalesce(sales.gross_item_revenue_gbp_ex_vat, '0') as gross_item_revenue_gbp_ex_vat,
-            coalesce(sales.net_item_revenue_gbp_ex_vat, '0') as net_item_revenue_gbp_ex_vat
+            coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns
             
             from 
 
@@ -34,9 +32,7 @@
             date(order_tstamp) as sales_date,
             sku,
             sum(quantity) as items_sold,
-            sum(items_returned) as items_returned,
-            sum(price_gbp * quantity*5/6) as gross_item_revenue_gbp_ex_vat,
-            sum(price_gbp *5/6 * (quantity - items_returned)) as net_item_revenue_gbp_ex_vat
+            sum(items_returned) as items_returned
             from
             ${spree_order_items.SQL_TABLE_NAME}
             group by 1,2) sales
@@ -45,8 +41,7 @@
             
             where matrix.calendar_date > date '2014-11-17'
             
-   sql_trigger_value: |
-                      SELECT max(closing_stock_date) FROM ${daily_closing_stock.SQL_TABLE_NAME}
+   sql_trigger_value: SELECT max(closing_stock_date) FROM ${daily_closing_stock.SQL_TABLE_NAME}
    distkey: sku
    sortkeys: [sku, calendar_date]
 
@@ -98,25 +93,28 @@
     type: date
     sql: MIN(case when items_sold > 0 then ${calendar_date_date} else null end)
     convert_tz: false
-#     filters:
-#       items_sold: -0, -NULL
+
+  - measure: last_sale_date
+    type: date
+    sql: MAX(case when items_sold > 0 then ${calendar_date_date} else null end)
+    convert_tz: false
       
 
 # Value Measures
 
-  - measure: sum_gross_item_revenue_gbp_ex_vat
+  - measure: approx_gross_item_revenue_gbp
     type: sum
-    sql: ${TABLE}.gross_item_revenue_gbp_ex_vat
+    sql: ${TABLE}.items_sold * ${product_lookup.current_price}
     format: "£%0.2f"
     
-  - measure: sum_net_item_revenue_gbp_ex_vat
+  - measure: approx_net_item_revenue_gbp
     type: sum
-    sql: ${TABLE}.net_item_revenue_gbp_ex_vat
+    sql: ${TABLE}.items_sold_after_returns * ${product_lookup.current_price}
     format: "£%0.2f"
   
-  - measure: sum_return_item_value_ex_vat
+  - measure: approx_return_item_value
     type: sum
-    sql: ${TABLE}.gross_item_revenue_gbp_ex_vat - ${TABLE}.net_item_revenue_gbp_ex_vat
+    sql: ${TABLE}.items_returned * ${product_lookup.current_price}
     format: "£%0.2f"
 
 # Margin Measures

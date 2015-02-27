@@ -27,7 +27,7 @@
   
   - dimension_group: created_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.created_at
   
   - measure: count_leads

@@ -336,7 +336,6 @@
   - measure: count
     type: count_distinct
     sql: ${session_id}
-    detail: individual_detail*
     
   - measure: count_running_total
     type: running_total
@@ -349,7 +348,6 @@
   - measure: visitors_count
     type: count_distinct
     sql: ${user_id}
-    detail: detail*
     hidden: true
     
   - measure: bounced_sessions_count
@@ -357,7 +355,6 @@
     sql: ${session_id}
     filters:
       bounce: yes
-    detail: detail*
 
   - measure: bounce_rate
     type: number
@@ -370,12 +367,10 @@
     sql: ${session_id}
     filters:
       session_index: 1
-    detail: individual_detail*
   
   - measure: sessions_from_returning_visitor_count
     type: number
     sql: ${count} - ${sessions_from_new_visitors_count}
-    detail: individual_detail*
   
   - measure: new_visitor_percentage
     type: number
@@ -429,147 +424,54 @@
   - measure: region_count
     type: count_distinct
     sql: ${geography_region}
-    detail: 
-    - geography_country
-    - geography_region
-    - detail*
     
   - measure: city_count
     type: count_distinct
     sql: ${geography_city}
-    detail: 
-    - geography_country
-    - geography_region
-    - geography_city
-    - detail*
       
   - measure: zip_code_count
     type: count_distinct
     sql: ${geography_zipcode}
-    detail:  
-    - geography_country
-    - geography_region
-    - geography_city
-    - geography_zipcode
-    - detail*
     
   - measure: campaign_medium_count
     type: count_distinct
     sql: ${campaign_medium}
-    detail: 
-    - campaign_medium
-    - detail*
     
   - measure: campaign_source_count
     type: count_distinct
     sql: ${campaign_source}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - detail*
     
   - measure: campaign_term_count
     type: count_distinct
     sql: ${campaign_term}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - campaign_term 
-    - detail*
-      
+
   - measure: campaign_count
     type: count_distinct
     sql: ${campaign_name}
-    detail: 
-    - campaign_medium
-    - campaign_source
-    - campaign_term
-    - campaign_name
-    - detail*
-    
+
   - measure: referer_medium_count
     type: count_distinct
     sql: ${referer_medium}
-    detail: 
-    - referer_medium
-    - detail*
-    
+
   - measure: referer_source_count
     type: count_distinct
     sql: ${referer_source}
-    detail: 
-    - referer_medium
-    - referer_source
-    - detail*
-    
+
   - measure: referer_term_count
     type: count_distinct
     sql: ${referer_term}
-    detail: 
-    - referer_medium
-    - referer_source
-    - referer_term
-    - detail*
-    
+
   # Technology measures 
   
   - measure: device_count
     type: count_distinct
     sql: ${device_type}
-    detail: detail*
   
   - measure: operating_system_count
     type: count_distinct
     sql: ${operating_system}
-    detail: 
-    - operating_system
-    - detail*
   
   - measure: browser_count
     type: count_distinct
     sql: ${browser}
-    detail: 
-    - browser
-    - detail*
     
-  # Detail #
-  sets:
-  
-    detail:
-      - count
-      - visitors.count
-      - bounce_rate
-      - sessions_from_new_visitors_count
-      - sessions_from_returning_visitors_count
-      - new_visitors_count_over_total_visitors_count
-      - country_count
-      - region_count
-      - city_count
-      - zipe_code_count
-      - campaign_medium_count
-      - campaign_source_count
-      - campaign_term_count
-      - campaign_count
-      - referer_medium_count
-      - referer_source_count
-      - referer_term_count
-      - device_count
-      - operating_system_count
-      - browser_count
-  
-    individual_detail:
-      - user_id
-      - session_index
-      - visitors.first_touch_date
-      - referer_medium
-      - referer_source
-      - referer_url_host
-      - referer_url_path
-      - campaign_medium
-      - campaign_source
-      - campaign_name
-      - start_time
-      - session_duration_seconds
-      - events_during_session
-      - distinct_pages_viewed
-      - event_stream

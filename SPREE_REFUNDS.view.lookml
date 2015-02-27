@@ -62,7 +62,7 @@
     
   - dimension_group: refund_processed_at
     type: time
-    timeframes: [time, date, hod, hour, week, month]
+    timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.refund_processed_at
        
   - dimension: amount_refunded
