@@ -12,7 +12,7 @@
             coalesce(sales.items_returned, '0') as items_returned,
             coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns,
             coalesce(sales.gross_revenue_gbp, '0') as gross_revenue_gbp,
-            coalesce(sales.gross_revenue_gbp_ex_vat_ex_discount,'0') as gross_revenue_gbp_ex_vat_ex_discount
+            coalesce(sales.gross_revenue_gbp_ex_vat_ex_discount,'0') as gross_revenue_gbp_ex_vat_ex_discount,
             coalesce(sales.net_revenue_gbp, '0') as net_revenue_gbp,
             coalesce(sales.net_revenue_gbp_ex_vat_ex_discount,'0') as net_revenue_gbp_ex_vat_ex_discount
             
