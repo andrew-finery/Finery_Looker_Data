@@ -141,6 +141,7 @@
        sql: ${TABLE}.ean
 
      - dimension: style
+       label: STYLE
        sql: ${TABLE}.style
        
      - dimension: product_group_id
@@ -153,12 +154,14 @@
        sql: ${TABLE}.product_id
        
      - dimension: colour
+       label: COLOUR
        sql: ${TABLE}.colour
     
      - dimension: online_department
        sql: ${TABLE}.department
     
      - dimension: size
+       label: SIZE
        sql: ${TABLE}.size
     
      - dimension: current_price_gbp

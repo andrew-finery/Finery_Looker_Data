@@ -171,6 +171,7 @@
     sql: ${TABLE}.items_returned
   
   - dimension: return_reason
+    label: RETURN REASON
     sql: ${TABLE}.return_reason
     
   - dimension: return_item_value_gbp
@@ -204,12 +205,14 @@
     sql: ${TABLE}.sku
   
   - measure: total_items_sold
+    label: TOTAL ITEMS SOLD
     type: sum
     sql: ${TABLE}.quantity
   
   ########################################### Returns Measures #################################################################################################################
     
   - measure: total_items_returned
+    label: TOTAL ITEMS RETURNED
     type: sum
     sql: coalesce(${items_returned}, 0)
   
