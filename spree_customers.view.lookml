@@ -23,6 +23,9 @@
   ###################################################################  DIMENSIONS  ####################################################################
 #####################################################################################################################################################
 
+  - dimension: email
+    sql: ${TABLE}.email
+  
   - dimension_group: first_order
     label: FIRST ORDER
     type: time
@@ -32,3 +35,8 @@
   - dimension: number_of_orders
     label: NUMBER OF ORDERS
     sql: ${TABLE}.number_of_orders
+    
+  - measure: total_orders
+    label: TOTAL ORDERS
+    type: sum
+    sql: ${number_of_orders}

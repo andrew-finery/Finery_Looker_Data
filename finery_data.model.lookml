@@ -208,7 +208,15 @@
   - join: online_products
     sql_on: |
       goods_commitment.ean = online_products.ean
-      
-- explore: hermes_delivery_tracking
 
-      
+- explore: all_newsletter_subscribers
+  joins:
+  - join: spree_customers
+    sql_on: all_newsletter_subscribers.email = spree_customers.email
+    relationship: one_to_one
+
+- explore: all_referrals
+  joins:
+  - join: spree_customers
+    sql_on: all_referrals.email = spree_customers.email
+    relationship: one_to_one
