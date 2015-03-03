@@ -387,7 +387,7 @@
     y_axis_gridlines: true
     y_axis_labels: [Number of Orders]
     y_axis_combined: false
-    y_axis_min: 10
+    y_axis_min: 0
     y_axis_max: 20
     interpolation: linear
     x_axis_datetime_tick_count: 7
@@ -427,8 +427,8 @@
     y_axis_gridlines: true
     y_axis_labels: [Number of Orders]
     y_axis_combined: false
-    y_axis_min: 60
-    y_axis_max: 100
+    y_axis_min: 50
+    y_axis_max: 120
     interpolation: linear
     x_axis_datetime_tick_count: 7
     hidden_series: [Row Total]
@@ -468,8 +468,8 @@
     y_axis_gridlines: true
     y_axis_labels: [Number of Orders]
     y_axis_combined: false
-    y_axis_min: 1.5
-    y_axis_max: 2.5
+    y_axis_min: 1
+    y_axis_max: 3
     interpolation: linear
     x_axis_datetime_tick_count: 7
     width: 6
