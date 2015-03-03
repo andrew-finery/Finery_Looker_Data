@@ -12,6 +12,7 @@
             coalesce(sales.items_returned, '0') as items_returned,
             coalesce(sales.items_sold, '0') - coalesce(sales.items_returned, '0') as items_sold_after_returns,
             coalesce(sales.gross_revenue_gbp, '0') as gross_revenue_gbp,
+            coalesce(sales.gross_revenue_gbp_ex_vat, '0') as gross_revenue_gbp_ex_vat,
             coalesce(sales.gross_revenue_gbp_ex_vat_ex_discount,'0') as gross_revenue_gbp_ex_vat_ex_discount,
             coalesce(sales.net_revenue_gbp, '0') as net_revenue_gbp,
             coalesce(sales.net_revenue_gbp_ex_vat_ex_discount,'0') as net_revenue_gbp_ex_vat_ex_discount
@@ -39,6 +40,7 @@
             sku,
             sum(quantity) as items_sold,
             sum(price*quantity/exchange_rate) as gross_revenue_gbp,
+            sum((price*quantity/exchange_rate) * (1/(1+tax_rate))) as gross_revenue_gbp_ex_vat,
             sum(((order_total + adjustment_total)/order_total) * price * quantity * (1/(1+tax_rate)) / exchange_rate) as gross_revenue_gbp_ex_vat_ex_discount,
             sum(items_returned) as items_returned,
             sum(price*(quantity - items_returned)/exchange_rate) as net_revenue_gbp,
@@ -167,6 +169,12 @@
     sql: ${TABLE}.gross_revenue_gbp
     format: "£%0.2f"
 
+  - measure: gross_item_revenue_gbp_ex_vat
+    label: GROSS REVENUE EX. VAT
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat
+    format: "£%0.2f"
+
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount
     label: GROSS REVENUE EX. VAT, DISCOUNT
     type: sum
@@ -201,9 +209,9 @@
 # Stock Measures
 
   - measure: closing_stock
+    label: CLOSING STOCK TOTAL
     type: sum
     sql: ${TABLE}.closing_stock
-    hidden: true
 
   - measure: closing_stock_yesterday
     label: CLOSING STOCK YESTERDAY
@@ -231,9 +239,9 @@
 # stock value @ cost
 
   - measure: closing_stock_value_cost
+    label: CLOSING STOCK TOTAL @ COST
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
-    hidden: true
     
   - measure: closing_stock_value_cost_yesterday
     label: CLOSING STOCK YESTERDAY @ COST
@@ -261,9 +269,9 @@
 # closing stock @ retail
 
   - measure: closing_stock_value_retail
+    label: CLOSING STOCK TOTAL @ RETAIL
     type: sum
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0'
-    hidden: true
+    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
 
   - measure: closing_stock_value_retail_yesterday
     label: CLOSING STOCK YESTERDAY @ RETAIL
