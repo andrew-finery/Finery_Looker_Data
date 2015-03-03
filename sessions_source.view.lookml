@@ -81,6 +81,13 @@
   
   - dimension: referer_url_path
     sql: ${TABLE}.refr_urlpath
+  
+  - dimension: paid_marketing_flag
+    sql: |
+        case
+        when ${referer_url_host} = 'www.googleadservices.com' then 'Paid'
+        when ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid' then 'Paid'
+        else 'Unpaid' end
     
   # MKT fields (paid acquisition channels)
     
@@ -95,35 +102,5 @@
   
   - dimension: campaign_name
     sql: ${TABLE}.mkt_campaign
-
-  # MEASURES #
-
-  - measure: campaign_medium_count
-    type: count_distinct
-    sql: ${campaign_medium}
-    
-  - measure: campaign_source_count
-    type: count_distinct
-    sql: ${campaign_source}
-    
-  - measure: campaign_term_count
-    type: count_distinct
-    sql: ${campaign_term}
-      
-  - measure: campaign_count
-    type: count_distinct
-    sql: ${campaign_name}
-    
-  - measure: referer_medium_count
-    type: count_distinct
-    sql: ${referer_medium}
-    
-  - measure: referer_source_count
-    type: count_distinct
-    sql: ${referer_source}
-    
-  - measure: referer_term_count
-    type: count_distinct
-    sql: ${referer_term}
       
     
