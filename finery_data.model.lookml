@@ -33,7 +33,9 @@
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-
+  - join: all_referrals
+    sql_on: spree_orders.blended_email = all_referrals.email
+    
 - explore: referrals
   joins:
   - join: spree_users
@@ -48,7 +50,9 @@
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-
+  - join: all_referrals
+    sql_on: spree_orders.blended_email = all_referrals.email
+    
 - explore: atomic_events
   joins:
   - join: identity_stitching
@@ -122,6 +126,8 @@
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
     relationship: many_to_one
+  - join: all_referrals
+    sql_on: spree_orders.blended_email = all_referrals.email
   - join: users_signup
     sql_on: |
       spree_orders.customer_id = users_signup.id
@@ -167,6 +173,8 @@
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+  - join: all_referrals
+    sql_on: spree_orders.blended_email = all_referrals.email
   - join: users_signup
     sql_on: |
       returns.user_id = users_signup.id
