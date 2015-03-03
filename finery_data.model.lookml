@@ -99,6 +99,8 @@
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
   - join: spree_customers
     sql_on: spree_customers.email = spree_orders.blended_email
+  - join: all_referrals
+    sql_on: spree_orders.blended_email = all_referrals.email
     
 - explore: sales_snapshot
   joins:

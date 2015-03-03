@@ -215,6 +215,10 @@
   - dimension: latest_order_flag
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
+
+  - dimension: customer_referred_flag
+    type: yesno
+    sql: ${all_referrals.email} is not null
   
   - dimension: order_email
     label: EMAIL
@@ -554,13 +558,13 @@
   - measure: orders_per_customer
     type: number
     decimals: 2
-    sql: cast(${count_orders} as decimal(8,2))/cast(${count_customers} as decimal(8,2))::REAL
+    sql: cast(${count_orders} as decimal(8,2))/nullif(cast(${count_customers} as decimal(8,2)),0)::REAL
     format: "%0.2f"
 
   - measure: new_customer_percentage
     type: number
     decimals: 2
-    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/cast(${count_customers} as decimal(8,2))::REAL
+    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_customers} as decimal(8,2)),0)::REAL
     format: "%0.2f%"
     
 ################################################# GROSS REVENUE MEASURES ##############################################################

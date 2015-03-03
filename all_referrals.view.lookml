@@ -21,13 +21,43 @@
 
   - dimension: email
     sql: ${TABLE}.email
-  
-  - dimension_group: referral_time
+    hidden: true
+    
+  - dimension_group: referral
     label: REFERRAL
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.message_sent_at 
   
+  - dimension: time_to_convert
+    sql: case when ${spree_customers.first_order_date} - ${referral_date} < 0 then 0 else ${spree_customers.first_order_date} - ${referral_date} end
+    hidden: true
+
+  - dimension: time_to_convert_tier
+    label: CONVERSION DAYS TIER
+    type: tier
+    tiers: [0,1,2,3,4,5,6,7,8,15,22,29]
+    sql: ${time_to_convert}
+  
   - measure: count_referrals
+    label: REFERRALS
     type: count_distinct
     sql: ${email}
+
+  - measure: count_converted
+    label: REFERRALS CONVERTED
+    type: count_distinct
+    sql: ${spree_customers.email}
+
+  - measure: conversion_percentage
+    label: REFERRAL CONVERSION %
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_converted}/${count_referrals}::REAL
+    format: "%0.2f%"
+
+  - measure: running_total_converted
+    label: REFERRALS CONVERTED - RUNNING TOTAL
+    type: running_total
+    sql: ${count_converted}
+    direction: column
