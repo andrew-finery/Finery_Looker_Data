@@ -32,7 +32,7 @@
   - dimension: time_to_convert_tier
     label: CONVERSION DAYS TIER
     type: tier
-    tiers: [0,1,2,3,4,5,6,7,14,21,28]
+    tiers: [0,1,2,3,4,5,6,7,8,15,22,29]
     sql: ${time_to_convert}
   
   - measure: count_newsletter_subscribers
