@@ -97,6 +97,8 @@
     sql_on: spree_orders.customer_id = spree_users.user_id
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
+  - join: spree_customers
+    sql_on: spree_customers.email = spree_orders.blended_email
     
 - explore: sales_snapshot
   joins:
@@ -117,7 +119,6 @@
     relationship: one_to_one
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-    relationship: many_to_one
     relationship: many_to_one
   - join: users_signup
     sql_on: |

@@ -7,6 +7,7 @@
              a. "number" AS order_code,
              a.user_id AS customer_id,
              a.email as email,
+             lower(coalesce(users.email_address, a.email)) as blended_email,
              order_sequence.order_sequence_number,
              order_sequence.latest_order_id,
              a.bill_address_id,
@@ -145,9 +146,12 @@
       LEFT JOIN ${spree_tax_rates.SQL_TABLE_NAME} tax_rates
       on tax_rates.calendar_date = date(a.completed_at)
       and tax_rates.country_id = ship_add.country_id
+      
+      LEFT JOIN ${spree_users.SQL_TABLE_NAME} users
+      on users.user_id = a.user_id
                             
       WHERE a.state IN ('complete','returned','canceled')
-      AND   a.created_at > DATE '2014-11-22'
+      AND   a.completed_at > DATE '2014-11-22'
       AND orders_to_strip_out.order_id is null
       AND a.email not like '%shaun+cml%'
 
@@ -192,8 +196,8 @@
     sql: ${TABLE}.customer_id
     hidden: true
     
-  - dimension: blended_customer_id
-    sql: coalesce(cast(${TABLE}.customer_id as varchar), lower(${TABLE}.email))
+  - dimension: blended_email
+    sql: ${TABLE}.blended_email
     hidden: true
     
   - dimension: order_sequence_number
@@ -524,13 +528,13 @@
   
   - measure: count_customers
     type: count_distinct
-    sql: ${blended_customer_id}
+    sql: ${blended_email}
     filters:
       state: -canceled
 
   - measure: count_new_customers
     type: count_distinct
-    sql: ${blended_customer_id}
+    sql: ${blended_email}
     filters:
       state: -canceled
       order_sequence_number: 1
