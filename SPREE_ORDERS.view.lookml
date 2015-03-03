@@ -216,10 +216,6 @@
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
 
-  - dimension: customer_referred_flag
-    type: yesno
-    sql: ${all_referrals.email} is not null
-  
   - dimension: order_email
     label: EMAIL
     sql: ${TABLE}.email

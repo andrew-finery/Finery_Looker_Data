@@ -29,6 +29,11 @@
     timeframes: [date, week, month]
     sql: ${TABLE}.message_sent_at 
   
+  - dimension: customer_referred_flag
+    label: CUSTOMER REFERRED FLAG
+    type: yesno
+    sql: ${email} is not null
+  
   - dimension: time_to_convert
     sql: case when ${spree_customers.first_order_date} - ${referral_date} < 0 then 0 else ${spree_customers.first_order_date} - ${referral_date} end
     hidden: true
