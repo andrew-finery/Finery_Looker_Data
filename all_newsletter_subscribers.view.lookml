@@ -56,3 +56,8 @@
     label: NEWSLETTER SUBSCRIBERS CONVERTED - RUNNING TOTAL
     type: running_total
     sql: ${count_converted}
+    direction: column
+    
+    
+    
+    
