@@ -18,12 +18,7 @@
     sql: ${TABLE}.root_id
     hidden: true
     
-  - dimension: event_time
-    type: time
-    sql: ${TABLE}.root_tstamp
-    hidden: true
-
   - measure: newsletter_subscriptions
-    LABEL: COUNT NEWSLETTER SUBSCRIPTION EVENTS
+    label: COUNT NEWSLETTER SUBSCRIPTION EVENTS
     type: count_distinct
     sql: ${TABLE}.email
