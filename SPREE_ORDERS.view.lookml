@@ -505,6 +505,7 @@
 ################################################## BASIC ORDER MEASURES ################################################################
   
   - measure: count_orders
+    label: ORDERS
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
@@ -749,6 +750,7 @@
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k
     type: sum
+    label: GROSS REVENUE K
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:

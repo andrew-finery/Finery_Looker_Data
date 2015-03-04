@@ -241,38 +241,20 @@
     top: 7
     left: 0
 
-  - name: add_a_unique_name_674
+  - name: add_a_unique_name_760
     title: Orders by Day
-    type: looker_line
+    type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.completed_date]
+    dimensions: [spree_orders.completed_day_of_week, spree_orders.completed_week]
+    pivots: [spree_orders.completed_day_of_week]
     measures: [spree_orders.count_orders]
-    listen:
-     date: spree_orders.completed_date
-    sorts: [spree_orders.completed_date desc]
+    filters:
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before 0 days ago
+    sorts: [spree_orders.completed_week]
     limit: 500
     total: false
-    show_null_points: true
-    stacking: normal
-    show_value_labels: false
-    show_view_names: false
-    swap_axes: false
-    point_style: circle
-    hide_legend: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_gridlines: true
-    x_axis_scale: auto
-    x_axis_label: Date
-    x_axis_datetime_label: '%a %d %b'
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_gridlines: true
-    y_axis_labels: [Number of Orders]
-    y_axis_combined: false
-    interpolation: linear
-    x_axis_datetime_tick_count: 7
     width: 6
     height: 3
     top: 7
@@ -310,7 +292,7 @@
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_gridlines: true
-    y_axis_labels: [Number of Orders]
+    y_axis_labels: [Gross Revenue (£k)]
     y_axis_combined: false
     interpolation: linear
     x_axis_datetime_tick_count: 7
@@ -319,38 +301,20 @@
     top: 10
     left: 0
 
-  - name: add_a_unique_name_71
+  - name: add_a_unique_name_518
     title: Gross Revenue by Day
-    type: looker_line
+    type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.completed_date]
+    dimensions: [spree_orders.completed_day_of_week, spree_orders.completed_week]
+    pivots: [spree_orders.completed_day_of_week]
     measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k]
-    listen:
-      date: spree_orders.completed_date
-    sorts: [spree_orders.completed_date desc, spree_orders.in_store_flag desc]
+    filters:
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before 0 days ago
+    sorts: [spree_orders.completed_week]
     limit: 500
     total: false
-    show_null_points: true
-    stacking: normal
-    show_value_labels: false
-    show_view_names: false
-    swap_axes: false
-    point_style: circle
-    hide_legend: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_gridlines: true
-    x_axis_scale: auto
-    x_axis_label: Date
-    x_axis_datetime_label: '%a %d %b'
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_gridlines: true
-    y_axis_labels: [Gross Revenue (£k)]
-    y_axis_combined: false
-    interpolation: linear
-    x_axis_datetime_tick_count: 7
     width: 6
     height: 3
     top: 10
@@ -595,7 +559,7 @@
     colors: [black]
     width: 6
     height: 3
-    top: 23
+    top: 22
     left: 6
 
   - name: add_a_unique_name_589
@@ -636,5 +600,5 @@
     colors: [black]
     width: 6
     height: 3
-    top: 23
+    top: 22
     left: 0
