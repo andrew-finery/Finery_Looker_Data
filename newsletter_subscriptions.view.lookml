@@ -24,5 +24,6 @@
     hidden: true
 
   - measure: newsletter_subscriptions
+    LABEL: COUNT NEWSLETTER SUBSCRIPTION EVENTS
     type: count_distinct
     sql: ${TABLE}.email

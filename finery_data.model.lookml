@@ -73,6 +73,9 @@
     sql_on: |
       sessions_source.domain_userid = atomic_events.domain_userid
       and sessions_source.domain_sessionidx = atomic_events.domain_sessionidx
+  - join: newsletter_subscriptions
+    sql_on: |
+      newsletter_subscriptions.root_id = atomic_events.event_id
     
 - explore: page_views
 

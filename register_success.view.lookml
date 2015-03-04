@@ -33,5 +33,6 @@
     #######################################################################################################
 
   - measure: count_registrations
+    label: COUNT SIGN-UPS
     type: count_distinct
     sql: ${customer_id}
