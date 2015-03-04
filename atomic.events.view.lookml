@@ -152,6 +152,11 @@
   - dimension: domain_sessionidx
     sql: ${TABLE}.domain_sessionidx
     hidden: true
+  
+  - dimension: new_session_flag
+    label: NEW SESSION FLAG
+    type: yesno
+    sql: ${domain_sessionidx} = 1
     
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
