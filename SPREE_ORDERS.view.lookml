@@ -425,7 +425,6 @@
     decimals: 2
     sql: ${TABLE}.item_total
     format: "%0.2f"
-    hidden: true
     
   - dimension: shipping_total
     type: number
