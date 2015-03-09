@@ -327,9 +327,9 @@
   
   - measure: conversion_rate
     type: number
-    decimals: 1
+    decimals: 2
     sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.1f%"
+    format: "%0.2f%"
 
 ############################################################################## EMAIL MEASURES ####################################################################################
     
@@ -377,3 +377,67 @@
     sql: ${event_id}
     filters:
       structured_event: contactForm
+      
+########################################################### WEEK ON WEEK MEASURES ###############################################################################################
+
+  - measure: count_sessions_yesterday
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
+      event_time_date: 1 day ago for 1 day
+    hidden: true
+      
+  - measure: count_sessions_last_week
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: -EMPTY
+      event_time_date: 8 days ago for 1 day
+    hidden: true
+
+  - measure: conversion_rate_yesterday
+    type: number
+    decimals: 2
+    sql: 100.0 * ${transactions.count_transactions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+    format: "%0.2f%"
+    hidden: true
+    
+  - measure: conversion_rate_last_week
+    type: number
+    decimals: 2
+    sql: 100.0 * ${transactions.count_transactions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.2f%"
+    hidden: true
+  
+  - measure: sessions_wow
+    label: SESSIONS WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_sessions_yesterday} - ${count_sessions_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.2f%"
+
+  - measure: orders_wow
+    label: SESSIONS WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${transactions.count_transactions_yesterday} - ${transactions.count_transactions_last_week})/NULLIF(${transactions.count_transactions_last_week},0)::REAL
+    format: "%0.2f%"
+
+  - measure: conversion_rate_wow
+    label: CONVERSION RATE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${conversion_rate_yesterday} - ${conversion_rate_last_week})/NULLIF(${conversion_rate_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+      {% if value < 0 - Red' %}
+        <p style="color: #D77070; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% elsif value > 0 - Green' %}
+        <p style="color: #A2D68F; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% else %}
+        <p style="color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% endif %}
+

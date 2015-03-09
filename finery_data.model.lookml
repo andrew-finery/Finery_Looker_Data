@@ -106,6 +106,8 @@
     sql_on: spree_customers.email = spree_orders.blended_email
   - join: all_referrals
     sql_on: spree_orders.blended_email = all_referrals.email
+  - join: spree_orders_promotions
+    sql_on: spree_orders.order_id = spree_orders_promotions.order_id
     
 - explore: sales_snapshot
   joins:
