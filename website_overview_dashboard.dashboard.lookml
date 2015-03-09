@@ -95,7 +95,7 @@
     left: 0
 
   - name: add_a_unique_name_611
-    title: Users Today vs Yesterday
+    title: Users Today vs Last Week
     type: looker_line
     model: finery_data
     explore: atomic_events
@@ -103,8 +103,8 @@
     pivots: [atomic_events.event_time_date]
     measures: [atomic_events.count_users]
     filters:
-      atomic_events.event_time_date: after 1 days ago
       atomic_events.event_time_time: before 1 hours ago
+      atomic_events.wow_date_filter: 'Yes'
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false
@@ -161,7 +161,7 @@
 ########################## Line 3
 
   - name: add_a_unique_name_901
-    title: Order by Hour - Today vs Yesterday
+    title: Order by Hour - Today vs Last Week
     type: looker_line
     model: finery_data
     explore: atomic_events
@@ -169,8 +169,8 @@
     pivots: [atomic_events.event_time_date]
     measures: [transactions.count_transactions]
     filters:
-      atomic_events.event_time_date: after 1 days ago
       atomic_events.event_time_time: before 1 hours ago
+      atomic_events.wow_date_filter: 'Yes'
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false
@@ -295,7 +295,7 @@
     left: 0
 
   - name: add_a_unique_name_708
-    title: Newsletter Subscriptions Today vs Yesterday
+    title: Newsletter Subscriptions Today vs Last Week
     type: looker_line
     model: finery_data
     explore: atomic_events
@@ -303,8 +303,8 @@
     pivots: [atomic_events.event_time_date]
     measures: [email_subscriptions.count_newsletter_subscribers]
     filters:
-      atomic_events.event_time_date: after 1 days ago
       atomic_events.event_time_time: before 1 hours ago
+      atomic_events.wow_date_filter: 'Yes'
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false

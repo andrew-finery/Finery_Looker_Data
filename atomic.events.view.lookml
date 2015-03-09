@@ -132,12 +132,28 @@
   - dimension: structured_event
     sql: ${TABLE}.se_action
     hidden: true
+  
+  - dimension: structured_event_category
+    sql: ${TABLE}.se_category
+    hidden: true
+  
+  - dimension: structured_event_label
+    sql: ${TABLE}.se_label
+    hidden: true
+
+  - dimension: structured_event_property
+    sql: ${TABLE}.se_property
+    hidden: true
     
   - dimension_group: event_time
     label: EVENT
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week_index, week, month]
     sql: ${TABLE}.collector_tstamp
+
+  - dimension: wow_date_filter
+    type: yesno
+    sql: ${event_time_date} = current_date - 7 OR ${event_time_date} = current_date
 
   ########### User and Session Dimensions
     
@@ -328,7 +344,24 @@
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
     format: "%0.1f%"
-
+  
+  - measure: count_total_opens
+    label: TOTAL EMAIL OPENS
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      structured_event: open
+      structured_event_category: email
+      
+  
+  - measure: count_unique_opens
+    label: UNIQUE EMAIL OPENS
+    type: count_distinct
+    sql: ${structured_event_label} || '-' || ${structured_event_property}
+    filters:
+      structured_event: open
+      structured_event_category: email
+  
 ## Customer Service/Contact Form Events
 
   - measure: count_customer_service_events

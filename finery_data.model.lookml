@@ -76,6 +76,8 @@
   - join: newsletter_subscriptions
     sql_on: |
       newsletter_subscriptions.root_id = atomic_events.event_id
+  - join: email_campaign_lookup
+    sql_on: atomic_events.se_label = email_campaign_lookup.email_id
     
 - explore: page_views
 
