@@ -312,7 +312,7 @@
   - measure: conversion_rate
     type: number
     decimals: 1
-    sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_users},0)::REAL
+    sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.1f%"
 
 ############################################################################## EMAIL MEASURES ####################################################################################
