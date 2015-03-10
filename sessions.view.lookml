@@ -137,6 +137,7 @@
     sql: ${TABLE}.number_of_events
     
   - dimension: bounce
+    label: BOUNCED SESSION
     type: yesno
     sql: ${TABLE}.number_of_events = 1
   

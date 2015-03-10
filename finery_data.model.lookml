@@ -71,6 +71,8 @@
     sql_on: atomic_events.se_label = email_campaign_lookup.email_id
   - join: spree_exchange_rates
     sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
+  - join: sessions
+    sql_on: sessions.domain_userid = atomic_events.domain_userid and sessions.domain_sessionidx = atomic_events.domain_sessionidx
     
 - explore: page_views
 

@@ -5,17 +5,7 @@
 
   elements:
 
-  - name: latest_snowplow_update
-    title: Latest Data Available
-    type: single_value
-    model: finery_data
-    explore: atomic_events
-    measures: [atomic_events.latest_update]
-    font_size: small
-    height: 2
-    width: 9
-    top: 0
-    left: 0
+
 
 #### conversion rate tiles
 

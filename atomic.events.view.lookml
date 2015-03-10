@@ -44,6 +44,12 @@
   - dimension: wow_date_filter
     type: yesno
     sql: ${event_time_date} = current_date - 7 OR ${event_time_date} = current_date
+  
+  - dimension: today_tw_lw_flag
+    sql: case when ${event_time_date} = current_date then 'Today' when ${event_time_date} = current_date - 7 then 'Last Week' else null end
+
+  - dimension: yesterday_tw_lw_flag
+    sql: case when ${event_time_date} = current_date - 1 then 'Yesterday' when ${event_time_date} = current_date - 8 then 'Last Week' else null end
 
   ########### User and Session Dimensions
     
@@ -114,6 +120,15 @@
       domain_sessionidx: 1
       app_id: production
 
+  - measure: count_bounced_sessions
+    label: NEW SESSIONS
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      app_id: production
+      sessions.bounce: yes
+
   - measure: count_session_logged_in
     label: LOGGED IN SESSIONS
     type: count_distinct
@@ -150,6 +165,13 @@
     type: number
     decimals: 2
     sql: 100.0 * ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
+    format: "%0.1f%"
+
+  - measure: bounce_rate
+    label: BOUNCE RATE
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_bounced_sessions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.1f%"
 
   - measure: count_days
