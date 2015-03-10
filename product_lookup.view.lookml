@@ -49,8 +49,8 @@
     hidden: true
     
   - dimension: ean
+    label: EAN
     sql: ${TABLE}.ean
-    hidden: true
     
   - dimension_group: ex_factory
     type: time
