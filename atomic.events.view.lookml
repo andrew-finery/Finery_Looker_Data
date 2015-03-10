@@ -14,7 +14,11 @@
   - dimension: app_id
     sql: ${TABLE}.app_id
     hidden: true
-
+  
+  - dimension: event
+    sql: ${TABLE}.event
+    hidden: true
+  
   - dimension: structured_event
     sql: ${TABLE}.se_action
     hidden: true
@@ -168,6 +172,21 @@
         else
         'Today @ ' || cast(((extract(epoch from max(${TABLE}.collector_tstamp))) - (extract(epoch from max(date(${TABLE}.collector_tstamp)))))/3600 as decimal(8,0)) || ':00'
         end
+
+  - measure: count_page_views
+    label: PAGE VIEWS
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      event: page_view
+      app_id: production
+
+  - measure: page_views_per_session
+    label: PAGE VIEWS PER SESSION
+    type: number
+    decimals: 2
+    sql: ${count_page_views}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f"
             
 ########################################################################### Product Payment Funnel Measures #################################################################
 
@@ -225,10 +244,14 @@
 ############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
+    label: GROSS REV EX COUPON, VAT
     type: sum
-    sql: ${transactions.revenue_ex_coupon_and_vat}
-    filters:
-      app_id: production
+    sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
+
+  - measure: items_purchased
+    label: ITEMS PURCHASED
+    type: sum
+    sql: ${transactions.number_of_items}
   
   - measure: conversion_rate
     type: number
@@ -363,7 +386,36 @@
     sql: 100.0 * ${count_new_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"
     hidden: true
+  
+  - measure: sum_revenue_yesterday
+    type: sum
+    sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
+    hidden: true
+    filters:
+      event_time_date: 1 day ago for 1 day
 
+  - measure: sum_revenue_last_week
+    type: sum
+    sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
+    hidden: true
+    filters:
+      event_time_date: 8 days ago for 1 day
+      
+  - measure: items_purchased_yesterday
+    type: sum
+    sql: ${transactions.number_of_items}
+    hidden: true
+    filters:
+      event_time_date: 1 day ago for 1 day
+      
+  - measure: items_purchased_last_week
+    type: sum
+    sql: ${transactions.number_of_items}
+    hidden: true
+    filters:
+      event_time_date: 8 days ago for 1 day
+    
+  
 # WoW percentages
   
   - measure: sessions_wow
@@ -376,7 +428,7 @@
         {% if value < 0 - Red' %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value > 0 - Green' %}
-        <font color="#A2D68F> {{ rendered_value }} </font>
+        <font color="#3CB371> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
@@ -392,7 +444,7 @@
         {% if value < 0 - Red' %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value > 0 - Green' %}
-        <font color="#A2D68F> {{ rendered_value }} </font>
+        <font color="#3CB371> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
@@ -408,7 +460,39 @@
         {% if value < 0 - Red' %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value > 0 - Green' %}
-        <font color="#A2D68F> {{ rendered_value }} </font>
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
+  - measure: items_purchased_wow
+    label: CONVERSION RATE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${items_purchased_yesterday} - ${items_purchased_last_week})/NULLIF(${items_purchased_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
+  - measure: revenue_wow
+    label: CONVERSION RATE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${sum_revenue_yesterday} - ${sum_revenue_last_week})/NULLIF(${sum_revenue_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
@@ -424,8 +508,9 @@
         {% if value < 0 - Red' %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value > 0 - Green' %}
-        <font color="#A2D68F> {{ rendered_value }} </font>
+        <font color="#3CB371> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
 

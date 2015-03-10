@@ -78,6 +78,8 @@
       newsletter_subscriptions.root_id = atomic_events.event_id
   - join: email_campaign_lookup
     sql_on: atomic_events.se_label = email_campaign_lookup.email_id
+  - join: spree_exchange_rates
+    sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
     
 - explore: page_views
 

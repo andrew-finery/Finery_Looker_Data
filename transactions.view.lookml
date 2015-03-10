@@ -60,6 +60,9 @@
   - dimension: currency_code
     sql: ${TABLE}.currency_code
   
+  - dimension: exchange_rate
+    sql: ${spree_exchange_rates.exchange_rate}
+  
   - dimension: order_id
     sql: ${TABLE}.order_id
   
@@ -73,7 +76,7 @@
     sql: ${TABLE}.net_value
     
   - dimension: number_of_items
-    sql: ${TABLE}.number_of_items
+    sql: ${TABLE}.qty_total
   
   - dimension: guest_checkout_flag
     type: yesno
@@ -98,6 +101,8 @@
     decimals: 2
     sql: 100.0 * ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
     format: "%0.1f%"
+
+############################# Week on Week Measures
 
   - measure: count_transactions_yesterday
     type: count_distinct
