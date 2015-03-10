@@ -52,30 +52,21 @@
 - explore: atomic_events
   joins:
   - join: identity_stitching
-    sql_on: |
-      identity_stitching.domain_userid = atomic_events.domain_userid
+    sql_on: identity_stitching.domain_userid = atomic_events.domain_userid
   - join: product_funnel
-    sql_on: |
-      product_funnel.event_id = atomic_events.event_id
+    sql_on: product_funnel.event_id = atomic_events.event_id
   - join: transactions
-    sql_on: |
-      transactions.event_id = atomic_events.event_id
+    sql_on: transactions.event_id = atomic_events.event_id
   - join: page_view_events
-    sql_on: |
-      page_view_events.event_id = atomic_events.event_id
+    sql_on: page_view_events.event_id = atomic_events.event_id
   - join: email_subscriptions
-    sql_on: |
-      email_subscriptions.root_id = atomic_events.event_id
+    sql_on: email_subscriptions.root_id = atomic_events.event_id
   - join: register_success
-    sql_on: |
-      register_success.root_id = atomic_events.event_id
+    sql_on: register_success.root_id = atomic_events.event_id
   - join: sessions_source
-    sql_on: |
-      sessions_source.domain_userid = atomic_events.domain_userid
-      and sessions_source.domain_sessionidx = atomic_events.domain_sessionidx
+    sql_on: sessions_source.domain_userid = atomic_events.domain_userid and sessions_source.domain_sessionidx = atomic_events.domain_sessionidx
   - join: newsletter_subscriptions
-    sql_on: |
-      newsletter_subscriptions.root_id = atomic_events.event_id
+    sql_on: newsletter_subscriptions.root_id = atomic_events.event_id
   - join: email_campaign_lookup
     sql_on: atomic_events.se_label = email_campaign_lookup.email_id
   - join: spree_exchange_rates

@@ -38,7 +38,7 @@
   - dimension_group: event_time
     label: EVENT
     type: time
-    timeframes: [time, hour, date, hour_of_day, day_of_week_index, week, month]
+    timeframes: [time, hour, date, hour_of_day, day_of_week_index, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
 
   - dimension: wow_date_filter
@@ -414,7 +414,42 @@
     hidden: true
     filters:
       event_time_date: 8 days ago for 1 day
-    
+
+  - measure: page_views_yesterday
+    label: PAGE VIEWS
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      event: page_view
+      app_id: production
+      event_time_date: 1 day ago for 1 day
+    hidden: true
+
+  - measure: page_views_last_week
+    label: PAGE VIEWS
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      event: page_view
+      app_id: production
+      event_time_date: 8 day ago for 1 day
+    hidden: true
+
+  - measure: page_views_per_session_yesterday
+    label: PAGE VIEWS PER SESSION
+    type: number
+    decimals: 2
+    sql: ${page_views_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+    format: "%0.2f"
+    hidden: true
+
+  - measure: page_views_per_session_last_week
+    label: PAGE VIEWS PER SESSION
+    type: number
+    decimals: 2
+    sql: ${page_views_yesterday}/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.2f"
+    hidden: true
   
 # WoW percentages
   
@@ -513,4 +548,35 @@
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
+    
+  - measure: page_views_wow
+    label: PAGE VIEWS WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${page_views_yesterday} - ${page_views_last_week})/NULLIF(${page_views_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
 
+  - measure: page_views_per_session_wow
+    label: PAGE VIEWS WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${page_views_per_session_yesterday} - ${page_views_per_session_last_week})/NULLIF(${page_views_per_session_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
