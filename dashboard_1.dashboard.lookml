@@ -110,7 +110,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [count_sessions]
+    measures: [atomic_events.count_sessions]
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     limit: 500
@@ -126,7 +126,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [count_sessions]
+    measures: [atomic_events.count_sessions]
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     limit: 500
