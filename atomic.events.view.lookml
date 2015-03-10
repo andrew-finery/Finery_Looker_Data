@@ -416,7 +416,6 @@
       event_time_date: 8 days ago for 1 day
 
   - measure: page_views_yesterday
-    label: PAGE VIEWS
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -426,17 +425,15 @@
     hidden: true
 
   - measure: page_views_last_week
-    label: PAGE VIEWS
     type: count_distinct
     sql: ${event_id}
     filters:
       event: page_view
       app_id: production
-      event_time_date: 8 day ago for 1 day
+      event_time_date: 8 days ago for 1 day
     hidden: true
 
   - measure: page_views_per_session_yesterday
-    label: PAGE VIEWS PER SESSION
     type: number
     decimals: 2
     sql: ${page_views_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
@@ -444,10 +441,9 @@
     hidden: true
 
   - measure: page_views_per_session_last_week
-    label: PAGE VIEWS PER SESSION
     type: number
     decimals: 2
-    sql: ${page_views_yesterday}/NULLIF(${count_sessions_last_week},0)::REAL
+    sql: ${page_views_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f"
     hidden: true
   
