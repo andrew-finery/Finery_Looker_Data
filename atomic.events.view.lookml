@@ -434,10 +434,10 @@
     format: "%0.2f%"
     html: |
       {% if value < 0 - Red' %}
-        <p style="color: #D77070; font-size:100%; text-align:center">{{ rendered_value }}</p>
+        <font color="#D77070" {{ rendered_value }}</font>
       {% elsif value > 0 - Green' %}
-        <p style="color: #A2D68F; font-size:100%; text-align:center">{{ rendered_value }}</p>
+        <font color="#A2D68F" {{ rendered_value }}</font>
       {% else %}
-        <p style="color: #FFFFFF; font-size:100%; text-align:center">{{ rendered_value }}</p>
+        <font color="#FFFFFF" {{ rendered_value }}</font>
       {% endif %}
 
