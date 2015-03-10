@@ -1,132 +1,18 @@
 - view: atomic_events
-  derived_table:
-    sql: |
-      SELECT
-          a.app_id,
-          a.platform,
-          a.etl_tstamp,
-          a.collector_tstamp,
-          a.dvce_tstamp,
-          a.event,
-          a.event_id,
-          a.txn_id,
-          a.name_tracker,
-          a.v_tracker,
-          a.v_collector,
-          a.v_etl,
-          a.user_id,
-          a.user_ipaddress,
-          a.user_fingerprint,
-          a.domain_userid,
-          a.domain_sessionidx,
-          a.network_userid,
-          a.geo_country,
-          a.geo_region,
-          a.geo_city,
-          a.geo_zipcode,
-          a.geo_latitude,
-          a.geo_longitude,
-          a.geo_region_name,
-          a.ip_isp,
-          a.ip_organization,
-          a.ip_domain,
-          a.ip_netspeed,
-          a.page_url,
-          a.page_title,
-          a.page_referrer,
-          a.page_urlscheme,
-          a.page_urlhost,
-          a.page_urlport,
-          a.page_urlpath,
-          a.page_urlquery,
-          a.page_urlfragment,
-          a.refr_urlscheme,
-          a.refr_urlhost,
-          a.refr_urlport,
-          a.refr_urlpath,
-          a.refr_urlquery,
-          a.refr_urlfragment,
-          a.refr_medium,
-          a.refr_source,
-          a.refr_term,
-          a.mkt_medium,
-          a.mkt_source,
-          a.mkt_term,
-          a.mkt_content,
-          a.mkt_campaign,
-          a.contexts,
-          a.se_category,
-          a.se_action,
-          a.se_label,
-          a.se_property,
-          a.se_value,
-          a.unstruct_event,
-          a.tr_orderid,
-          a.tr_affiliation,
-          a.tr_total,
-          a.tr_tax,
-          a.tr_shipping,
-          a.tr_city,
-          a.tr_state,
-          a.tr_country,
-          a.ti_orderid,
-          a.ti_sku,
-          a.ti_name,
-          a.ti_category,
-          a.ti_price,
-          a.ti_quantity,
-          a.pp_xoffset_min,
-          a.pp_xoffset_max,
-          a.pp_yoffset_min,
-          a.pp_yoffset_max,
-          a.useragent,
-          a.br_name,
-          a.br_family,
-          a.br_version,
-          a.br_type,
-          a.br_renderengine,
-          a.br_lang,
-          a.br_features_pdf,
-          a.br_features_flash,
-          a.br_features_java,
-          a.br_features_director,
-          a.br_features_quicktime,
-          a.br_features_realplayer,
-          a.br_features_windowsmedia,
-          a.br_features_gears,
-          a.br_features_silverlight,
-          a.br_cookies,
-          a.br_colordepth,
-          a.br_viewwidth,
-          a.br_viewheight,
-          a.os_name,
-          a.os_family,
-          a.os_manufacturer,
-          a.os_timezone,
-          a.dvce_type,
-          a.dvce_ismobile,
-          a.dvce_screenwidth,
-          a.dvce_screenheight,
-          a.doc_charset,
-          a.doc_width,
-          a.doc_height
-          
-          from atomic.events a
-
-          WHERE a.app_id = 'production'
-          
-    sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
-    distkey: event_id
-    sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
+  sql_table_name: atomic.events
     
   fields:
     ###################################################################################################################################################################
   ########################################################################## DIMENSIONS #############################################################################
 ###################################################################################################################################################################
-  
+
   - dimension: event_id
     primary_key: true
     sql: ${TABLE}.event_id
+    hidden: true
+
+  - dimension: app_id
+    sql: ${TABLE}.app_id
     hidden: true
 
   - dimension: structured_event
@@ -195,6 +81,7 @@
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
+      app_id: production
 
   - measure: count_new_users
     label: NEW USERS
@@ -203,6 +90,7 @@
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: 1
+      app_id: production
   
   - measure: count_sessions
     label: SESSIONS
@@ -211,6 +99,7 @@
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
+      app_id: production
 
   - measure: count_new_sessions
     label: NEW SESSIONS
@@ -219,6 +108,7 @@
     filters:
       domain_userid: -EMPTY
       domain_sessionidx: 1
+      app_id: production
 
   - measure: count_session_logged_in
     label: LOGGED IN SESSIONS
@@ -228,17 +118,27 @@
       user_id: -NULL
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
+      app_id: production
 
   - measure: count_users_logged_in
     label: USERS LOGGED IN
     type: count_distinct
     sql: ${user_id}
+    filters:
+      app_id: production
     
   - measure: new_user_percentage
     label: NEW USER %
     type: number
     decimals: 2
     sql: 100.0 * ${count_new_users}/NULLIF(${count_users},0)::REAL
+    format: "%0.1f%"
+
+  - measure: new_session_percentage
+    label: NEW SESSION %
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_new_sessions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.1f%"
   
   - measure: user_logged_in_percentage
@@ -276,18 +176,21 @@
     sql: ${product_funnel.product_user_id}
     filters:
       product_funnel.event_type: Product Impression, Product Quick View, Product Page View, Product Added to Cart, Product Purchased
+      app_id: production
   
   - measure: distinct_quick_views
     type: count_distinct
     sql: ${product_funnel.product_user_id}
     filters:
       product_funnel.event_type: Product Quick View
+      app_id: production
   
   - measure: distinct_product_page_views
     type: count_distinct
     sql: ${product_funnel.product_user_id}
     filters:
       product_funnel.event_type: Product Page View
+      app_id: production
 
   - measure: avg_product_impressions_per_user
     type: number
@@ -324,6 +227,8 @@
   - measure: sum_revenue_ex_coupon_and_vat
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat}
+    filters:
+      app_id: production
   
   - measure: conversion_rate
     type: number
@@ -352,6 +257,7 @@
     filters:
       structured_event: open
       structured_event_category: email
+      app_id: production
       
   
   - measure: count_unique_opens
@@ -361,6 +267,7 @@
     filters:
       structured_event: open
       structured_event_category: email
+      app_id: production
   
 ## Customer Service/Contact Form Events
 
@@ -370,6 +277,7 @@
     sql: ${event_id}
     filters:
       structured_event: customerService
+      app_id: production
 
   - measure: count_contact_form_events
     label: CONTACT FORM SUBMITTED
@@ -377,8 +285,16 @@
     sql: ${event_id}
     filters:
       structured_event: contactForm
-      
-########################################################### WEEK ON WEEK MEASURES ###############################################################################################
+      app_id: production
+
+
+#############################################################################################################################################################################################################################################################      
+#############################################################################################################################################################################################################################################################  
+################################################################################################################## WEEK ON WEEK MEASURES #################################################################################################################### 
+############################################################################################################################################################################################################################################################# 
+#############################################################################################################################################################################################################################################################
+
+# Hidden Measures
 
   - measure: count_sessions_yesterday
     type: count_distinct
@@ -387,6 +303,7 @@
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
       event_time_date: 1 day ago for 1 day
+      app_id: production
     hidden: true
       
   - measure: count_sessions_last_week
@@ -396,6 +313,7 @@
       domain_userid: -EMPTY
       domain_sessionidx: -EMPTY
       event_time_date: 8 days ago for 1 day
+      app_id: production
     hidden: true
 
   - measure: conversion_rate_yesterday
@@ -412,12 +330,56 @@
     format: "%0.2f%"
     hidden: true
   
+  - measure: count_new_sessions_yesterday
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: 1
+      app_id: production
+      event_time_date: 1 day ago for 1 day
+    hidden: true
+      
+  - measure: count_new_sessions_last_week
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      domain_sessionidx: 1
+      app_id: production
+      event_time_date:  8 days ago for 1 day
+    hidden: true
+
+  - measure: new_session_perc_yesterday
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_new_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+    format: "%0.2f%"
+    hidden: true
+    
+  - measure: new_session_perc_last_week
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_new_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.2f%"
+    hidden: true
+
+# Visible Measures
+  
   - measure: sessions_wow
     label: SESSIONS WEEK ON WEEK
     type: number
     decimals: 2
     sql: 100.0 * (${count_sessions_yesterday} - ${count_sessions_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#A2D68F> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
 
   - measure: orders_wow
     label: SESSIONS WEEK ON WEEK
@@ -425,6 +387,14 @@
     decimals: 2
     sql: 100.0 * (${transactions.count_transactions_yesterday} - ${transactions.count_transactions_last_week})/NULLIF(${transactions.count_transactions_last_week},0)::REAL
     format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#A2D68F> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
 
   - measure: conversion_rate_wow
     label: CONVERSION RATE WEEK ON WEEK
@@ -433,11 +403,26 @@
     sql: 100.0 * (${conversion_rate_yesterday} - ${conversion_rate_last_week})/NULLIF(${conversion_rate_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-      {% if value < 0 - Red' %}
-        <font color="#D77070" {{ rendered_value }}</font>
-      {% elsif value > 0 - Green' %}
-        <font color="#A2D68F" {{ rendered_value }}</font>
-      {% else %}
-        <font color="#FFFFFF" {{ rendered_value }}</font>
-      {% endif %}
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#A2D68F> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+
+  - measure: new_session_perc_wow
+    label: NEW SESSIONS WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${new_session_perc_yesterday} - ${new_session_perc_last_week})/NULLIF(${new_session_perc_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#A2D68F> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
 
