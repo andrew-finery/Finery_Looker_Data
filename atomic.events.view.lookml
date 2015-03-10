@@ -294,7 +294,7 @@
 ############################################################################################################################################################################################################################################################# 
 #############################################################################################################################################################################################################################################################
 
-# Hidden Measures
+# Counts
 
   - measure: count_sessions_yesterday
     type: count_distinct
@@ -364,7 +364,7 @@
     format: "%0.2f%"
     hidden: true
 
-# Visible Measures
+# WoW percentages
   
   - measure: sessions_wow
     label: SESSIONS WEEK ON WEEK
@@ -380,6 +380,7 @@
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
 
   - measure: orders_wow
     label: SESSIONS WEEK ON WEEK
@@ -395,6 +396,7 @@
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
 
   - measure: conversion_rate_wow
     label: CONVERSION RATE WEEK ON WEEK
@@ -410,6 +412,7 @@
         {% else %}
         <font color="#000000> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
 
   - measure: new_session_perc_wow
     label: NEW SESSIONS WEEK ON WEEK
