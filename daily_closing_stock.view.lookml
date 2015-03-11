@@ -43,7 +43,7 @@
   
   - dimension_group: closing_stock_date
     type: time
-    timeframes: [date, dow, dow_num, week, dom, month, month_num]
+    timeframes: [date, week, month, month_num]
     convert_tz: false
     sql: ${TABLE}.closing_stock_date
   
