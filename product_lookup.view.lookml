@@ -1,5 +1,5 @@
 - view: product_lookup
-  sql_table_name: brightpearl.all_products
+  sql_table_name: finery.brightpearl_export
 
   fields:
 
@@ -108,7 +108,11 @@
     sql: ${TABLE}.name||' - '||${TABLE}.colour_group 
     html: |
         <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.size,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.month_on_month,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_weeks_cover&sorts=product_lookup.size+asc&total=on&filter_config=%7B%22product_lookup.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bproduct_lookup.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
-
+  
+  - dimension: model_name
+    label: MODEL NAME
+    SQL: ${TABLE}.model_name
+  
   - dimension: new_or_repeat
     sql: ${TABLE}.new_or_repeat
     hidden: true

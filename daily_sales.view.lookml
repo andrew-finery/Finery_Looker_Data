@@ -77,7 +77,7 @@
             
             where matrix.calendar_date > date '2014-11-17'
             
-   sql_trigger_value: SELECT max(closing_stock_date) FROM ${daily_closing_stock.SQL_TABLE_NAME}
+   sql_trigger_value: SELECT sum(closing_stock) FROM ${daily_closing_stock.SQL_TABLE_NAME}
    distkey: sku
    sortkeys: [sku, calendar_date]
 
