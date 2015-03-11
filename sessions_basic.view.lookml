@@ -1,6 +1,7 @@
 - view: sessions_basic
   derived_table:
     sql: |
+      -- rebuild comment
       SELECT
         domain_userid,
         domain_sessionidx,

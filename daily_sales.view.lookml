@@ -1,7 +1,6 @@
 - view: daily_sales
   derived_table:
    sql: |
-        --comment to force rebuild
           select
             matrix.calendar_date,
             matrix.year_week_number,

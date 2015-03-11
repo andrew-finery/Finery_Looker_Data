@@ -1,7 +1,6 @@
 - view: spree_order_items
   derived_table:
     sql: |
-      --comment to force rebuild
       select 
         a.spree_timestamp,
         a.completed_at as order_tstamp,

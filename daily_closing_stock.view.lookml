@@ -1,6 +1,7 @@
 - view: daily_closing_stock
   derived_table:
      sql: |
+          --force rebuild comment
           SELECT sku,
                  calendar_date - 1 AS closing_stock_date,
                  closing_stock
