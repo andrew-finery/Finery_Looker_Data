@@ -111,7 +111,7 @@
   
   - dimension: model_name
     label: MODEL NAME
-    SQL: ${TABLE}.model_name
+    sql: ${TABLE}.model_name
   
   - dimension: new_or_repeat
     sql: ${TABLE}.new_or_repeat
