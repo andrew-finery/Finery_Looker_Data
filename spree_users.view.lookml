@@ -70,10 +70,10 @@
                                  FROM daily_snapshot.spree_invitations
                                  WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
                                                           FROM daily_snapshot.spree_invitations)) invitations ON invitations_users.invitation_id = invitations.id) e ON e.user_id = a.id
-         LEFT JOIN (SELECT *
+         LEFT JOIN (SELECT user_id, max(role_id) as role_id
                     FROM daily_snapshot.spree_roles_users
                     WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                             FROM daily_snapshot.spree_roles_users) group by 1,2,3) roles_users ON a.id = roles_users.user_id
+                                             FROM daily_snapshot.spree_roles_users) group by 1) roles_users ON a.id = roles_users.user_id
          LEFT JOIN (SELECT *
                     FROM daily_snapshot.spree_roles
                     WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_roles)) roles ON roles_users.role_id = roles.id
