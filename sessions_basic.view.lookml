@@ -1,13 +1,13 @@
 - view: sessions_basic
   derived_table:
     sql: |
-      -- rebuild comment
       SELECT
         domain_userid,
         domain_sessionidx,
         MIN(collector_tstamp) AS session_start_ts,
         MAX(collector_tstamp) AS session_end_ts,
         count(*) AS number_of_events,
+        sum(case when event != 'page_ping' and event not like '%product_impression%' then 1 else 0 end) as interaction_events,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed
       FROM
         atomic.events

@@ -19,6 +19,57 @@
     sql: ${TABLE}.event
     hidden: true
   
+  - dimension: unstruct_event
+    label: UNSTRICTURED EVENT
+    sql: ${TABLE}.unstruct_event
+  
+  - dimension: event_type
+    label: EVENT TYPE
+    sql: |
+        case
+        when ${TABLE}.event = 'struct' then 'Structured Event'
+        when ${TABLE}.event = 'page_ping' then 'Website - Page Ping'
+        when ${TABLE}.event = 'page_view' then 'Website - Page View'
+        when ${TABLE}.unstruct_event like '%iglu:com.snowplowanalytics.snowplow/link_click/%' then 'Website - Link Click'
+        when ${TABLE}.unstruct_event like '%iglu:com.snowplowanalytics.snowplow/submit_form/%' then 'Website - Form Submitted'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/registration_failure/%' then 'Website - Registration Failure'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/login_failure/%' then 'Website - Login Failure'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/share_product/%' then 'Website - Share Product'
+        when ${TABLE}.unstruct_event like '%iglu:com.mailchimp/campaign_sending_status/%' then 'Mailchimp - Campaign Sending Status'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/update_cart/%' then 'Website - Update Cart'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/cart/%' then 'Website - Update Cart'
+        when ${TABLE}.unstruct_event like '%iglu:com.mailchimp/unsubscribe/%' then 'Mailchimp - Unsubscribe'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/stock_updated/%' then 'Spree - Stock Updated'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/shipment_shipped/%' then 'Spree - Shipment Shipped'
+        when ${TABLE}.unstruct_event like '%iglu:com.mailchimp/cleaned_email/%' then 'Mailchimp - Cleaned Email'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/order_updated/%' then 'Spree - Order Updated'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/return_item_updated/%' then 'Spree - Return Item Updated'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/user_updated/%' then 'Spree - User Updated'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_opened/%' then 'Mandrill - Message Opened'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_sent/%' then 'Mandrill - Message Sent'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_clicked/%' then 'Mandrill - Message Clicked'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_marked_as_spam/%' then 'Mandrill - Message Marked as Spam'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/newsletter_subscription/%' then 'Website - Newsletter Subscription'
+        when ${TABLE}.unstruct_event like '%iglu:com.snowplowanalytics.snowplow/change_form/%' then 'Website - Change Form'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/registration_success/%' then 'Website - Registration Success'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/login_success/%' then 'Website - Login Success'
+        when ${TABLE}.unstruct_event like '%iglu:com.mailchimp/subscribe/%' then 'Mailchimp - Subscribe'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/checkout/%' then 'Website - Checkout'
+        when ${TABLE}.unstruct_event like '%iglu:com.mailchimp/profile_update/%' then 'Mailchimp - Profile Update'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/payment_started/%' then 'Spree - Payment Started'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/transaction/%' then 'Website - Transaction'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/payment_completed/%' then 'Spree - Payment Completed'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/user_created/%' then 'Spree - User Created'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/lead_created/%' then 'Spree - Lead Created'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_delayed/%' then 'Mandrill - Message Delayed'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_rejected/%' then 'Mandrill - Message Rejected'
+        when ${TABLE}.unstruct_event like '%iglu:com.mandrill/message_bounced/%' then 'Mandrill - Message Bounced'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/product_clicked/%' then 'Website - Product Clicked'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/product_impression/%' then 'Website - Product Impression'
+        when ${TABLE}.unstruct_event like '%iglu:com.finerylondon/product_quick_view/%' then 'Website - Product Quick View'
+        else 'Other Unstructured Event' end
+        
+  
   - dimension: structured_event
     sql: ${TABLE}.se_action
     hidden: true
@@ -83,6 +134,10 @@
     ###################################################################################################################################################################
 
 ################### Users and Sessions Counts
+  - measure: count_events
+    label: COUNT EVENTS
+    type: count_distinct
+    sql: ${event_id}
 
   - measure: count_users
     label: USERS

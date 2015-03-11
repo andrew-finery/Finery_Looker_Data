@@ -9,6 +9,7 @@
         id.blended_user_id,
         s.session_end_ts,
         s.number_of_events,
+        s.interaction_events,
         s.distinct_pages_viewed,
         g.geo_country_code_2_characters,
         g.geo_region,
@@ -139,7 +140,7 @@
   - dimension: bounce
     label: BOUNCED SESSION
     type: yesno
-    sql: ${TABLE}.number_of_events < 2
+    sql: ${TABLE}.interaction_events < 2
   
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
