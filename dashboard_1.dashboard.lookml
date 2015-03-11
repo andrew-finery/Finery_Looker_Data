@@ -20,7 +20,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 0
     left: 0
 
   - name: conversion_rate_last_week
@@ -34,7 +34,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 0
     left: 3
 
   - name: conversion_rate_wow
@@ -49,7 +49,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 0
     left: 6
 
 #### order tiles
@@ -67,7 +67,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 2
     left: 0
 
   - name: orders_last_week
@@ -83,7 +83,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 2
     left: 3
 
   - name: orders_wow
@@ -98,7 +98,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 2
     left: 6
 
 #### items purchased tiles
@@ -114,7 +114,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 4
     left: 0
 
   - name: items_last_week
@@ -128,7 +128,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 4
     left: 3
 
   - name: items_wow
@@ -140,7 +140,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 4
     left: 6
 
 #### revenue tiles
@@ -156,7 +156,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 6
     left: 0
 
   - name: revenue_last_week
@@ -170,7 +170,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 6
     left: 3
 
   - name: revenue_wow
@@ -182,7 +182,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 6
     left: 6
   
   #### sessions tiles
@@ -200,7 +200,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 8
     left: 0
 
   - name: sessions_last_week
@@ -216,7 +216,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 8
     left: 3
 
   - name: sessions_wow
@@ -230,7 +230,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 8
     left: 6
 
   #### new sessions tiles
@@ -248,7 +248,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 10
     left: 0
 
   - name: sessions_last_week
@@ -264,7 +264,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 10
     left: 3
 
   - name: sessions_wow
@@ -278,7 +278,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 10
     left: 6
 
 #### page_views sessions tiles
@@ -296,7 +296,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 12
     left: 0
 
   - name: page_views_last_week
@@ -312,7 +312,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 12
     left: 3
 
   - name: page_views_wow
@@ -326,7 +326,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 12
     left: 6
     
 #### page_views_per_session sessions tiles
@@ -344,7 +344,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 14
     left: 0
 
   - name: pv_per_session_last_week
@@ -360,7 +360,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 14
     left: 3
 
   - name: pv_per_session_wow
@@ -374,7 +374,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 14
     left: 6
     
 ########################################### Graphs
