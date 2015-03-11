@@ -139,7 +139,7 @@
   - dimension: bounce
     label: BOUNCED SESSION
     type: yesno
-    sql: ${TABLE}.number_of_events = 1
+    sql: ${TABLE}.number_of_events < 2
   
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
