@@ -18,6 +18,7 @@
              case when voids.order_id is not null then 'canceled' else a.state end as state,
              adjustment_total,
              shipment_total,
+             shipments.shipment_number,
              shipments.name as shipping_method,
              shipments.shipped_at_date,
              shipments.tracking as tracking_number,
@@ -108,6 +109,7 @@
         on order_sequence.id = a.id
         
         LEFT JOIN (SELECT spree_shipments.order_id,
+                          orders_to_shipments.shipment_number,
                            spree_shipments.tracking,
                            spree_shipments. "number",
                            spree_shipments.consignee,
@@ -115,12 +117,9 @@
                            spree_shipping_methods.name,
                            spree_shipping_methods.admin_name,
                            spree_shipping_methods.carrier_description
-                    FROM (SELECT order_id,
-                                 MAX(id) AS shipment_id
-                          FROM daily_snapshot.spree_shipments
-                          WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                                   FROM daily_snapshot.spree_shipments)
-                          GROUP BY 1) orders_to_shipments
+                    FROM (select order_id, shipment_id, shipment_number from
+                          (SELECT order_id, last_value(id) over (partition by order_id order by updated_at asc rows between unbounded preceding and unbounded following) as shipment_id, last_value("number") over (partition by order_id order by updated_at asc rows between unbounded preceding and unbounded following) as shipment_number
+                          FROM daily_snapshot.spree_shipments WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_shipments)) group by 1,2,3) orders_to_shipments
                       INNER JOIN (SELECT *
                                   FROM daily_snapshot.spree_shipments
                                   WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
@@ -173,6 +172,7 @@
     primary_key: true
     type: int
     sql: ${TABLE}.order_id
+    hidden: true
 
   - dimension_group: completed
     label: ORDER PLACED
@@ -181,6 +181,7 @@
     sql: ${TABLE}.completed_at
 
   - dimension: item_count
+    label: ITEMS IN ORDER
     type: int
     sql: ${TABLE}.item_count
 
@@ -221,6 +222,7 @@
     sql: ${TABLE}.email
   
   - dimension: in_store_flag
+    label: IN STORE FLAG
     sql_case:
       In-Store: ${TABLE}.in_store_flag = 1
       else: Online
@@ -228,9 +230,15 @@
 # Shipping Dimensions
 
   - dimension: shipping_method
+    label: DELIVERY METHOD
     sql: ${TABLE}.shipping_method
 
+  - dimension: shipment_number
+    label: SHIPMENT NUMBER
+    sql: ${TABLE}.shipment_number
+
   - dimension: tracking_number
+    label: TRACKING NUMBER
     type: string
     sql: ${TABLE}.tracking_number || 'a'
 
@@ -242,11 +250,13 @@
         <a href="http://www.hermes-europe.co.uk/customerparceltrackingservice/trackingDetailsHermes.jsp?barcode={{value}}">{{value}}</a>
 
   - dimension_group: shipped_at
+    label: SHIPPED
     type: time
     timeframes: [date, day_of_week_index]
     sql: ${TABLE}.shipped_at_date
   
   - dimension: delivery_company
+    label: DELIVERY COMPANY
     sql: ${TABLE}.consignee
   
   - dimension: delivery_type
@@ -254,10 +264,12 @@
     sql: ${TABLE}.delivery_type
   
   - dimension: tracking_info_available
+    label: TRACKING INFO AVAILABLE FLAG
     type: yesno
     sql: ${tracking_number} <> 'a'
 
   - dimension: delivered_flag
+    label: DELIEVRED FLAG
     type: yesno
     sql: |
         ${hermes_delivery_tracking.delivery_confirmed_time_time} is not null

@@ -6,7 +6,7 @@
         domain_sessionidx,
         MIN(collector_tstamp) AS session_start_ts,
         MAX(collector_tstamp) AS session_end_ts,
-        SUM(case when event != 'page_ping' and unstruct_event not like '%product_impression%' then 1 else 0 end) AS number_of_events,
+        count(*) AS number_of_events,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed
       FROM
         atomic.events
