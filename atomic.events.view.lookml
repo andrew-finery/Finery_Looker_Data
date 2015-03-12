@@ -176,13 +176,13 @@
       app_id: production
 
   - measure: count_bounced_sessions
-    label: NEW SESSIONS
     type: count_distinct
     sql: ${session_id}
     filters:
       domain_userid: -EMPTY
       app_id: production
       sessions.bounce: yes
+    hidden: true
 
   - measure: count_session_logged_in
     label: LOGGED IN SESSIONS
@@ -264,7 +264,33 @@
     decimals: 2
     sql: ${count_page_views}/NULLIF(${count_sessions},0)::REAL
     format: "%0.2f"
-            
+  
+  - measure: total_usage_time_10s
+    type: count_distinct
+    decimals: 2
+    sql: CONCAT(FLOOR(EXTRACT (EPOCH FROM ${TABLE}.collector_tstamp)/10), ${session_id})
+    filters:
+      app_id: production
+    hidden: true
+  
+  - measure: total_usage_time_mins
+    type: number
+    decimals: 2
+    sql: ${total_usage_time_10s}/6
+    hidden: true
+  
+  - measure: engagement_time_per_session_number
+    type: number
+    decimals: 2
+    sql: (${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)
+    hidden: true
+
+  - measure: engagement_time_per_session_minutes
+    label: AVERAGE SESSION DURATION
+    type: string
+    sql: floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)) || ':' || right(cast('00' as varchar) || cast((((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL) - floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL))) * 60) as integer), 2)
+    
+  
 ########################################################################### Product Payment Funnel Measures #################################################################
 
   - measure: distinct_product_impressions
@@ -331,20 +357,37 @@
     sql: ${transactions.number_of_items}
   
   - measure: conversion_rate
+    label: CONVERSION RATE
     type: number
     decimals: 2
     sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.2f%"
-
+  
+  - measure: avg_basket_size
+    label: AVERAGE BASKET SIZE
+    type: number
+    decimals: 2
+    sql: ${items_purchased}/NULLIF(${transactions.count_transactions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: basket_value_yesterday
+    label: AVERAGE BASKET VALUE
+    type: number
+    decimals: 2
+    sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
+    format: "%0.2f%"
+    
 ############################################################################## EMAIL MEASURES ####################################################################################
     
   - measure: newsletter_signup_rate
+    label: NEWSLETTER SIGNUP RATE
     type: number
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
     format: "%0.1f%"
     
   - measure: referral_rate
+    label: REFERRAL RATE
     type: number
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
@@ -523,7 +566,111 @@
     sql: ${page_views_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f"
     hidden: true
+
+  - measure: total_usage_time_10s_yesterday
+    type: count_distinct
+    decimals: 2
+    sql: CONCAT(FLOOR(EXTRACT (EPOCH FROM ${TABLE}.collector_tstamp)/10), ${session_id})
+    filters:
+      app_id: production
+      event_time_date: 1 day ago for 1 day
+    hidden: true
   
+  - measure: total_usage_time_mins_yesterday
+    type: number
+    decimals: 2
+    sql: ${total_usage_time_10s_yesterday}/6
+    hidden: true
+  
+  - measure: engagement_time_per_session_number_yesterday
+    type: number
+    decimals: 2
+    sql: (${total_usage_time_mins_yesterday}/NULLIF(${count_sessions_yesterday}, 0)::REAL)
+    hidden: true
+
+  - measure: total_usage_time_10s_last_week
+    type: count_distinct
+    decimals: 2
+    sql: CONCAT(FLOOR(EXTRACT (EPOCH FROM ${TABLE}.collector_tstamp)/10), ${session_id})
+    filters:
+      app_id: production
+      event_time_date: 8 days ago for 1 day
+    hidden: true
+  
+  - measure: total_usage_time_mins_last_week
+    type: number
+    decimals: 2
+    sql: ${total_usage_time_10s_last_week}/6
+    hidden: true
+  
+  - measure: engagement_time_per_session_number_last_week
+    type: number
+    decimals: 2
+    sql: (${total_usage_time_mins_last_week}/NULLIF(${count_sessions_last_week}, 0)::REAL)
+    hidden: true
+  
+  - measure: count_bounced_sessions_yesterday
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      app_id: production
+      sessions.bounce: yes
+      event_time_date: 1 day ago for 1 day
+    hidden: true
+  
+  - measure: count_bounced_sessions_last_week
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      domain_userid: -EMPTY
+      app_id: production
+      sessions.bounce: yes
+      event_time_date: 8 days ago for 1 day
+    hidden: true
+  
+  - measure: bounce_rate_yesterday
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_bounced_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+  
+  - measure: bounce_rate_last_week
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_bounced_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+  
+  - measure: basket_size_yesterday
+    type: number
+    decimals: 2
+    sql: ${items_purchased_yesterday}/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+    
+  - measure: basket_size_last_week
+    type: number
+    decimals: 2
+    sql: ${items_purchased_last_week}/NULLIF(${transactions.count_transactions_last_week},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+  
+  - measure: basket_value_yesterday
+    type: number
+    decimals: 2
+    sql: ${sum_revenue_yesterday}/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+    
+  - measure: basket_value_last_week
+    type: number
+    decimals: 2
+    sql: ${sum_revenue_last_week}/NULLIF(${transactions.count_transactions_last_week},0)::REAL
+    format: "%0.1f%"
+    hidden: true
+    
 # WoW percentages
   
   - measure: sessions_wow
@@ -643,6 +790,70 @@
     type: number
     decimals: 2
     sql: 100.0 * (${page_views_per_session_yesterday} - ${page_views_per_session_last_week})/NULLIF(${page_views_per_session_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+  
+  - measure: engagement_time_per_session_wow
+    label: ENGAGEMENT TIME PER SESSION WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${engagement_time_per_session_number_yesterday} - ${engagement_time_per_session_number_last_week})/NULLIF(${engagement_time_per_session_number_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+  
+  - measure: bounce_rate_wow
+    label: BOUNCE RATE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${bounce_rate_yesterday} - ${bounce_rate_last_week})/NULLIF(${bounce_rate_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
+  - measure: basket_size_wow
+    label: AVG BASKET SIZE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${basket_size_yesterday} - ${basket_size_last_week})/NULLIF(${basket_size_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 - Red' %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 - Green' %}
+        <font color="#3CB371> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
+  - measure: basket_value_wow
+    label: AVG BASKET VALUE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${basket_value_yesterday} - ${basket_value_last_week})/NULLIF(${basket_value_last_week},0)::REAL
     format: "%0.2f%"
     html: |
         {% if value < 0 - Red' %}

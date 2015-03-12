@@ -1,22 +1,5 @@
 - view: email_subscriptions
-  derived_table:
-     sql: |
-          SELECT root_tstamp,
-                 root_id,
-                 "type" AS event_type,
-                 "data.email" AS email_address,
-                 "data.id" AS email_id,
-                 "data.web_id" AS web_id,
-                 "data.ip_opt" AS ip_address,
-                 "data.list_id" AS list_id,
-                 "data.merges.fname" AS first_name,
-                 "data.merges.lname" AS last_name
-          FROM atomic.com_mailchimp_subscribe_1
-
-
-     sql_trigger_value: SELECT count(*) from atomic.com_mailchimp_subscribe_1
-     distkey: root_id
-     sortkeys: [root_tstamp]
+  sql_table_name: atomic.com_mailchimp_subscribe_1
 
   fields:
 
@@ -26,17 +9,25 @@
 
    - dimension: event_id
      sql: ${TABLE}.root_id
+     hidden: true
+    
+   - dimension_group: event_time
+     type: time
+     timeframes: [date]
+     sql: ${TABLE}.root_tstamp
+     hidden: true
     
    - dimension: event_type
-     sql: ${TABLE}.event_type
+     sql: ${TABLE}."type"
   
    - dimension: email_id
-     sql: ${TABLE}.email_id
+     sql: ${TABLE}."data.id"
+     hidden: true
   
    - dimension: email_list_name
      sql_case:
-       Newsletter: ${TABLE}.list_id = '179a8621fb'
-       Referrals: ${TABLE}.list_id = 'de06e9bf29'
+       Newsletter: ${TABLE}."data.list_id" = '179a8621fb'
+       Referrals: ${TABLE}."data.list_id" = 'de06e9bf29'
        else: Other
     
 ##################################################################################################################################################################################
@@ -45,12 +36,79 @@
 
    - measure: count_newsletter_subscribers
      type: count_distinct
-     sql: ${TABLE}.email_id
+     sql: ${email_id}
      filters:
       email_list_name: Newsletter
   
    - measure: count_referrals
      type: count_distinct
-     sql: ${TABLE}.email_id
+     sql: ${email_id}
      filters:
       email_list_name: Referrals
+  
+  # WoW stuff
+  
+   - measure: count_newsletter_subscribers_yesterday
+     type: count_distinct
+     sql: ${email_id}
+     filters:
+      email_list_name: Newsletter
+      event_time_date: 1 day ago for 1 day
+     hidden: true
+
+   - measure: count_newsletter_subscribers_last_week
+     type: count_distinct
+     sql: ${email_id}
+     filters:
+      email_list_name: Newsletter
+      event_time_date: 8 days ago for 1 day
+     hidden: true
+  
+   - measure: count_referrals_yesterday
+     type: count_distinct
+     sql: ${email_id}
+     filters:
+      email_list_name: Referrals
+      event_time_date: 1 day ago for 1 day
+     hidden: true
+  
+   - measure: count_referrals_last_week
+     type: count_distinct
+     sql: ${email_id}
+     filters:
+      email_list_name: Referrals
+      event_time_date: 8 days ago for 1 day
+     hidden: true
+  
+   - measure: newsletter_subscribers_wow
+     label: NEWSLETTER SUBSCRIBERS WEEK ON WEEK
+     type: number
+     decimals: 2
+     sql: 100.0 * (${count_newsletter_subscribers_yesterday} - ${count_newsletter_subscribers_last_week})/NULLIF(${count_newsletter_subscribers_last_week},0)::REAL
+     format: "%0.2f%"
+     html: |
+          {% if value < 0 - Red' %}
+          <font color="#D77070"> {{ rendered_value }} </font>
+          {% elsif value > 0 - Green' %}
+          <font color="#3CB371> {{ rendered_value }} </font>
+          {% else %}
+          <font color="#000000> {{ rendered_value }} </font>
+          {% endif %}
+     hidden: true
+     
+
+   - measure: referrals_wow
+     label: REFERRALS WEEK ON WEEK
+     type: number
+     decimals: 2
+     sql: 100.0 * (${count_referrals_yesterday} - ${count_referrals_last_week})/NULLIF(${count_referrals_last_week},0)::REAL
+     format: "%0.2f%"
+     html: |
+          {% if value < 0 - Red' %}
+          <font color="#D77070"> {{ rendered_value }} </font>
+          {% elsif value > 0 - Green' %}
+          <font color="#3CB371> {{ rendered_value }} </font>
+          {% else %}
+          <font color="#000000> {{ rendered_value }} </font>
+          {% endif %}
+     hidden: true      
