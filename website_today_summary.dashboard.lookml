@@ -1,5 +1,5 @@
-- dashboard: dashboard_2
-  title: Web Dashboard 2 - Today's Overview
+- dashboard: website_today_summary
+  title: Web Dashboard - Today Summary
   layout: static
   tile_size: 50
 
