@@ -99,9 +99,6 @@
   - dimension: today_tw_lw_flag
     sql: case when ${event_time_date} = current_date then 'Today' when ${event_time_date} = current_date - 7 then 'Last Week' else null end
 
-  - dimension: yesterday_tw_lw_flag
-    sql: case when ${event_time_date} = current_date - 1 then 'Yesterday' when ${event_time_date} = current_date - 8 then 'Last Week' else null end
-
   ########### User and Session Dimensions
     
   - dimension: user_id
@@ -347,7 +344,7 @@
 ############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
-    label: GROSS REV EX COUPON, VAT
+    label: GROSS REVENUE EX COUPON, VAT
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
 
@@ -368,14 +365,13 @@
     type: number
     decimals: 2
     sql: ${items_purchased}/NULLIF(${transactions.count_transactions},0)::REAL
-    format: "%0.2f%"
   
-  - measure: basket_value_yesterday
+  - measure: avg_basket_value
     label: AVERAGE BASKET VALUE
     type: number
     decimals: 2
     sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
-    format: "%0.2f%"
+    format: "%£0.2f"
     
 ############################################################################## EMAIL MEASURES ####################################################################################
     
@@ -661,14 +657,14 @@
     type: number
     decimals: 2
     sql: ${sum_revenue_yesterday}/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
-    format: "%0.1f%"
+    format: "%0.2f%"
     hidden: true
     
   - measure: basket_value_last_week
     type: number
     decimals: 2
     sql: ${sum_revenue_last_week}/NULLIF(${transactions.count_transactions_last_week},0)::REAL
-    format: "%0.1f%"
+    format: "%0.2f%"
     hidden: true
     
 # WoW percentages

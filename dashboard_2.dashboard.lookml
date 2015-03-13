@@ -42,7 +42,7 @@
     measures: [atomic_events.conversion_rate]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -124,7 +124,7 @@
     measures: [transactions.count_transactions]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -206,7 +206,7 @@
     measures: [atomic_events.sum_revenue_ex_coupon_and_vat]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -288,7 +288,7 @@
     measures: [atomic_events.bounce_rate]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -371,7 +371,7 @@
     measures: [atomic_events.count_sessions]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -453,7 +453,7 @@
     measures: [email_subscriptions.count_newsletter_subscribers]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
@@ -535,7 +535,7 @@
     measures: [email_subscriptions.count_referrals]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
-      atomic_events.event_time_time: before 168 hours ago
+      atomic_events.event_time_time: before 169 hours ago
     font_size: small
     height: 2
     width: 3
