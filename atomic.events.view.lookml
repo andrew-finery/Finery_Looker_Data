@@ -98,7 +98,12 @@
   
   - dimension: today_tw_lw_flag
     sql: case when ${event_time_date} = current_date then 'Today' when ${event_time_date} = current_date - 7 then 'Last Week' else null end
-
+    hidden: true
+    
+  - dimension: tw_lw_flag
+    sql: case when ${event_time_date} between (current_date - extract(dow from current_date) + 1) and current_date then 'This Week' when ${event_time_date} > (current_date - extract(dow from current_date) - 7) then 'Last Week' else null end
+    hidden: true
+    
   ########### User and Session Dimensions
     
   - dimension: user_id
@@ -347,6 +352,7 @@
     label: GROSS REVENUE EX COUPON, VAT
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
+    format: "£%d"
 
   - measure: items_purchased
     label: ITEMS PURCHASED
@@ -371,7 +377,7 @@
     type: number
     decimals: 2
     sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
-    format: "%£0.2f"
+    format: "£%0.2f"
     
 ############################################################################## EMAIL MEASURES ####################################################################################
     

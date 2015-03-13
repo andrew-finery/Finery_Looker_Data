@@ -591,3 +591,85 @@
     width: 9
     top: 20
     left: 10
+
+# NEW SESSIONS
+
+  - name: new_sessions_today
+    title: New Session % - So Far Today
+    type: single_value
+    model: finery_data
+    explore: atomic_events
+    measures: [atomic_events.new_session_percentage]
+    filters:
+      atomic_events.event_time_date: 0 days ago for 1 day
+      atomic_events.event_time_time: before 1 hour ago
+    font_size: small
+    height: 2
+    width: 3
+    top: 26
+    left: 10
+
+  - name: new_sessions_lw
+    title: New Session % - Same Point Last Week
+    type: single_value
+    model: finery_data
+    explore: atomic_events
+    measures: [atomic_events.new_session_percentage]
+    filters:
+      atomic_events.event_time_date: 7 days ago for 1 day
+      atomic_events.event_time_time: before 169 hours ago
+    font_size: small
+    height: 2
+    width: 3
+    top: 26
+    left: 13
+
+  - name: new_sessions_last_week_tot
+    title: TARGET - New Session % Last Week
+    type: single_value
+    model: finery_data
+    explore: atomic_events
+    measures: [atomic_events.new_session_percentage]
+    filters:
+      atomic_events.event_time_date: 7 days ago for 1 day
+    font_size: small
+    height: 2
+    width: 3
+    top: 26
+    left: 16
+
+  - name: new_sessions_vs_lw
+    title: New Session % - Today vs Last Week
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_hour_of_day, atomic_events.today_tw_lw_flag]
+    pivots: [atomic_events.today_tw_lw_flag]
+    measures: [atomic_events.new_session_percentage]
+    filters:
+      atomic_events.event_time_time: before 1 hours ago
+      atomic_events.today_tw_lw_flag: -NULL
+    sorts: [atomic_events.event_time_hour_of_day, atomic_events.today_tw_lw_flag desc]
+    limit: 500
+    total: false
+    show_null_points: false
+    font_size: small
+    show_value_labels: false
+    show_view_names: true
+    x_axis_gridlines: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_gridlines: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    interpolation: monotone
+    colors: [blue, red]
+    height: 6
+    width: 9
+    top: 28
+    left: 10

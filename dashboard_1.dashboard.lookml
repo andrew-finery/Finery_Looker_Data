@@ -5,6 +5,39 @@
 
   elements:
 
+  - name: summary chart
+    title: Yesterday's Summary - Sessions vs Orders by Hour
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_hour_of_day]
+    measures: [atomic_events.count_sessions, transactions.count_transactions]
+    filters:
+      atomic_events.event_time_date: yesterday
+    sorts: [atomic_events.event_time_hour_of_day desc]
+    show_null_points: false
+    interpolation: monotone
+    show_value_labels: false
+    show_view_names: false
+    colors: [orange, purple]
+    point_style: none
+    hide_legend: true
+    x_axis_gridlines: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_label: Hour of Day
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_labels: [Sessions, Orders]
+    y_axis_orientation: [left, right]
+    stacking: ''
+    x_axis_scale: auto
+    height: 9
+    width: 27
+    top: 0
+    left: 0
+
 
 
 #### conversion rate tiles
@@ -20,7 +53,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 0
+    top: 9
     left: 0
 
   - name: conversion_rate_last_week
@@ -34,7 +67,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 0
+    top: 9
     left: 3
 
   - name: conversion_rate_wow
@@ -49,7 +82,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 0
+    top: 9
     left: 6
 
 #### order tiles
@@ -67,7 +100,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 11
     left: 0
 
   - name: orders_last_week
@@ -83,7 +116,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 11
     left: 3
 
   - name: orders_wow
@@ -98,7 +131,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 2
+    top: 11
     left: 6
 
 #### items purchased tiles
@@ -114,7 +147,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 13
     left: 0
 
   - name: items_last_week
@@ -128,7 +161,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 13
     left: 3
 
   - name: items_wow
@@ -140,7 +173,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 4
+    top: 13
     left: 6
 
 #### revenue tiles
@@ -156,7 +189,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 15
     left: 0
 
   - name: revenue_last_week
@@ -170,7 +203,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 15
     left: 3
 
   - name: revenue_wow
@@ -182,7 +215,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 6
+    top: 15
     left: 6
   
   #### sessions tiles
@@ -200,7 +233,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 17
     left: 0
 
   - name: sessions_last_week
@@ -216,7 +249,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 17
     left: 3
 
   - name: sessions_wow
@@ -230,7 +263,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 8
+    top: 17
     left: 6
 
   #### new sessions tiles
@@ -248,7 +281,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 19
     left: 0
 
   - name: sessions_last_week
@@ -264,7 +297,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 19
     left: 3
 
   - name: sessions_wow
@@ -278,7 +311,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 10
+    top: 19
     left: 6
 
 #### page_views sessions tiles
@@ -296,7 +329,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 21
     left: 0
 
   - name: page_views_last_week
@@ -312,7 +345,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 21
     left: 3
 
   - name: page_views_wow
@@ -326,7 +359,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 12
+    top: 21
     left: 6
     
 #### page_views_per_session tiles
@@ -344,7 +377,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 23
     left: 0
 
   - name: pv_per_session_last_week
@@ -360,7 +393,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 23
     left: 3
 
   - name: pv_per_session_wow
@@ -374,7 +407,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 14
+    top: 23
     left: 6
 
 #### engagement_time_per_session tiles
@@ -392,7 +425,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 25
     left: 0
 
   - name: engag_per_session_last_week
@@ -408,7 +441,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 25
     left: 3
 
   - name: engag_per_session_wow
@@ -422,7 +455,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 16
+    top: 25
     left: 6
 
 #### bounce_rate tiles
@@ -438,7 +471,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 18
+    top: 27
     left: 0
 
   - name: bounce_rate_last_week
@@ -452,7 +485,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 18
+    top: 27
     left: 3
 
   - name: bounce_rate_wow
@@ -464,7 +497,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 18
+    top: 27
     left: 6
 
 #### newsletter_subscribers tiles
@@ -480,7 +513,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 20
+    top: 29
     left: 0
 
   - name: newsletter_subscribers_last_week
@@ -494,7 +527,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 20
+    top: 29
     left: 3
 
   - name: newsletter_subscribers_wow
@@ -506,7 +539,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 20
+    top: 29
     left: 6
 
 #### referrals tiles
@@ -522,7 +555,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 22
+    top: 31
     left: 0
 
   - name: referrals_last_week
@@ -536,7 +569,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 22
+    top: 31
     left: 3
 
   - name: referrals_wow
@@ -548,7 +581,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 22
+    top: 31
     left: 6
 
 #### avg basket size tiles
@@ -564,7 +597,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 24
+    top: 33
     left: 0
 
   - name: avg_basket_size_last_week
@@ -578,7 +611,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 24
+    top: 33
     left: 3
 
   - name: avg_basket_size_wow
@@ -590,7 +623,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 24
+    top: 33
     left: 6
 
 #### avg basket value tiles
@@ -606,7 +639,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 26
+    top: 35
     left: 0
 
   - name: avg_basket_value_last_week
@@ -620,7 +653,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 26
+    top: 35
     left: 3
 
   - name: avg_basket_value_wow
@@ -632,7 +665,7 @@
     font_size: small
     height: 2
     width: 3
-    top: 26
+    top: 35
     left: 6
     
 ########################################### Graphs
@@ -642,13 +675,13 @@
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week, atomic_events.event_time_week]
-    pivots: [atomic_events.event_time_week]
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
     measures: [atomic_events.conversion_rate]
     filters:
       atomic_events.event_time_date: 1 week ago for 2 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_week, atomic_events.event_time_day_of_week]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
     limit: 500
     total: false
     font_size: small
@@ -669,7 +702,7 @@
     point_style: none
     height: 6
     width: 9
-    top: 0
+    top: 9
     left: 9
 
   - name: cr_lt
@@ -705,7 +738,7 @@
         label: "Avg {{mean}}"
     height: 6
     width: 9
-    top: 0
+    top: 9
     left: 18
 
   - name: orders_tw_vs_lw
@@ -713,13 +746,13 @@
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week, atomic_events.event_time_week]
-    pivots: [atomic_events.event_time_week]
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
     measures: [transactions.count_transactions]
     filters:
       atomic_events.event_time_date: 1 week ago for 2 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_week, atomic_events.event_time_day_of_week]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
     limit: 500
     total: false
     font_size: small
@@ -740,7 +773,7 @@
     point_style: none
     height: 6
     width: 9
-    top: 6
+    top: 15
     left: 9
 
   - name: orders_lt
@@ -776,7 +809,7 @@
         label: "Avg {{mean}}"
     height: 6
     width: 9
-    top: 6
+    top: 15
     left: 18
 
   - name: sessions_tw_vs_lw
@@ -784,13 +817,13 @@
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week, atomic_events.event_time_week]
-    pivots: [atomic_events.event_time_week]
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
     measures: [atomic_events.count_sessions]
     filters:
       atomic_events.event_time_date: 1 week ago for 2 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_week, atomic_events.event_time_day_of_week]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
     limit: 500
     total: false
     font_size: small
@@ -811,7 +844,7 @@
     point_style: none
     height: 6
     width: 9
-    top: 12
+    top: 21
     left: 9
 
   - name: sessions_lt
@@ -847,7 +880,7 @@
         label: "Avg {{mean}}"
     height: 6
     width: 9
-    top: 12
+    top: 21
     left: 18
 
   - name: new_sessions_tw_vs_lw
@@ -855,13 +888,13 @@
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week, atomic_events.event_time_week]
-    pivots: [atomic_events.event_time_week]
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
     measures: [atomic_events.new_session_percentage]
     filters:
       atomic_events.event_time_date: 1 week ago for 2 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_week, atomic_events.event_time_day_of_week]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
     limit: 500
     total: false
     font_size: small
@@ -882,7 +915,7 @@
     point_style: none
     height: 6
     width: 9
-    top: 18
+    top: 27
     left: 9
 
   - name: new_sessions_lt
@@ -918,5 +951,148 @@
         label: "Avg {{mean}}"
     height: 6
     width: 9
-    top: 18
+    top: 27
+    left: 18
+
+  - name: nl_sub_tw_vs_lw
+    title: Newsletter Subscriptions This Week vs Last Week
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
+    measures: [email_subscriptions.count_newsletter_subscribers]
+    filters:
+      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_time: before 0 days ago
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    limit: 500
+    total: false
+    font_size: small
+    show_null_points: false
+    show_value_labels: false
+    show_view_names: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    discontinuous_nulls: false
+    interpolation: monotone
+    colors: [blue, red]
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    height: 6
+    width: 9
+    top: 33
+    left: 9
+
+  - name: nl_sub_lt
+    title: Newsletter Subscriptions - Last 28 Days
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_date]
+    measures: [email_subscriptions.count_newsletter_subscribers]
+    filters:
+      atomic_events.event_time_date: 28 days ago for 28 days
+    sorts: [atomic_events.event_time_date desc]
+    limit: 500
+    total: false
+    font_size: small
+    show_null_points: false
+    show_value_labels: false
+    show_view_names: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    discontinuous_nulls: false
+    interpolation: monotone
+    colors: [orange]
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    reference_lines:
+      - value: mean
+        label: "Avg {{mean}}"
+    height: 6
+    width: 9
+    top: 33
+    left: 18
+
+
+  - name: ref_tw_vs_lw
+    title: Referrals This Week vs Last Week
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_day_of_week]
+    pivots: [atomic_events.tw_lw_flag]
+    measures: [email_subscriptions.count_referrals]
+    filters:
+      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_time: before 0 days ago
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    limit: 500
+    total: false
+    font_size: small
+    show_null_points: false
+    show_value_labels: false
+    show_view_names: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    discontinuous_nulls: false
+    interpolation: monotone
+    colors: [blue, red]
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    height: 6
+    width: 9
+    top: 39
+    left: 9
+
+  - name: ref_lt
+    title: Referrals - Last 28 Days
+    type: looker_line
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.event_time_date]
+    measures: [email_subscriptions.count_referrals]
+    filters:
+      atomic_events.event_time_date: 28 days ago for 28 days
+    sorts: [atomic_events.event_time_date desc]
+    limit: 500
+    total: false
+    font_size: small
+    show_null_points: false
+    show_value_labels: false
+    show_view_names: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    discontinuous_nulls: false
+    interpolation: monotone
+    colors: [orange]
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    reference_lines:
+      - value: mean
+        label: "Avg {{mean}}"
+    height: 6
+    width: 9
+    top: 39
     left: 18
