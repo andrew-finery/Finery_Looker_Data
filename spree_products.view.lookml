@@ -92,7 +92,19 @@
       
   - dimension: department
     label: DEPARTMENT
-    sql: ${TABLE}.department
+    sql_case:
+      Evening Dresses: ${TABLE}.department = 'Evening Dresses'
+      Outerwear and Blazers: ${TABLE}.department = 'Outerwear & Blazers'
+      Skirts: ${TABLE}.department = 'Skirts'
+      Woven Tops: ${TABLE}.department = 'Woven Tops'
+      Day Dresses: ${TABLE}.department = 'Day Dresses'
+      Shoes: ${TABLE}.department = 'Shoes'
+      Knitwear: ${TABLE}.department = 'Knitwear'
+      Trousers and Shorts: ${TABLE}.department = 'Trousers & Shorts'
+      Jersey Tops: ${TABLE}.department = 'Jersey Tops'
+      Accessories: ${TABLE}.department = 'Accessories'
+      Jewellery: ${TABLE}.department = 'Jewellery'
+      else: 'Other'
     
   - dimension: sub_season
     label: SUB SEASON
