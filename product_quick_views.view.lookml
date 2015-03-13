@@ -1,12 +1,7 @@
 - view: product_quick_views
   derived_table:
      sql: |
-          SELECT (SELECT MAX(collector_tstamp) FROM atomic.events)
-          AS max_timestamp,
-                 events.domain_userid,
-                 events.domain_sessionidx,
-                 events.collector_tstamp,
-                 events.event_id,
+          SELECT quick_view.root_id,
                  quick_view.currency_code,
                  product_context.brand,
                  product_context.category,
@@ -19,35 +14,29 @@
                  product_context.style
           FROM atomic.com_finerylondon_product_quick_view_1 quick_view
             LEFT JOIN atomic.com_finerylondon_product_impression_context_1 product_context ON quick_view.root_id = product_context.root_id
-            LEFT JOIN atomic.events events ON quick_view.root_id = events.event_id
-          WHERE events.app_id = 'production'
-          
-     sql_trigger_value: SELECT MAX(max_timestamp) from ${product_impressions.SQL_TABLE_NAME}
-     distkey: domain_userid
-     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 
   fields:
   
-     - dimension: domain_userid
-       sql: ${TABLE}.domain_userid
+  - dimension: event_id
+    sql: ${TABLE}.root_id
+    hidden: true
+    
+  - dimension: product_id
+    sql: ${TABLE}.id
+    hidden: true
+  
+  - dimension: position
+    sql: ${TABLE}."position"
+    hidden: true
 
-     - dimension: domain_sessionidx
-       sql: ${TABLE}.domain_sessionidx
+  - dimension: category
+    sql: ${TABLE}.category
+    hidden: true
     
-     - dimension: session_id
-       sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
-      
-     - dimension: product_id
-       sql: ${TABLE}.id
-    
-     - dimension: position
-       sql: ${TABLE}.position
-
-     - dimension: category
-       sql: ${TABLE}.category
-    
-     - dimension: style
-       sql: ${TABLE}.style
+  - dimension: style
+    sql: ${TABLE}.style
+    hidden: true
        
-     - dimension: list
-       sql: ${TABLE}.list
+  - dimension: list
+    sql: ${TABLE}.list
+    hidden: true

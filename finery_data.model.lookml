@@ -53,12 +53,10 @@
   joins:
   - join: identity_stitching
     sql_on: identity_stitching.domain_userid = atomic_events.domain_userid
-  - join: product_funnel
-    sql_on: product_funnel.event_id = atomic_events.event_id
   - join: transactions
     sql_on: transactions.event_id = atomic_events.event_id
-  - join: page_view_events
-    sql_on: page_view_events.event_id = atomic_events.event_id
+  - join: page_contexts
+    sql_on: page_contexts.root_id = atomic_events.event_id
   - join: email_subscriptions
     sql_on: email_subscriptions.root_id = atomic_events.event_id
   - join: register_success
@@ -73,6 +71,15 @@
     sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
   - join: sessions
     sql_on: sessions.domain_userid = atomic_events.domain_userid and sessions.domain_sessionidx = atomic_events.domain_sessionidx
+  - join: product_impressions
+    sql_on: product_impressions.root_id = atomic_events.event_id
+  - join: product_clicked
+    sql_on: product_clicked.root_id = atomic_events.event_id
+  - join: product_quick_views
+    sql_on: product_quick_views.root_id = atomic_events.event_id   
+  - join: spree_products
+    sql_on: page_contexts.prod_id = spree_products.product_id
+    
     
 - explore: page_views
 
