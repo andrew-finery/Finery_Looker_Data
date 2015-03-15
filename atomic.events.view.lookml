@@ -423,18 +423,11 @@
     sql: ${product_quick_views.event_id}
     filters:
       app_id: production    
-  
-  - measure: product_ctr
-    label: PRODUCT CTR
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL
-    format: "%0.2f%"    
-
+   
   - measure: count_product_page_views
     label: COUNT PRODUCT PAGE VIEWS
     type: count_distinct
-    sql: ${page_contexts.event_id}
+    sql: ${session_id} || ${page_contexts.product_id}
     filters:
       app_id: production
       event: page_view
@@ -454,7 +447,19 @@
     filters:
       app_id: production
 
-
+  - measure: product_ctr
+    label: PRODUCT CTR
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: product_cr
+    label: PRODUCT CONVERSION RATE
+    type: number
+    decimals: 2
+    sql:  100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL
+    format: "%0.2f%"
 
 
 
