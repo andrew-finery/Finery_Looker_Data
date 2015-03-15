@@ -79,6 +79,10 @@
     sql_on: product_quick_views.root_id = atomic_events.event_id   
   - join: spree_products
     sql_on: page_contexts.prod_id = spree_products.product_id
+  - join: product_in_cart
+    sql_on: product_in_cart.root_id = atomic_events.event_id
+  - join: product_in_transaction
+    sql_on: product_in_transaction.root_id = atomic_events.event_id
     
     
 - explore: page_views

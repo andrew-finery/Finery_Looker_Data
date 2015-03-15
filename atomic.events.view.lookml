@@ -385,7 +385,7 @@
   
   - dimension: product_id
     label: PRODUCT ID
-    sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id})
+    sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int))
   
   - dimension: category
     label: CATEGORY
@@ -440,6 +440,19 @@
       event: page_view
       page_contexts.product_id: -NULL
 
+  - measure: count_products_in_cart
+    label: COUNT PRODUCTS IN CART
+    type: count_distinct
+    sql: ${session_id} || ${product_in_cart.product_id}
+    filters:
+      app_id: production
+
+  - measure: count_products_in_transaction
+    label: COUNT PRODUCTS PURCHASED
+    type: sum
+    sql: ${product_in_transaction.quantity}
+    filters:
+      app_id: production
 
 
 
