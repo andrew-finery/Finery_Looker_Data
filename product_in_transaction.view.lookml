@@ -11,7 +11,6 @@
           LEFT JOIN atomic.com_finerylondon_product_2 product_context
           ON trans.root_id = product_context.root_id
 
-
   fields:
   
   - dimension: event_id
