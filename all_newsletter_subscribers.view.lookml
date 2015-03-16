@@ -9,7 +9,7 @@
         )
         group by 1
 
-   sql_trigger_value: SELECT max(spree_timestamp) FROM atomic.com_mailchimp_subscribe_1
+   sql_trigger_value: SELECT max(root_tstamp) FROM atomic.com_mailchimp_subscribe_1
    distkey: email
    sortkeys: [email]
 

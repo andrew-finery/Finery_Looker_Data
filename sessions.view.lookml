@@ -77,7 +77,7 @@
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
     
-    sql_trigger_value: SELECT COUNT(*) FROM ${payment_funnel.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
     
@@ -88,54 +88,66 @@
   
   - dimension: user_id
     sql: ${TABLE}.domain_userid
+    hidden: true
   
   - dimension: blended_user_id
     sql: ${TABLE}.blended_user_id
+    hidden: true
     
   - dimension: session_index
     type: int
     sql: ${TABLE}.domain_sessionidx
+    hidden: true
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
+    hidden: true
 
   - dimension: session_index_tier
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
     sql: ${session_index}
+    hidden: true
   
   - dimension: start
     sql: ${TABLE}.session_start_ts
+    hidden: true
   
   - dimension_group: start
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.session_start_ts
+    hidden: true
     
   - dimension: end
     sql: ${TABLE}.session_end_ts
+    hidden: true
     
   # Session duration #
 
   - dimension: session_duration_seconds
     type: int
     sql: EXTRACT(EPOCH FROM (${TABLE}.session_end_ts - ${TABLE}.session_start_ts))
+    hidden: true
 
   - dimension: session_duration_seconds_tiered
     type: tier
     tiers: [0,1,5,10,30,60,300,900]
     sql: ${session_duration_seconds}
+    hidden: true
 
   # Events per visit and bounces (infered) #
 
   - dimension: events_during_session
     type: int
     sql: ${TABLE}.number_of_events
+    hidden: true
     
   - dimension: events_during_session_tiered
     type: tier
     tiers: [1,2,5,10,25,50,100,1000,10000]
     sql: ${TABLE}.number_of_events
+    hidden: true
     
   - dimension: bounce
     label: BOUNCED SESSION
@@ -152,33 +164,42 @@
   # Pages visited #
   - dimension: distinct_pages_viewed
     sql: ${TABLE}.distinct_pages_viewed
+    hidden: true
     
   - dimension: distinct_pages_viewed_tiered
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
     sql: ${TABLE}.distinct_pages_viewed
+    hidden: true
   
   - dimension: event_stream
     sql: ${session_id}
+    hidden: true
     
   # Geo fields #
   - dimension: geography_country_two_letter_iso_code
     sql: ${TABLE}.geo_country_code_2_characters
+    hidden: true
   
   - dimension: geography_region
     sql: ${TABLE}.geo_region
+    hidden: true
     
   - dimension: geography_city
     sql: ${TABLE}.geo_city
+    hidden: true
     
   - dimension: geography_zipcode
     sql: ${TABLE}.geo_zipcode
+    hidden: true
     
   - dimension: geography_latitude
     sql: ${TABLE}.geo_latitude
+    hidden: true
   
   - dimension: geography_longitude
     sql: ${TABLE}.geo_longitude
+    hidden: true
     
   # Landing page
     
@@ -203,6 +224,30 @@
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
     
   # Marketing / traffic source fields
+
+  - dimension: acquisition_channel
+    #sql_case:
+    #  Referral: ${campaign_medium} = 'referral'
+    #  Email: ${campaign_medium} = 'email'
+    #  Facebook - Paid: ${campaign_source} = 'facebook' and ${campaign_medium} = 'paid'
+    #  Paid Search: ${referer_url_host} = 'www.googleadservices.com'
+    #  Organic Search: ${referer_medium} = 'search'
+    #  Email: ${referer_medium} = 'email'
+    #  Social: ${referer_medium} = 'social'
+    #  Referral: ${referer_medium} = 'unknown'
+    #  else: Direct
+    sql_case:
+      Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
+      Paid Search: ${referer_url_host} = 'www.googleadservices.com'
+      Email: ${TABLE}.mkt_source in ('crm', 'newsletter') and ${TABLE}.mkt_medium = 'email'
+      Email: ${TABLE}.refr_medium = 'email'
+      Other Marketing: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null
+      Social: ${TABLE}.refr_medium = 'social'
+      Search: ${TABLE}.refr_medium = 'search'
+      Affiliates: ${TABLE}.refr_medium = 'unknown'
+      Email - Other: ${TABLE}.refr_medium = 'email'
+      else: Direct
+      
   
   - dimension: referer_medium
     sql_case:

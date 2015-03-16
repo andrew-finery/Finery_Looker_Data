@@ -22,7 +22,7 @@
           atomic.events
         WHERE
           (refr_medium is null or refr_medium != 'internal') -- Not an internal referer
-          and refr_urlhost not like '%paypal%' -- ignore referrals from paypal
+          and (refr_urlhost is null or refr_urlhost not like '%paypal%') -- ignore referrals from paypal
           AND (
             NOT(refr_medium IS NULL OR refr_medium = '') OR
             NOT ((mkt_campaign IS NULL AND mkt_content IS NULL AND mkt_medium IS NULL AND mkt_source IS NULL AND mkt_term IS NULL)
@@ -59,7 +59,7 @@
       Other Marketing: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null
       Social: ${TABLE}.refr_medium = 'social'
       Search: ${TABLE}.refr_medium = 'search'
-      Affiliates: ${TABLE}.refr_medium = 'unknown'
+      Referral: ${TABLE}.refr_medium = 'unknown'
       Email - Other: ${TABLE}.refr_medium = 'email'
       else: Direct
     
