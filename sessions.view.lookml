@@ -226,16 +226,6 @@
   # Marketing / traffic source fields
 
   - dimension: acquisition_channel
-    #sql_case:
-    #  Referral: ${campaign_medium} = 'referral'
-    #  Email: ${campaign_medium} = 'email'
-    #  Facebook - Paid: ${campaign_source} = 'facebook' and ${campaign_medium} = 'paid'
-    #  Paid Search: ${referer_url_host} = 'www.googleadservices.com'
-    #  Organic Search: ${referer_medium} = 'search'
-    #  Email: ${referer_medium} = 'email'
-    #  Social: ${referer_medium} = 'social'
-    #  Referral: ${referer_medium} = 'unknown'
-    #  else: Direct
     sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
       Paid Search:  ${TABLE}.refr_urlhost = 'www.googleadservices.com'
