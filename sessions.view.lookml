@@ -238,14 +238,13 @@
     #  else: Direct
     sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
-      Paid Search: ${referer_url_host} = 'www.googleadservices.com'
-      Email: ${TABLE}.mkt_source in ('crm', 'newsletter') and ${TABLE}.mkt_medium = 'email'
-      Email: ${TABLE}.refr_medium = 'email'
-      Other Marketing: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null
+      Paid Search:  ${TABLE}.refr_urlhost = 'www.googleadservices.com'
+      Email: ${TABLE}.mkt_medium = 'email' or ${TABLE}.refr_medium = 'email'
       Social: ${TABLE}.refr_medium = 'social'
       Search: ${TABLE}.refr_medium = 'search'
       Affiliates: ${TABLE}.refr_medium = 'unknown'
-      Email - Other: ${TABLE}.refr_medium = 'email'
+      Other Marketing Source: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null or ${TABLE}.mkt_campaign is not null
+      Other Referral Source: ${TABLE}.refr_source is not null or ${TABLE}.refr_medium is not null or ${TABLE}.refr_urlhost is not null
       else: Direct
       
   
