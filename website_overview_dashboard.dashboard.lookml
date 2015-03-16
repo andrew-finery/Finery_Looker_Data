@@ -104,7 +104,7 @@
     measures: [atomic_events.count_users]
     filters:
       atomic_events.event_time_time: before 1 hours ago
-      atomic_events.wow_date_filter: 'Yes'
+      atomic_events.today_tw_lw_flag: -NULL
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false
@@ -170,7 +170,7 @@
     measures: [transactions.count_transactions]
     filters:
       atomic_events.event_time_time: before 1 hours ago
-      atomic_events.wow_date_filter: 'Yes'
+      atomic_events.today_tw_lw_flag: -NULL
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false
@@ -304,7 +304,7 @@
     measures: [email_subscriptions.count_newsletter_subscribers]
     filters:
       atomic_events.event_time_time: before 1 hours ago
-      atomic_events.wow_date_filter: 'Yes'
+      atomic_events.today_tw_lw_flag: -NULL
     sorts: [atomic_events.event_time_hour_of_day]
     limit: 500
     total: false

@@ -83,7 +83,8 @@
     sql_on: product_in_cart.root_id = atomic_events.event_id
   - join: product_in_transaction
     sql_on: product_in_transaction.root_id = atomic_events.event_id
-    
+  - join: product_in_checkout
+    sql_on: product_in_checkout.root_id = atomic_events.event_id    
     
 - explore: page_views
 

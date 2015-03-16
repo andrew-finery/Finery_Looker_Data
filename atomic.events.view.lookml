@@ -92,12 +92,14 @@
     timeframes: [time, hour, date, hour_of_day, day_of_week_index, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
 
-  - dimension: wow_date_filter
-    type: yesno
-    sql: ${event_time_date} = current_date - 7 OR ${event_time_date} = current_date
-  
   - dimension: today_tw_lw_flag
+    label: FLAG
     sql: case when ${event_time_date} = current_date then 'Today' when ${event_time_date} = current_date - 7 then 'Last Week' else null end
+    hidden: true
+
+  - dimension: yesterday_tw_lw_flag
+    label: FLAG
+    sql: case when ${event_time_date} = current_date - 1 then 'Yesterday' when ${event_time_date} = current_date - 8 then 'Last Week' else null end
     hidden: true
     
   - dimension: tw_lw_flag
@@ -460,6 +462,163 @@
     decimals: 2
     sql:  100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL
     format: "%0.2f%"
+
+
+
+############################################################## Payment Funnel Stuff #########################################################################################################################################################################
+
+  - measure: count_sessions_with_catalog_page_view
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      event: page_view
+      page_contexts.page_type: taxons/show
+    hidden: true
+
+  - measure: count_sessions_with_product_page_view
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      event: page_view
+      page_contexts.page_type: products/show
+    hidden: true
+      
+  - measure: count_sessions_with_cart
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      product_in_cart.event_id: -NULL
+    hidden: true
+      
+  - measure: count_sessions_with_checkout_1
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      product_in_checkout.checkout_step: '1'
+    hidden: true
+      
+  - measure: count_sessions_with_checkout_2
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      product_in_checkout.checkout_step: '2'
+    hidden: true
+      
+  - measure: count_sessions_with_checkout_3
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      product_in_checkout.checkout_step: '3'
+    hidden: true
+  
+  - measure: count_sessions_with_transaction
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      transactions.event_id: -NULL
+    hidden: true
+  
+  - measure: perc_all_sessions
+    label: SESSIONS - ALL SESSIONS
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+    
+  - measure: perc_sessions_catalog
+    label: SESSIONS - CATALOG PAGE
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_catalog_page_view}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+
+  - measure: perc_sessions_product
+    label: SESSIONS - PRODUCT PAGE
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_product_page_view}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+
+  - measure: perc_sessions_cart
+    label: SESSIONS - ADD TO CART
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_cart}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: perc_sessions_checkout_1
+    label: SESSIONS - CHECKOUT STARTED
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_checkout_1}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+
+  - measure: perc_sessions_checkout_2
+    label: SESSIONS - CHECKOUT ADDRESS ENTERED
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_checkout_2}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+
+  - measure: perc_sessions_checkout_3
+    label: SESSIONS - CHECKOUT DELIVERY METHOD SELECTED
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_checkout_3}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+
+  - measure: perc_sessions_transaction
+    label: SESSIONS - ORDER COMPLETED
+    type: number
+    decimals: 2
+    sql: 100.0 * ${count_sessions_with_transaction}/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: dropout_rate_visitor
+    label: DROPOUT RATE - VISITOR
+    type: number
+    decimals: 2
+    sql: 100.0 * (${perc_all_sessions} - ${perc_sessions_catalog})/NULLIF(${perc_all_sessions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: dropout_rate_catalogue
+    label: DROPOUT RATE - CATALOGUE
+    type: number
+    decimals: 2
+    sql: 100.0 * (${perc_sessions_catalog} - ${perc_sessions_product})/NULLIF(${perc_sessions_catalog},0)::REAL
+    format: "%0.2f%"
+
+  - measure: dropout_rate_product
+    label: DROPOUT RATE - PRODUCT
+    type: number
+    decimals: 2
+    sql: 100.0 * (${perc_sessions_product} - ${perc_sessions_cart})/NULLIF(${perc_sessions_product},0)::REAL
+    format: "%0.2f%"
+
+  - measure: dropout_rate_cart
+    label: DROPOUT RATE - CART
+    type: number
+    decimals: 2
+    sql: 100.0 * (${perc_sessions_cart} - ${perc_sessions_checkout_1})/NULLIF(${perc_sessions_cart},0)::REAL
+    format: "%0.2f%"
+
+  - measure: dropout_rate_checkout
+    label: DROPOUT RATE - CHECKOUT
+    type: number
+    decimals: 2
+    sql: 100.0 * (${perc_sessions_checkout_1} - ${perc_sessions_transaction})/NULLIF(${perc_sessions_checkout_1},0)::REAL
+    format: "%0.2f%"
+
+
+
+
 
 
 
