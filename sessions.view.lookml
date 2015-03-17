@@ -30,6 +30,15 @@
         s2.refr_term,
         s2.refr_urlhost,
         s2.refr_urlpath,
+        s2.mkt_source_ga,
+        s2.mkt_medium_ga,
+        s2.mkt_term_ga,
+        s2.mkt_campaign_ga,
+        s2.refr_source_ga,
+        s2.refr_medium_ga,
+        s2.refr_term_ga,
+        s2.refr_urlhost_ga,
+        s2.refr_urlpath_ga,
         t.br_name,
         t.br_family,
         t.br_version,
@@ -117,7 +126,6 @@
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.session_start_ts
-    hidden: true
     
   - dimension: end
     sql: ${TABLE}.session_end_ts
@@ -271,6 +279,20 @@
   
   - dimension: campaign_name
     sql: ${TABLE}.mkt_campaign
+
+############################################# GA TESTING ######################################################################
+  - dimension: acquisition_channel_ga
+    sql_case:
+      Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
+      Paid Search:  ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
+      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email'
+      Social: ${TABLE}.refr_medium_ga = 'social'
+      Search: ${TABLE}.refr_medium_ga = 'search'
+      Affiliates: ${TABLE}.refr_medium_ga = 'unknown'
+      Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
+      Other Referral Source: ${TABLE}.refr_source_ga is not null or ${TABLE}.refr_medium_ga is not null or ${TABLE}.refr_urlhost_ga is not null
+      else: Direct
+################################################# END OF TEST #########################################################################
 
   # Device fields #
     
