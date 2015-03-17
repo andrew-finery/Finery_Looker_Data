@@ -40,7 +40,7 @@
           
           FROM
           
-          (SELECT top 300 domain_userid, domain_sessionidx, MIN(collector_tstamp) AS session_start_time
+          (SELECT domain_userid, domain_sessionidx, MIN(collector_tstamp) AS session_start_time
           FROM atomic.events
           WHERE domain_sessionidx IS NOT NULL
           AND   app_id = 'production'
