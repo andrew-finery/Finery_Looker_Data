@@ -21,7 +21,7 @@
     model: finery_data
     explore: atomic_events
     dimensions: [sessions.acquisition_channel]
-    measures: [atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow, atomic_events.engagement_rate_yesterday, atomic_events.engagment_rate_last_week, atomic_events.engagement_rate_wow]
+    measures: [atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow, atomic_events.engagement_rate_yesterday, atomic_events.engagement_rate_last_week, atomic_events.engagement_rate_wow]
     sorts: [atomic_events.count_sessions_yesterday desc]
     total: true
     height: 8
