@@ -130,19 +130,6 @@
   - dimension: end
     sql: ${TABLE}.session_end_ts
     hidden: true
-    
-  # Session duration #
-
-  - dimension: session_duration_seconds
-    type: int
-    sql: EXTRACT(EPOCH FROM (${TABLE}.session_end_ts - ${TABLE}.session_start_ts))
-    hidden: true
-
-  - dimension: session_duration_seconds_tiered
-    type: tier
-    tiers: [0,1,5,10,30,60,300,900]
-    sql: ${session_duration_seconds}
-    hidden: true
 
   # Events per visit and bounces (infered) #
 
@@ -231,68 +218,48 @@
   - dimension: exit_page
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
     
-  # Marketing / traffic source fields
+
+
+
 
   - dimension: acquisition_channel
     sql_case:
-      Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
-      Paid Search:  ${TABLE}.refr_urlhost = 'www.googleadservices.com'
-      Email: ${TABLE}.mkt_medium = 'email' or ${TABLE}.refr_medium = 'email'
-      Social: ${TABLE}.refr_medium = 'social'
-      Search: ${TABLE}.refr_medium = 'search'
-      Affiliates: ${TABLE}.refr_medium = 'unknown'
-      Other Marketing Source: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null or ${TABLE}.mkt_campaign is not null
-      Other Referral Source: ${TABLE}.refr_source is not null or ${TABLE}.refr_medium is not null or ${TABLE}.refr_urlhost is not null
-      else: Direct
-      
-  
-  - dimension: referer_medium
-    sql_case:
-      email: ${TABLE}.refr_medium = 'email'
-      search: ${TABLE}.refr_medium = 'search'
-      social: ${TABLE}.refr_medium = 'social'
-      other_website: ${TABLE}.refr_medium = 'unknown'
-      else: direct
-
-  - dimension: referer_source
-    sql: ${TABLE}.refr_source
-    
-  - dimension: referer_term
-    sql: ${TABLE}.refr_term
-    
-  - dimension: referer_url_host
-    sql: ${TABLE}.refr_urlhost
-  
-  - dimension: referer_url_path
-    sql: ${TABLE}.refr_urlpath
-    
-  # MKT fields (paid acquisition channels)
-    
-  - dimension: campaign_medium
-    sql: ${TABLE}.mkt_medium
-  
-  - dimension: campaign_source
-    sql: ${TABLE}.mkt_source
-  
-  - dimension: campaign_term
-    sql: ${TABLE}.mkt_term
-  
-  - dimension: campaign_name
-    sql: ${TABLE}.mkt_campaign
-
-############################################# GA TESTING ######################################################################
-  - dimension: acquisition_channel_ga
-    sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
+      Paid Search: ${TABLE}.mkt_source_ga in ('GoogleSearch', 'GoogleContent')
       Paid Search:  ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email'
       Social: ${TABLE}.refr_medium_ga = 'social'
       Search: ${TABLE}.refr_medium_ga = 'search'
       Affiliates: ${TABLE}.refr_medium_ga = 'unknown'
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
-      Other Referral Source: ${TABLE}.refr_source_ga is not null or ${TABLE}.refr_medium_ga is not null or ${TABLE}.refr_urlhost_ga is not null
       else: Direct
-################################################# END OF TEST #########################################################################
+
+  - dimension: referer_source
+    sql: ${TABLE}.refr_source_ga
+    
+  - dimension: referer_term
+    sql: ${TABLE}.refr_term_ga
+    
+  - dimension: referer_url_host
+    sql: ${TABLE}.refr_urlhost_ga
+  
+  - dimension: referer_url_path
+    sql: ${TABLE}.refr_urlpath_ga
+    
+  # MKT fields (paid acquisition channels)
+    
+  - dimension: campaign_medium
+    sql: ${TABLE}.mkt_medium_ga
+  
+  - dimension: campaign_source
+    sql: ${TABLE}.mkt_source_ga
+  
+  - dimension: campaign_term
+    sql: ${TABLE}.mkt_term_ga
+  
+  - dimension: campaign_name
+    sql: ${TABLE}.mkt_campaign_ga
+
 
   # Device fields #
     
@@ -368,27 +335,7 @@
     
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
-    
-  # site progress  
-  
-  - dimension: site_progress
-    sql_case:
-     1 - Home Page/Other: ${TABLE}.site_progress = 1
-     2 - Category Page: ${TABLE}.site_progress = 2
-     3 - Product Page: ${TABLE}.site_progress = 3
-     4 - View Cart: ${TABLE}.site_progress = 4
-     5 - Checkout - Enter Address: ${TABLE}.site_progress = 5
-     6 - Checkout - Delivery: ${TABLE}.site_progress = 6
-     7 - Checkout - Payment: ${TABLE}.site_progress = 7
-     8 - Order Completed: ${TABLE}.site_progress = 8
-     else: Error
-  
-  #temp order placed dimension   #
-  - dimension: order_placed_temp
-    type: yesno
-    sql: ${TABLE}.site_progress = 8
-  #end#
-     
+
   # MEASURES #
 
   - measure: count
@@ -466,70 +413,3 @@
   - measure: average_session_duration
     type: string
     sql: cast(${average_session_duration_seconds}/60 as int)||':'||right('0' || mod(cast(${average_session_duration_seconds} as int), 60), 2)
-
-    
-  - measure: page_view_count
-    type: sum
-    sql: ${TABLE}.distinct_pages_viewed
-  
-  - measure: pages_per_session
-    type: number
-    decimals: 2
-    sql: ${page_view_count}/NULLIF(${count},0)::REAL
-  
-  # Geo measures
-
-  - measure: region_count
-    type: count_distinct
-    sql: ${geography_region}
-    
-  - measure: city_count
-    type: count_distinct
-    sql: ${geography_city}
-      
-  - measure: zip_code_count
-    type: count_distinct
-    sql: ${geography_zipcode}
-    
-  - measure: campaign_medium_count
-    type: count_distinct
-    sql: ${campaign_medium}
-    
-  - measure: campaign_source_count
-    type: count_distinct
-    sql: ${campaign_source}
-    
-  - measure: campaign_term_count
-    type: count_distinct
-    sql: ${campaign_term}
-
-  - measure: campaign_count
-    type: count_distinct
-    sql: ${campaign_name}
-
-  - measure: referer_medium_count
-    type: count_distinct
-    sql: ${referer_medium}
-
-  - measure: referer_source_count
-    type: count_distinct
-    sql: ${referer_source}
-
-  - measure: referer_term_count
-    type: count_distinct
-    sql: ${referer_term}
-
-  # Technology measures 
-  
-  - measure: device_count
-    type: count_distinct
-    sql: ${device_type}
-  
-  - measure: operating_system_count
-    type: count_distinct
-    sql: ${operating_system}
-  
-  - measure: browser_count
-    type: count_distinct
-    sql: ${browser}
-    
