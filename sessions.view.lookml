@@ -217,10 +217,8 @@
     
   - dimension: exit_page
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
-    
 
-
-
+################################ MARKETING #################################################################################################
 
   - dimension: acquisition_channel
     sql_case:
@@ -230,9 +228,20 @@
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email'
       Social: ${TABLE}.refr_medium_ga = 'social'
       Search: ${TABLE}.refr_medium_ga = 'search'
-      Affiliates: ${TABLE}.refr_medium_ga = 'unknown'
+      Referrals: ${TABLE}.refr_medium_ga = 'unknown'
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
+  
+  - dimension: traffic_source
+    sql_case:
+      CRM: ${acquisition_channel} = 'Email'
+      Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
+      else: Brand
+
+  - dimension: paid_unpaid_traffic_flag
+    sql_case:
+      Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
+      else: Unpaid
 
   - dimension: referer_source
     sql: ${TABLE}.refr_source_ga
@@ -402,14 +411,3 @@
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
-    
-  - measure: average_session_duration_seconds
-    type: average
-    decimals: 2
-    sql: ${session_duration_seconds}
-    filters:
-      session_duration_seconds: < 3600
-  
-  - measure: average_session_duration
-    type: string
-    sql: cast(${average_session_duration_seconds}/60 as int)||':'||right('0' || mod(cast(${average_session_duration_seconds} as int), 60), 2)

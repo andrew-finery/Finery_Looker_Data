@@ -616,6 +616,54 @@
     sql: 100.0 * (${perc_sessions_checkout_1} - ${perc_sessions_transaction})/NULLIF(${perc_sessions_checkout_1},0)::REAL
     format: "%0.2f%"
 
+################################## Web Goals Engagement Stuff ###########################################################
+
+  - measure: count_registration_sessions
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+     app_id: production
+     register_success.event_id: -NULL
+    hidden: true
+      
+  - measure: count_newsletter_subscription_sessions
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+     app_id: production
+     newsletter_subscriptions.event_id: -NUL
+    hidden: true
+
+  - measure: count_nl_or_signup_or_order
+    type: count_distinct
+    sql: case when (${register_success.event_id} is not null or ${newsletter_subscriptions.event_id} is not null or ${transactions.event_id} is not null) then ${session_id} else null end
+    filters:
+     app_id: production
+    hidden: true
+     
+  - measure: newsletter_subscription_rate
+    label: NEWSLETTER SUBSCRIPTION RATE
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_newsletter_subscription_sessions})/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+     
+  - measure: signup_rate
+    label: CREATE ACCOUNT RATE
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_registration_sessions})/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+  
+  - measure: engagement_rate
+    label: ENGAGEMENT RATE - NL OR SIGNUP OR ORDER
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_nl_or_signup_or_order})/NULLIF(${count_sessions},0)::REAL
+    format: "%0.2f%"
+      
+   
+
 
 
 

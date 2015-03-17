@@ -19,7 +19,7 @@
     type: looker_pie
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel]
     measures: [atomic_events.count_users]
     listen:
      date: atomic_events.event_time_date
@@ -38,7 +38,7 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel]
     measures: [atomic_events.count_sessions, atomic_events.count_users, atomic_events.count_new_users,
       atomic_events.new_user_percentage, transactions.count_transactions, atomic_events.sum_revenue_ex_coupon_and_vat, atomic_events.conversion_rate]
     listen:
@@ -59,8 +59,8 @@
     type: looker_area
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source, atomic_events.event_time_date]
-    pivots: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel, atomic_events.event_time_date]
+    pivots: [sessions.acquisition_channel]
     measures: [atomic_events.count_users]
     listen:
      date: atomic_events.event_time_date
@@ -96,8 +96,8 @@
     type: looker_area
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source, atomic_events.event_time_date]
-    pivots: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel, atomic_events.event_time_date]
+    pivots: [sessions.acquisition_channel]
     measures: [atomic_events.sum_revenue_ex_coupon_and_vat]
     listen:
      date: atomic_events.event_time_date
@@ -133,7 +133,7 @@
     type: looker_bar
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel]
     measures: [atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
@@ -168,7 +168,7 @@
     type: looker_column
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.session_source]
+    dimensions: [sessions.acquisition_channel]
     measures: [atomic_events.count_users, atomic_events.sum_revenue_ex_coupon_and_vat]
     listen:
      date: atomic_events.event_time_date
@@ -204,14 +204,14 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.campaign_name]
+    dimensions: [sessions.campaign_name]
     measures: [atomic_events.count_sessions, atomic_events.count_users, atomic_events.count_new_users,
       atomic_events.new_user_percentage, transactions.count_transactions, atomic_events.sum_revenue_ex_coupon_and_vat,
       atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Facebook - Paid Marketing
+      sessions.acquisition_channel: Facebook - Paid Marketing
     sorts: [atomic_events.count_users desc]
     show_view_names: false
     limit: 500
@@ -226,13 +226,13 @@
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_date, sessions_source.campaign_name]
-    pivots: [sessions_source.campaign_name]
+    dimensions: [atomic_events.event_time_date, sessions.campaign_name]
+    pivots: [sessions.campaign_name]
     measures: [atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Facebook - Paid Marketing
+      sessions.acquisition_channel: Facebook - Paid Marketing
     sorts: [atomic_events.conversion_rate desc 0]
     limit: 500
     total: true
@@ -265,14 +265,14 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.campaign_name]
+    dimensions: [sessions.campaign_name]
     measures: [atomic_events.count_sessions, atomic_events.count_users, atomic_events.count_new_users,
       atomic_events.new_user_percentage, transactions.count_transactions, atomic_events.sum_revenue_ex_coupon_and_vat,
       atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Email - from Finery
+      sessions.acquisition_channel: Email - from Finery
       atomic_events.count_sessions: '>10'
     sorts: [atomic_events.count_users desc]
     limit: 500
@@ -288,12 +288,12 @@
     type: looker_bar
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.campaign_name]
+    dimensions: [sessions.campaign_name]
     measures: [atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Email - from Finery
+      sessions.acquisition_channel: Email - from Finery
       atomic_events.count_sessions: '>10'
     sorts: [atomic_events.conversion_rate desc]
     limit: 500
@@ -328,12 +328,12 @@
     type: looker_pie
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.referer_source]
+    dimensions: [sessions.referer_source]
     measures: [atomic_events.count_users]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Search
+      sessions.acquisition_channel: Search
     sorts: [atomic_events.count_users desc]
     limit: 500
     total: false
@@ -365,13 +365,13 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.referer_term]
+    dimensions: [sessions.referer_term]
     measures: [atomic_events.count_users]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.referer_term: -NULL
-      sessions_source.session_source: Search
+      sessions.referer_term: -NULL
+      sessions.acquisition_channel: Search
     sorts: [atomic_events.count_users desc]
     limit: 10
     total: false
@@ -388,14 +388,14 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.referer_url_host]
+    dimensions: [sessions.referer_url_host]
     measures: [atomic_events.count_sessions, atomic_events.count_users, atomic_events.count_new_users,
       atomic_events.new_user_percentage, transactions.count_transactions, atomic_events.sum_revenue_ex_coupon_and_vat,
       atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Affiliates
+      sessions.acquisition_channel: Affiliates
     sorts: [atomic_events.count_sessions desc]
     limit: 10
     total: false
@@ -410,14 +410,14 @@
     type: table
     model: finery_data
     explore: atomic_events
-    dimensions: [sessions_source.referer_source]
+    dimensions: [sessions.referer_source]
     measures: [atomic_events.count_sessions, atomic_events.count_users, atomic_events.count_new_users,
       atomic_events.new_user_percentage, transactions.count_transactions, atomic_events.sum_revenue_ex_coupon_and_vat,
       atomic_events.conversion_rate]
     listen:
      date: atomic_events.event_time_date
     filters:
-      sessions_source.session_source: Social
+      sessions.acquisition_channel: Social
     sorts: [atomic_events.count_sessions desc]
     limit: 10
     total: false
