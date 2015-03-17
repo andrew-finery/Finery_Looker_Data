@@ -132,6 +132,9 @@
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
     hidden: true
+
+  - dimension: email_campaign
+    sql: case when ${sessions.campaign_medium} = 'email' then ${email_campaign_lookup_2.email_subject} when ${structured_event_category} = 'email' then ${email_campaign_lookup_1.email_subject} else null end
   
 ###################################################################################################################################################################
   ########################################################################## MEASURES ###############################################################################
@@ -293,10 +296,7 @@
     label: AVERAGE SESSION DURATION
     type: string
     sql: floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)) || ':' || right(cast('00' as varchar) || cast((((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL) - floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL))) * 60) as integer), 2)
-    
-  
 
-  
 ############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
@@ -354,8 +354,7 @@
       structured_event: open
       structured_event_category: email
       app_id: production
-      
-  
+
   - measure: count_unique_opens
     label: UNIQUE EMAIL OPENS
     type: count_distinct
@@ -387,18 +386,30 @@
   
   - dimension: product_id
     label: PRODUCT ID
-    sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int))
+    sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int), cast(${product_in_checkout.product_id} as int))
   
   - dimension: category
     label: CATEGORY
     sql: coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category}))
     
-  - dimension: style
+  - dimension: image_style
     label: PRODUCT IMAGE STYLE
     sql: coalesce(${product_impressions.style}, ${product_clicked.style}, ${product_quick_views.style})
-    
+  
+  - dimension: product_style
+    label: STYLE
+    sql: coalesce(${spree_products_1.style_name},${spree_products_2.style_name},${spree_products_3.style_name},${spree_products_4.style_name},${spree_products_5.style_name},${spree_products_6.style_name},${spree_products_7.style_name},null)
+
+  - dimension: product_option
+    label: OPTION
+    sql: coalesce(${spree_products_1.option_name},${spree_products_2.option_name},${spree_products_3.option_name},${spree_products_4.option_name},${spree_products_5.option_name},${spree_products_6.option_name},${spree_products_7.option_name},null)
+
+  - dimension: product_department
+    label: DEPARTMENT
+    sql: coalesce(${spree_products_1.department},${spree_products_2.department},${spree_products_3.department},${spree_products_4.department},${spree_products_5.department},${spree_products_6.department},${spree_products_7.department},null)
+
   - dimension: list
-    label: LIST
+    label: DISPLAY LIST
     sql: coalesce(${product_impressions.list}, ${product_clicked.list}, ${product_quick_views.list})
     
   - dimension: position
@@ -679,6 +690,7 @@
 # Counts
 
   - measure: count_sessions_yesterday
+    label: SESSIONS YESTERDAY
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -689,6 +701,7 @@
     hidden: true
       
   - measure: count_sessions_last_week
+    label: SESSIONS LAST WEEK
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -699,19 +712,21 @@
     hidden: true
 
   - measure: conversion_rate_yesterday
+    label: CONVERSION RATE YESTERDAY
     type: number
     decimals: 2
     sql: 100.0 * ${transactions.count_transactions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
     format: "%0.2f%"
     hidden: true
-    
+
   - measure: conversion_rate_last_week
+    label: CONVERSION RATE LAST WEEK
     type: number
     decimals: 2
     sql: 100.0 * ${transactions.count_transactions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"
     hidden: true
-  
+
   - measure: count_new_sessions_yesterday
     type: count_distinct
     sql: ${session_id}
@@ -734,6 +749,7 @@
 
   - measure: new_session_perc_yesterday
     type: number
+    label: NEW SESSION % YESTERDAY
     decimals: 2
     sql: 100.0 * ${count_new_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
     format: "%0.2f%"
@@ -741,6 +757,7 @@
     
   - measure: new_session_perc_last_week
     type: number
+    label: NEW SESSION % LAST WEEK
     decimals: 2
     sql: 100.0 * ${count_new_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"
@@ -748,6 +765,7 @@
   
   - measure: sum_revenue_yesterday
     type: sum
+    label: REVENUE YESTERDAY
     sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
     hidden: true
     filters:
@@ -755,6 +773,7 @@
 
   - measure: sum_revenue_last_week
     type: sum
+    label: REVENUE LAST WEEK
     sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
     hidden: true
     filters:
@@ -762,6 +781,7 @@
       
   - measure: items_purchased_yesterday
     type: sum
+    label: ITEMS PURCHASED YESTERDAY
     sql: ${transactions.number_of_items}
     hidden: true
     filters:
@@ -769,6 +789,7 @@
       
   - measure: items_purchased_last_week
     type: sum
+    label: ITEMS PURCHASED LAST WEEK
     sql: ${transactions.number_of_items}
     hidden: true
     filters:
@@ -776,6 +797,7 @@
 
   - measure: page_views_yesterday
     type: count_distinct
+    label: PAGE VIEWS YESTERDAY
     sql: ${event_id}
     filters:
       event: page_view
@@ -785,6 +807,7 @@
 
   - measure: page_views_last_week
     type: count_distinct
+    label: PAGE VIEWS LAST WEEK
     sql: ${event_id}
     filters:
       event: page_view
@@ -870,6 +893,7 @@
   
   - measure: bounce_rate_yesterday
     type: number
+    label: BOUNCE RATE YESTERDAY
     decimals: 2
     sql: 100.0 * ${count_bounced_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
     format: "%0.1f%"
@@ -877,6 +901,7 @@
   
   - measure: bounce_rate_last_week
     type: number
+    label: BOUNCE RATE LAST WEEK
     decimals: 2
     sql: 100.0 * ${count_bounced_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.1f%"
@@ -884,6 +909,7 @@
   
   - measure: basket_size_yesterday
     type: number
+    label: BASKET SIZE YESTERDAY
     decimals: 2
     sql: ${items_purchased_yesterday}/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
     format: "%0.1f%"
@@ -891,6 +917,7 @@
     
   - measure: basket_size_last_week
     type: number
+    label: BASKET SIZE LAST WEEK
     decimals: 2
     sql: ${items_purchased_last_week}/NULLIF(${transactions.count_transactions_last_week},0)::REAL
     format: "%0.1f%"
@@ -898,6 +925,7 @@
   
   - measure: basket_value_yesterday
     type: number
+    label: BASKET VALUE YESTERDAY
     decimals: 2
     sql: ${sum_revenue_yesterday}/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
     format: "%0.2f%"
@@ -905,201 +933,257 @@
     
   - measure: basket_value_last_week
     type: number
+    label: BASKET VALUE LAST WEEK
     decimals: 2
     sql: ${sum_revenue_last_week}/NULLIF(${transactions.count_transactions_last_week},0)::REAL
     format: "%0.2f%"
+    hidden: true
+  
+  - measure: count_nl_or_signup_or_order_yesterday
+    type: count_distinct
+    sql: case when (${register_success.event_id} is not null or ${newsletter_subscriptions.event_id} is not null or ${transactions.event_id} is not null) then ${session_id} else null end
+    filters:
+     app_id: production
+     event_time_date: 1 day ago for 1 day
+    hidden: true
+  
+  - measure: count_nl_or_signup_or_order_last_week
+    type: count_distinct
+    sql: case when (${register_success.event_id} is not null or ${newsletter_subscriptions.event_id} is not null or ${transactions.event_id} is not null) then ${session_id} else null end
+    filters:
+     app_id: production
+     event_time_date: 8 days ago for 1 day
+    hidden: true
+
+  - measure: engagement_rate_yesterday
+    label: ENGAGEMENT RATE YESTERDAY
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_nl_or_signup_or_order_yesterday})/NULLIF(${count_sessions_yesterday},0)::REAL
+    format: "%0.2f%"
+    hidden: true
+    
+  - measure: engagement_rate_last_week
+    label: ENGAGEMENT RATE LAST WEEK
+    type: number
+    decimals: 2
+    sql: 100.0 * (${count_nl_or_signup_or_order_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
+    format: "%0.2f%"  
     hidden: true
     
 # WoW percentages
   
   - measure: sessions_wow
-    label: SESSIONS WEEK ON WEEK
+    label: SESSIONS WOW
     type: number
     decimals: 2
     sql: 100.0 * (${count_sessions_yesterday} - ${count_sessions_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: orders_wow
-    label: SESSIONS WEEK ON WEEK
+    label: ORDERS WOW
     type: number
     decimals: 2
     sql: 100.0 * (${transactions.count_transactions_yesterday} - ${transactions.count_transactions_last_week})/NULLIF(${transactions.count_transactions_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: conversion_rate_wow
-    label: CONVERSION RATE WEEK ON WEEK
+    label: CONVERSION RATE WOW
     type: number
     decimals: 2
     sql: 100.0 * (${conversion_rate_yesterday} - ${conversion_rate_last_week})/NULLIF(${conversion_rate_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: items_purchased_wow
-    label: CONVERSION RATE WEEK ON WEEK
+    label: ITEMS PURCHASED WOW
     type: number
     decimals: 2
     sql: 100.0 * (${items_purchased_yesterday} - ${items_purchased_last_week})/NULLIF(${items_purchased_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: revenue_wow
-    label: CONVERSION RATE WEEK ON WEEK
+    label: REVENUE WOW
     type: number
     decimals: 2
     sql: 100.0 * (${sum_revenue_yesterday} - ${sum_revenue_last_week})/NULLIF(${sum_revenue_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: new_session_perc_wow
-    label: NEW SESSIONS WEEK ON WEEK
+    label: NEW SESSIONS WOW
     type: number
     decimals: 2
     sql: 100.0 * (${new_session_perc_yesterday} - ${new_session_perc_last_week})/NULLIF(${new_session_perc_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
     
   - measure: page_views_wow
-    label: PAGE VIEWS WEEK ON WEEK
+    label: PAGE VIEWS WOW
     type: number
     decimals: 2
     sql: 100.0 * (${page_views_yesterday} - ${page_views_last_week})/NULLIF(${page_views_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: page_views_per_session_wow
-    label: PAGE VIEWS WEEK ON WEEK
+    label: PAGE VIEWS/SESSION WOW
     type: number
     decimals: 2
     sql: 100.0 * (${page_views_per_session_yesterday} - ${page_views_per_session_last_week})/NULLIF(${page_views_per_session_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
   
   - measure: engagement_time_per_session_wow
-    label: ENGAGEMENT TIME PER SESSION WEEK ON WEEK
+    label: ENGAGEMENT TIME/SESSION WOW
     type: number
     decimals: 2
     sql: 100.0 * (${engagement_time_per_session_number_yesterday} - ${engagement_time_per_session_number_last_week})/NULLIF(${engagement_time_per_session_number_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
   
   - measure: bounce_rate_wow
-    label: BOUNCE RATE WEEK ON WEEK
+    label: BOUNCE RATE WOW
     type: number
     decimals: 2
     sql: 100.0 * (${bounce_rate_yesterday} - ${bounce_rate_last_week})/NULLIF(${bounce_rate_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: basket_size_wow
-    label: AVG BASKET SIZE WEEK ON WEEK
+    label: BASKET SIZE WOW
     type: number
     decimals: 2
     sql: 100.0 * (${basket_size_yesterday} - ${basket_size_last_week})/NULLIF(${basket_size_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
 
   - measure: basket_value_wow
-    label: AVG BASKET VALUE WEEK ON WEEK
+    label: BASKET VALUE WOW
     type: number
     decimals: 2
     sql: 100.0 * (${basket_value_yesterday} - ${basket_value_last_week})/NULLIF(${basket_value_last_week},0)::REAL
     format: "%0.2f%"
     html: |
-        {% if value < 0 - Red' %}
+        {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 - Green' %}
-        <font color="#3CB371> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
-        <font color="#000000> {{ rendered_value }} </font>
+        <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
+
+  - measure: engagement_rate_wow
+    label: ENGAGEMENT RATE WOW
+    type: number
+    decimals: 2
+    sql: 100.0 * (${engagement_rate_yesterday} - ${engagement_rate_last_week})/NULLIF(${engagement_rate_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
+
+############################################# Dashboard Titles ########################################################
+  - measure: dashboard_title_1
+    type: count
+    html: |
+      <p> Select a channel to see a more detailed breakdown below</p>

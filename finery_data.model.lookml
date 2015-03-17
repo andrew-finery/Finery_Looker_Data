@@ -63,8 +63,6 @@
     sql_on: register_success.root_id = atomic_events.event_id
   - join: newsletter_subscriptions
     sql_on: newsletter_subscriptions.root_id = atomic_events.event_id
-  - join: email_campaign_lookup
-    sql_on: atomic_events.se_label = email_campaign_lookup.email_id
   - join: spree_exchange_rates
     sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
   - join: sessions
@@ -75,14 +73,41 @@
     sql_on: product_clicked.root_id = atomic_events.event_id
   - join: product_quick_views
     sql_on: product_quick_views.root_id = atomic_events.event_id   
-  - join: spree_products
-    sql_on: page_contexts.prod_id = spree_products.product_id
   - join: product_in_cart
     sql_on: product_in_cart.root_id = atomic_events.event_id
   - join: product_in_transaction
     sql_on: product_in_transaction.root_id = atomic_events.event_id
   - join: product_in_checkout
-    sql_on: product_in_checkout.root_id = atomic_events.event_id    
+    sql_on: product_in_checkout.root_id = atomic_events.event_id
+    
+  - join: email_campaign_lookup_1
+    from: email_campaign_lookup
+    sql_on: atomic_events.se_label = email_campaign_lookup_1.email_id
+  - join: email_campaign_lookup_2
+    from: email_campaign_lookup
+    sql_on: sessions.mkt_campaign_ga = email_campaign_lookup_2.email_id
+    
+  - join: spree_products_1
+    from: spree_products
+    sql_on: page_contexts.prod_id = spree_products_1.product_id
+  - join: spree_products_2
+    from: spree_products
+    sql_on: product_impressions.id = spree_products_2.product_id
+  - join: spree_products_3
+    from: spree_products
+    sql_on: product_clicked.id = spree_products_3.product_id
+  - join: spree_products_4
+    from: spree_products
+    sql_on: product_quick_views.id = spree_products_4.product_id
+  - join: spree_products_5
+    from: spree_products
+    sql_on: product_in_cart.id = spree_products_5.product_id
+  - join: spree_products_6
+    from: spree_products
+    sql_on: product_in_transaction.id = spree_products_6.product_id
+  - join: spree_products_7
+    from: spree_products
+    sql_on: product_in_checkout.id = spree_products_7.product_id
     
 - explore: page_views
 
@@ -155,15 +180,6 @@
   - join: online_products
     sql_on: |
       daily_sales.sku = online_products.ean
-
-- explore: weekly_sales
-  joins:
-  - join: product_lookup
-    sql_on: |
-      weekly_sales.sku = product_lookup.ean
-  - join: online_products
-    sql_on: |
-      weekly_sales.sku = online_products.ean
 
 - explore: returns
   joins:

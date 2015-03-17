@@ -65,26 +65,32 @@
       
   - dimension: product_id
     sql: ${TABLE}.product_id
-
+    hidden: true
+    
   - dimension: colour
     label: COLOUR
     sql: ${TABLE}.colour
-
+    hidden: true
+    
   - dimension: style_name
     label: STYLE NAME
     sql: ${TABLE}.style_name
-
+    hidden: true
+    
   - dimension: option_name
     label: OPTION NAME
     sql: ${style_name} || ' ' || ${colour}
-      
+    hidden: true
+    
   - dimension: current_price
     label: CURRENT PRICE
     sql: ${TABLE}.current_price
-
+    hidden: true
+    
   - dimension: max_price
     label: MAX PRICE
     sql: ${TABLE}.max_price
+    hidden: true
     
   - dimension: parent_sku
     sql: ${TABLE}.parent_sku
@@ -105,15 +111,18 @@
       Accessories: ${TABLE}.department = 'Accessories'
       Jewellery: ${TABLE}.department = 'Jewellery'
       else: 'Other'
+    hidden: true
     
   - dimension: sub_season
     label: SUB SEASON
     sql: ${TABLE}.sub_season_code
+    hidden: true
     
   - dimension: product_area
     label: PRODUCT AREA
     sql: ${TABLE}.product_area
-
+    hidden: true
+    
   - dimension: selling_price_tiered
     label: CURRENT PRICE TIER
     sql_case:
@@ -126,7 +135,8 @@
       £150 - £200: ${current_price} < 200
       £200 - £300: ${current_price} < 300
       else: '£300 and over'
-  
+    hidden: true
+    
   - dimension: discount_level_tier
     label: CURRENT DISCOUNT LEVEL TIER
     sql_case:
@@ -136,4 +146,4 @@
       27.5% - 37.5%: ${current_price}/${max_price} > 0.625
       37.5% and over: (${current_price}/${max_price}) > 0 and (${current_price}/${max_price}) <= 0.625
       else: '0% - 7.5%'
-  
+    hidden: true  

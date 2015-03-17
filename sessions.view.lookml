@@ -243,6 +243,9 @@
       Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
       else: Unpaid
 
+  - dimension: referer_medium
+    sql: ${TABLE}.refr_medium_ga
+    
   - dimension: referer_source
     sql: ${TABLE}.refr_source_ga
     
@@ -268,7 +271,6 @@
   
   - dimension: campaign_name
     sql: ${TABLE}.mkt_campaign_ga
-
 
   # Device fields #
     

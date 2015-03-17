@@ -106,12 +106,14 @@
 
   - measure: count_transactions_yesterday
     type: count_distinct
+    label: ORDERS YESTERDAY
     sql: ${order_id}
     filters:
       trans_time_date: 1 day ago for 1 day
     hidden: true
 
   - measure: count_transactions_last_week
+    label: ORDERS LAST WEEK
     type: count_distinct
     sql: ${order_id}
     filters:

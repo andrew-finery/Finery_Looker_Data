@@ -6,11 +6,6 @@
           FROM atomic.com_mailchimp_campaign_sending_status_1
           GROUP BY 1
 
-    sql_trigger_value: SELECT MAX(root_tstamp) FROM atomic.com_mailchimp_campaign_sending_status_1
-    distkey: email_id
-    sortkeys: [email_id]
-
-
   fields:
 
   - dimension: email_subject
