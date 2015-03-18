@@ -387,7 +387,8 @@
   - dimension: product_id
     label: PRODUCT ID
     sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int), cast(${product_in_checkout.product_id} as int))
-  
+    hidden: true
+    
   - dimension: category
     label: CATEGORY
     sql: coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category}))
@@ -395,25 +396,13 @@
   - dimension: image_style
     label: PRODUCT IMAGE STYLE
     sql: coalesce(${product_impressions.style}, ${product_clicked.style}, ${product_quick_views.style})
-  
-  #- dimension: product_style
-  #  label: STYLE
-  #  sql: coalesce(${spree_products_1.style_name},${spree_products_2.style_name},${spree_products_3.style_name},${spree_products_4.style_name},${spree_products_5.style_name},${spree_products_6.style_name},${spree_products_7.style_name},null)
-
-  #- dimension: product_option
-  #  label: OPTION
-  #  sql: coalesce(${spree_products_1.option_name},${spree_products_2.option_name},${spree_products_3.option_name},${spree_products_4.option_name},${spree_products_5.option_name},${spree_products_6.option_name},${spree_products_7.option_name},null)
-
-  #- dimension: product_department
-  #  label: DEPARTMENT
-  #  sql: coalesce(${spree_products_1.department},${spree_products_2.department},${spree_products_3.department},${spree_products_4.department},${spree_products_5.department},${spree_products_6.department},${spree_products_7.department},null)
 
   - dimension: list
     label: DISPLAY LIST
     sql: coalesce(${product_impressions.list}, ${product_clicked.list}, ${product_quick_views.list})
     
   - dimension: position
-    label: POSITION
+    label: LIST POSITION
     sql: coalesce(${product_impressions.position}, ${product_clicked.position}, ${product_quick_views.position})
     
   - measure: count_product_impressions
@@ -444,7 +433,7 @@
     filters:
       app_id: production
       event: page_view
-      page_contexts.product_id: -NULL
+      page_contexts.page_type: products/show
 
   - measure: count_products_in_cart
     label: COUNT PRODUCTS IN CART

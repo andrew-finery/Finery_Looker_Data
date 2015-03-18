@@ -90,28 +90,6 @@
   - join: spree_products
     from: spree_products
     sql_on: ${atomic_events.product_id} = ${spree_products.product_id}
-    
-#  - join: spree_products_1
-#    from: spree_products
-#    sql_on: page_contexts.prod_id = spree_products_1.product_id
-#  - join: spree_products_2
-#    from: spree_products
-#    sql_on: product_impressions.id = spree_products_2.product_id
-#  - join: spree_products_3
-#    from: spree_products
-#    sql_on: product_clicked.id = spree_products_3.product_id
-#  - join: spree_products_4
-#    from: spree_products
-#    sql_on: product_quick_views.id = spree_products_4.product_id
-#  - join: spree_products_5
-#    from: spree_products
-#    sql_on: product_in_cart.id = spree_products_5.product_id
-#  - join: spree_products_6
-#    from: spree_products
-#    sql_on: product_in_transaction.id = spree_products_6.product_id
-#  - join: spree_products_7
-#    from: spree_products
-#    sql_on: product_in_checkout.id = spree_products_7.product_id
 
     
 - explore: page_views
