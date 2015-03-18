@@ -70,17 +70,14 @@
   - dimension: colour
     label: COLOUR
     sql: ${TABLE}.colour
-    hidden: true
     
   - dimension: style_name
     label: STYLE NAME
     sql: ${TABLE}.style_name
-    hidden: true
     
   - dimension: option_name
     label: OPTION NAME
     sql: ${style_name} || ' ' || ${colour}
-    hidden: true
     
   - dimension: current_price
     label: CURRENT PRICE
@@ -111,7 +108,6 @@
       Accessories: ${TABLE}.department = 'Accessories'
       Jewellery: ${TABLE}.department = 'Jewellery'
       else: 'Other'
-    hidden: true
     
   - dimension: sub_season
     label: SUB SEASON

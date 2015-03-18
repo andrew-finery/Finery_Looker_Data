@@ -396,17 +396,17 @@
     label: PRODUCT IMAGE STYLE
     sql: coalesce(${product_impressions.style}, ${product_clicked.style}, ${product_quick_views.style})
   
-  - dimension: product_style
-    label: STYLE
-    sql: coalesce(${spree_products_1.style_name},${spree_products_2.style_name},${spree_products_3.style_name},${spree_products_4.style_name},${spree_products_5.style_name},${spree_products_6.style_name},${spree_products_7.style_name},null)
+  #- dimension: product_style
+  #  label: STYLE
+  #  sql: coalesce(${spree_products_1.style_name},${spree_products_2.style_name},${spree_products_3.style_name},${spree_products_4.style_name},${spree_products_5.style_name},${spree_products_6.style_name},${spree_products_7.style_name},null)
 
-  - dimension: product_option
-    label: OPTION
-    sql: coalesce(${spree_products_1.option_name},${spree_products_2.option_name},${spree_products_3.option_name},${spree_products_4.option_name},${spree_products_5.option_name},${spree_products_6.option_name},${spree_products_7.option_name},null)
+  #- dimension: product_option
+  #  label: OPTION
+  #  sql: coalesce(${spree_products_1.option_name},${spree_products_2.option_name},${spree_products_3.option_name},${spree_products_4.option_name},${spree_products_5.option_name},${spree_products_6.option_name},${spree_products_7.option_name},null)
 
-  - dimension: product_department
-    label: DEPARTMENT
-    sql: coalesce(${spree_products_1.department},${spree_products_2.department},${spree_products_3.department},${spree_products_4.department},${spree_products_5.department},${spree_products_6.department},${spree_products_7.department},null)
+  #- dimension: product_department
+  #  label: DEPARTMENT
+  #  sql: coalesce(${spree_products_1.department},${spree_products_2.department},${spree_products_3.department},${spree_products_4.department},${spree_products_5.department},${spree_products_6.department},${spree_products_7.department},null)
 
   - dimension: list
     label: DISPLAY LIST
