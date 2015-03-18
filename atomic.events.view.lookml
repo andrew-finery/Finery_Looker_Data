@@ -415,7 +415,7 @@
   - measure: count_product_clicks
     label: COUNT PRODUCT CLICKS
     type: count_distinct
-    sql: ${product_clicked.event_id}
+    sql: coalesce(${product_clicked.event_id},'0')
     filters:
       app_id: production
   
@@ -445,7 +445,7 @@
   - measure: count_products_in_transaction
     label: COUNT PRODUCTS PURCHASED
     type: sum
-    sql: ${product_in_transaction.quantity}
+    sql: coalesce(${product_in_transaction.quantity}, '0')
     filters:
       app_id: production
 
@@ -453,14 +453,14 @@
     label: PRODUCT CTR
     type: number
     decimals: 2
-    sql: 100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL
+    sql: coalesce(100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL,'0')
     format: "%0.2f%"
   
   - measure: product_cr
     label: PRODUCT CONVERSION RATE
     type: number
     decimals: 2
-    sql:  100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL
+    sql:  coalesce(100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL, '0')
     format: "%0.2f%"
 
 
