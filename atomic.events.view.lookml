@@ -450,7 +450,7 @@
       app_id: production
 
   - measure: product_ctr
-    label: PRODUCT CTR
+    label: PRODUCT CLICK-THROUGH RATE
     type: number
     decimals: 2
     sql: coalesce(100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL,'0')
