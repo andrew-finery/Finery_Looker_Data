@@ -113,7 +113,7 @@
     hidden: true
     
   - dimension: blended_user_id
-    sql: ${identity_stitching.blended_user_id}
+    sql: ${sessions.blended_user_id}
     hidden: true
     
   - dimension: domain_sessionidx

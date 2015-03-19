@@ -3,6 +3,7 @@
     sql: |
          SELECT events.domain_userid,
                 events.domain_sessionidx,
+                id_stitch.blended_user_id,
                 events.collector_tstamp,
                 events.event_id,
                 trans.customer_id,
@@ -13,13 +14,15 @@
                 trans.tax,
                 trans.net_value,
                 trans.qty_total,
+                rank() over(partition by id_stitch.blended_user_id order by events.collector_tstamp asc) as customer_order_number,
                 COALESCE(SUM(adj.amount),'0') AS total_adjustment,
                 MAX(adj.label) AS adjustment_label
           FROM atomic.com_finerylondon_transaction_1 trans
             LEFT JOIN atomic.events events ON trans.root_id = events.event_id
             LEFT JOIN atomic.com_finerylondon_order_adjustments_1 adj ON adj.root_id = trans.root_id
+            LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} id_stitch on id_stitch.domain_userid = events.domain_userid
           WHERE events.app_id = 'production'
-          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12
+          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
 
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
     distkey: event_id
@@ -34,26 +37,32 @@
 
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
-  
+    hidden: true
+    
   - dimension: blended_user_id
     sql: ${TABLE}.blended_user_id
+    hidden: true
     
   - dimension: domain_sessionidx
     type: int
     sql: ${TABLE}.domain_sessionidx
-  
+    hidden: true
+    
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
-  
+    hidden: true
+    
   - dimension: event_id
     primary_key: true
     sql: ${TABLE}.event_id
-  
+    hidden: true
+    
   - dimension_group: trans_time
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
-  
+    hidden: true
+    
   - dimension: customer_id
     sql: ${TABLE}.customer_id
   
@@ -87,6 +96,7 @@
     ###########################################################################################################################################################
     
   - measure: count_transactions
+    label: NUMBER OF ORDERS
     type: count_distinct
     sql: ${order_id}
   
@@ -118,4 +128,6 @@
     sql: ${order_id}
     filters:
       trans_time_date: 8 days ago for 1 day
+    hidden: true
+    
   
