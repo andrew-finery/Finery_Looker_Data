@@ -184,8 +184,6 @@
 
 - explore: spree_refunds
 
-- explore: page_view_events
-
 - explore: goods_in
   joins:
   - join: product_lookup
