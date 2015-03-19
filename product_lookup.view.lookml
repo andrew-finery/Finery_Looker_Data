@@ -1,6 +1,11 @@
 - view: product_lookup
-  sql_table_name: finery.brightpearl_export
-
+  derived_table:
+    sql: |
+        select * from finery.brightpearl_export bp
+        left join (select parent_sku as online_parent_sku, max(max_price) as max_price, max(current_price) as current_price from ${spree_products.SQL_TABLE_NAME} group by 1) prices
+        on bp.parent_sku = prices.online_parent_sku
+     
+     
   fields:
 
   - dimension: allocated
@@ -168,11 +173,11 @@
 
   - dimension: max_selling_price
     label: ORIGINAL PRICE
-    sql: coalesce(${online_products.max_price}, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    sql: coalesce(${TABLE}.max_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
  
   - dimension: current_price
     label: CURRENT PRICE
-    sql: coalesce(${online_products.current_price_gbp}, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    sql: coalesce(${TABLE}.current_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
     
   - dimension: selling_price_tiered
     label: CURRENT PRICE TIER
