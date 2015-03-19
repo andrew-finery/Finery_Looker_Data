@@ -62,8 +62,7 @@
         t.dvce_type,
         t.dvce_ismobile,
         t.dvce_screenwidth,
-        t.dvce_screenheight,
-        pg.site_progress
+        t.dvce_screenheight
       FROM ${sessions_basic.SQL_TABLE_NAME} AS s
       LEFT JOIN ${sessions_geo.SQL_TABLE_NAME} AS g
         ON s.domain_userid = g.domain_userid AND
@@ -80,9 +79,6 @@
       LEFT JOIN ${sessions_technology.SQL_TABLE_NAME} AS t
         ON s.domain_userid = t.domain_userid AND
         s.domain_sessionidx = t.domain_sessionidx
-      LEFT JOIN (select domain_userid as domain_userid, domain_sessionidx as domain_sessionidx, max(site_progress) as site_progress from ${page_views.SQL_TABLE_NAME} group by 1,2) AS pg
-        ON s.domain_userid = pg.domain_userid AND
-        s.domain_sessionidx = pg.domain_sessionidx
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
     
