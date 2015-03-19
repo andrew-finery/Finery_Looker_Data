@@ -671,19 +671,17 @@
 ########################################### Graphs
 
   - name: cr_tw_vs_lw
-    title: Conversion Rate This Week vs Last Week
+    title: Conversion Rate This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [atomic_events.conversion_rate]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
-    limit: 500
-    total: false
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     font_size: small
     show_null_points: false
     show_value_labels: false
@@ -696,7 +694,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none
@@ -742,17 +740,17 @@
     left: 18
 
   - name: orders_tw_vs_lw
-    title: Orders This Week vs Last Week
+    title: Orders This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [transactions.count_transactions]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     limit: 500
     total: false
     font_size: small
@@ -767,7 +765,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none
@@ -813,17 +811,17 @@
     left: 18
 
   - name: sessions_tw_vs_lw
-    title: Visits This Week vs Last Week
+    title: Visits This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [atomic_events.count_sessions]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     limit: 500
     total: false
     font_size: small
@@ -838,7 +836,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none
@@ -884,17 +882,17 @@
     left: 18
 
   - name: new_sessions_tw_vs_lw
-    title: New Session % This Week vs Last Week
+    title: New Session % This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [atomic_events.new_session_percentage]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     limit: 500
     total: false
     font_size: small
@@ -909,7 +907,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none
@@ -955,17 +953,17 @@
     left: 18
 
   - name: nl_sub_tw_vs_lw
-    title: Newsletter Subscriptions This Week vs Last Week
+    title: Newsletter Subscriptions This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [email_subscriptions.count_newsletter_subscribers]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     limit: 500
     total: false
     font_size: small
@@ -980,7 +978,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none
@@ -1027,17 +1025,17 @@
 
 
   - name: ref_tw_vs_lw
-    title: Referrals This Week vs Last Week
+    title: Referrals This Week vs Last Week vs Week Before Last
     type: looker_line
     model: finery_data
     explore: atomic_events
-    dimensions: [atomic_events.event_time_day_of_week]
-    pivots: [atomic_events.tw_lw_flag]
+    dimensions: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag, atomic_events.event_time_week]
+    pivots: [atomic_events.tw_lw_flag, atomic_events.event_time_week]
     measures: [email_subscriptions.count_referrals]
     filters:
-      atomic_events.event_time_date: 1 week ago for 2 weeks
+      atomic_events.event_time_date: 2 weeks ago for 3 weeks
       atomic_events.event_time_time: before 0 days ago
-    sorts: [atomic_events.event_time_day_of_week, atomic_events.tw_lw_flag desc]
+    sorts: [atomic_events.event_time_day_of_week, atomic_events.event_time_week desc]
     limit: 500
     total: false
     font_size: small
@@ -1052,7 +1050,7 @@
     x_axis_label: Hour of Day
     discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red]
+    colors: [blue, red, lightgreen]
     stacking: ''
     x_axis_scale: auto
     point_style: none

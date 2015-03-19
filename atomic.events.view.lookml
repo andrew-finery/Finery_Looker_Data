@@ -103,7 +103,7 @@
     hidden: true
     
   - dimension: tw_lw_flag
-    sql: case when ${event_time_date} between (current_date - extract(dow from current_date) + 1) and current_date then 'This Week' when ${event_time_date} > (current_date - extract(dow from current_date) - 7) then 'Last Week' else null end
+    sql: case when ${event_time_date} between (current_date - extract(dow from current_date) + 1) and current_date then 'This Week' when ${event_time_date} > (current_date - extract(dow from current_date) - 7) then 'Last Week' when ${event_time_date} > (current_date - extract(dow from current_date) - 14) then 'Week Before Last' else null end
     hidden: true
     
   ########### User and Session Dimensions
