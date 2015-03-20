@@ -390,8 +390,8 @@
     hidden: true
     
   - dimension: category
-    label: CATEGORY
-    sql: coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category}))
+    label: CATEGORY PAGE
+    sql: coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
     
   - dimension: image_style
     label: PRODUCT IMAGE STYLE
@@ -462,7 +462,29 @@
     decimals: 2
     sql:  coalesce(100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL, '0')
     format: "%0.2f%"
-
+  
+  - measure: category_page_views
+    label: CATEGORY UNIQUE PAGE VIEWS
+    type: count_distinct
+    sql: ${session_id} || ${product_impressions.category}
+    filters:
+      app_id: production
+      product_impressions.category: -NULL
+      
+  - measure: category_clicks
+    label: CATEGORY UNIQUE PAGE CLICKS
+    type: count_distinct
+    sql: ${session_id} || ${product_clicked.category}
+    filters:
+      app_id: production
+      product_clicked.category: -NULL
+      
+  - measure: category_click_through_rate
+    label: CATEGORY CLICK-THROUGH RATE
+    type: number
+    decimals: 2
+    sql:  coalesce(${category_clicks}/NULLIF(${category_page_views},0)::REAL, '0')
+    value_format: '#.##%'
 
 
 ############################################################## Payment Funnel Stuff #########################################################################################################################################################################
