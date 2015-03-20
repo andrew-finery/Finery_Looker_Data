@@ -187,7 +187,6 @@
        type: time
        timeframes: [date, week, month]
        sql: ${TABLE}.available_on
-       hidden: true
        
      - dimension: weeks_online
        label: WEEKS ONLINE
