@@ -1,5 +1,5 @@
 - dashboard: hermes_performance_dashboard
-  title: Hermes Performance Dashboard
+  title: Delivery Dashboard- Hermes Performance Overview
   layout: static
   tile_size: 100
 

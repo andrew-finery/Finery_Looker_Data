@@ -119,6 +119,7 @@
     hidden: true
   
   - dimension_group: start
+    label: SESSION START
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.session_start_ts
@@ -126,6 +127,9 @@
   - dimension: end
     sql: ${TABLE}.session_end_ts
     hidden: true
+    
+  - dimension: session_duration_seconds
+    sql: extract(epoch from ${end}) - xtract(epoch from ${start})
 
   # Events per visit and bounces (infered) #
 
@@ -195,28 +199,36 @@
   # Landing page
     
   - dimension: landing_page_host
-    sql: ${TABLE}.landing_page_urlhost
+    sql: ${TABLE}.landing_page_host
+    hidden: true
     
   - dimension: landing_page_path
+    label: LANDING PAGE PATH
     sql: ${TABLE}.landing_page_path
     
+    
   - dimension: landing_page
+    label: FULL LANDING PAGE
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path
     
   # Exit page
   
   - dimension: exit_page_host
     sql: ${TABLE}.exit_page_host
+    hidden: true
     
   - dimension: exit_page_path
+    label: EXIT PAGE PATH
     sql: ${TABLE}.exit_page_path
     
   - dimension: exit_page
+    label: FULL EXIT PAGE
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
 
 ################################ MARKETING #################################################################################################
 
   - dimension: acquisition_channel
+    label: ACQUISITION CHANNEL
     sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
       Paid Search: ${TABLE}.mkt_source_ga in ('GoogleSearch', 'GoogleContent')
@@ -229,116 +241,149 @@
       else: Direct
   
   - dimension: traffic_source
+    label: TRAFFIC SOURCE
     sql_case:
       CRM: ${acquisition_channel} = 'Email'
       Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
       else: Brand
 
   - dimension: paid_unpaid_traffic_flag
+    label: PAID MARKETING FLAG
     sql_case:
       Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
       else: Unpaid
 
   - dimension: referer_medium
+    label: REFERRER MEDIUM
     sql: ${TABLE}.refr_medium_ga
     
   - dimension: referer_source
+    label: REFERRER SOURCE
     sql: ${TABLE}.refr_source_ga
     
   - dimension: referer_term
+    label: REFERRER TERM
     sql: ${TABLE}.refr_term_ga
     
   - dimension: referer_url_host
+    label: REFERRER HOST
     sql: ${TABLE}.refr_urlhost_ga
   
   - dimension: referer_url_path
+    label: REFERRER PATH
     sql: ${TABLE}.refr_urlpath_ga
     
   # MKT fields (paid acquisition channels)
     
   - dimension: campaign_medium
+    label: CAMPAIGN MEDIUM
     sql: ${TABLE}.mkt_medium_ga
   
   - dimension: campaign_source
+    label: CAMPAIGN SOURCE
     sql: ${TABLE}.mkt_source_ga
   
   - dimension: campaign_term
+    label: CAMPAIGN TERM
     sql: ${TABLE}.mkt_term_ga
   
   - dimension: campaign_name
+    label: CAMPAIGN NAME
     sql: ${TABLE}.mkt_campaign_ga
 
   # Device fields #
     
   - dimension: device_type
+    label: DEVICE TYPE
     sql: ${TABLE}.dvce_type
     
   - dimension: device_is_mobile
+    label: MOBILE DEVICE FLAG
     sql: ${TABLE}.dvce_ismobile
     
   - dimension: device_screen_width
     sql: ${TABLE}.dvce_screenwidth
+    hidden: true
     
   - dimension: device_screen_height
     sql: ${TABLE}.dvce_screenheight
+    hidden: true
     
   # OS fields #
     
   - dimension: operating_system
+    label: OPERATING SYSTEM
     sql: ${TABLE}.os_name
     
   - dimension: operating_system_family
+    label: OPERATING SYSTEM FAMILY
     sql: ${TABLE}.os_family
     
   - dimension: operating_system_manufacturer
+    label: OPERATING SYSTEM MANUFACTURER
     sql: ${TABLE}.os_manufacturer
     
   # Browser fields #
   
   - dimension: browser
+    label: BROSWER
     sql: ${TABLE}.br_name
     
   - dimension: browser_version
+    label: BROSWER VERSION
     sql: ${TABLE}.br_version
     
   - dimension: browser_type
+    label: BROWSER TYPE
     sql: ${TABLE}.br_type
     
   - dimension: browser_family
+    label: BROSWER FAMILY
     sql: ${TABLE}.br_family
     
   - dimension: browser_renderengine
     sql: ${TABLE}.br_renderengine
+    hidden: true
     
   - dimension: browser_language
     sql: ${TABLE}.br_lang
+    hidden: true
     
   - dimension: browser_has_director_plugin
     sql: ${TABLE}.br_features_director
+    hidden: true
     
   - dimension: browser_has_flash_plugin
     sql: ${TABLE}.br_features_flash
+    hidden: true
     
   - dimension: browser_has_gears_plugin
     sql: ${TABLE}.br_features_gears
+    hidden: true
     
   - dimension: browser_has_java_plugin
     sql: ${TABLE}.br_features_java
+    hidden: true
     
   - dimension: browser_has_pdf_plugin
     sql: ${TABLE}.br_features_pdf
+    hidden: true
     
   - dimension: browser_has_quicktime_plugin
     sql: ${TABLE}.br_features_quicktime
+    hidden: true
     
   - dimension: browser_has_realplayer_plugin
     sql: ${TABLE}.br_features_realplayer
+    hidden: true
     
   - dimension: browser_has_silverlight_plugin
     sql: ${TABLE}.br_features_silverlight
+    hidden: true
     
   - dimension: browser_has_windowsmedia_plugin
     sql: ${TABLE}.br_features_windowsmedia
+    hidden: true
     
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
@@ -346,66 +391,78 @@
   # MEASURES #
 
   - measure: count
+    label: VISITS COUNT
     type: count_distinct
     sql: ${session_id}
     
   - measure: count_running_total
+    label: VISITS RUNNING TOTAL
     type: running_total
     sql: ${count}
     
   - measure: count_percent_of_total
+    label: VISITS PERCENT OF TOTAL
     type: percent_of_total
     sql: ${count}
-    
-  - measure: visitors_count
-    type: count_distinct
-    sql: ${user_id}
-    hidden: true
-    
+
   - measure: bounced_sessions_count
+    label: BOUNCED SESSIONS COUNT
     type: count_distinct
     sql: ${session_id}
     filters:
       bounce: yes
 
   - measure: bounce_rate
+    label: BOUNCE RATE
     type: number
     decimals: 2
     sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
     
   - measure: sessions_from_new_visitors_count
+    label: NEW VISITS COUNT
     type: count_distinct
     sql: ${session_id}
     filters:
       session_index: 1
   
   - measure: sessions_from_returning_visitor_count
+    label: RETURNING VISITS COUNT
     type: number
     sql: ${count} - ${sessions_from_new_visitors_count}
   
   - measure: new_visitor_percentage
+    label: NEW VISITS PERCENTAGE
     type: number
     decimals: 2
     sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
 
   - measure: returning_visitor_percentage
+    label: RETURNING VISITS PERCENTAGE
     type: number
     decimals: 2
     sql: 100.0 * ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
+
+  - measure: visitors_count
+    label: VISITORS COUNT
+    type: count_distinct
+    sql: ${blended_user_id}
     
   - measure: events_count
+    label: EVENTS COUNT
     type: sum
     sql: ${TABLE}.number_of_events
     
   - measure: events_per_session
+    label: EVENTS PER SESSION
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${count},0)::REAL
     
   - measure: events_per_visitor
+    label: EVENTS PER VISITOR
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL

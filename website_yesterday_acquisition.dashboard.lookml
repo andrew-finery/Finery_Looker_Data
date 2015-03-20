@@ -1,5 +1,5 @@
 - dashboard: website_yesterday_acquisition
-  title: Website Yesterday Acquisition
+  title: Web Dashbaord - Yesterday - Acquisition
   layout: static
   tile_size: 50
   show_applied_filters: true

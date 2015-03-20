@@ -1,5 +1,5 @@
 - dashboard: customer_dashboard
-  title: Customer Dashboard
+  title: Customer Dashboard - Overview
   layout: static
   tile_size: 100
 
