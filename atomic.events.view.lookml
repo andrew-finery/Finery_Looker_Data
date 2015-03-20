@@ -662,12 +662,12 @@
         case
         when (
         ${register_success.event_id} is not null
-        --or ${newsletter_subscriptions.event_id} is not null
-        --or ${transactions.event_id} is not null
-        --or ${product_in_checkout.event_id} is not null
-        --or ${product_in_cart.event_id} is not null
-        --or ${sessions.distinct_pages_viewed} > 6
-        --or ${sessions.session_duration_seconds} > 239
+        or ${newsletter_subscriptions.event_id} is not null
+        or ${transactions.event_id} is not null
+        or ${product_in_checkout.event_id} is not null
+        or ${product_in_cart.event_id} is not null
+        or ${sessions.distinct_pages_viewed} > 6
+        or ${sessions.session_duration_seconds} > 239
         ) then ${session_id} else null end
     filters:
      app_id: production
