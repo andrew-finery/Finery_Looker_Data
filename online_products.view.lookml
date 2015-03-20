@@ -139,6 +139,7 @@
 
      - dimension: ean
        sql: ${TABLE}.ean
+       hidden: true
 
      - dimension: style
        label: STYLE
@@ -146,20 +147,25 @@
        
      - dimension: product_group_id
        sql: ${TABLE}.product_group_id
-      
+       hidden: true
+       
      - dimension: option
+       label: OPTION
        sql: ${TABLE}.option
-
+      
      - dimension: product_id
        sql: ${TABLE}.product_id
+       hidden: true
        
      - dimension: colour
        label: COLOUR
        sql: ${TABLE}.colour
-    
+       hidden: true
+       
      - dimension: online_department
        sql: ${TABLE}.department
-    
+       hidden: true
+       
      - dimension: size
        label: SIZE
        sql: ${TABLE}.size
@@ -169,41 +175,51 @@
        decimals: 2
        sql: ${TABLE}.current_price
        format: "£%0.2f"
-
+       hidden: true
+       
      - dimension: max_price
        type: number
        decimals: 2
        sql: ${TABLE}.max_price
-    
+       hidden: true
+       
      - dimension_group: available_on
        type: time
        timeframes: [date, week, month]
        sql: ${TABLE}.available_on
-
+       hidden: true
+       
      - dimension: weeks_online
+       label: WEEKS ONLINE
        sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on) as integer) / 7 end
 
      - dimension: days_online
+       label: DAYS ONLINE
        sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on) as integer) end
     
      - dimension: image_location
        sql: ${TABLE}.option_image
+       hidden: true
        
      - dimension: online_flag
+       label: ONLINE FLAG
        type: yesno
        sql: ${TABLE}.online_flag = 'Yes'
 
      - dimension: coming_soon_flag
+       label: COMING SOON FLAG
        type: yesno
        sql: ${TABLE}.is_coming_soon = 'true'
      
      - dimension: option_image
+       label: OPTION IMAGE
        type: string
        sql: ${TABLE}.option_image
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
      
      - dimension: style_image
+       label: STYLE IMAGE
        type: string
        sql: ${TABLE}.style_image
        html: |
@@ -218,24 +234,29 @@
        sql: max(${image_location})
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
-          
+       hidden: true
+       
      - measure: image_path
        type: string
        sql: max(${image_location})
-
+       hidden: true
+       
      - measure: skus_online
+       label: SKUS ONLINE
        type: count_distinct
        sql: ${TABLE}.ean
        filters:
         online_flag: Yes 
-        
+      
      - measure: options_online
+       label: OPTIONS ONLINE
        type: count_distinct
        sql: ${TABLE}.product_id
        filters:
         online_flag: Yes 
        
      - measure: styles_online
+       label: STYLES ONLINE
        type: count_distinct
        sql: ${TABLE}.product_group_id
        filters:
