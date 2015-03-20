@@ -12,7 +12,7 @@
     explore: atomic_events
     measures: [atomic_events.latest_update]
     font_size: small
-    height: 2
+    height: 3
     width: 6
     top: 0
     left: 0
@@ -29,9 +29,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 0
 
   - name: conversion_lw
@@ -44,9 +44,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 3
 
   - name: conversion_rate_last_week_tot
@@ -58,9 +58,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 6
 
   - name: conv_rate_today_vs_lw
@@ -96,7 +96,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 4
+    top: 6
     left: 0
 
 # ORDERS
@@ -111,9 +111,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 0
 
   - name: orders_lw
@@ -126,9 +126,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 3
 
   - name: orders_last_week_tot
@@ -140,9 +140,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 6
 
   - name: orders_today_vs_lw
@@ -178,7 +178,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 12
+    top: 15
     left: 0
 
 # REVENUE
@@ -193,9 +193,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 0
 
   - name: rev_lw
@@ -208,9 +208,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 3
 
   - name: rev_last_week_tot
@@ -222,9 +222,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 6
 
   - name: rev_today_vs_lw
@@ -260,7 +260,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 20
+    top: 24
     left: 0
 
 # BOUNCE RATE
@@ -275,9 +275,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 0
 
   - name: bounce_rate_lw
@@ -290,9 +290,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 3
 
   - name: bounce_rate_last_week_tot
@@ -304,9 +304,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 6
 
   - name: bounce_rate_today_vs_lw
@@ -342,7 +342,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 28
+    top: 33
     left: 0
 
 
@@ -358,9 +358,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 10
 
   - name: visits_lw
@@ -373,9 +373,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 13
 
   - name: visits_last_week_tot
@@ -387,9 +387,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 2
+    top: 3
     left: 16
 
   - name: sessions_vs_lw
@@ -425,7 +425,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 4
+    top: 6
     left: 10
 
 # NEWSLETTER SUBSCRIPTIONS
@@ -440,9 +440,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 10
 
   - name: nl_sub_lw
@@ -455,9 +455,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 13
 
   - name: nl_sub_last_week_tot
@@ -469,9 +469,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 10
+    top: 12
     left: 16
 
   - name: nl_sub_vs_lw
@@ -507,7 +507,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 12
+    top: 15
     left: 10
 
 # REFERRALS SUBSCRIPTIONS
@@ -522,9 +522,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 10
 
   - name: referrals_lw
@@ -537,9 +537,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 13
 
   - name: referrals_last_week_tot
@@ -551,9 +551,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 18
+    top: 21
     left: 16
 
   - name: referrals_vs_lw
@@ -589,7 +589,7 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 20
+    top: 24
     left: 10
 
 # NEW SESSIONS
@@ -604,9 +604,9 @@
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 10
 
   - name: new_sessions_lw
@@ -619,9 +619,9 @@
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 13
 
   - name: new_sessions_last_week_tot
@@ -633,9 +633,9 @@
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 26
+    top: 30
     left: 16
 
   - name: new_sessions_vs_lw
@@ -671,5 +671,5 @@
     colors: [blue, red]
     height: 6
     width: 9
-    top: 28
+    top: 33
     left: 10

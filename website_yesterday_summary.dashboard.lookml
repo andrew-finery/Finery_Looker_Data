@@ -51,7 +51,7 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
     top: 9
     left: 0
@@ -65,7 +65,7 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
     top: 9
     left: 3
@@ -80,7 +80,7 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
     top: 9
     left: 6
@@ -98,9 +98,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 11
+    top: 12
     left: 0
 
   - name: orders_last_week
@@ -114,9 +114,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 11
+    top: 12
     left: 3
 
   - name: orders_wow
@@ -129,9 +129,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 11
+    top: 12
     left: 6
 
 #### items purchased tiles
@@ -145,9 +145,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 13
+    top: 15
     left: 0
 
   - name: items_last_week
@@ -159,9 +159,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 13
+    top: 15
     left: 3
 
   - name: items_wow
@@ -171,9 +171,9 @@
     explore: atomic_events
     measures: [atomic_events.items_purchased_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 13
+    top: 15
     left: 6
 
 #### revenue tiles
@@ -187,9 +187,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 15
+    top: 18
     left: 0
 
   - name: revenue_last_week
@@ -201,9 +201,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 15
+    top: 18
     left: 3
 
   - name: revenue_wow
@@ -213,9 +213,9 @@
     explore: atomic_events
     measures: [atomic_events.revenue_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 15
+    top: 18
     left: 6
   
   #### sessions tiles
@@ -231,9 +231,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 17
+    top: 21
     left: 0
 
   - name: sessions_last_week
@@ -247,9 +247,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 17
+    top: 21
     left: 3
 
   - name: sessions_wow
@@ -261,9 +261,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 17
+    top: 21
     left: 6
 
   #### new sessions tiles
@@ -279,9 +279,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 19
+    top: 24
     left: 0
 
   - name: sessions_last_week
@@ -295,9 +295,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 19
+    top: 24
     left: 3
 
   - name: sessions_wow
@@ -309,9 +309,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 19
+    top: 24
     left: 6
 
 #### page_views sessions tiles
@@ -327,9 +327,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 21
+    top: 27
     left: 0
 
   - name: page_views_last_week
@@ -343,9 +343,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 21
+    top: 27
     left: 3
 
   - name: page_views_wow
@@ -357,9 +357,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 21
+    top: 27
     left: 6
     
 #### page_views_per_session tiles
@@ -375,9 +375,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 23
+    top: 30
     left: 0
 
   - name: pv_per_session_last_week
@@ -391,9 +391,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 23
+    top: 30
     left: 3
 
   - name: pv_per_session_wow
@@ -405,9 +405,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 23
+    top: 30
     left: 6
 
 #### engagement_time_per_session tiles
@@ -423,9 +423,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 25
+    top: 33
     left: 0
 
   - name: engag_per_session_last_week
@@ -439,9 +439,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 25
+    top: 33
     left: 3
 
   - name: engag_per_session_wow
@@ -453,9 +453,9 @@
     limit: 500
     total: false
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 25
+    top: 33
     left: 6
 
 #### bounce_rate tiles
@@ -469,9 +469,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 27
+    top: 36
     left: 0
 
   - name: bounce_rate_last_week
@@ -483,9 +483,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 27
+    top: 36
     left: 3
 
   - name: bounce_rate_wow
@@ -495,9 +495,9 @@
     explore: atomic_events
     measures: [atomic_events.bounce_rate_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 27
+    top: 36
     left: 6
 
 #### newsletter_subscribers tiles
@@ -511,9 +511,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 29
+    top: 39
     left: 0
 
   - name: newsletter_subscribers_last_week
@@ -525,9 +525,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 29
+    top: 39
     left: 3
 
   - name: newsletter_subscribers_wow
@@ -537,9 +537,9 @@
     explore: atomic_events
     measures: [email_subscriptions.newsletter_subscribers_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 29
+    top: 39
     left: 6
 
 #### referrals tiles
@@ -553,9 +553,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 31
+    top: 42
     left: 0
 
   - name: referrals_last_week
@@ -567,9 +567,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 31
+    top: 42
     left: 3
 
   - name: referrals_wow
@@ -579,9 +579,9 @@
     explore: atomic_events
     measures: [email_subscriptions.referrals_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 31
+    top: 42
     left: 6
 
 #### avg basket size tiles
@@ -595,9 +595,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 33
+    top: 45
     left: 0
 
   - name: avg_basket_size_last_week
@@ -609,9 +609,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 33
+    top: 45
     left: 3
 
   - name: avg_basket_size_wow
@@ -621,9 +621,9 @@
     explore: atomic_events
     measures: [atomic_events.basket_size_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 33
+    top: 45
     left: 6
 
 #### avg basket value tiles
@@ -637,9 +637,9 @@
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 35
+    top: 48
     left: 0
 
   - name: avg_basket_value_last_week
@@ -651,9 +651,9 @@
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 35
+    top: 48
     left: 3
 
   - name: avg_basket_value_wow
@@ -663,9 +663,9 @@
     explore: atomic_events
     measures: [atomic_events.basket_value_wow]
     font_size: small
-    height: 2
+    height: 3
     width: 3
-    top: 35
+    top: 48
     left: 6
     
 ########################################### Graphs
