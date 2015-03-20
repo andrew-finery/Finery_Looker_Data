@@ -129,7 +129,7 @@
     hidden: true
     
   - dimension: session_duration_seconds
-    sql: extract(epoch from ${end}) - xtract(epoch from ${start})
+    sql: extract(epoch from ${end}) - extract(epoch from ${start})
 
   # Events per visit and bounces (infered) #
 

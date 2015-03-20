@@ -656,18 +656,18 @@
      newsletter_subscriptions.event_id: -NUL
     hidden: true
 
-  - measure: count_nl_or_signup_or_order
+  - measure: count_engaged_sessions
     type: count_distinct
     sql: |
         case
         when (
         ${register_success.event_id} is not null
-        or ${newsletter_subscriptions.event_id} is not null
-        or ${transactions.event_id} is not null
-        or ${product_in_checkout.event_id} is not null
-        or ${product_in_cart.event_id} is not null
-        or ${sessions.distinct_pages_viewed} > 6
-        or ${sessions.session_duration_seconds} > 239
+        --or ${newsletter_subscriptions.event_id} is not null
+        --or ${transactions.event_id} is not null
+        --or ${product_in_checkout.event_id} is not null
+        --or ${product_in_cart.event_id} is not null
+        --or ${sessions.distinct_pages_viewed} > 6
+        --or ${sessions.session_duration_seconds} > 239
         ) then ${session_id} else null end
     filters:
      app_id: production
@@ -691,7 +691,7 @@
     label: ENGAGEMENT RATE
     type: number
     decimals: 2
-    sql: 100.0 * (${count_nl_or_signup_or_order})/NULLIF(${count_sessions},0)::REAL
+    sql: 100.0 * (${count_engaged_sessions})/NULLIF(${count_sessions},0)::REAL
     format: "%0.2f%"
       
    
