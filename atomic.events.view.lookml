@@ -85,6 +85,11 @@
   - dimension: structured_event_property
     sql: ${TABLE}.se_property
     hidden: true
+
+  - dimension: structured_event_value
+    type: int
+    sql: ${TABLE}.se_value
+    hidden: true
     
   - dimension_group: event_time
     label: EVENT
@@ -364,7 +369,7 @@
       structured_event_category: email
       app_id: production
   
-################################################################## Customer Service/Contact Form Events ##########################################################################
+################################################################## Structured Events ##########################################################################
 
   - measure: count_customer_service_events
     label: CUSTOMER SERVICE LINK CLICKED
@@ -382,6 +387,44 @@
       structured_event: contactForm
       app_id: production
 
+  - measure: free_gift_click_event
+    label: FREE GIFT BUTTON CLICKS
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      structured_event: freeGiftClick
+      app_id: production
+
+  - measure: invite_friends_events
+    label: INVITE FRIENDS EVENT
+    type: count_distinct
+    sql: ${event_id}
+    filters:
+      structured_event: inviteFriends
+      app_id: production
+  
+  - measure: total_friends_invited
+    label: TOTAL FRIENDS INVITED
+    type: sum
+    sql: ${structured_event_value}
+    filters:
+      structured_event: inviteFriends
+      app_id: production
+      
+  - measure: button_clicks_invite_ratio
+    label: FRIENDS INVITED-BUTTON CLICKS RATIO
+    type: number
+    decimals: 2
+    sql:  coalesce(${invite_friends_events}/NULLIF(${free_gift_click_event},0)::REAL, '0')
+    value_format: '#.##%'  
+
+  - measure: avg_friend_invites_sent
+    label: AVG FRIENDS INVITED
+    type: number
+    decimals: 2
+    sql:  coalesce(${total_friends_invited}/NULLIF(${invite_friends_events},0)::REAL, '0')
+    value_format: '#.##'
+  
 ####################################################################### Product Dimensions and Measures##########################################################################################
   
   - dimension: product_id
@@ -1201,10 +1244,3 @@
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
-
-
-############################################# Dashboard Titles ########################################################
-  - measure: dashboard_title_1
-    type: count
-    html: |
-      <p> Select a channel to see a more detailed breakdown below</p>
