@@ -213,6 +213,10 @@
     type: yesno
     sql: ${order_sequence_tier} = 1
 
+  - dimension: discount_flag
+    type: yesno
+    sql: ${TABLE}.adjustment_total <> 0
+
   - dimension: latest_order_flag
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
