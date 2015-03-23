@@ -430,7 +430,6 @@
   - dimension: product_id
     label: PRODUCT ID
     sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int), cast(${product_in_checkout.product_id} as int))
-    hidden: true
     
   - dimension: category
     label: CATEGORY PAGE
