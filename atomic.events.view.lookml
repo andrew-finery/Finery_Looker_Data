@@ -139,7 +139,16 @@
     hidden: true
 
   - dimension: email_campaign
+    label: EMAIL CAMPAIGN TITLE
     sql: case when ${sessions.campaign_medium} = 'email' then ${email_campaign_lookup_2.email_subject} when ${structured_event_category} = 'email' then ${email_campaign_lookup_1.email_subject} else null end
+
+  - dimension: email_description
+    label: EMAIL DESCRIPTION
+    sql: case when ${sessions.campaign_medium} = 'email' then ${email_campaign_lookup_2.email_description} when ${structured_event_category} = 'email' then ${email_campaign_lookup_1.email_description} else null end
+    
+  - dimension: email_list
+    label: EMAIL LIST
+    sql: case when ${sessions.campaign_medium} = 'email' then ${email_campaign_lookup_2.email_list} when ${structured_event_category} = 'email' then ${email_campaign_lookup_1.email_list} else null end
   
 ###################################################################################################################################################################
   ########################################################################## MEASURES ###############################################################################
