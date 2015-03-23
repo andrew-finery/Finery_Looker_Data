@@ -29,18 +29,6 @@
     top: 0
     left: 0
 
-  - name: dashboard_note
-    type: single_value
-    title: ' '
-    model: finery_data
-    explore: atomic_events
-    measures: [atomic_events.dashboard_title_1]
-    font_size: small
-    height: 2
-    width: 26
-    top: 8
-    left: 0
-
   - name: summary_by_hour
     title: Summary by Hour - Yesterday
     type: looker_line
