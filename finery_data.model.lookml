@@ -80,12 +80,12 @@
   - join: product_in_checkout
     sql_on: product_in_checkout.root_id = atomic_events.event_id
     
-  - join: email_campaign_lookup_1
-    from: email_campaign_lookup
-    sql_on: atomic_events.se_label = email_campaign_lookup_1.email_id
-  - join: email_campaign_lookup_2
-    from: email_campaign_lookup
-    sql_on: sessions.mkt_campaign_ga = email_campaign_lookup_2.email_id
+  - join: mailchimp_campaigns_1
+    from: mailchimp_campaigns
+    sql_on: atomic_events.se_label = mailchimp_campaigns_1.email_id
+  - join: mailchimp_campaigns_2
+    from: mailchimp_campaigns
+    sql_on: sessions.mkt_campaign_ga = mailchimp_campaigns_2.email_id
 
   - join: spree_products
     from: spree_products
@@ -213,3 +213,19 @@
   - join: spree_customers
     sql_on: all_referrals.email = spree_customers.email
     relationship: one_to_one
+    
+- explore: mailchimp_subscribe
+  joins:
+  - join: mailchimp_unsubscribe
+    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_unsubscribe.email} and ${mailchimp_subscribe.list} = ${mailchimp_unsubscribe.list}
+  - join: mailchimp_cleaned_email
+    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_cleaned_email.email} and ${mailchimp_subscribe.list} = ${mailchimp_cleaned_email.list}
+
+- explore: mailchimp_campaigns
+  joins:
+  - join: mailchimp_unsubscribe
+    sql_on: ${mailchimp_unsubscribe.unsubscribe_campaign_id} = ${mailchimp_campaigns.campaign_id}
+  - join: mailchimp_cleaned_email
+    sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
+
+  
