@@ -25,6 +25,7 @@
     hidden: true
   
   - dimension: email_description
+    label: EMAIL DESCRIPTION
     sql_case:
       Newsletter Subscription Email: ${TABLE}.email_id = '99f17ae0cc'
       Newsletter WC Reminder 1: ${TABLE}.email_id = 'a60618fcc7'
@@ -42,6 +43,7 @@
     hidden: true
   
   - dimension: email_list
+    label: EMAIL LIST
     sql_case:
       Newsletter Subscribers: ${TABLE}.list_id = '179a8621fb'
       Newsletter Welcome Chain: ${TABLE}.list_id = '292b2aee8e'
