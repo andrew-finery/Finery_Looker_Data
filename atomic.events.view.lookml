@@ -838,7 +838,7 @@
   - measure: sum_revenue_yesterday
     type: sum
     label: REVENUE YESTERDAY
-    sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
+    sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
     hidden: true
     filters:
       event_time_date: 1 day ago for 1 day
@@ -846,7 +846,7 @@
   - measure: sum_revenue_last_week
     type: sum
     label: REVENUE LAST WEEK
-    sql: ${transactions.revenue_ex_coupon_and_vat} * ${transactions.exchange_rate}
+    sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
     hidden: true
     filters:
       event_time_date: 8 days ago for 1 day

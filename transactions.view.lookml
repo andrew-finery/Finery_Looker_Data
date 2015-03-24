@@ -1,33 +1,39 @@
 - view: transactions
   derived_table:
     sql: |
-         SELECT events.domain_userid,
-                events.domain_sessionidx,
-                id_stitch.blended_user_id,
-                events.collector_tstamp,
-                events.event_id,
-                trans.customer_id,
-                trans.currency_code,
-                trans.id AS order_id,
-                trans.revenue,
-                trans.shipping,
-                trans.tax,
-                trans.net_value,
-                trans.qty_total,
-                rank() over(partition by id_stitch.blended_user_id order by events.collector_tstamp asc) as customer_order_number,
-                COALESCE(SUM(adj.amount),'0') AS total_adjustment,
-                MAX(adj.label) AS adjustment_label
-          FROM atomic.com_finerylondon_transaction_1 trans
-            LEFT JOIN atomic.events events ON trans.root_id = events.event_id
-            LEFT JOIN atomic.com_finerylondon_order_adjustments_1 adj ON adj.root_id = trans.root_id
-            LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} id_stitch on id_stitch.domain_userid = events.domain_userid
-          WHERE events.app_id = 'production'
-          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
+         select domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label, rank() over(partition by blended_user_id order by collector_tstamp asc) as customer_order_number
+          FROM
+          (select domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label from
+          (select
+          first_value(domain_userid) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as domain_userid,
+          first_value(domain_sessionidx) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as domain_sessionidx,
+          first_value(blended_user_id) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as blended_user_id,
+          first_value(collector_tstamp) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as collector_tstamp,
+          first_value(event_id) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as event_id,
+          first_value(customer_id) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as customer_id,
+          first_value(currency_code) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as currency_code,
+          first_value(order_id) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as order_id,
+          first_value(revenue) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as revenue,
+          first_value(shipping) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as shipping,
+          first_value(tax) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as tax,
+          first_value(net_value) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as net_value,
+          first_value(qty_total) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as qty_total,
+          first_value(total_adjustment) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as total_adjustment,
+          first_value(adjustment_label) over(partition by order_id order by collector_tstamp asc rows between unbounded preceding and unbounded following) as adjustment_label
+          from
+          (SELECT events.domain_userid, events.domain_sessionidx, id_stitch.blended_user_id, events.collector_tstamp, events.event_id, trans.customer_id, trans.currency_code, trans.id AS order_id, trans.revenue, trans.shipping, trans.tax, trans.net_value, trans.qty_total, COALESCE(SUM(adj.amount),'0') AS total_adjustment, MAX(adj.label) AS adjustment_label
+                    FROM atomic.com_finerylondon_transaction_1 trans
+                      LEFT JOIN atomic.events events ON trans.root_id = events.event_id
+                      LEFT JOIN atomic.com_finerylondon_order_adjustments_1 adj ON adj.root_id = trans.root_id
+                      LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} id_stitch on id_stitch.domain_userid = events.domain_userid
+                    WHERE events.app_id = 'production'
+                   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13)
+          )
+          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
 
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
     distkey: event_id
     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
-    ## NB. Optimised for joining to 'atomic_events' view
 
   fields:
 

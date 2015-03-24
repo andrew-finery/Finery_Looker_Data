@@ -1,19 +1,19 @@
 - view: product_in_transaction
   derived_table:
      sql: |
-          SELECT trans.root_id,
-          trans.root_tstamp,
+          SELECT trans.event_id as root_id,
+          trans.collector_tstamp as root_tstamp,
           product_context.id,
           product_context.price,
           product_context.quantity,
           product_context.variant,
-          trans.id as order_id,
+          trans.order_id,
           trans.revenue as order_revenue,
           trans.net_value as order_net_value,          
           COALESCE(SUM(adj.amount),'0') AS total_adjustment
-          FROM atomic.com_finerylondon_transaction_1 trans
-          LEFT JOIN atomic.com_finerylondon_product_2 product_context ON trans.root_id = product_context.root_id
-          LEFT JOIN atomic.com_finerylondon_order_adjustments_1 adj ON adj.root_id = trans.root_id
+          FROM ${transactions.SQL_TABLE_NAME} trans
+          LEFT JOIN atomic.com_finerylondon_product_2 product_context ON trans.event_id = product_context.root_id
+          LEFT JOIN atomic.com_finerylondon_order_adjustments_1 adj ON adj.root_id = trans.event_id
           group by 1,2,3,4,5,6,7,8,9
 
   fields:
