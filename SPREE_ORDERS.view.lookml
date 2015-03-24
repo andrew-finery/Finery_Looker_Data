@@ -36,7 +36,12 @@
              COALESCE(d.items_returned,'0') AS items_returned,
              COALESCE(e.amount_refunded,'0') AS amount_refunded,
              COALESCE(e.store_credit_refunded,'0') AS store_credit_refunded,
-             COALESCE(e.cash_refunded,'0') AS cash_refunded
+             COALESCE(e.cash_refunded,'0') AS cash_refunded,
+             
+             CASE WHEN (b.store_credit = a.item_total + adjustment_total) then 'Store Credit'
+                  WHEN credit_card_payments.order_id is not null then 'Credit Card'
+                  ELSE 'Paypal' end as primary_payment_method
+             
       FROM (SELECT *
             FROM daily_snapshot.spree_orders
             WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_orders)) a
@@ -148,6 +153,10 @@
       
       LEFT JOIN ${spree_users.SQL_TABLE_NAME} users
       on users.user_id = a.user_id
+      
+      LEFT JOIN (SELECT order_id FROM (SELECT * FROM daily_snapshot.spree_payments WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_payments))
+                WHERE source_type = 'Spree::CreditCard' GROUP BY 1) credit_card_payments
+                on credit_card_payments.order_id = a.id
                             
       WHERE a.state IN ('complete','returned','canceled')
       AND   a.completed_at > DATE '2014-11-22'
@@ -188,6 +197,10 @@
   - dimension: order_code
     label: ORDER
     sql: ${TABLE}.order_code
+
+  - dimension: primary_payment_method
+    label: PRIMARY PAYMENT METHOD
+    sql: ${TABLE}.primary_payment_method
 
   - dimension: state
     sql: ${TABLE}.state

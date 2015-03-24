@@ -18,8 +18,8 @@
     sql_case:
       Newsletter Subscription Email: ${TABLE}.email_id = '99f17ae0cc'
       Newsletter WC Reminder 1: ${TABLE}.email_id = 'a60618fcc7'
-      Newsletter WC Reminder 1: ${TABLE}.email_id = 'd399f1d826'
-      Newsletter WC Reminder 1: ${TABLE}.email_id = 'f92381d88b'
+      Newsletter WC Reminder 2: ${TABLE}.email_id = 'd399f1d826'
+      Newsletter WC Reminder 3: ${TABLE}.email_id = 'f92381d88b'
       Create Account WC Reminder 1: ${TABLE}.email_id = '2ee520a42d'
       Create Account WC Reminder 2: ${TABLE}.email_id = 'b4a7752346'
       Create Account WC Reminder 3: ${TABLE}.email_id = 'd2d46d70e0'
@@ -39,7 +39,3 @@
       Referral Welcome Chain: ${TABLE}.list_id = 'de06e9bf29'
       else: Other
     hidden: true
-
-#d399f1d826 292b2aee8e  Don’t forget your discount is waiting 27
-#a60618fcc7 292b2aee8e  Nice to meet you  26
-#f92381d88b 292b2aee8e  Use it, don’t lose it 26
