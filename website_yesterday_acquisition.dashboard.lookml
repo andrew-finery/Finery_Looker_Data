@@ -1,7 +1,7 @@
 - dashboard: website_yesterday_acquisition
   title: Web Dashbaord - Yesterday - Acquisition
   layout: static
-  tile_size: 50
+  tile_size: 100
   show_applied_filters: true
 
   filters:
@@ -16,7 +16,7 @@
   elements:
 
   - name: summary_by_channel
-    title: Yesterday's Summary by Acquisition Channel
+    title: Summary by Acquisition Channel - Yesterday
     type: table
     model: finery_data
     explore: atomic_events
@@ -24,13 +24,13 @@
     measures: [atomic_events.engagement_rate_yesterday, atomic_events.engagement_rate_last_week, atomic_events.engagement_rate_wow, atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow]
     sorts: [atomic_events.count_sessions_yesterday desc]
     total: true
-    height: 8
-    width: 28
+    height: 5
+    width: 16
     top: 0
     left: 0
 
   - name: summary_by_channel
-    title: Acquisition Channel - Summary by Campaign
+    title: Selected Acquisition Channel - Summary by Campaign
     type: table
     model: finery_data
     explore: atomic_events
@@ -41,12 +41,12 @@
       select_channel: sessions.acquisition_channel
     total: true
     height: 8
-    width: 28
-    top: 8
+    width: 16
+    top: 5
     left: 0
 
   - name: summary_by_hour
-    title: Summary by Hour - Yesterday
+    title: Selected Acquisition Channel - Summary by Hour - Yesterday
     type: looker_line
     model: finery_data
     explore: atomic_events
@@ -79,7 +79,7 @@
     x_axis_scale: auto
     height: 6
     width: 12
-    top: 16
+    top: 13
     left: 0
 
 
