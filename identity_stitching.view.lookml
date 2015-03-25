@@ -2,7 +2,8 @@
   derived_table:
      sql: |
        SELECT events.domain_userid,
-               COALESCE(id_stitch_lookup.user_id,events.domain_userid) AS blended_user_id
+               COALESCE(id_stitch_lookup.user_id,events.domain_userid) AS blended_user_id,
+               min(collector_tstamp) as first_touch_time
         FROM atomic.events events
           LEFT JOIN (SELECT domains_with_user_id.domain_userid,
                             events.user_id

@@ -11,6 +11,7 @@
         s.number_of_events,
         s.interaction_events,
         s.distinct_pages_viewed,
+        s.free_gift_click_events,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -143,6 +144,11 @@
     tiers: [1,2,5,10,25,50,100,1000,10000]
     sql: ${TABLE}.number_of_events
     hidden: true
+  
+  - dimension: free_gift_click_flag
+    label: SESSION INVOLVES FREE GIFT CLICK
+    type: yesno
+    sql: ${TABLE}.free_gift_click_events > 0
     
   - dimension: bounce
     label: BOUNCED SESSION

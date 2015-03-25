@@ -712,12 +712,12 @@
 ################################## Web Goals Engagement Stuff ###########################################################
 
   - measure: count_registration_sessions
+    label: COUNT SESSIONS WITH REGISTRATION
     type: count_distinct
     sql: ${session_id}
     filters:
      app_id: production
      register_success.event_id: -NULL
-    hidden: true
       
   - measure: count_newsletter_subscription_sessions
     type: count_distinct

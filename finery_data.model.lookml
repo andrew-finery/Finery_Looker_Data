@@ -228,4 +228,9 @@
   - join: mailchimp_cleaned_email
     sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
 
-  
+- explore: visitors
+  joins:
+  - join: transactions
+    sql_on: ${visitors.blended_user_id} = ${transactions.blended_user_id}
+  - join: spree_exchange_rates
+    sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}    

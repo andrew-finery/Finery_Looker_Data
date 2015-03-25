@@ -1,37 +1,61 @@
 - view: visitors
   derived_table: 
     sql: |
-      SELECT
+      select blended_user_id,
+      min(first_touch) as first_touch,
+      max(last_touch) as last_touch,
+      sum(number_of_events) as number_of_events,
+      sum(distinct_pages_viewed) as distinct_pages_viewed,
+      sum(number_of_sessions) as number_of_sessions,
+      page_urlhost,
+      page_urlpath,
+      mkt_source,
+      mkt_medium,
+      mkt_campaign,
+      mkt_term,
+      refr_source,
+      refr_medium,
+      refr_term,
+      refr_urlhost,
+      refr_urlpath
+      FROM
+      (SELECT
         v.domain_userid,
+        id_stitch.blended_user_id,
         v.first_touch,
         v.last_touch,
         v.number_of_events,
         v.distinct_pages_viewed,
         v.number_of_sessions,
-        l.page_urlhost,
-        l.page_urlpath,
-        s.mkt_source,
-        s.mkt_medium,
-        s.mkt_campaign,
-        s.mkt_term,
-        s.refr_source,
-        s.refr_medium,
-        s.refr_term,
-        s.refr_urlhost,
-        s.refr_urlpath
+        first_value(l.page_urlhost) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as page_urlhost,
+        first_value(l.page_urlpath) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as page_urlpath,
+        first_value(s.mkt_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_source,
+        first_value(s.mkt_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_medium,
+        first_value(s.mkt_campaign_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_campaign,
+        first_value(s.mkt_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_term,
+        first_value(s.refr_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_source,
+        first_value(s.refr_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_medium,
+        first_value(s.refr_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_term,
+        first_value(s.refr_urlhost_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlhost,
+        first_value(s.refr_urlpath_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlpath
       FROM
         ${visitors_basic.SQL_TABLE_NAME} AS v
+        LEFT JOIN (select domain_userid, blended_user_id from
+                  (select first_value(domain_userid) over (partition by blended_user_id order by first_touch_time asc rows between unbounded preceding and unbounded following) as domain_userid, blended_user_id from
+                  ${identity_stitching.SQL_TABLE_NAME}) group by 1,2) AS id_stitch
+        on id_stitch.domain_userid = v.domain_userid
         LEFT JOIN ${sessions_landing_page.SQL_TABLE_NAME} AS l
         ON v.domain_userid = l.domain_userid
         AND l.domain_sessionidx = 1
         LEFT JOIN ${sessions_source.SQL_TABLE_NAME} AS s
         ON v.domain_userid = s.domain_userid
-        AND s.domain_sessionidx = 1
+        AND s.domain_sessionidx = 1)
+        group by 1,7,8,9,10,11,12,13,14,15,16,17
         
     
     sql_trigger_value: SELECT COUNT(*) FROM ${visitors_basic.SQL_TABLE_NAME}
-    distkey: domain_userid
-    sortkeys: [domain_userid, first_touch]
+    distkey: blended_user_id
+    sortkeys: [blended_user_id, first_touch]
   
   
   fields:
@@ -40,8 +64,8 @@
   
   # Basic dimensions #
   
-  - dimension: user_id
-    sql: ${TABLE}.domain_userid
+  - dimension: blended_user_id
+    sql: ${TABLE}.blended_user_id
     
   - dimension: first_touch
     sql: ${TABLE}.first_touch
@@ -86,17 +110,7 @@
     type: tier
     tiers: [1,2,5,10,25,50,100,1000]
     sql: ${number_of_sessions}
-    
-  - dimension: session_stream
-    sql: ${user_id}
-    html: |
-      <a href=sessions?fields=sessions.individual_detail*&f[sessions.user_id]=<%=value%>>Session Stream</a>
-      
-  - dimension: event_stream
-    sql: ${user_id}
-    html: |
-      <a href=events?fields=events.event_detail*&f[events.user_id]=<%=value%>>Event stream</a>
-      
+
   # Landing page dimensions #
   
   - dimension: landing_page_url_host
@@ -109,15 +123,20 @@
     sql: ${TABLE}.page_urlhost || ${TABLE}.page_urlpath  
     
   # Referer source dimensions #
-  
-  - dimension: referer_medium
+
+  - dimension: acquisition_channel
+    label: ACQUISITION CHANNEL
     sql_case:
-      email: ${TABLE}.refr_medium = 'email'
-      search: ${TABLE}.refr_medium = 'search'
-      social: ${TABLE}.refr_medium = 'social'
-      other_website: ${TABLE}.refr_medium = 'unknown'
-      else: direct
-    
+      Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
+      Paid Search: ${TABLE}.mkt_source in ('GoogleSearch', 'GoogleContent')
+      Paid Search:  ${TABLE}.refr_urlhost = 'www.googleadservices.com'
+      Email: ${TABLE}.mkt_medium = 'email' or ${TABLE}.refr_medium = 'email'
+      Social: ${TABLE}.refr_medium = 'social'
+      Search: ${TABLE}.refr_medium = 'search'
+      Referrals: ${TABLE}.refr_medium = 'unknown'
+      Other Marketing Source: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null or ${TABLE}.mkt_campaign is not null
+      else: Direct
+
   - dimension: referer_source
     sql: ${TABLE}.refr_source
     
@@ -148,11 +167,11 @@
       
   - measure: count
     type: count_distinct
-    sql: ${user_id}
+    sql: ${blended_user_id}
     
   - measure: bounced_visitor_count
     type: count_distinct
-    sql: ${user_id}
+    sql: ${blended_user_id}
     filter:
       bounce: yes
     
@@ -179,41 +198,5 @@
     decimals: 2
     sql: ${sessions_count}/NULLIF(${count},0)::REAL
     
-  # Landing page measures #
-    
-  - measure: landing_page_count
-    type: count_distinct
-    sql: ${landing_page_url}
-
-    
-  # Traffic source measures #
-  
-  - measure: campaign_medium_count
-    type: count_distinct
-    sql: ${campaign_medium}
-    
-  - measure: campaign_source_count
-    type: count_distinct
-    sql: ${campaign_source}
-    
-  - measure: campaign_term_count
-    type: count_distinct
-    sql: ${campaign_term}
-      
-  - measure: campaign_count
-    type: count_distinct
-    sql: ${campaign_name}
-    
-  - measure: referer_medium_count
-    type: count_distinct
-    sql: ${referer_medium}
-    
-  - measure: referer_source_count
-    type: count_distinct
-    sql: ${referer_source}
-    
-  - measure: referer_term_count
-    type: count_distinct
-    sql: ${referer_term}
 
     

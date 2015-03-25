@@ -67,7 +67,6 @@
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
-    hidden: true
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
@@ -105,6 +104,11 @@
     label: NUMBER OF ORDERS
     type: count_distinct
     sql: ${order_id}
+
+  - measure: count_customers
+    label: NUMBER OF CUSTOMERS
+    type: count_distinct
+    sql: ${blended_user_id}
   
   - measure: count_guest_checkouts
     type: count_distinct
