@@ -11,7 +11,7 @@
     type: field_filter
     explore: atomic_events
     field: sessions.acquisition_channel
-    default_value: Search
+    default_value: Email
 
   elements:
 
@@ -21,12 +21,28 @@
     model: finery_data
     explore: atomic_events
     dimensions: [sessions.acquisition_channel]
-    measures: [atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow, atomic_events.engagement_rate_yesterday, atomic_events.engagement_rate_last_week, atomic_events.engagement_rate_wow]
+    measures: [atomic_events.engagement_rate_yesterday, atomic_events.engagement_rate_last_week, atomic_events.engagement_rate_wow, atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow]
     sorts: [atomic_events.count_sessions_yesterday desc]
     total: true
     height: 8
-    width: 26
+    width: 28
     top: 0
+    left: 0
+
+  - name: summary_by_channel
+    title: Acquisition Channel - Summary by Campaign
+    type: table
+    model: finery_data
+    explore: atomic_events
+    dimensions: [atomic_events.campaign]
+    measures: [atomic_events.engagement_rate_yesterday, atomic_events.engagement_rate_last_week, atomic_events.engagement_rate_wow, atomic_events.conversion_rate_yesterday, atomic_events.conversion_rate_last_week, atomic_events.conversion_rate_wow, atomic_events.count_sessions_yesterday, atomic_events.count_sessions_last_week, atomic_events.sessions_wow, transactions.count_transactions_yesterday, transactions.count_transactions_last_week, atomic_events.orders_wow, atomic_events.sum_revenue_yesterday, atomic_events.sum_revenue_last_week, atomic_events.revenue_wow, atomic_events.bounce_rate_yesterday, atomic_events.bounce_rate_last_week, atomic_events.bounce_rate_wow]
+    sorts: [atomic_events.count_sessions_yesterday desc]
+    listen:
+      select_channel: sessions.acquisition_channel
+    total: true
+    height: 8
+    width: 28
+    top: 8
     left: 0
 
   - name: summary_by_hour
@@ -62,8 +78,8 @@
     stacking: ''
     x_axis_scale: auto
     height: 6
-    width: 8
-    top: 10
+    width: 12
+    top: 16
     left: 0
 
 

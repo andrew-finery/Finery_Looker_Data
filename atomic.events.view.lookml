@@ -156,6 +156,20 @@
     sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.latest_send_date} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.latest_send_date} else null end
     hidden: true
   
+  - dimension: campaign
+    label: SUB-CHANNEL
+    sql: |
+         case
+         when ${sessions.acquisition_channel} = 'Email' then ${mailchimp_campaigns_2.email_subject}
+         when ${sessions.acquisition_channel) = 'Paid Search' then ${sessions.campaign_name}
+         when ${sessions.acquisition_channel) = 'Social' then ${sessions.referer_source}
+         when ${sessions.acquisition_channel) = 'Search' then ${sessions.referer_source}
+         when ${sessions.acquisition_channel) = 'Facebook - Paid Marketing' then ${sessions.campaign_name}
+         when ${sessions.acquisition_channel) = 'Referrals' then ${sessions.referer_url_host}
+         when ${sessions.acquisition_channel) = 'Other Marketing Source' then ${sessions.campaign_medium} || ' - ' || ${sessions.campaign_name}
+         when ${sessions.acquisition_channel) = 'Direct' then null
+         else null end
+  
 ###################################################################################################################################################################
   ########################################################################## MEASURES ###############################################################################
     ###################################################################################################################################################################
