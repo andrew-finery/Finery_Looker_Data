@@ -149,6 +149,12 @@
   - dimension: email_list
     label: EMAIL LIST
     sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.email_list} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_list} else null end
+
+  - dimension: email_latest_send_date
+    type: date
+    label: EMAIL SENT
+    sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.latest_send_date} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.latest_send_date} else null end
+    hidden: true
   
 ###################################################################################################################################################################
   ########################################################################## MEASURES ###############################################################################

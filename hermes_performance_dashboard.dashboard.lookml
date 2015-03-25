@@ -7,12 +7,12 @@
   - name: date
     title: "Date Filter - On Time % and Order Volumes"
     type: date_filter
-    default_value: 2015
+    default_value: after 2015/02/02
 
   - name: date2
     title: "Date Filter - Late Delivery Reasons"
     type: date_filter
-    default_value: this month
+    default_value: last week
 
   elements:
 
@@ -44,7 +44,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['90']
+    y_axis_min: ['88']
     reference_lines:
       - value: 98.8
         label: Hermes SLA
@@ -84,7 +84,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['90']
+    y_axis_min: ['96']
     reference_lines:
       - value: 99.0
         label: Hermes SLA
@@ -124,7 +124,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['0']
+    y_axis_min: ['90']
     reference_lines:
       - value: 99.0
         label: Hermes SLA

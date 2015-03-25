@@ -52,7 +52,7 @@
       else: Other
     hidden: true
 
-  - dimension_group: latest_send_time
+  - dimension_group: latest_send
     label: LATEST SEND
     type: time
     timeframes: [time, date, week]

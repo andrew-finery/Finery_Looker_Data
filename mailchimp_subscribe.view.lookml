@@ -40,7 +40,7 @@
   - dimension_group: subscribe_time
     label: SUBSCRIBED
     type: time
-    timeframes: [time]
+    timeframes: [time, date, week]
     sql: ${TABLE}.subscribe_time
 
 
@@ -60,6 +60,11 @@
     filters:
       mailchimp_unsubscribe.unsubscribe_time: "NULL"
       mailchimp_cleaned_email.email_cleaned_time: "NULL"
+
+  - measure: list_size_running_total
+    label: LIST SIZE RUNNING TOTAL
+    type: running_total
+    sql: ${count_current_emails}
 
   - measure: unsubscription_rate
     label: UNSUBSCRIPTION RATE
