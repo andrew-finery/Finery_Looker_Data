@@ -167,19 +167,19 @@
     label: GROSS REVENUE
     type: sum
     sql: ${TABLE}.gross_revenue_gbp
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: gross_item_revenue_gbp_ex_vat
     label: GROSS REVENUE EX. VAT
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount
     label: GROSS REVENUE EX. VAT, DISCOUNT
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: sales_mix
     label: SALES MIX
@@ -190,21 +190,33 @@
     label: NET REVENUE
     type: sum
     sql: ${TABLE}.net_revenue_gbp
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: net_item_revenue_gbp_ex_vat_ex_discount
     label: NET REVENUE EX. VAT, DISCOUNT
     type: sum
     sql: ${TABLE}.net_revenue_gbp_ex_vat_ex_discount
-    format: "£%0.2f"
-
+    value_format: '"£"#,##0.00'
+  
+  - measure: return_item_value_gbp
+    label: RETURN ITEM VALUE
+    type: number
+    sql: ${gross_item_revenue_gbp} - ${net_item_revenue_gbp}
+    value_format: '"£"#,##0.00'
+    
+  - measure: return_item_value_gbp_ex_vat_ex_discount
+    label: RETURN ITEM VALUE EX. VAT, DISCOUNT
+    type: number
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount}
+    value_format: '"£"#,##0.00'
+    
 # Margin Measures
 
   - measure: sum_cost_gbp
     label: COST OF GOODS SOLD
     type: sum
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
 # Stock Measures
 
@@ -236,6 +248,13 @@
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
 
+  - measure: closing_stock_end_of_week
+    label: CLOSING STOCK - END OF WEEK
+    type: sum
+    sql: ${TABLE}.closing_stock
+    filters:
+      calendar_date_day_of_week_index: 6
+
 # stock value @ cost
 
   - measure: closing_stock_value_cost
@@ -264,6 +283,13 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 2 weeks ago
+      calendar_date_day_of_week_index: 6
+
+  - measure: closing_stock_value_cost_end_of_week
+    label: CLOSING STOCK - END OF WEEK @ COST
+    type: sum
+    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    filters:
       calendar_date_day_of_week_index: 6
 
 # closing stock @ retail
@@ -301,6 +327,12 @@
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
 
+  - measure: closing_stock_value_retail_end_of_week
+    label: CLOSING STOCK - END OF WEEK @ RETAIL
+    type: sum
+    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    filters:
+      calendar_date_day_of_week_index: 6
 
 ### Number of sku's in stock measures
   
@@ -357,7 +389,7 @@
     label: GROSS REVENUE EX. VAT, DISCOUNT LAST WEEK
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       calendar_date_date: last week
       
@@ -365,7 +397,7 @@
     label: GROSS REVENUE EX. VAT, DISCOUNT WEEK BEFORE LAST
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       calendar_date_date: 2 weeks ago for 1 week
       
@@ -373,7 +405,7 @@
     label: GROSS REVENUE EX. VAT, DISCOUNT LAST 7 DAYS
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       calendar_date_date: 7 days ago for 7 days
   
