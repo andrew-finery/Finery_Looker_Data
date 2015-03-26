@@ -1055,17 +1055,37 @@
     format: "%0.2f%"
     hidden: true
   
-  - measure: count_nl_or_signup_or_order_yesterday
+  - measure: count_engaged_sessions_yesterday
     type: count_distinct
-    sql: case when (${register_success.event_id} is not null or ${newsletter_subscriptions.event_id} is not null or ${transactions.event_id} is not null) then ${session_id} else null end
+    sql: |
+        case
+        when (
+        ${register_success.event_id} is not null
+        or ${newsletter_subscriptions.event_id} is not null
+        or ${transactions.event_id} is not null
+        or ${product_in_checkout.event_id} is not null
+        or ${product_in_cart.event_id} is not null
+        or ${sessions.distinct_pages_viewed} > 6
+        or ${sessions.session_duration_seconds} > 239
+        ) then ${session_id} else null end
     filters:
      app_id: production
      event_time_date: 1 day ago for 1 day
     hidden: true
   
-  - measure: count_nl_or_signup_or_order_last_week
+  - measure: count_engaged_sessions_last_week
     type: count_distinct
-    sql: case when (${register_success.event_id} is not null or ${newsletter_subscriptions.event_id} is not null or ${transactions.event_id} is not null) then ${session_id} else null end
+    sql: |
+        case
+        when (
+        ${register_success.event_id} is not null
+        or ${newsletter_subscriptions.event_id} is not null
+        or ${transactions.event_id} is not null
+        or ${product_in_checkout.event_id} is not null
+        or ${product_in_cart.event_id} is not null
+        or ${sessions.distinct_pages_viewed} > 6
+        or ${sessions.session_duration_seconds} > 239
+        ) then ${session_id} else null end
     filters:
      app_id: production
      event_time_date: 8 days ago for 1 day
@@ -1075,7 +1095,7 @@
     label: ENGAGEMENT RATE YESTERDAY
     type: number
     decimals: 2
-    sql: 100.0 * (${count_nl_or_signup_or_order_yesterday})/NULLIF(${count_sessions_yesterday},0)::REAL
+    sql: 100.0 * (${count_engaged_sessions_yesterday})/NULLIF(${count_sessions_yesterday},0)::REAL
     format: "%0.2f%"
     hidden: true
     
@@ -1083,7 +1103,7 @@
     label: ENGAGEMENT RATE LAST WEEK
     type: number
     decimals: 2
-    sql: 100.0 * (${count_nl_or_signup_or_order_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
+    sql: 100.0 * (${count_engaged_sessions_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"  
     hidden: true
     
