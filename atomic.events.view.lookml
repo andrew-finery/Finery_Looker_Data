@@ -19,6 +19,10 @@
     sql: ${TABLE}.event
     hidden: true
   
+  - dimension: page_url_path
+    label: PAGE PATH
+    sql: ${TABLE}.page_urlpath
+  
   - dimension: unstruct_event
     label: UNSTRUCTURED EVENT
     sql: ${TABLE}.unstruct_event
@@ -140,15 +144,31 @@
 
   - dimension: email_campaign
     label: EMAIL CAMPAIGN TITLE
-    sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.email_subject} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_subject} else null end
+    sql: |
+         case
+         when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_subject} != 'Other' then ${mailchimp_campaigns_2.email_subject}
+         when ${sessions.campaign_medium} = 'email' then ${sessions.campaign_name}
+         when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_subject}
+         else null end
 
   - dimension: email_description
     label: EMAIL DESCRIPTION
-    sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.email_description} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_description} else null end
+    sql: |
+         case
+         when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_description} != 'Other' then ${mailchimp_campaigns_2.email_description}
+         when ${sessions.campaign_medium} = 'email' then ${sessions.campaign_source}
+         when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_description}
+         else null end
     
   - dimension: email_list
     label: EMAIL LIST
-    sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.email_list} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_list} else null end
+    sql: |
+         case
+         when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_list} != 'Other' then ${mailchimp_campaigns_2.email_list}
+         when ${sessions.campaign_medium} = 'email' then 'Non-Finery Email'
+         when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.email_list}
+         else null end
+
 
   - dimension: email_latest_send_date
     type: date
@@ -347,6 +367,46 @@
     decimals: 2
     sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
     format: "£%0.2f"
+
+############################################################ Page Measures #######################################################################################################
+
+  - dimension: landing_page_flag
+    type: yesno
+    sql: ${page_url_path} = ${sessions.landing_page_path}
+    hidden: true
+  
+  - dimension: exit_page_flag
+    type: yesno
+    sql: ${page_url_path} = ${sessions.exit_page_path}
+    hidden: true
+  
+  - measure: count_landed_sessions
+    label: LANDED SESSIONS COUNT
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      landing_page_flag: yes
+  
+  - measure: count_exit_sessions
+    label: EXIT SESSIONS COUNT
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      app_id: production
+      exit_page_flag: yes
+      
+  - measure: page_exit_rate
+    label: PAGE EXIT RATE
+    type: number
+    sql: ${count_exit_sessions}/NULLIF(${count_sessions},0)::REAL
+    value_format: '#.00%'
+  
+  - measure: page_bounce_rate
+    label: PAGE BOUNCE RATE
+    type: number
+    sql: ${sessions.bounced_sessions_count}/NULLIF(${count_landed_sessions},0)::REAL
+    value_format: '#.00%'
     
 ############################################################################## EMAIL MEASURES ####################################################################################
     
