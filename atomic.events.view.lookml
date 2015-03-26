@@ -557,7 +557,31 @@
     sql:  coalesce(${category_clicks}/NULLIF(${category_page_views},0)::REAL, '0')
     value_format: '#.##%'
 
+  - measure: count_distinct_product_impressions
+    label: DISTINCT PRODUCT IMPRESSIONS
+    type: count_distinct
+    sql: ${product_impressions.product_id} || ${session_id} || ${product_impressions.category}
+    hidden: true
 
+  - measure: max_products_in_category
+    label: CATEGORY TOTAL PRODUCTS
+    type: max
+    sql: cast(${product_impressions.position} as int)
+
+  - measure: product_impressions_per_session
+    label: CATEGORY AVERAGE PRODUCTS SCROLLED
+    type: number
+    decimals: 2
+    sql:  coalesce(${count_distinct_product_impressions}/NULLIF(${count_sessions},0)::REAL, '0')
+    value_format: '#.##'
+  
+  - measure: avg_scroll_percentage
+    label: CATEGORY AVERAGE SCROLL PERCENTAGE
+    type: number
+    decimals: 2
+    sql:  coalesce(${product_impressions_per_session}/NULLIF(${max_products_in_category},0)::REAL, '0')
+    value_format: '#.##%'
+    
 ############################################################## Payment Funnel Stuff #########################################################################################################################################################################
 
   - measure: count_sessions_with_catalog_page_view
