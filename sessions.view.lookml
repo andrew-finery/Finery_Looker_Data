@@ -5,8 +5,9 @@
       
         s.domain_userid,
         s.domain_sessionidx,
-        s.session_start_ts,
         id.blended_user_id,
+        s.session_start_ts,
+        s.user_id,
         s.session_end_ts,
         s.number_of_events,
         s.interaction_events,
@@ -145,6 +146,11 @@
     sql: ${TABLE}.number_of_events
     hidden: true
   
+  - dimension: log_in_flag
+    label: SESSION LOGGED IN FLAG
+    type: yesno
+    sql: ${TABLE}.user_id is not null
+  
   - dimension: free_gift_click_flag
     label: SESSION INVOLVES FREE GIFT CLICK
     type: yesno
@@ -153,7 +159,7 @@
   - dimension: bounce
     label: BOUNCED SESSION
     type: yesno
-    sql: ${TABLE}.interaction_events < 2
+    sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
   
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
