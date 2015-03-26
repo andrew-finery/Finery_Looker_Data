@@ -465,7 +465,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_date: 1 day ago for 1 day
     font_size: small
@@ -479,7 +479,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_date: 8 days ago for 1 day
     font_size: small

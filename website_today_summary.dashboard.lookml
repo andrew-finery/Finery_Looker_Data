@@ -270,7 +270,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_date: 0 days ago for 1 day
       atomic_events.event_time_time: before 1 hour ago
@@ -285,7 +285,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
       atomic_events.event_time_time: before 169 hours ago
@@ -300,7 +300,7 @@
     type: single_value
     model: finery_data
     explore: atomic_events
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_date: 7 days ago for 1 day
     font_size: small
@@ -316,7 +316,7 @@
     explore: atomic_events
     dimensions: [atomic_events.event_time_hour_of_day, atomic_events.today_tw_lw_flag]
     pivots: [atomic_events.today_tw_lw_flag]
-    measures: [atomic_events.bounce_rate]
+    measures: [sessions.bounce_rate]
     filters:
       atomic_events.event_time_time: before 1 hours ago
       atomic_events.today_tw_lw_flag: -NULL
