@@ -91,8 +91,6 @@
     from: spree_products
     sql_on: ${atomic_events.product_id} = ${spree_products.product_id}
 
-    
-- explore: page_views
 
 - explore: users_signup
   joins:
@@ -102,8 +100,7 @@
     sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-  
-- explore: leads
+
 
 - explore: spree_orders
   joins:
@@ -172,16 +169,7 @@
   - join: online_products
     sql_on: |
       returns.sku = online_products.ean
-  - join: spree_orders
-    sql_on: spree_orders.order_id = returns.order_id
-  - join: hermes_delivery_tracking
-    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
-  - join: spree_addresses
-    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-  - join: users_signup
-    sql_on: |
-      returns.user_id = users_signup.id
-
+      
 - explore: spree_refunds
 
 - explore: goods_in

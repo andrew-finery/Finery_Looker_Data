@@ -6,6 +6,7 @@
         a.spree_timestamp,
         a.created_at,
         a.updated_at,
+        h.completed_at as order_completed_tstamp,
         a.id as return_id,
         c.order_id,
         h.user_id,
@@ -57,56 +58,96 @@
 
   fields:
 
-     - dimension: return_id
-       sql: ${TABLE}.return_id
+    ##############################################################################################################################################
+  ###################################################### DIMENSIONS ############################################################################
+##############################################################################################################################################
+
+  - dimension: return_id
+    label: RETURN ID
+    sql: ${TABLE}.return_id
+    hidden: true
      
-     - dimension: order_id
-       sql: ${TABLE}.order_id
+  - dimension: order_id
+    label: ORDER ID
+    sql: ${TABLE}.order_id
+    hidden: true
        
-     - dimension: shipment_id
-       sql: ${TABLE}.shipment_id
+  - dimension: shipment_id
+    label: SHIPMENT ID
+    sql: ${TABLE}.shipment_id
+    hidden: true
 
-     - dimension: sku
-       sql: ${TABLE}.sku
+  - dimension: sku
+    label: SKU
+    sql: ${TABE}.sku
+    hidden: true
 
-     - dimension: return_reason
-       sql: ${TABLE}.name
+  - dimension: return_reason
+    label: RETURN REASON
+    sql: ${TABLE}.name
 
-     - dimension_group: returned_at
-       type: time
-       timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-       sql: ${TABLE}.created_at
+  - dimension_group: returned_at
+    label: RETURNED
+    type: time
+    timeframes: [date, week, month]
+    sql: ${TABLE}.created_at
+  
+  - dimension_group: order_completed
+    label: ORDER PLACED
+    type: time
+    timeframes: [date, week, month]
+    sql: ${TABLE}.order_completed_tstamp
+  
+  - dimension: reception_status
+    sql: ${TABLE}.reception_status
+    hidden: true
 
-     - dimension: reception_status
-       sql: ${TABLE}.reception_status
+  - dimension: acceptance_status
+    sql: ${TABLE}.acceptance_status
+    hidden: true
 
-     - dimension: acceptance_status
-       sql: ${TABLE}.acceptance_status
+  - dimension: item_total
+    sql: ${TABLE}.pre_tax_amount
+    hidden: true
 
-     - dimension: item_total
-       sql: ${TABLE}.pre_tax_amount
+  - dimension: reimbursement_total
+    sql: ${TABLE}.total_reimbursed
+    hidden: true
 
-     - dimension: reimbursement_total
-       sql: ${TABLE}.total_reimbursed
+  - dimension: reimbursement_status
+    sql: ${TABLE}.reimbursement_status
+    hidden: true
 
-     - dimension: reimbursement_status
-       sql: ${TABLE}.reimbursement_status
-
-     - dimension: customer_return_code
-       sql: ${TABLE}.customer_return_code
+  - dimension: customer_return_code
+    sql: ${TABLE}.customer_return_code
+    hidden: true
        
-     - dimension: return_authorization_code
-       sql: ${TABLE}.return_authorization_code
+  - dimension: return_authorization_code
+    sql: ${TABLE}.return_authorization_code
+    hidden: true
        
-     - dimension: reimbursemenet_code
-       sql: ${TABLE}.reimbursemenet_code
-       
-    # Measures
-       
-     - measure: number_of_returns
-       type: count_distinct
-       sql: ${return_id}
-       
-     - measure: number_of_orders_with_returns
-       type: count_distinct
-       sql: ${order_id}
+  - dimension: reimbursemenet_code
+    sql: ${TABLE}.reimbursemenet_code
+    hidden: true
+     
+  - dimension: days_to_process_return
+    type: int
+    sql: ${returned_at_date} - ${order_completed_date}
+
+    ##############################################################################################################################################
+  ###################################################### MEASURES ##############################################################################
+##############################################################################################################################################
+
+  - measure: items_returned
+    type: number
+    sql: count(*)
+  
+  - measure: average_days_to_process_return
+    label: AVERAGE DAYS TO RETURN
+    type: average
+    sql: cast(${days_to_process_return} as decimal(8,2))
+    value_format: '#.00'
+     
+  - measure: number_of_orders_with_returns
+    type: count_distinct
+    sql: ${order_id}
