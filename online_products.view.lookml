@@ -8,7 +8,7 @@
         variants.product_id as product_id,
         variants.deleted_at as deleted_at,
         products.available_on as available_on,
-        products.name as style,
+        first_value(products.name) over (partition by products.product_group_id order by products.name asc rows between unbounded preceding and unbounded following) as style,
         products.product_group_id as product_group_id,
         product_group.sku as parent_sku,
         prices.amount as current_price,
