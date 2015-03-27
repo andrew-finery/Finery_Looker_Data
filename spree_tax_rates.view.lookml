@@ -20,7 +20,7 @@
         (select * from daily_snapshot.spree_zone_members where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_zone_members)) zone_members
         on zone_members.zone_id = taxes.zone_id
 
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_exchange_rates.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_refunds.SQL_TABLE_NAME}
     distkey: calendar_date
     sortkeys: [calendar_date, country_id]
 
