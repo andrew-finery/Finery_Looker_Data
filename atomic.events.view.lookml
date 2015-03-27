@@ -506,7 +506,15 @@
     
   - dimension: category
     label: CATEGORY PAGE
-    sql: coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
+    sql: |
+          case
+          when ${product_impressions.list} = 'taxons/show' then coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
+          when ${product_impressions.list} is null then coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
+          when ${product_impressions.list} like '%complete_the_look%' then 'Complete The Look'
+          when ${product_impressions.list} = 'products/show' then 'Complete The Look'
+          when ${product_impressions.list} like '%related_products%' then 'Related Products'
+          else coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
+          end
     
   - dimension: image_style
     label: PRODUCT IMAGE STYLE
@@ -530,7 +538,7 @@
   - measure: count_product_clicks
     label: COUNT PRODUCT CLICKS
     type: count_distinct
-    sql: coalesce(${product_clicked.event_id},'0')
+    sql: coalesce(${product_clicked.event_id},null)
     filters:
       app_id: production
   
@@ -585,6 +593,7 @@
     filters:
       app_id: production
       product_impressions.category: -NULL
+      product_impressions.list: taxons/show
       
   - measure: category_clicks
     label: CATEGORY UNIQUE PAGE CLICKS

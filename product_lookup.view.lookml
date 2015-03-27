@@ -79,7 +79,7 @@
     hidden: true
     
   - dimension: factory
-    label: SUPPLIER
+    label: FACTORY
     sql: ${TABLE}.factory
 
   - dimension: freight_cost_gbp
