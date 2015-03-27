@@ -87,10 +87,10 @@
     model: finery_data
     explore: returns
     dimensions: [returns.return_reason]
-    measures: [returns.number_of_returns]
+    measures: [returns.items_returned]
     filters:
       returns.reimbursement_status: '"reimbursed"'
-    sorts: [returns.number_of_returns desc]
+    sorts: [returns.items_returned desc]
     limit: 500
     height: 4
     width: 6

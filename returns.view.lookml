@@ -79,7 +79,7 @@
 
   - dimension: sku
     label: SKU
-    sql: ${TABE}.sku
+    sql: ${TABLE}.sku
     hidden: true
 
   - dimension: return_reason
