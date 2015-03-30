@@ -307,7 +307,7 @@
       calendar_date_date: 1 day ago for 1 day
   
   - measure: stock_mix_retail_yesterday
-    label: STOCK MIX YESTERDAY
+    label: STOCK RETAIL VALUE MIX YESTERDAY
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday}  
   
@@ -363,6 +363,13 @@
       calendar_date_date: yesterday
 
 ####################### Weekly/Monthly Measures
+
+  - measure: sum_items_sold_yesterday
+    label: UNITS SOLD YESTERDAY
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: 1 day ago for 1 day
     
   - measure: sum_items_sold_last_week
     label: UNITS SOLD LAST WEEK
@@ -384,6 +391,14 @@
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: 7 days ago for 7 days 
+
+  - measure: gross_item_revenue_gbp_ex_vat_ex_discount_yesterday
+    label: GROSS REVENUE EX. VAT, DISCOUNT YESTERDAY
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
+    value_format: '"£"#,##0.00'
+    filters:
+      calendar_date_date: 1 day ago for 1 day
 
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week
     label: GROSS REVENUE EX. VAT, DISCOUNT LAST WEEK
@@ -408,26 +423,59 @@
     value_format: '"£"#,##0.00'
     filters:
       calendar_date_date: 7 days ago for 7 days
+
+  - measure: sales_mix_last_7_days
+    label: SALES MIX - LAST 7 DAYS
+    type: percent_of_total
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days}
   
   - measure: weeks_cover_yesterday
     label: WEEKS COVER YESTERDAY
     type: number
     decimals: 2
     sql: ${closing_stock_yesterday}/NULLIF(${sum_items_sold_last_7_days},0)::REAL
-    value_format: '#.##' 
+    value_format: '#.00' 
     
   - measure: weeks_cover_last_week
     label: WEEKS COVER LAST WEEK
     type: number
     decimals: 2
     sql: ${closing_stock_last_week}/NULLIF(${sum_items_sold_last_week},0)::REAL
-    value_format: '#.##' 
+    value_format: '#.00' 
     
   - measure: weeks_cover_week_before_last
     label: WEEKS COVER WEEK BEFORE LAST
     type: number
     decimals: 2
     sql: ${closing_stock_week_before_last}/NULLIF(${sum_items_sold_week_before},0)::REAL
-    value_format: '#.##' 
+    value_format: '#.00' 
     
-      
+  - measure: units_sold_wow
+    label: UNITS SOLD WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: (${sum_items_sold_last_week} - ${sum_items_sold_week_before})/NULLIF(${sum_items_sold_week_before},0)::REAL
+    value_format: '#.00%'
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+
+  - measure: gross_revenue_wow
+    label: GROSS REVENUE WEEK ON WEEK
+    type: number
+    decimals: 2
+    sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL
+    value_format: '#.00%'
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}

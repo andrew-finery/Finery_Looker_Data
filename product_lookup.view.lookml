@@ -1,9 +1,13 @@
 - view: product_lookup
   derived_table:
-    sql: |
+   sql: |
         select * from finery.brightpearl_export_2 bp
         left join (select parent_sku as online_parent_sku, max(style_name) as online_style_name, max(max_price) as max_price, max(current_price) as current_price from ${spree_products.SQL_TABLE_NAME} group by 1) prices
         on bp.parent_sku = prices.online_parent_sku
+
+   sql_trigger_value: SELECT count(*) from {spree_products.SQL_TABLE_NAME}
+   distkey: ean
+   sortkeys: [ean]
      
      
   fields:
@@ -12,7 +16,7 @@
     sql: ${TABLE}.allocated
     hidden: true
 
-  - suggest_dimension: category
+  - dimension: category
     label: DEPARTMENT
     sql_case:
       Evening Dresses: ${TABLE}.category = 'Evening Dresses'
@@ -37,7 +41,7 @@
       Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
-  - suggest_dimension: colour_group
+  - dimension: colour_group
     label: BP_COLOUR
     sql: ${TABLE}.colour_group
 
@@ -102,15 +106,15 @@
     sql: ${TABLE}.mode_of_transport
     hidden: true
     
-  - suggest_dimension: style
+  - dimension: style
     label: BP_STYLE
     sql: ${TABLE}.name
     html: |
         <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.option_name,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.month_on_month,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_weeks_cover&sorts=sales_snapshot.sum_sales_yesterday+desc&total=on&filter_config=%7B%22product_lookup.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Option+-+{{value}}&f%5Bproduct_lookup.style%5D=%22{{value}}%22&run=1">{{value}}</a>
   
-  - suggest_dimension: option_name
+  - dimension: option_name
     label: BP_OPTION
-    sql: ${TABLE}.name||' - '||${TABLE}.colour_group 
+    sql: ${TABLE}.name||' - '||${TABLE}.colour_group
     html: |
         <a href="https://finerylondon.looker.com/explore/finery_data/sales_snapshot?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&fields=product_lookup.size,sales_snapshot.sum_sales_yesterday_qty,sales_snapshot.sum_sales_yesterday,sales_snapshot.day_on_day,sales_snapshot.sum_sales_last_7_days_qty,sales_snapshot.sum_sales_last_7_days,sales_snapshot.week_on_week,sales_snapshot.sum_sales_last_28_days_qty,sales_snapshot.sum_sales_last_28_days,sales_snapshot.month_on_month,sales_snapshot.sum_count_on_hand_qty,sales_snapshot.sum_count_on_hand_gbp,sales_snapshot.avg_weeks_cover&sorts=product_lookup.size+asc&total=on&filter_config=%7B%22product_lookup.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&title=Sales+by+Size+-+{{value}}&f%5Bproduct_lookup.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
   
