@@ -155,7 +155,7 @@
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
     type: number
     decimals: 2
-    sql: ${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))
+    sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))) end
     format: "£%0.2f"
   
   # Margin Dimensions
