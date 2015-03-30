@@ -41,10 +41,10 @@
             sum(quantity) as items_sold,
             sum(price*quantity/exchange_rate) as gross_revenue_gbp,
             sum((price*quantity/exchange_rate) * (1/(1+tax_rate))) as gross_revenue_gbp_ex_vat,
-            sum(((order_total + adjustment_total)/order_total) * price * quantity * (1/(1+tax_rate)) / exchange_rate) as gross_revenue_gbp_ex_vat_ex_discount,
+            sum(((order_total + adjustment_total)/nullif(order_total,'0')) * price * quantity * (1/(1+tax_rate)) / exchange_rate) as gross_revenue_gbp_ex_vat_ex_discount,
             sum(items_returned) as items_returned,
             sum(price*(quantity - items_returned)/exchange_rate) as net_revenue_gbp,
-            sum(((order_total + adjustment_total)/order_total) * price * (quantity - items_returned) * (1/(1+tax_rate)) / exchange_rate) as net_revenue_gbp_ex_vat_ex_discount
+            sum(((order_total + adjustment_total)/nullif(order_total,'0')) * price * (quantity - items_returned) * (1/(1+tax_rate)) / exchange_rate) as net_revenue_gbp_ex_vat_ex_discount
             from
             ${spree_order_items.SQL_TABLE_NAME}
             group by 1,2) sales
