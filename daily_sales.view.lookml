@@ -261,6 +261,7 @@
     label: CLOSING STOCK TOTAL @ COST
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_cost_yesterday
     label: CLOSING STOCK YESTERDAY @ COST
@@ -268,7 +269,8 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 1 day ago for 1 day
-  
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_cost_last_week
     label: CLOSING STOCK LAST WEEK @ COST
     type: sum
@@ -276,7 +278,8 @@
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_cost_week_before_last
     label: CLOSING STOCK 2 WEEKS AGO @ COST
     type: sum
@@ -284,33 +287,38 @@
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_cost_end_of_week
     label: CLOSING STOCK - END OF WEEK @ COST
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
 # closing stock @ retail
 
   - measure: closing_stock_value_retail
     label: CLOSING STOCK TOTAL @ RETAIL
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
-
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_retail_yesterday
     label: CLOSING STOCK YESTERDAY @ RETAIL
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_date: 1 day ago for 1 day
-  
+    value_format: '"£"#,##0.00'
+    
   - measure: stock_mix_retail_yesterday
     label: STOCK RETAIL VALUE MIX YESTERDAY
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday}  
-  
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_retail_last_week
     label: CLOSING STOCK LAST WEEK @ RETAIL
     type: sum
@@ -318,7 +326,8 @@
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_retail_week_before_last
     label: CLOSING STOCK 2 WEEKS AGO @ RETAIL
     type: sum
@@ -326,14 +335,16 @@
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
   - measure: closing_stock_value_retail_end_of_week
     label: CLOSING STOCK - END OF WEEK @ RETAIL
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_day_of_week_index: 6
-
+    value_format: '"£"#,##0.00'
+    
 ### Number of sku's in stock measures
   
   - measure: skus_in_stock_last_week

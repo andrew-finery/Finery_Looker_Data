@@ -608,7 +608,7 @@
     type: number
     decimals: 2
     sql:  coalesce(${category_clicks}/NULLIF(${category_page_views},0)::REAL, '0')
-    value_format: '#.##%'
+    value_format: '#.00%'
 
   - measure: count_distinct_product_impressions
     label: DISTINCT PRODUCT IMPRESSIONS
@@ -1159,6 +1159,22 @@
     sql: 100.0 * (${count_engaged_sessions_last_week})/NULLIF(${count_sessions_last_week},0)::REAL
     format: "%0.2f%"  
     hidden: true
+
+  - measure: new_customer_perc_yesterday
+    label: NEW CUSTOMER % YESTERDAY
+    type: number
+    decimals: 2
+    sql: (${transactions.count_new_customers_yesterday})/NULLIF(${transactions.count_transactions_yesterday},0)::REAL
+    value_format: '#.00%'
+    hidden: true
+    
+  - measure: new_customer_perc_last_week
+    label: NEW CUSTOMER % LAST WEEK
+    type: number
+    decimals: 2
+    sql: (${transactions.count_new_customers_last_week})/NULLIF(${transactions.count_transactions_last_week},0)::REAL
+    value_format: '#.00%'
+    hidden: true
     
 # WoW percentages
   
@@ -1193,6 +1209,23 @@
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
+
+  - measure: new_customers_wow
+    label: NEW CUSTOMER PERCENTAGE WOW
+    type: number
+    decimals: 2
+    sql: 100.0 * (${new_customer_perc_yesterday} - ${new_customer_perc_last_week})/NULLIF(${new_customer_perc_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
+
 
   - measure: conversion_rate_wow
     label: CONVERSION RATE WOW
@@ -1246,8 +1279,8 @@
     label: NEW SESSIONS WOW
     type: number
     decimals: 2
-    sql: 100.0 * (${new_session_perc_yesterday} - ${new_session_perc_last_week})/NULLIF(${new_session_perc_last_week},0)::REAL
-    format: "%0.2f%"
+    sql: (${new_session_perc_yesterday} - ${new_session_perc_last_week})/NULLIF(${new_session_perc_last_week},0)::REAL
+    value_format: '#.00%'
     html: |
         {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>

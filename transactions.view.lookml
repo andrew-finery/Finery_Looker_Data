@@ -67,30 +67,41 @@
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
+    hidden: true
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
+    hidden: true
   
   - dimension: currency_code
     sql: ${TABLE}.currency_code
+    hidden: true
   
   - dimension: exchange_rate
     sql: ${spree_exchange_rates.exchange_rate}
+    hidden: true
   
   - dimension: order_id
     sql: ${TABLE}.order_id
+    hidden: true
   
   - dimension: revenue_inc_vat
     sql: ${TABLE}.revenue
+    hidden: true
      
   - dimension: shipping
     sql: ${TABLE}.shipping
+    hidden: true
     
   - dimension: revenue_ex_coupon_and_vat
     sql: ${TABLE}.net_value
     
   - dimension: number_of_items
     sql: ${TABLE}.qty_total
+  
+  - dimension: new_customer_flag
+    type: yesno
+    sql: ${TABLE}.customer_order_number = 1
   
   - dimension: guest_checkout_flag
     type: yesno
@@ -104,6 +115,13 @@
     label: NUMBER OF ORDERS
     type: count_distinct
     sql: ${order_id}
+
+  - measure: count_new_customers
+    label: NEW CUSTOMERS
+    type: count_distinct
+    sql: ${order_id}
+    filters:
+      new_customer_flag: yes
 
   - measure: count_customers
     label: NUMBER OF CUSTOMERS
@@ -139,5 +157,21 @@
     filters:
       trans_time_date: 8 days ago for 1 day
     hidden: true
+
+  - measure: count_new_customers_yesterday
+    label: NEW CUSTOMERS
+    type: count_distinct
+    sql: ${order_id}
+    filters:
+      new_customer_flag: yes
+      trans_time_date: 1 day ago for 1 day
+    hidden: true
     
-  
+  - measure: count_new_customers_last_week
+    label: NUMBER OF NEW CUSTOMERS
+    type: count_distinct
+    sql: ${order_id}
+    filters:
+      new_customer_flag: yes
+      trans_time_date: 8 days ago for 1 day
+    hidden: true  
