@@ -1402,3 +1402,19 @@
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
+    
+  - measure: new_customer_perc_wow
+    label: NEW CUSTOMER % WOW
+    type: number
+    decimals: 2
+    sql: 100.0 * (${new_customer_perc_yesterday} - ${new_customer_perc_last_week})/NULLIF(${new_customer_perc_last_week},0)::REAL
+    format: "%0.2f%"
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+    hidden: true
