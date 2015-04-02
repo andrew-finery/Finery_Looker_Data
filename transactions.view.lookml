@@ -64,10 +64,10 @@
     hidden: true
     
   - dimension_group: trans_time
+    label: TRANSACTION
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
-    hidden: true
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
