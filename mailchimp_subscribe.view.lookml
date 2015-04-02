@@ -9,7 +9,9 @@
         from atomic.com_mailchimp_subscribe_1
         group by 1,3)
         union
-        (select * from finery.mailchimp_snapshot_all_subscribers_24_03_2015))
+        (select * from finery.mailchimp_snapshot_all_subscribers_24_03_2015)
+        union
+        (select * from finery.mailchimp_snapshot_newsletter_subscribers_02_04_2015))
         group by 1,3
 
   fields:

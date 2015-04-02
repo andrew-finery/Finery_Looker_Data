@@ -6,6 +6,8 @@
         (select lower("data.email") as email, root_tstamp as message_sent_at from atomic.com_mailchimp_subscribe_1 where "data.list_id" = '179a8621fb')
         union
         (select lower(email) as email, confirm_time as message_sent_at from finery.newsletter_snapshot_03_03)
+        union
+        (select email, subscribe_time as message_sent_at from finery.mailchimp_snapshot_newsletter_subscribers_02_04_2015)
         )
         group by 1
 
