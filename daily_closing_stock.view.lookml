@@ -1,6 +1,6 @@
 - view: daily_closing_stock
   derived_table:
-     sql: |
+    sql: |
         --
           SELECT sku,
                  calendar_date - 1 AS closing_stock_date,
@@ -31,9 +31,9 @@
                    2,
                    3
 
-     sql_trigger_value: select sum(max_timestamp) from (select max_timestamp from (select extract(epoch from max(spree_timestamp)) as max_timestamp from ${spree_order_items.SQL_TABLE_NAME}) union (select extract (epoch from max(root_tstamp)) as max_timestamp from atomic.com_finerylondon_stock_updated_1))
-     distkey: sku
-     sortkeys: [sku, closing_stock_date]
+    sql_trigger_value: select sum(max_timestamp) from (select max_timestamp from (select extract(epoch from max(spree_timestamp)) as max_timestamp from ${spree_order_items.SQL_TABLE_NAME}) union (select extract (epoch from max(root_tstamp)) as max_timestamp from atomic.com_finerylondon_stock_updated_1))
+    distkey: sku
+    sortkeys: [sku, closing_stock_date]
 
   fields:
   
