@@ -1,4 +1,3 @@
-- explore: daily_closing_stock
 - view: daily_closing_stock
   derived_table:
     sql: |
