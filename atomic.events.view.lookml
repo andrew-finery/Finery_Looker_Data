@@ -530,24 +530,18 @@
     
   - measure: count_product_impressions
     label: COUNT PRODUCT IMPRESSIONS
-    type: count_distinct
-    sql: ${product_impressions.product_impression_id}
-    filters:
-      app_id: production
+    type: int
+    sql: APPROXIMATE COUNT (DISTINCT case when ${app_id} = 'production' then ${product_impressions.product_impression_id} else null end)
 
   - measure: count_product_clicks
     label: COUNT PRODUCT CLICKS
-    type: count_distinct
-    sql: coalesce(${product_clicked.event_id},null)
-    filters:
-      app_id: production
+    type: int
+    sql: APPROXIMATE COUNT (DISTINCT case when ${app_id} = 'production' then coalesce(${product_clicked.event_id},null) else null end)
   
   - measure: count_product_quick_views
     label: COUNT PRODUCT QUICK VIEWS
-    type: count_distinct
-    sql: ${product_quick_views.event_id}
-    filters:
-      app_id: production    
+    type: int
+    sql: APPROXIMATE COUNT(DISTINCT case when ${app_id} = 'production' then ${product_quick_views.event_id} else null end)
    
   - measure: count_product_page_views
     label: COUNT PRODUCT PAGE VIEWS
