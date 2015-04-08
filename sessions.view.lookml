@@ -245,8 +245,8 @@
       Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
       SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483'
       SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
-      CRM: ${TABLE}.mkt_source = 'crm'
-      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
+      CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm'
+      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' or ${TABLE}.mkt_source_ga = 'newsletter'
       Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook'
       Search: ${TABLE}.refr_medium_ga = 'search'
       Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate'
@@ -257,14 +257,14 @@
   - dimension: traffic_source
     label: TRAFFIC SOURCE
     sql_case:
-      CRM: ${acquisition_channel} = 'Email'
-      Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
+      CRM: ${acquisition_channel} = 'CRM'
+      Paid: ${acquisition_channel} in ('SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Brand
 
   - dimension: paid_unpaid_traffic_flag
     label: PAID MARKETING FLAG
     sql_case:
-      Paid: ${acquisition_channel} in ('Paid Search', 'Facebook - Paid Marketing')
+      Paid: ${acquisition_channel} in ('SEM Brand', 'SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Unpaid
 
   - dimension: referer_medium
