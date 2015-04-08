@@ -800,6 +800,7 @@
 
   - measure: count_engaged_sessions
     type: count_distinct
+    label: COUNT ENGAGED SESSIONS
     sql: |
         case
         when (
@@ -813,7 +814,6 @@
         ) then ${session_id} else null end
     filters:
      app_id: production
-    hidden: true
      
   - measure: newsletter_subscription_rate
     label: NEWSLETTER SUBSCRIPTION RATE
