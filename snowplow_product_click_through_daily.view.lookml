@@ -2,7 +2,7 @@
   derived_table:
      sql: |
           select
-          impressions.impression_date,
+          impressions.impression_date as calendar_date,
           clicks.click_date,
           impressions.brand,
           impressions.category,
@@ -37,6 +37,7 @@
    - dimension_group: impression_date
      type: time
      label: CALENDAR
+     sql: ${TABLE}.calendar_date
      timeframes: [date, week, month]
 
    - dimension: brand

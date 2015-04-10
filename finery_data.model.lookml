@@ -193,8 +193,12 @@
 - explore: snowplow_product_click_through_daily
   joins:
   - join: spree_products
-    from: spree_products
     sql_on: ${snowplow_product_click_through_daily.product_id} = ${spree_products.product_id}
+
+- explore: daily_option_info
+  joins:
+  - join: spree_products
+    sql_on: ${daily_option_info.product_id} = ${spree_products.product_id}
     
 - explore: mailchimp_subscribe
   joins:
