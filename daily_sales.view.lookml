@@ -244,8 +244,8 @@
   - measure: gross_margin_percent
     label: GROSS MARGIN %
     type: number
-    sql: (coalesce(${gross_item_revenue_gbp_ex_vat_ex_discount},'0') - coalesce(${sum_cost_gbp},'0')/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount},0)::REAL
-    value_format: '#0.00%'
+    sql: (${gross_item_revenue_gbp_ex_vat_ex_discount} - ${sum_cost_gbp})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount},0)::REAL
+    value_format: '##.00%'
 
 # Stock Measures
 
