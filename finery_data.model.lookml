@@ -115,16 +115,7 @@
     sql_on: spree_orders.blended_email = all_referrals.email
   - join: spree_orders_promotions
     sql_on: spree_orders.order_id = spree_orders_promotions.order_id
-    
-- explore: sales_snapshot
-  joins:
-  - join: product_lookup
-    sql_on: |
-      sales_snapshot.sku = product_lookup.ean
-  - join: online_products
-    sql_on: |
-      sales_snapshot.sku = online_products.ean
-      
+
 - explore: spree_order_items
   joins:
   - join: spree_orders
