@@ -119,15 +119,17 @@
 
    - measure: click_through_rate
      type: number
+     decimals: 4
      label: CLICK-THROUGH RATE
-     sql: 100.0 * (${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL)
-     value_format: '#0.00\%'
+     sql: ${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL
+     value_format: '0.00%'
      
    - measure: conversion_rate
      type: number
+     decimals: 4
      label: CONVERSION RATE
-     sql: 100.0 * (${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL)
-     value_format: '#0.00\%'
+     sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL
+     value_format: '0.00%'
 
 
 
