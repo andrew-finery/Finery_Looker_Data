@@ -209,6 +209,29 @@
     type: number
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount}
     value_format: '"£"#,##0.00'
+
+# ASP
+
+  - measure: asp
+    label: ASP
+    type: number
+    decimals: 2
+    sql: ${gross_item_revenue_gbp}/NULLIF(${sum_items_sold},0)::REAL
+    value_format: '"£"#,##0.00'
+    
+  - measure: asp_ex_vat
+    label: ASP EX. VAT
+    type: number
+    decimals: 2
+    sql: ${gross_item_revenue_gbp_ex_vat}/NULLIF(${sum_items_sold},0)::REAL
+    value_format: '"£"#,##0.00'
+    
+  - measure: asp_ex_vat_ex_discount
+    label: ASP EX. VAT, DISCOUNT
+    type: number
+    decimals: 2
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_items_sold},0)::REAL
+    value_format: '"£"#,##0.00'
     
 # Margin Measures
 
@@ -217,6 +240,12 @@
     type: sum
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     value_format: '"£"#,##0.00'
+
+  - measure: gross_margin_percent
+    label: GROSS MARGIN %
+    type: number
+    sql: (coalesce(${gross_item_revenue_gbp_ex_vat_ex_discount},'0') - coalesce(${sum_cost_gbp},'0')/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount},0)::REAL
+    value_format: '#0.00%'
 
 # Stock Measures
 
