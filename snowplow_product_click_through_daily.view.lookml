@@ -24,7 +24,7 @@
           and impressions."position" = clicks."position"
           and impressions.style = clicks.style
 
-     sql_trigger_value: select max(click_date) from ${snowplow_product_clicked_daily.SQL_TABLE>NAME}
+     sql_trigger_value: select max(click_date) from ${snowplow_product_clicked_daily.SQL_TABLE_NAME}
      distkey: id
      sortkeys: [id, click_date]
 
