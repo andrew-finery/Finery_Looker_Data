@@ -23,7 +23,7 @@
             (select sku from ${daily_closing_stock.SQL_TABLE_NAME}
             group by 1) aaa
             cross join
-            (select calendar_date, year_week_number from lookup.calendar)bbb
+            (select calendar_date, year_week_number from finery.calendar)bbb
             where bbb.calendar_date < current_date) matrix
             
             left join

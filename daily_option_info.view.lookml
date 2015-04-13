@@ -13,7 +13,7 @@
           click_through.product_clicks
           
           from
-          (select product_id, calendar_date from (select product_id from ${online_products.SQL_TABLE_NAME} group by 1) cross join (select calendar_date from lookup.calendar where calendar_date < current_date)) option_date_matrix
+          (select product_id, calendar_date from (select product_id from ${online_products.SQL_TABLE_NAME} group by 1) cross join (select calendar_date from finery.calendar where calendar_date < current_date)) option_date_matrix
           
           left join (select calendar_date, product_id, items_sold, gross_revenue_gbp, gross_revenue_gbp_ex_vat, gross_revenue_gbp_ex_vat_ex_discount from ${daily_sales_option.SQL_TABLE_NAME}) sales
           on option_date_matrix.calendar_date = sales.calendar_date and option_date_matrix.product_id = sales.product_id
@@ -130,6 +130,3 @@
      label: CONVERSION RATE
      sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL
      value_format: '0.00%'
-
-
-

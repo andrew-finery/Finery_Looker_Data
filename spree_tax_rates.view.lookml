@@ -7,12 +7,12 @@
         (select date(spree_timestamp) as calendar_date, zone_id, max(amount) as amount, max(spree_timestamp) as spree_timestamp from daily_snapshot.spree_tax_rates group by 1,2)
         union
         select calendar_before.calendar_date, tax_rates_before.zone_id, tax_rates_before.amount, cast(null as datetime) as spree_timestamp from
-        (select calendar_date from lookup.calendar where calendar_date < (select min(date(spree_timestamp)) from daily_snapshot.spree_tax_rates)) calendar_before
+        (select calendar_date from finery.calendar where calendar_date < (select min(date(spree_timestamp)) from daily_snapshot.spree_tax_rates)) calendar_before
         cross join
         (select zone_id, max(amount) as amount from daily_snapshot.spree_tax_rates where spree_timestamp = (select min(spree_timestamp) from daily_snapshot.spree_tax_rates) group by 1) tax_rates_before
         union
         select calendar_before.calendar_date, tax_rates_after.zone_id, tax_rates_after.amount as spree_timestamp, cast(null as datetime) as spree_timestamp from
-        (select calendar_date from lookup.calendar where calendar_date > (select max(date(spree_timestamp)) from daily_snapshot.spree_tax_rates)) calendar_before
+        (select calendar_date from finery.calendar where calendar_date > (select max(date(spree_timestamp)) from daily_snapshot.spree_tax_rates)) calendar_before
         cross join
         (select zone_id, max(amount) as amount from daily_snapshot.spree_tax_rates where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_tax_rates) group by 1) tax_rates_after) taxes
 
