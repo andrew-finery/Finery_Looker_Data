@@ -149,7 +149,7 @@
     sql_on: |
       daily_sales.sku = online_products.ean
   - join: calendar_weeks
-    sql_on: ${daily_sales.calendar_date_date} = ${alendar_weeks.calendar_date_date}
+    sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
 
 - explore: returns
   joins:
