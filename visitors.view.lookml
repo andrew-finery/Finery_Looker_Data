@@ -9,15 +9,15 @@
       sum(number_of_sessions) as number_of_sessions,
       page_urlhost,
       page_urlpath,
-      mkt_source,
-      mkt_medium,
-      mkt_campaign,
-      mkt_term,
-      refr_source,
-      refr_medium,
-      refr_term,
-      refr_urlhost,
-      refr_urlpath
+      mkt_source_ga,
+      mkt_medium_ga,
+      mkt_campaign_ga,
+      mkt_term_ga,
+      refr_source_ga,
+      refr_medium_ga,
+      refr_term_ga,
+      refr_urlhost_ga,
+      refr_urlpath_ga
       FROM
       (SELECT
         v.domain_userid,
@@ -29,20 +29,18 @@
         v.number_of_sessions,
         first_value(l.page_urlhost) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as page_urlhost,
         first_value(l.page_urlpath) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as page_urlpath,
-        first_value(s.mkt_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_source,
-        first_value(s.mkt_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_medium,
-        first_value(s.mkt_campaign_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_campaign,
-        first_value(s.mkt_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_term,
-        first_value(s.refr_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_source,
-        first_value(s.refr_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_medium,
-        first_value(s.refr_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_term,
-        first_value(s.refr_urlhost_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlhost,
-        first_value(s.refr_urlpath_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlpath
+        first_value(s.mkt_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_source_ga,
+        first_value(s.mkt_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_medium_ga,
+        first_value(s.mkt_campaign_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_campaign_ga,
+        first_value(s.mkt_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as mkt_term_ga,
+        first_value(s.refr_source_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_source_ga,
+        first_value(s.refr_medium_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_medium_ga,
+        first_value(s.refr_term_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_term_ga,
+        first_value(s.refr_urlhost_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlhost_ga,
+        first_value(s.refr_urlpath_ga) over (partition by id_stitch.blended_user_id order by v.first_touch asc rows between unbounded preceding and unbounded following) as refr_urlpath_ga
       FROM
         ${visitors_basic.SQL_TABLE_NAME} AS v
-        LEFT JOIN (select domain_userid, blended_user_id from
-                  (select first_value(domain_userid) over (partition by blended_user_id order by first_touch_time asc rows between unbounded preceding and unbounded following) as domain_userid, blended_user_id from
-                  ${identity_stitching.SQL_TABLE_NAME}) group by 1,2) AS id_stitch
+        LEFT JOIN ${identity_stitching.SQL_TABLE_NAME}) AS id_stitch
         on id_stitch.domain_userid = v.domain_userid
         LEFT JOIN ${sessions_landing_page.SQL_TABLE_NAME} AS l
         ON v.domain_userid = l.domain_userid
@@ -71,6 +69,7 @@
     sql: ${TABLE}.first_touch
     
   - dimension_group: first_touch
+    label: FIRST TOUCH
     type: time
     timeframes: [time, hour, date, week, month]
     sql: ${TABLE}.first_touch
@@ -125,43 +124,45 @@
   # Referer source dimensions #
 
   - dimension: acquisition_channel
-    label: ACQUISITION CHANNEL
+    label: VISITOR ACQUISITION CHANNEL
     sql_case:
-      Facebook - Paid Marketing: ${TABLE}.mkt_source = 'facebook' and ${TABLE}.mkt_medium = 'paid'
-      Paid Search: ${TABLE}.mkt_source in ('GoogleSearch', 'GoogleContent')
-      Paid Search:  ${TABLE}.refr_urlhost = 'www.googleadservices.com'
-      Email: ${TABLE}.mkt_medium = 'email' or ${TABLE}.refr_medium = 'email'
-      Social: ${TABLE}.refr_medium = 'social'
-      Search: ${TABLE}.refr_medium = 'search'
-      Referrals: ${TABLE}.refr_medium = 'unknown'
-      Other Marketing Source: ${TABLE}.mkt_source is not null or ${TABLE}.mkt_medium is not null or ${TABLE}.mkt_campaign is not null
+      Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
+      SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483'
+      SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
+      CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm'
+      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' or ${TABLE}.mkt_source_ga = 'newsletter'
+      Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook'
+      Search: ${TABLE}.refr_medium_ga = 'search'
+      Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate'
+      Referrals: ${TABLE}.refr_medium_ga = 'unknown'
+      Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
-
+      
   - dimension: referer_source
-    sql: ${TABLE}.refr_source
+    sql: ${TABLE}.refr_source_ga
     
   - dimension: referer_term
-    sql: ${TABLE}.refr_term
+    sql: ${TABLE}.refr_term_ga
     
   - dimension: referer_url_host
-    sql: ${TABLE}.refr_urlhost
+    sql: ${TABLE}.refr_urlhost_ga
   
   - dimension: referer_url_path
-    sql: ${TABLE}.refr_urlpath
+    sql: ${TABLE}.refr_urlpath_ga
     
   # MKT fields (paid acquisition channels)
     
   - dimension: campaign_medium
-    sql: ${TABLE}.mkt_medium
+    sql: ${TABLE}.mkt_medium_ga
   
   - dimension: campaign_source
-    sql: ${TABLE}.mkt_source
+    sql: ${TABLE}.mkt_source_ga
   
   - dimension: campaign_term
-    sql: ${TABLE}.mkt_term
+    sql: ${TABLE}.mkt_term_ga
   
   - dimension: campaign_name
-    sql: ${TABLE}.mkt_campaign
+    sql: ${TABLE}.mkt_campaign_ga
       
   # Measures #
       

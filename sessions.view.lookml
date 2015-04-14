@@ -66,6 +66,7 @@
         t.dvce_screenwidth,
         t.dvce_screenheight,
         rank() over(partition by id.blended_user_id order by s.session_start_ts asc) as session_index,
+        cast(customer_order_number as integer) as order_number,
         coalesce(tr.number_of_orders,'0') as number_of_orders
         
       FROM ${sessions_basic.SQL_TABLE_NAME} AS s
@@ -86,7 +87,7 @@
         s.domain_sessionidx = t.domain_sessionidx
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
-      LEFT JOIN (select domain_userid, domain_sessionidx, count(*) as number_of_orders from ${transactions.SQL_TABLE_NAME} group by 1,2) AS tr
+      LEFT JOIN (select domain_userid, domain_sessionidx, min(customer_order_number) as customer_order_number, count(*) as number_of_orders from ${transactions.SQL_TABLE_NAME} group by 1,2) AS tr
         on s.domain_userid = tr.domain_userid AND
         s.domain_sessionidx = tr.domain_sessionidx
       
@@ -173,6 +174,18 @@
   - dimension: number_of_orders
     label: NUMBER OF ORDERS
     sql: ${TABLE}.number_of_orders
+    hidden: true
+
+  - dimension: order_number
+    type: int
+    label: ORDER NUMBER
+    sql: ${TABLE}.order_number
+
+  - dimension: order_number_tiered
+    label: ORDER NUMBER TIER
+    type: tier
+    tiers: [1,2,3,4,5,10]
+    sql: ${order_number}
 
   - dimension: order_flag
     label: CONVERTED SESSION FLAG
@@ -182,8 +195,8 @@
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
     sql_case:
-      new: ${TABLE}.domain_sessionidx = 1
-      returning: ${TABLE}.domain_sessionidx > 1
+      new: ${session_index} = 1
+      returning: ${session_index} > 1
       else: unknown
    
   # Pages visited #

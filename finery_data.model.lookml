@@ -8,7 +8,7 @@
   joins: 
   - join: visitors
     sql_on: |
-      sessions.domain_userid = visitors.domain_userid
+      ${sessions.blended_user_id} = ${visitors.blended_user_id}
 
 - explore: events
   joins:
@@ -148,6 +148,8 @@
   - join: online_products
     sql_on: |
       daily_sales.sku = online_products.ean
+  - join: calendar_weeks
+    sql_on: ${daily_sales.calendar_date_date} = ${alendar_weeks.calendar_date_date}
 
 - explore: returns
   joins:
