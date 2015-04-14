@@ -1,7 +1,7 @@
 - view: transactions
   derived_table:
     sql: |
-         select domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label, rank() over(partition by blended_user_id order by collector_tstamp asc) as customer_order_number
+         select (select max(collector_tstamp) from atomic.events) as max_tstamp, domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label, rank() over(partition by blended_user_id order by collector_tstamp asc) as customer_order_number
           FROM
           (select domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label from
           (select
@@ -31,7 +31,7 @@
           )
           GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
 
-    sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
+    sql_trigger_value: SELECT COUNT(*) FROM ${identity_stitching.SQL_TABLE_NAME}
     distkey: event_id
     sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
 

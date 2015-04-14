@@ -99,6 +99,7 @@
   - dimension: year_week_number
     label: YEAR WEEK NUMBER
     sql: ${TABLE}.year_week_number
+    hidden: true
     
   - dimension: sku
     label: EAN
