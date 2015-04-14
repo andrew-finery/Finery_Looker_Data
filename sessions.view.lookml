@@ -64,7 +64,10 @@
         t.dvce_type,
         t.dvce_ismobile,
         t.dvce_screenwidth,
-        t.dvce_screenheight
+        t.dvce_screenheight,
+        rank() over(partition by id.blended_user_id order by s.session_start_ts asc) as session_index,
+        coalesce(tr.number_of_orders,'0') as number_of_orders
+        
       FROM ${sessions_basic.SQL_TABLE_NAME} AS s
       LEFT JOIN ${sessions_geo.SQL_TABLE_NAME} AS g
         ON s.domain_userid = g.domain_userid AND
@@ -83,13 +86,19 @@
         s.domain_sessionidx = t.domain_sessionidx
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
-    
+      LEFT JOIN (select domain_userid, domain_sessionidx, count(*) as number_of_orders from ${transactions.SQL_TABLE_NAME} group by 1,2) AS tr
+        on s.domain_userid = tr.domain_userid AND
+        s.domain_sessionidx = tr.domain_sessionidx
+      
     sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
     
   fields:
-  # DIMENSIONS #
+
+    #######################################################################################################################################################################
+  ################################################################ DIMENSIONS ###########################################################################################
+#######################################################################################################################################################################
   
   # Basic dimensions #
   
@@ -102,29 +111,29 @@
     hidden: true
     
   - dimension: session_index
+    label: SESSION INDEX
     type: int
-    sql: ${TABLE}.domain_sessionidx
-    hidden: true
+    sql: ${TABLE}.session_index
   
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
     hidden: true
 
   - dimension: session_index_tier
+    label: SESSION INDEX TIER
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
     sql: ${session_index}
-    hidden: true
-  
-  - dimension: start
-    sql: ${TABLE}.session_start_ts
-    hidden: true
-  
+
   - dimension_group: start
     label: SESSION START
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.session_start_ts
+
+  - dimension: start
+    sql: ${TABLE}.session_start_ts
+    hidden: true
     
   - dimension: end
     sql: ${TABLE}.session_end_ts
@@ -160,6 +169,15 @@
     label: BOUNCED SESSION
     type: yesno
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
+
+  - dimension: number_of_orders
+    label: NUMBER OF ORDERS
+    sql: ${TABLE}.number_of_orders
+
+  - dimension: order_flag
+    label: CONVERTED SESSION FLAG
+    type: yesno
+    sql: ${number_of_orders} > 0
   
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
@@ -402,7 +420,9 @@
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
 
-  # MEASURES #
+    ##########################################################################################################################################################
+  ######################################################## MEASURES ########################################################################################
+##########################################################################################################################################################
 
   - measure: count
     label: VISITS COUNT
