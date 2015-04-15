@@ -452,6 +452,16 @@
     type: percent_of_total
     sql: ${count}
 
+  - measure: count_orders
+    label: COUNT ORDERS
+    type: sum
+    sql: ${number_of_orders}
+
+  - measure: orders_percent_of_total
+    label: ORDERS PERCENT OF TOTAL
+    type: percent_of_total
+    sql: ${count}
+
   - measure: bounced_sessions_count
     label: BOUNCED SESSIONS COUNT
     type: count_distinct
@@ -465,6 +475,13 @@
     decimals: 2
     sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
+
+  - measure: conversion_rate
+    label: CONVERSION RATE
+    type: number
+    decimals: 4
+    sql: ${count_orders}/NULLIF(${count},0)::REAL
+    value_format: "0.00%"
     
   - measure: sessions_from_new_visitors_count
     label: NEW VISITS COUNT
