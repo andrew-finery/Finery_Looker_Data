@@ -118,7 +118,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_max: ['100']
-    y_axis_min: ['88']
+    y_axis_min: ['80']
     reference_lines:
       - value: 98.8
         label: Hermes SLA
