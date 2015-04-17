@@ -124,7 +124,8 @@
   - dimension: session_id
     sql: ${TABLE}.domain_userid || '-' || ${TABLE}.domain_sessionidx
     hidden: true
-
+    primary_key: true
+    
   - dimension: session_index_tier
     label: SESSION INDEX TIER
     type: tier
@@ -191,8 +192,6 @@
 #        or ${sessions.distinct_pages_viewed} > 6
 #        or ${sessions.session_duration_seconds} > 239
 #        ) then ${session_id} else null end
-    filters:
-     app_id: production
  
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
