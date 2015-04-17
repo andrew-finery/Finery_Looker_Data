@@ -2,6 +2,25 @@
   derived_table:
     sql: |
       SELECT
+      sessions.domain_userid,
+      sessions.domain_sessionidx,
+      sessions.session_start_ts,
+      sessions.session_end_ts,
+      sessions.number_of_events,
+      sessions.interaction_events,
+      sessions.free_gift_click_events,
+      sessions.distinct_pages_viewed,
+      sessions.user_id as user_id,
+      coalesce(signups.accounts_created,'0') as accounts_created,
+      coalesce(newsletter.newsletter_signups,'0') as newsletter_signups,
+      coalesce(add_cart.products_added_to_cart,'0') as products_added_to_cart,
+      coalesce(remove_cart.products_removed_from_cart,'0') as product_removed_from_cart,
+      coalesce(cart.cart_events,'0') as cart_events,
+      coalesce(checkout.checkout_progress,'0') as checkout_progress
+      
+      FROM
+      
+      (SELECT
         domain_userid,
         domain_sessionidx,
         MIN(collector_tstamp) AS session_start_ts,
@@ -17,7 +36,24 @@
         AND domain_userid <> ''
         AND app_id = 'production'
         AND domain_sessionidx IS NOT NULL
-      GROUP BY 1,2
+      GROUP BY 1,2) sessions
+      
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as accounts_created from atomic.com_finerylondon_registration_success_1 reg left join atomic.events events on reg.root_id = events.event_id group by 1,2) signups
+        ON signups.domain_userid = sessions.domain_userid and signups.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as newsletter_signups from atomic.com_finerylondon_newsletter_subscription_1 sub left join atomic.events events on sub.root_id = events.event_id group by 1,2) newsletter
+        ON newsletter.domain_userid = sessions.domain_userid and newsletter.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as products_added_to_cart from atomic.com_finerylondon_add_to_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) add_cart
+        ON add_cart.domain_userid = sessions.domain_userid and add_cart.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as products_removed_from_cart from atomic.com_finerylondon_remove_from_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) remove_cart
+        ON remove_cart.domain_userid = sessions.domain_userid and remove_cart.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as cart_events from atomic.com_finerylondon_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) cart
+        ON cart.domain_userid = sessions.domain_userid and cart.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, max(case when checkout.checkout_step = 'started' then 1 when checkout.checkout_step = 'address' then 2 when checkout.checkout_step = 'delivery' then 3 when checkout.checkout_step = 'payment' then 3 else cast(checkout.checkout_step as int) end) as checkout_progress from atomic.com_finerylondon_checkout_1 checkout left join atomic.events events on checkout.root_id = events.event_id group by 1,2) checkout
+        ON checkout.domain_userid = sessions.domain_userid and checkout.domain_sessionidx = sessions.domain_sessionidx
+        
+      
+      
+      
     
     sql_trigger_value: SELECT MAX(collector_tstamp) FROM ${events.SQL_TABLE_NAME}  # Trigger table generation when new data loaded into atomic.events
     distkey: domain_userid
