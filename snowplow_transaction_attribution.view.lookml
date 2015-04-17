@@ -77,5 +77,5 @@
      label: ATTRIBUTED REVENUE EX. DISCOUNT, VAT
      type: sum
      decimals: 2
-     value_format: '"£"0,000.00'
+     value_format: '"£"#,##0.00'
      sql: ${attribution_ratio} * ${transactions.revenue_ex_coupon_and_vat}
