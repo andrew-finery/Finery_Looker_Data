@@ -13,6 +13,12 @@
         s.interaction_events,
         s.distinct_pages_viewed,
         s.free_gift_click_events,
+        s.accounts_created,
+        s.newsletter_signups,
+        s.products_added_to_cart,
+        s.product_removed_from_cart,
+        s.cart_events,
+        s.checkout_progress,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -65,12 +71,7 @@
         t.dvce_ismobile,
         t.dvce_screenwidth,
         t.dvce_screenheight,
-        rank() over(partition by id.blended_user_id order by s.session_start_ts asc) as session_index,
-        cast(customer_order_number as integer) as order_number,
-        coalesce(tr.number_of_orders,'0') as number_of_orders,
-        coalesce(tr.gross_revenue,'0') as gross_revenue,
-        coalesce(tr.gross_revenue_ex_discount,'0') as gross_revenue_ex_discount,
-        coalesce(tr.gross_revenue_ex_discount_ex_vat,'0') as gross_revenue_ex_discount_ex_vat
+        rank() over(partition by id.blended_user_id order by s.session_start_ts asc) as session_index
         
       FROM ${sessions_basic.SQL_TABLE_NAME} AS s
       LEFT JOIN ${sessions_geo.SQL_TABLE_NAME} AS g
@@ -90,9 +91,6 @@
         s.domain_sessionidx = t.domain_sessionidx
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
-      LEFT JOIN (select domain_userid, domain_sessionidx, min(customer_order_number) as customer_order_number, count(*) as number_of_orders, sum(revenue - total_adjustment) as gross_revenue, sum(revenue) as gross_revenue_ex_discount, sum(net_value) as gross_revenue_ex_discount_ex_vat from ${transactions.SQL_TABLE_NAME} group by 1,2) AS tr
-        on s.domain_userid = tr.domain_userid AND
-        s.domain_sessionidx = tr.domain_sessionidx
       
     sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
     distkey: domain_userid
@@ -177,49 +175,25 @@
     label: BOUNCED SESSION
     type: yesno
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
-
-  - dimension: number_of_orders
-    label: NUMBER OF ORDERS
-    sql: ${TABLE}.number_of_orders
-    hidden: true
-
-  - dimension: order_number
-    type: int
-    label: ORDER NUMBER
-    sql: ${TABLE}.order_number
-
-  - dimension: gross_revenue
-    label: GROSS REVENUE
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_revenue
-    hidden: true
-
-  - dimension: gross_revenue_ex_discount
-    label: GROSS REVENUE EX. DISCOUNT
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_revenue_ex_discount
-    hidden: true
-
-  - dimension: gross_revenue_ex_discount_ex_vat
-    label: GROSS REVENUE EX. DISCOUNT, VAT
-    type: number
-    decimals: 2
-    sql: ${TABLE}.gross_revenue_ex_discount_ex_vat
-    hidden: true
-
-  - dimension: order_number_tiered
-    label: ORDER NUMBER TIER
-    type: tier
-    tiers: [1,2,3,4,5,10]
-    sql: ${order_number}
-
-  - dimension: order_flag
-    label: CONVERTED SESSION FLAG
+ 
+  - dimension: engaged_session
+    label: ENGAGED SESSION
     type: yesno
-    sql: ${number_of_orders} > 0
-  
+    sql: ${session_duration_seconds} > 239 or ${distinct_pages_viewed} > 6
+#    |
+#        case
+#        when (
+#        ${register_success.event_id} is not null
+#        or ${newsletter_subscriptions.event_id} is not null
+#        or ${transactions.event_id} is not null
+#        or ${product_in_checkout.event_id} is not null
+#        or ${product_in_cart.event_id} is not null
+#        or ${sessions.distinct_pages_viewed} > 6
+#        or ${sessions.session_duration_seconds} > 239
+#        ) then ${session_id} else null end
+    filters:
+     app_id: production
+ 
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
     sql_case:
@@ -480,34 +454,6 @@
     type: percent_of_total
     sql: ${count}
 
-  - measure: count_orders
-    label: COUNT ORDERS
-    type: sum
-    sql: ${number_of_orders}
-
-  - measure: sum_gross_revenue
-    label: SUM GROSS REVENUE
-    type: sum
-    sql: ${gross_revenue}
-    decimals: 2
-
-  - measure: sum_gross_revenue_ex_discount
-    label: SUM GROSS REVENUE EX. DISCOUNT
-    type: sum
-    sql: ${gross_revenue_ex_discount}
-    decimals: 2
-
-  - measure: sum_gross_revenue_ex_discount_ex_vat
-    label: SUM GROSS REVENUE EX. DISCOUNT, VAT
-    type: sum
-    sql: ${gross_revenue_ex_discount_ex_vat}
-    decimals: 2
-
-  - measure: orders_percent_of_total
-    label: ORDERS PERCENT OF TOTAL
-    type: percent_of_total
-    sql: ${count}
-
   - measure: bounced_sessions_count
     label: BOUNCED SESSIONS COUNT
     type: count_distinct
@@ -522,13 +468,6 @@
     sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
 
-  - measure: conversion_rate
-    label: CONVERSION RATE
-    type: number
-    decimals: 4
-    sql: ${count_orders}/NULLIF(${count},0)::REAL
-    value_format: "0.00%"
-    
   - measure: sessions_from_new_visitors_count
     label: NEW VISITS COUNT
     type: count_distinct
