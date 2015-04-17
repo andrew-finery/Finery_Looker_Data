@@ -10,6 +10,13 @@
     sql_on: |
       ${sessions.blended_user_id} = ${visitors.blended_user_id}
 
+- explore: snowplow_transaction_attribution
+  joins:
+  - join: transactions
+    sql_on: ${snowplow_transaction_attribution.order_id} = ${transactions.order_id}
+  - join: sessions
+    sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
+
 - explore: events
   joins:
   - join: identity_stitching
