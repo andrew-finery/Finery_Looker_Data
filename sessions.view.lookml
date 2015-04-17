@@ -139,11 +139,11 @@
     sql: ${TABLE}.session_start_ts
 
   - dimension: start
-    sql: ${TABLE}.session_start_ts
+    sql: case when ${TABLE}.session_start_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_start_ts end
     hidden: true
     
   - dimension: end
-    sql: ${TABLE}.session_end_ts
+    sql: case when ${TABLE}.session_end_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_end_ts end
     hidden: true
     
   - dimension: session_duration_seconds
@@ -176,22 +176,50 @@
     label: BOUNCED SESSION
     type: yesno
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
- 
+
+  - dimension: accounts_created
+    type: int
+    sql: ${TABLE}.accounts_created
+    hidden: true
+
+  - dimension: newsletter_signups
+    type: int
+    sql: ${TABLE}.newsletter_signups
+    hidden: true
+
+  - dimension: products_added_to_cart
+    type: int
+    sql: ${TABLE}.products_added_to_cart
+    hidden: true
+
+  - dimension: product_removed_from_cart
+    type: int
+    sql: ${TABLE}.product_removed_from_cart
+    hidden: true
+
+  - dimension: cart_events
+    type: int
+    sql: ${TABLE}.cart_events
+    hidden: true
+
+
+  - dimension: checkout_progress
+    type: int
+    sql: ${TABLE}.checkout_progress
+    hidden: true
+
   - dimension: engaged_session
     label: ENGAGED SESSION
     type: yesno
-    sql: ${session_duration_seconds} > 239 or ${distinct_pages_viewed} > 6
-#    |
-#        case
-#        when (
-#        ${register_success.event_id} is not null
-#        or ${newsletter_subscriptions.event_id} is not null
-#        or ${transactions.event_id} is not null
-#        or ${product_in_checkout.event_id} is not null
-#        or ${product_in_cart.event_id} is not null
-#        or ${sessions.distinct_pages_viewed} > 6
-#        or ${sessions.session_duration_seconds} > 239
-#        ) then ${session_id} else null end
+    sql: |
+          ${distinct_pages_viewed} > 6
+          or ${accounts_created} > 0
+          or ${newsletter_signups} > 0
+          or ${products_added_to_cart} > 0
+          or ${cart_events} > 0
+          or ${checkout_progress} > 0
+          or ${transactions.order_id} is not null
+          or ${session_duration_seconds} > 239
  
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
@@ -463,9 +491,23 @@
   - measure: bounce_rate
     label: BOUNCE RATE
     type: number
-    decimals: 2
-    sql: 100.0 * ${bounced_sessions_count}/NULLIF(${count},0)::REAL
-    format: "%0.2f%"
+    decimals: 4
+    sql: ${bounced_sessions_count}/NULLIF(${count},0)::REAL
+    value_format: '0.00%'
+
+  - measure: engaged_sessions_count
+    label: ENGAGED SESSIONS COUNT
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      engaged_session: yes
+
+  - measure: engagement_rate
+    label: ENGAGEMENT RATE
+    type: number
+    decimals: 4
+    sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
+    value_format: '0.00%'
 
   - measure: sessions_from_new_visitors_count
     label: NEW VISITS COUNT
