@@ -122,18 +122,25 @@
     sql: ${order_id}
     filters:
       new_customer_flag: yes
-
+  
   - measure: count_customers
     label: NUMBER OF CUSTOMERS
     type: count_distinct
     sql: ${blended_user_id}
+
+  - measure: gross_revenue_ex_discount_ex_vat
+    label: GROSS REVENUE EX. DISCOUNT, VAT
+    type: sum
+    decimals: 2
+    sql: ${revenue_ex_coupon_and_vat} / ${exchange_rate}
+    value_format: '"£"#,##0.00'
   
   - measure: count_guest_checkouts
     type: count_distinct
     sql: ${order_id}
     filters:
       guest_checkout_flag: Yes
-  
+
   - measure: guest_checkout_percentage
     type: number
     decimals: 2
