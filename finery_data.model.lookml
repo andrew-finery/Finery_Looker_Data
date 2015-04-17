@@ -7,8 +7,10 @@
 - explore: sessions
   joins: 
   - join: visitors
-    sql_on: |
-      ${sessions.blended_user_id} = ${visitors.blended_user_id}
+    sql_on: ${sessions.blended_user_id} = ${visitors.blended_user_id}
+  - join: transactions
+    sql_on: ${transactions.domain_userid} = ${sessions.user_id} and ${transactions.domain_sessionidx} = ${sessions.domain_session_index}
+    relationship: one_to_many
 
 - explore: snowplow_transaction_attribution
   joins:
