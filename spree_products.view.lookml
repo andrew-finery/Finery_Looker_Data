@@ -121,13 +121,11 @@
     
   - dimension: current_price
     label: CURRENT PRICE
-    sql: ${TABLE}.current_price
-    hidden: true
+    sql: ${TABLE}.current_price6
     
   - dimension: max_price
     label: MAX PRICE
     sql: ${TABLE}.max_price
-    hidden: true
     
   - dimension: parent_sku
     sql: ${TABLE}.parent_sku
@@ -152,12 +150,10 @@
   - dimension: sub_season
     label: SUB SEASON
     sql: ${TABLE}.sub_season_code
-    hidden: true
     
   - dimension: product_area
     label: PRODUCT AREA
     sql: ${TABLE}.product_area
-    hidden: true
     
   - dimension: selling_price_tiered
     label: CURRENT PRICE TIER
@@ -171,7 +167,6 @@
       £150 - £200: ${current_price} < 200
       £200 - £300: ${current_price} < 300
       else: '£300 and over'
-    hidden: true
     
   - dimension: discount_level_tier
     label: CURRENT DISCOUNT LEVEL TIER
@@ -182,4 +177,3 @@
       27.5% - 37.5%: ${current_price}/${max_price} > 0.625
       37.5% and over: (${current_price}/${max_price}) > 0 and (${current_price}/${max_price}) <= 0.625
       else: '0% - 7.5%'
-    hidden: true  
