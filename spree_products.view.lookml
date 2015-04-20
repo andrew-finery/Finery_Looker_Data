@@ -121,7 +121,7 @@
     
   - dimension: current_price
     label: CURRENT PRICE
-    sql: ${TABLE}.current_price6
+    sql: ${TABLE}.current_price
     
   - dimension: max_price
     label: MAX PRICE
