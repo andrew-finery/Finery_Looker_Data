@@ -556,3 +556,28 @@
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
+    
+  - dimension: sum_accounts_created
+    label: TOTAL ACCOUNTS CERATED
+    type: sum
+    sql: ${accounts_created}
+
+  - dimension: sum_newsletter_signups
+    label: TOTAL NEWSLETTER SIGNUPS
+    type: sum
+    sql: ${newsletter_signups}
+
+  - dimension: sum_products_added_to_cart
+    label: TOTAL PRODUCTS ADDED TO CART
+    type: sum
+    sql: ${products_added_to_cart}
+
+  - dimension: sum_product_removed_from_cart
+    label: TOTAL PRODUCTS REMOVED FROM CART
+    type: sum
+    sql: ${product_removed_from_cart}
+
+  - dimension: sum_cart_events
+    label: TOTAL CART EVENTS
+    type: sum
+    sql: ${cart_events}
