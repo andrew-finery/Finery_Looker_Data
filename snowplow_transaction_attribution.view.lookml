@@ -78,4 +78,4 @@
      type: sum
      decimals: 2
      value_format: '"£"#,##0.00'
-     sql: ${attribution_ratio} * ${transactions.revenue_ex_coupon_and_vat}
+     sql: ${attribution_ratio} * ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
