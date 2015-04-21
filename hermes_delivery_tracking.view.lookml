@@ -1,7 +1,7 @@
 - view: hermes_delivery_tracking
   derived_table:
    sql: |
-       select
+        select
         all_codes.tracking_code,
         hub_received.hub_received_date,
         misrouted.misrouted_date,
@@ -52,10 +52,10 @@
         (SELECT tracking_code, min(calendar_date) as carried_forward_date FROM finery.delivery_tracking_information_staging where event_description = 'Carried Forward' group by 1) carried_forward
         on all_codes.tracking_code = carried_forward.tracking_code
         left join
-        (SELECT tracking_code, min(CAST(calendar_date || ' ' || event_time AS datetime)) as first_attempt_tstamp FROM finery.delivery_tracking_information_staging where event_description like '%Signature%' or event_description like '%Delivered to%' or event_description like '%Delivery Confirmed%' or event_description like '%Courier to Re-attempt%' or event_description like '%Refused%' or event_description like '%Return%' or event_description like '%Not Delivered%' group by 1) first_attempt
+        (SELECT tracking_code, min(CAST(calendar_date || ' ' || event_time AS datetime)) as first_attempt_tstamp FROM finery.delivery_tracking_information_staging where event_description like '%Signature%' or event_description like '%Delivered to%' or event_description like '%Delivered by Carrier%' or event_description like '%Delivery Confirmed%' or event_description like '%Courier to Re-attempt%' or event_description like '%Refused%' or event_description like '%Return%' or event_description like '%Not Delivered%' group by 1) first_attempt
         on all_codes.tracking_code = first_attempt.tracking_code
         left join
-        (SELECT tracking_code, min(CAST(calendar_date || ' ' || event_time AS datetime)) as delivery_tstamp FROM finery.delivery_tracking_information_staging where event_description like '%Signature%' or event_description like '%Delivered to%' or event_description like '%Delivery Confirmed%' group by 1) delivery
+        (SELECT tracking_code, min(CAST(calendar_date || ' ' || event_time AS datetime)) as delivery_tstamp FROM finery.delivery_tracking_information_staging where event_description like '%Signature%' or event_description like '%Delivered to%' or event_description like '%Delivered by Carrier%' or event_description like '%Delivery Confirmed%' group by 1) delivery
         on all_codes.tracking_code = delivery.tracking_code
         left join
         (SELECT tracking_code, min(CAST(calendar_date || ' ' || event_time AS datetime)) as not_delivered_tstamp FROM finery.delivery_tracking_information_staging where event_description like '%Not Del%' group by 1) not_delivered
