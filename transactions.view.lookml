@@ -67,7 +67,7 @@
     label: TRANSACTION
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: ${TABLE}.collector_tstamp
+    sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp)
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
@@ -134,6 +134,13 @@
     decimals: 2
     sql: ${revenue_ex_coupon_and_vat} / ${exchange_rate}
     value_format: '"£"#,##0.00'
+
+  - measure: avg_basket_size
+    label: AVERAGE BASKET SIZE
+    type: number
+    decimals: 2
+    sql: ${gross_revenue_ex_discount_ex_vat} / ${count_transactions}
+    value_format: '"£"#,##0.00'
   
   - measure: count_guest_checkouts
     type: count_distinct
@@ -146,6 +153,12 @@
     decimals: 2
     sql: 100.0 * ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
     format: "%0.1f%"
+
+  - measure: new_customer_percentage
+    type: number
+    decimals: 4
+    sql: ${count_new_customers}/NULLIF(${count_transactions},0)::REAL
+    value_format: '0.00%'
 
 ############################# Week on Week Measures
 

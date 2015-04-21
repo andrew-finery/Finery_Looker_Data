@@ -136,7 +136,7 @@
     label: SESSION START
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: ${TABLE}.session_start_ts
+    sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.session_start_ts)
 
   - dimension: start
     sql: case when ${TABLE}.session_start_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_start_ts end
@@ -369,11 +369,16 @@
     
   - dimension: device_type
     label: DEVICE TYPE
-    sql: ${TABLE}.dvce_type
-    
+    sql_case:
+      Desktop: ${TABLE}.dvce_type = 'Computer'
+      Tablet: ${TABLE}.dvce_type = 'Tablet'
+      Mobile: ${TABLE}.dvce_type = 'Mobile'
+      else: Other/Unknown
+      
   - dimension: device_is_mobile
     label: MOBILE DEVICE FLAG
     sql: ${TABLE}.dvce_ismobile
+    hidden: true
     
   - dimension: device_screen_width
     sql: ${TABLE}.dvce_screenwidth
@@ -509,6 +514,20 @@
     sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
 
+  - measure: conversion_rate
+    label: CONVERSION RATE
+    type: number
+    decimals: 4
+    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    value_format: '0.00%'
+    
+  - measure: revenue_per_session
+    label: REVENUE PER VISIT
+    type: number
+    decimals: 2
+    sql: ${transactions.gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
+    value_format: '"£"#0.00'
+    
   - measure: sessions_from_new_visitors_count
     label: NEW VISITS COUNT
     type: count_distinct
@@ -558,7 +577,7 @@
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
     
   - dimension: sum_accounts_created
-    label: TOTAL ACCOUNTS CERATED
+    label: TOTAL ACCOUNTS CREATED
     type: sum
     sql: ${accounts_created}
 
