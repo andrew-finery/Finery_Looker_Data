@@ -242,6 +242,12 @@
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     value_format: '"£"#,##0.00'
 
+  - measure: sum_net_cost_gbp
+    label: COST OF NET GOODS SOLD
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns
+    value_format: '"£"#,##0.00'
+
   - measure: gross_margin_percent
     label: GROSS MARGIN %
     type: number
