@@ -3,7 +3,7 @@
    sql: |
         select email, min(message_sent_at) as message_sent_at from
         (select * from
-        (select lower("data.email") as email, root_tstamp as message_sent_at from atomic.com_mailchimp_subscribe_1 where "data.list_id" = '179a8621fb')
+        (select lower("data.email") as email, convert_timezone('UTC', 'Europe/London', root_tstamp) as message_sent_at from atomic.com_mailchimp_subscribe_1 where "data.list_id" = '179a8621fb')
         union
         (select lower(email) as email, confirm_time as message_sent_at from finery.newsletter_snapshot_03_03)
         union

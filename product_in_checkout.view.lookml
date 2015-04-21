@@ -2,7 +2,7 @@
   derived_table:
      sql: |
           SELECT checkout.root_id,
-          checkout.root_tstamp,
+          convert_timezone('UTC', 'Europe/London', checkout.root_tstamp) as root_tstamp,
           checkout.checkout_step,
           checkout.customer_id,
           checkout.delivery_method,

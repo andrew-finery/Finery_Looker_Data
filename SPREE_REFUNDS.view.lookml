@@ -3,7 +3,7 @@
     sql: |
         select  c.order_id,
         d.source_type,
-        coalesce(d.created_at, a.created_at) as refund_processed_at, -- if there is a return authorisation with no associated payment, assume refund made at time return authorization created
+        convert_timezone('UTC', 'Europe/London', coalesce(d.created_at, a.created_at)) as refund_processed_at, -- if there is a return authorisation with no associated payment, assume refund made at time return authorization created
         coalesce(d.payment_method_id, 3) as payment_method_id, -- if there is a return authorisation with no associated payment, assume full payment made in store credits
         coalesce(max(d.amount),  sum(b.pre_tax_amount)) as amount_refunded, -- if there is a return authorisation with no associated payment, assume full payment made in store credits
         e.currency,

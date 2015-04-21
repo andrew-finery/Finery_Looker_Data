@@ -136,7 +136,7 @@
     label: SESSION START
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.session_start_ts)
+    sql: ${TABLE}.session_start_ts
 
   - dimension: start
     sql: case when ${TABLE}.session_start_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_start_ts end
@@ -576,27 +576,27 @@
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
     
-  - dimension: sum_accounts_created
+  - measure: sum_accounts_created
     label: TOTAL ACCOUNTS CREATED
     type: sum
     sql: ${accounts_created}
 
-  - dimension: sum_newsletter_signups
+  - measure: sum_newsletter_signups
     label: TOTAL NEWSLETTER SIGNUPS
     type: sum
     sql: ${newsletter_signups}
 
-  - dimension: sum_products_added_to_cart
+  - measure: sum_products_added_to_cart
     label: TOTAL PRODUCTS ADDED TO CART
     type: sum
     sql: ${products_added_to_cart}
 
-  - dimension: sum_product_removed_from_cart
+  - measure: sum_product_removed_from_cart
     label: TOTAL PRODUCTS REMOVED FROM CART
     type: sum
     sql: ${product_removed_from_cart}
 
-  - dimension: sum_cart_events
+  - measure: sum_cart_events
     label: TOTAL CART EVENTS
     type: sum
     sql: ${cart_events}

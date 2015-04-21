@@ -47,21 +47,6 @@
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
 
-- explore: referrals
-  joins:
-  - join: spree_users
-    sql_on: |
-      referrals.sent_by_id = spree_users.user_id
-  - join: spree_users_2
-    sql_on: |
-      referrals.id = spree_users_2.invitation_id
-  - join: spree_orders
-    sql_on: spree_users_2.user_id = spree_orders.customer_id
-  - join: hermes_delivery_tracking
-    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
-  - join: spree_addresses
-    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-
 - explore: atomic_events
   joins:
   - join: identity_stitching

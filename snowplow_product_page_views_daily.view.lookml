@@ -2,7 +2,7 @@
   derived_table:
      sql: |
           select
-          date (events.collector_tstamp) as calendar_date,
+          date (convert_timezone('UTC', 'Europe/London', events.collector_tstamp)) as calendar_date,
           pagecx.prod_id as product_id,
           approximate count(distinct events.domain_userid || domain_sessionidx || pagecx.prod_id) as product_page_views
           from atomic.events events

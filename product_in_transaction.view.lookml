@@ -2,7 +2,7 @@
   derived_table:
      sql: |
           SELECT trans.event_id as root_id,
-          trans.collector_tstamp as root_tstamp,
+          convert_timezone('UTC', 'Europe/London', trans.collector_tstamp) as root_tstamp,
           product_context.id,
           product_context.price,
           product_context.quantity,

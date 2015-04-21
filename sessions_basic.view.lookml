@@ -4,8 +4,8 @@
       SELECT
       sessions.domain_userid,
       sessions.domain_sessionidx,
-      sessions.session_start_ts,
-      sessions.session_end_ts,
+      convert_timezone('UTC', 'Europe/London', sessions.session_start_ts) as session_start_ts,
+      convert_timezone('UTC', 'Europe/London', sessions.session_end_ts) as session_end_ts,
       sessions.number_of_events,
       sessions.interaction_events,
       sessions.free_gift_click_events,

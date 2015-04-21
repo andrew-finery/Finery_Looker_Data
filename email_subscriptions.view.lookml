@@ -14,7 +14,7 @@
    - dimension_group: event_time
      type: time
      timeframes: [date]
-     sql: ${TABLE}.root_tstamp
+     sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.root_tstamp)
      hidden: true
     
    - dimension: event_type

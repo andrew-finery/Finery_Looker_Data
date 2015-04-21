@@ -99,7 +99,7 @@
     label: EVENT
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week_index, day_of_week, week, month]
-    sql: ${TABLE}.collector_tstamp
+    sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp)
 
   - dimension: today_tw_lw_flag
     label: FLAG

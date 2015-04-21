@@ -28,7 +28,7 @@
              tax_rates.amount as tax_rate,
              a.included_tax_total,
              a.additional_tax_total,
-             a.completed_at,
+             convert_timezone('UTC', 'Europe/London', a.completed_at) as completed_at,
              a.currency,
              a.item_count,
              COALESCE(b.store_credit,'0') AS store_credit_used,

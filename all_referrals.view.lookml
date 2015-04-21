@@ -7,7 +7,7 @@
         union
         (select lower("msg.email") as email, "msg.ts" as message_sent_at from atomic.com_mandrill_message_sent_1 where "msg.subject" like '%exclusive invitation%')
         union
-        (select lower("data.email") as email, root_tstamp as message_sent_at from atomic.com_mailchimp_subscribe_1 where "data.list_id" = 'de06e9bf29')
+        (select lower("data.email") as email, convert_timezone('UTC', 'Europe/London', root_tstamp) as message_sent_at from atomic.com_mailchimp_subscribe_1 where "data.list_id" = 'de06e9bf29')
         union
         (select lower(email) as email, confirm_time as message_sent_at from finery.referrals_snapshot_03_03)
         )

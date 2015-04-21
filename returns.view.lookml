@@ -4,9 +4,9 @@
      sql: |
         select
         a.spree_timestamp,
-        a.created_at,
-        a.updated_at,
-        h.completed_at as order_completed_tstamp,
+        convert_timezone('UTC', 'Europe/London', a.created_at) as created_at,
+        convert_timezone('UTC', 'Europe/London', a.updated_at) as updated_at,
+        convert_timezone('UTC', 'Europe/London', h.completed_at) as order_completed_tstamp,
         a.id as return_id,
         c.order_id,
         h.user_id,

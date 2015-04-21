@@ -11,7 +11,7 @@
                 FROM (SELECT *
                       FROM (SELECT stock_updated.sku,
                                    stock_updated.count_on_hand,
-                                   stock_updated.root_tstamp
+                                   convert_timezone('UTC', 'Europe/London', stock_updated.root_tstamp) as root_tstamp
                             FROM atomic.com_finerylondon_stock_updated_1 stock_updated
                               LEFT JOIN atomic.events events ON stock_updated.root_id = events.event_id
                             WHERE events.app_id = 'production')

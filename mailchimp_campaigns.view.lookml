@@ -1,7 +1,7 @@
 - view: mailchimp_campaigns
   derived_table:
     sql: |
-          select email_id, list_id, email_subject, max(root_tstamp) as latest_send_time from          
+          select email_id, list_id, email_subject, max(convert_timezone('UTC', 'Europe/London', root_tstamp)) as latest_send_time from          
           (SELECT "data.id" AS email_id, "data.list_id" as list_id, root_tstamp,
                  last_value("data.subject") over (partition by "data.id" order by root_tstamp asc rows between unbounded preceding and unbounded following) AS email_subject
           FROM atomic.com_mailchimp_campaign_sending_status_1)

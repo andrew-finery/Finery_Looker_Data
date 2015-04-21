@@ -5,7 +5,7 @@
         lower(email) as email, min(subscribe_time) as subscribe_time, list
         from
         (select * from
-        (select lower("data.email") as email, min(root_tstamp) as subscribe_time, "data.list_id" as list
+        (select lower("data.email") as email, min(convert_timezone('UTC', 'Europe/London', root_tstamp)) as subscribe_time, "data.list_id" as list
         from atomic.com_mailchimp_subscribe_1
         group by 1,3)
         union

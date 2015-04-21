@@ -3,8 +3,8 @@
     sql: |
       SELECT
         domain_userid,
-        MIN(collector_tstamp) AS first_touch,
-        MAX(collector_tstamp) AS last_touch,
+        MIN(convert_timezone('UTC', 'Europe/London', collector_tstamp)) AS first_touch,
+        MAX(convert_timezone('UTC', 'Europe/London', collector_tstamp)) AS last_touch,
         COUNT(*) AS number_of_events,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed,
         MAX(domain_sessionidx) AS number_of_sessions

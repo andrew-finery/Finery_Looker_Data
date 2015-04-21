@@ -1,7 +1,7 @@
 - view: snowplow_product_impressions_daily
   derived_table:
      sql: |
-          SELECT date(events.collector_tstamp) as impression_date,
+          SELECT date(convert_timezone('UTC', 'Europe/London', events.collector_tstamp)) as impression_date,
                  impressions_context.brand,
                  impressions_context.category,
                  impressions_context.id,

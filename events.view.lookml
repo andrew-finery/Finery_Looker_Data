@@ -6,7 +6,7 @@
       domain_sessionidx,
       event_id,
       event,
-      collector_tstamp,
+      convert_timezone('UTC', 'Europe/London', collector_tstamp) as collector_tstamp,
       dvce_tstamp,
       page_title,
       page_urlscheme,

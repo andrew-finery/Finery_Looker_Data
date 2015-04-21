@@ -5,7 +5,7 @@
         lower(email) as email, min(cleaned_time) as cleaned_time, list, max(cleaned_campaign_id) as cleaned_campaign_id
         from
         (select * from
-        (select lower("data.email") as email, min(root_tstamp) as cleaned_time, "data.list_id" as list, max("data.campaign_id") as cleaned_campaign_id
+        (select lower("data.email") as email, min(convert_timezone('UTC', 'Europe/London', root_tstamp)) as cleaned_time, "data.list_id" as list, max("data.campaign_id") as cleaned_campaign_id
         from atomic.com_mailchimp_cleaned_email_1
         group by 1,3)
         union
