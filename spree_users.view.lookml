@@ -27,15 +27,15 @@
              FROM daily_snapshot.spree_users
              WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users)) a
          LEFT JOIN (SELECT aaa.user_id,
-                           SUM(aaa.amount*bbb.exchange_rate) AS total_credit_granted_gbp,
-                           SUM(aaa.amount_used*bbb.exchange_rate) AS total_credit_used_gbp,
-                           SUM(aaa.amount*bbb.exchange_rate) - SUM(aaa.amount_used*bbb.exchange_rate) AS current_credit_gbp
+                           SUM(aaa.amount*bbb.rate) AS total_credit_granted_gbp,
+                           SUM(aaa.amount_used*bbb.rate) AS total_credit_used_gbp,
+                           SUM(aaa.amount*bbb.rate) - SUM(aaa.amount_used*bbb.rate) AS current_credit_gbp
                     FROM (SELECT *
                           FROM daily_snapshot.spree_store_credits
                           WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
                                                    FROM daily_snapshot.spree_store_credits)) aaa
-                      LEFT JOIN lookup.exchange_rates bbb
-                             ON DATE (aaa.created_at) = bbb. "date"
+                      LEFT JOIN ${spree_exchange_rates.SQL_TABLE_NAME} bbb
+                             ON DATE (aaa.created_at) = bbb.calendar_date
                             AND aaa.currency = bbb.currency
                     GROUP BY 1) b ON a.id = b.user_id
          LEFT JOIN (SELECT aaa.email,

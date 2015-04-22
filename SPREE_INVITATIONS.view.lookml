@@ -5,12 +5,12 @@
         aaa.email,
         aaa.credit_amount,
         aaa.currency,
-        aaa.credit_amount * bbb.exchange_rate as credit_amount_gbp
+        aaa.credit_amount * bbb.rate as credit_amount_gbp
         from
         (select * from daily_snapshot.spree_user_signup_awards where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_user_signup_awards)) aaa
         left join
-        lookup.exchange_rates bbb
-        on coalesce(date(aaa.created_at), '2014-11-23') = bbb."date"
+        ${spree_exchange_rates.SQL_TABLE_NAME} bbb
+        on coalesce(date(aaa.created_at), '2014-11-23') = bbb.calendar_date
         and aaa.currency = bbb.currency
         
     sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_invitations
