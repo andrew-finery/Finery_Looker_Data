@@ -89,18 +89,24 @@
    
    - measure: sum_gross_revenue_gbp
      type: sum
+     decimals: 2
      label: GROSS REVENUE
      sql: ${gross_revenue_gbp}
+     value_format: '"£"#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat
      type: sum
+     decimals: 2
      label: GROSS REVENUE EX. VAT
      sql: ${gross_revenue_gbp_ex_vat}
+     value_format: '"£"#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount
      type: sum
+     decimals: 2
      label: GROSS REVENUE EX. VAT, DISCOUNT
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
+     value_format: '"£"#,##0.00'
      
    - measure: sum_product_page_views
      type: sum
