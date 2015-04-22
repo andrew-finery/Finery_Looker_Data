@@ -83,7 +83,7 @@
                     WHERE DATE (spree_timestamp) = CURRENT_DATE- 1
                     GROUP BY 1) users_yesterday ON users_yesterday.id = a.id
 
-    sql_trigger_value: SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users
+    sql_trigger_value: SELECT MAX(spree_timestamp) FROM ${spree_exchange_rates.SQL_TABLE_NAME}
     distkey: user_id
     sortkeys: [user_id]
 

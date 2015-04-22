@@ -42,7 +42,7 @@
         group by 1,2,3,4,6,7
         
         
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_exchange_rates.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT max(spree_timestamp) FROM ${returns.SQL_TABLE_NAME}
     distkey: order_id
     sortkeys: [order_id, refund_processed_at]
 
