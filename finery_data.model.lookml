@@ -118,7 +118,7 @@
     sql_on: spree_orders.order_id = spree_orders_promotions.order_id
 
 - explore: spree_order_items
-  fields: [ALL_FIELDS*, -option_for_returns_report]
+  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
   - join: spree_orders
     sql_on: spree_orders.order_id = spree_order_items.order_id
@@ -139,7 +139,7 @@
     sql_on: date(spree_order_items.order_tstamp) = calendar_weeks.calendar_date
 
 - explore: daily_sales
-  fields: [ALL_FIELDS*, -option_for_returns_report]
+  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
   - join: product_lookup
     sql_on: daily_sales.sku = product_lookup.ean
@@ -162,7 +162,7 @@
 - explore: spree_refunds
 
 - explore: goods_in
-  fields: [ALL_FIELDS*, -option_for_returns_report]
+  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
   - join: product_lookup
     sql_on: goods_in.ean = product_lookup.ean
@@ -172,7 +172,7 @@
     sql_on: goods_in.ean = online_products.ean
 
 - explore: goods_commitment
-  fields: [ALL_FIELDS*, -option_for_returns_report]
+  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
   - join: product_lookup
     sql_on: goods_commitment.ean = product_lookup.ean
