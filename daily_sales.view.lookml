@@ -77,7 +77,7 @@
             
             where matrix.calendar_date > date '2014-11-17'
             
-   sql_trigger_value: SELECT sum(closing_stock) FROM ${daily_closing_stock.SQL_TABLE_NAME}
+   sql_trigger_value: select sum(value) from (select * from (SELECT sum(closing_stock) as value FROM ${daily_closing_stock.SQL_TABLE_NAME}) union (select extract(epoch from max(spree_timestamp)) as value from ${spree_order_items.SQL_TABLE_NAME}))
    distkey: sku
    sortkeys: [sku, calendar_date]
 
