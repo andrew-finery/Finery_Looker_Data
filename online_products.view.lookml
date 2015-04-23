@@ -179,7 +179,13 @@
      - dimension: option
        label: OPTION
        sql: ${TABLE}.option
-      
+
+     - dimension: option_for_returns_report
+       label: OPTION
+       sql: ${TABLE}.option
+       html: |
+               <a href="https://finerylondon.looker.com/explore/finery_data/returns?dynamic_fields=%5B%5D&f%5Breturns.returned_at_date%5D=yesterday&filter_config=%7B%22online_products.option_for_returns_report%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:{{value}},%7B%7D%5D,%22id%22:1%7D%5D,%22returns.returned_at_date%22:%5B%7B%22type%22:%22advanced%22,%22values%22:%5B%7B%22date%22:%222015-04-23T08:59:11.258Z%22,%22unit%22:%22day%22,%22constant%22:%22yesterday%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&query=4V3MHG5&vis_config=%7B%22type%22:%22looker_column%22%7D&visible_ui_sections=data&show=data&vis=%7B%22type%22:%22looker_column%22%7D&f%5Bonline_products.option_for_returns_report%5D={{value}}">{{value}}</a>
+
      - dimension: product_id
        sql: ${TABLE}.product_id
        hidden: true

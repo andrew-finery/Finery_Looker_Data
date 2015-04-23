@@ -118,6 +118,7 @@
     sql_on: spree_orders.order_id = spree_orders_promotions.order_id
 
 - explore: spree_order_items
+  fields: [ALL_FIELDS*, -option_for_returns_report]
   joins:
   - join: spree_orders
     sql_on: spree_orders.order_id = spree_order_items.order_id
@@ -129,30 +130,26 @@
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
     relationship: many_to_one
   - join: users_signup
-    sql_on: |
-      spree_orders.customer_id = users_signup.id
+    sql_on: spree_orders.customer_id = users_signup.id
   - join: online_products
-    sql_on: |
-      spree_order_items.sku  = online_products.ean
+    sql_on: spree_order_items.sku  = online_products.ean
   - join: product_lookup
-    sql_on: |
-      spree_order_items.sku = product_lookup.ean
+    sql_on: spree_order_items.sku = product_lookup.ean
   - join: calendar_weeks
-    sql_on: |
-      date(spree_order_items.order_tstamp) = calendar_weeks.calendar_date
+    sql_on: date(spree_order_items.order_tstamp) = calendar_weeks.calendar_date
 
 - explore: daily_sales
+  fields: [ALL_FIELDS*, -option_for_returns_report]
   joins:
   - join: product_lookup
-    sql_on: |
-      daily_sales.sku = product_lookup.ean
+    sql_on: daily_sales.sku = product_lookup.ean
   - join: online_products
-    sql_on: |
-      daily_sales.sku = online_products.ean
+    sql_on: daily_sales.sku = online_products.ean
   - join: calendar_weeks
     sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
 
 - explore: returns
+  fields: [ALL_FIELDS*, -online_products.option]
   joins:
   - join: product_lookup
     sql_on: |
@@ -160,10 +157,12 @@
   - join: online_products
     sql_on: |
       returns.sku = online_products.ean
+
       
 - explore: spree_refunds
 
 - explore: goods_in
+  fields: [ALL_FIELDS*, -option_for_returns_report]
   joins:
   - join: product_lookup
     sql_on: goods_in.ean = product_lookup.ean
@@ -173,13 +172,12 @@
     sql_on: goods_in.ean = online_products.ean
 
 - explore: goods_commitment
+  fields: [ALL_FIELDS*, -option_for_returns_report]
   joins:
   - join: product_lookup
-    sql_on: |
-      goods_commitment.ean = product_lookup.ean
+    sql_on: goods_commitment.ean = product_lookup.ean
   - join: online_products
-    sql_on: |
-      goods_commitment.ean = online_products.ean
+    sql_on: goods_commitment.ean = online_products.ean
 
 - explore: all_newsletter_subscribers
   joins:
