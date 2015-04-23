@@ -288,11 +288,11 @@
     type: string
     sql: |
         case
-        when max(date(${TABLE}.collector_tstamp)) < current_date
+        when max(date(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp))) < current_date
         then
-        'Yesterday @ ' || cast(((extract(epoch from max(${TABLE}.collector_tstamp))) - (extract(epoch from max(date(${TABLE}.collector_tstamp)))))/3600 as decimal(8,0)) || ':00'
+        'Yesterday @ ' || cast(((extract(epoch from max(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp)))) - (extract(epoch from max(date(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp))))))/3600 as decimal(8,0)) || ':00'
         else
-        'Today @ ' || cast(((extract(epoch from max(${TABLE}.collector_tstamp))) - (extract(epoch from max(date(${TABLE}.collector_tstamp)))))/3600 as decimal(8,0)) || ':00'
+        'Today @ ' || cast(((extract(epoch from max(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp)))) - (extract(epoch from max(date(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp))))))/3600 as decimal(8,0)) || ':00'
         end
 
   - measure: count_page_views
