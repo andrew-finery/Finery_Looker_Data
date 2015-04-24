@@ -117,7 +117,7 @@
     hidden: true
     
   - dimension: session_index
-    label: SESSION INDEX
+    label: Visit Number
     type: int
     sql: ${TABLE}.session_index
   
@@ -127,13 +127,13 @@
     primary_key: true
     
   - dimension: session_index_tier
-    label: SESSION INDEX TIER
+    label: Visit Number Tier
     type: tier
     tiers: [1,2,3,4,5,10,25,100,1000]
     sql: ${session_index}
 
   - dimension_group: start
-    label: SESSION START
+    label: Visit Start
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.session_start_ts
@@ -147,6 +147,7 @@
     hidden: true
     
   - dimension: session_duration_seconds
+    label: Session Duration Seconds
     sql: extract(epoch from ${end}) - extract(epoch from ${start})
 
   # Events per visit and bounces (infered) #
@@ -163,17 +164,12 @@
     hidden: true
   
   - dimension: log_in_flag
-    label: SESSION LOGGED IN FLAG
+    label: Login
     type: yesno
     sql: ${TABLE}.user_id is not null
-  
-  - dimension: free_gift_click_flag
-    label: SESSION INVOLVES FREE GIFT CLICK
-    type: yesno
-    sql: ${TABLE}.free_gift_click_events > 0
     
   - dimension: bounce
-    label: BOUNCED SESSION
+    label: Bounce
     type: yesno
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
 
@@ -209,7 +205,7 @@
     hidden: true
 
   - dimension: engaged_session
-    label: ENGAGED SESSION
+    label: Engaged Visit?
     type: yesno
     sql: |
           ${distinct_pages_viewed} > 6
@@ -223,6 +219,7 @@
  
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
+    label: New vs Returning Visitor
     sql_case:
       new: ${session_index} = 1
       returning: ${session_index} > 1
@@ -275,13 +272,14 @@
     hidden: true
     
   - dimension: landing_page_path
-    label: LANDING PAGE PATH
+    label: Landing Page Path
     sql: ${TABLE}.landing_page_path
     
     
   - dimension: landing_page
     label: FULL LANDING PAGE
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path
+    hidden: true
     
   # Exit page
   
@@ -290,17 +288,18 @@
     hidden: true
     
   - dimension: exit_page_path
-    label: EXIT PAGE PATH
+    label: Exit Page Path
     sql: ${TABLE}.exit_page_path
     
   - dimension: exit_page
     label: FULL EXIT PAGE
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
+    hidden: true
 
 ################################ MARKETING #################################################################################################
 
   - dimension: acquisition_channel
-    label: ACQUISITION CHANNEL
+    label: Acquisition Channel
     sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
       SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483' or ${TABLE}.mkt_campaign_ga like '%Brand%'
@@ -315,20 +314,20 @@
       else: Direct
   
   - dimension: traffic_source
-    label: TRAFFIC SOURCE
+    label: CRM/Brand/Paid
     sql_case:
       CRM: ${acquisition_channel} = 'CRM'
       Paid: ${acquisition_channel} in ('SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Brand
 
   - dimension: paid_unpaid_traffic_flag
-    label: PAID MARKETING FLAG
+    label: Paid/Unpaid Visit
     sql_case:
       Paid: ${acquisition_channel} in ('SEM Brand', 'SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Unpaid
 
   - dimension: referer_medium
-    label: REFERRER MEDIUM
+    label: Referrer Medium
     sql: ${TABLE}.refr_medium_ga
     
   - dimension: referer_source
