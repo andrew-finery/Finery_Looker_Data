@@ -61,7 +61,7 @@
   - dimension: london_flag
     label: LONDON FLAG
     sql: case when ${TABLE}.map_postcode in ('E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC') then 'London' else 'Non-London' end
-    
+    hidden: true
   
 
     
