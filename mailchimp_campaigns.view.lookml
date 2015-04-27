@@ -38,7 +38,7 @@
       Referral Reminder 1: ${TABLE}.email_id = '47bf57307c'
       Referral Reminder 2: ${TABLE}.email_id = 'a82d3c5906'
       Referral Reminder 3: ${TABLE}.email_id = '6cdfa5a6df'
-      Weekly Newsletter: ${TABLE}.list_id = '179a8621fb'
+      Weekly Newsletter: ${TABLE}.list_id in ('179a8621fb', '3be7f8d28a')
       else: Other
     hidden: true
   
