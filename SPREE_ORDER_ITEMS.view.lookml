@@ -4,7 +4,7 @@
       --
       select 
         a.spree_timestamp,
-        convert_timezone('UTC', 'Europe/London', a.completed_at) as order_tstamp,
+        a.completed_at as order_tstamp,
         b.order_id as order_id,
         a.customer_id as customer_id,
         a.order_code as order_code,
