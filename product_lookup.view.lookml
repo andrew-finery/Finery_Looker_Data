@@ -1,7 +1,7 @@
 - view: product_lookup
   derived_table:
    sql: |
-        select * from finery.brightpearl_export_2 bp
+        select * from finery.brightpearl_export bp
         left join (select parent_sku as online_parent_sku, max(style_name) as online_style_name, max(max_price) as max_price, max(current_price) as current_price from ${spree_products.SQL_TABLE_NAME} group by 1) prices
         on bp.parent_sku = prices.online_parent_sku
 
