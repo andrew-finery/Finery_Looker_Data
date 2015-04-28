@@ -205,7 +205,7 @@
     hidden: true
 
   - dimension: engaged_session
-    label: Engaged Visit?
+    label: Engaged Visit
     type: yesno
     sql: |
           ${distinct_pages_viewed} > 6
@@ -574,6 +574,12 @@
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
+
+  - measure: page_views_per_visit
+    label: Page Views Per Visit
+    type: number
+    decimals: 2
+    sql: ${sum_page_views}/NULLIF(${count},0)::REAL
     
   - measure: sum_accounts_created
     label: TOTAL ACCOUNTS CREATED
@@ -599,3 +605,8 @@
     label: TOTAL CART EVENTS
     type: sum
     sql: ${cart_events}
+
+  - measure: sum_page_views
+    label: TOTAL PAGE VIEWS
+    type: sum
+    sql: ${distinct_pages_viewed}
