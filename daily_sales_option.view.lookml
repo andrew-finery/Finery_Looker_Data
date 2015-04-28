@@ -2,21 +2,29 @@
   derived_table:
      sql: |
             select
-            date(order_items.order_tstamp) as calendar_date,
+            daily_sales.calendar_date,
             online_products.product_id,
-            sum(order_items.quantity) as items_sold,
-            sum(order_items.price*order_items.quantity/order_items.exchange_rate) as gross_revenue_gbp,
-            sum((order_items.price*order_items.quantity/order_items.exchange_rate) * (1/(1+order_items.tax_rate))) as gross_revenue_gbp_ex_vat,
-            sum(((order_items.order_total + order_items.adjustment_total)/nullif(order_items.order_total,'0')) * order_items.price * order_items.quantity * (1/(1+order_items.tax_rate)) / order_items.exchange_rate) as gross_revenue_gbp_ex_vat_ex_discount
-            from
-            ${spree_order_items.SQL_TABLE_NAME} order_items
-            left join
-            ${online_products.SQL_TABLE_NAME} online_products
-            on order_items.sku = online_products.ean
-            where date(order_items.order_tstamp) < current_date
+            sum(closing_stock) as closing_stock,
+            sum(items_sold) as items_sold,
+            sum(items_returned) as items_returned,
+            sum(gross_revenue_gbp) as gross_revenue_gbp,
+            sum(gross_revenue_gbp_ex_vat) as gross_revenue_gbp_ex_vat,
+            sum(gross_revenue_gbp_ex_vat_ex_discount) as gross_revenue_gbp_ex_vat_ex_discount,
+            sum(net_revenue_gbp) as net_revenue_gbp,
+            sum(net_revenue_gbp_ex_vat_ex_discount) as net_revenue_gbp_ex_vat_ex_discount
+            
+            from ${daily_sales.SQL_TABLE_NAME} daily_sales
+            
+            left join ${online_products.SQL_TABLE_NAME} online_products
+            
+            on online_products.ean = daily_sales.sku
+            
+            where daily_sales.calendar_date < current_date
+            
             group by 1,2
 
-     sql_trigger_value: select max(spree_timestamp) from ${spree_order_items.SQL_TABLE_NAME}
+
+     sql_trigger_value: select sum(closing_stock + items_sold) from ${daily_sales.SQL_TABLE_NAME}
      distkey: product_id
      sortkeys: [product_id, calendar_date]
 

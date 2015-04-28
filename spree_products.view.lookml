@@ -42,7 +42,7 @@
         (select * from daily_snapshot.spree_option_values where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_option_values) and option_type_id = 9) colour_groups
         on option_values_variants.option_value_id = colour_groups.id
         left join
-        (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and deleted_at is null) variants
+        (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) variants
         on option_values_variants.variant_id = variants.id
         left join
         (select variant_id, max(amount) as current_price from daily_snapshot.spree_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_prices) and currency = 'GBP' group by 1) current_prices
