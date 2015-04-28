@@ -493,7 +493,7 @@
       bounce: yes
 
   - measure: bounce_rate
-    label: BOUNCE RATE
+    label: Bounce Rate
     type: number
     decimals: 4
     sql: ${bounced_sessions_count}/NULLIF(${count},0)::REAL
