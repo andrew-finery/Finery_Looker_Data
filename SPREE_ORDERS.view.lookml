@@ -41,7 +41,10 @@
              
              CASE WHEN (b.store_credit = a.item_total + adjustment_total) then 'Store Credit'
                   WHEN credit_card_payments.order_id is not null then 'Credit Card'
-                  ELSE 'Paypal' end as primary_payment_method
+                  ELSE 'Paypal' end as primary_payment_method,
+            
+             distinct_products.number_of_skus,
+             distinct_products.number_of_products
              
       FROM (SELECT *
             FROM daily_snapshot.spree_orders
@@ -166,6 +169,19 @@
       LEFT JOIN (SELECT order_id FROM (SELECT * FROM daily_snapshot.spree_payments WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_payments))
                 WHERE source_type = 'Spree::CreditCard' GROUP BY 1) credit_card_payments
                 on credit_card_payments.order_id = a.id
+      
+      LEFT JOIN (select
+                line_items.order_id,
+                sum(line_items.quantity) as number_of_items,
+                count(distinct line_items.variant_id) as number_of_skus,
+                count(distinct variants.product_id) as number_of_products
+                from
+                (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) line_items
+                left join 
+                (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) variants
+                on line_items.variant_id = variants.id
+                group by 1) distinct_products
+                on distinct_products.order_id = a.id
                             
       WHERE a.state IN ('complete','returned','canceled')
       AND   a.completed_at > DATE '2014-11-22'
@@ -242,6 +258,10 @@
   - dimension: latest_order_flag
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
+
+  - dimension: multiple_size_flag
+    type: yesno
+    sql: ${TABLE}.number_of_skus != ${TABLE}.number_of_products
 
   - dimension: order_email
     label: EMAIL
