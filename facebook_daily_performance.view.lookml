@@ -118,6 +118,10 @@
   - dimension: url
     sql: ${TABLE}.url
 
+  - dimension: online_flag
+    type: yesno
+    sql: ${impressions} > 0
+
   - dimension: impressions
     type: number
     sql: ${TABLE}.impressions
