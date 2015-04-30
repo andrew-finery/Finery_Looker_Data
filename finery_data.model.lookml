@@ -26,6 +26,9 @@
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
 
+
+- explore: facebook_daily_performance
+
 - explore: events
   joins:
   - join: identity_stitching

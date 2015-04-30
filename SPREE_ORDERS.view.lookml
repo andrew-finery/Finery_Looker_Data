@@ -634,7 +634,7 @@
     label: NEW CUSTOMER %
     type: number
     decimals: 2
-    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_customers} as decimal(8,2)),0)::REAL
+    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_orders} as decimal(8,2)),0)::REAL
     format: "%0.2f%"
     
 ################################################# GROSS REVENUE MEASURES ##############################################################
