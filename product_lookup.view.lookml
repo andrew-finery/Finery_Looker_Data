@@ -85,6 +85,46 @@
   - dimension: factory
     label: FACTORY
     sql: ${TABLE}.factory
+  
+  - dimension: supplier
+    label: SUPPLIER
+    sql_case:
+      Alvex LTD: ${factory} in ('Alvex')
+      Anglo Union: ${factory} in ('Anglo Union')
+      Apparels Connection: ${factory} in ('Apparels Connection')
+      Blue Clothing: ${factory} in ('SC Rojin Textile SRL - Blue Clothing','SC Rojin Textile SRL - Blue Clothing ','Micheal.com','SC Rojin Textile SRL')
+      Fashion Enter Ltd: ${factory} in ('Fashion Enter')
+      For You Fashion: ${factory} in ('For You Fashions','For You Fashion')
+      India Fashion: ${factory} in ('India Fashion','India Fashions')
+      Indigo: ${factory} in ('Indigo')
+      Legend Creations: ${factory} in ('Legend Creations')
+      Loaded: ${factory} in ('Loaded')
+      Luna and Smith Ltd: ${factory} in ('ZST')
+      Neo Concept: ${factory} in ('Dongguan Neo-Oct Knitwear Co., Ltd')
+      PC Clothing: ${factory} in ('Zen','Solda','Affinity','Ecomoda','Eccomoda','Violetta','Elegance','Ekemoda','PC Clothing')
+      Signature: ${factory} in ('Mode Tekstil','Signature')
+      Stiletto: ${factory} in ('Stiletto')
+      Twisted Sister Ltd: ${factory} in ('cn fty','Deqing Perrie Garments Co., Ltd','Twisted Sister Ltd','Twisted Sister')
+      ZD - Bati Triko: ${factory} in ('Nesan')
+      ZD - Karahan Tekstil : ${factory} in ('Bati')
+      Camilton: ${factory} in ('Camilton','Camilton ')
+      Feetcare: ${factory} in ('Feetcare','Feetcare ltd')
+      Heitor: ${factory} in ('Heitor')
+      Humat Spain S.L: ${factory} in ('Humat Spain S.L')
+      R.D.Traders PVT LTD: ${factory} in ('R.D.Traders PVT LTD')
+      Vision East : ${factory} in ('Vision East')
+      Rhythm London Ltd: ${factory} in ('Rhythm London Ltd')
+      Gold Point: ${factory} in ('Gold Point') 
+      DNC Jewelry : ${factory} in ('DNC Jewelry', 'DNC Jewelry ')
+      Kc Paul Qingdao Co. Ltd : ${factory} in ('KC')
+      H.Gaventa: ${factory} in ('H.Gaventa','H.Gaventa ltd')
+      Zhangjiagang Asisancharm Garment Co Ltd: ${factory} in ('Zhangjiagang Asisancharm Garment Co Ltd')
+      Gold Point: ${factory} in ('Gold Point')
+      Ardy: ${factory} in ('Ardy')
+      Rise Designs: ${factory} in ('Rise Designs')
+      New Fashion: ${factory} in ('New Fashion')
+      J G Belts: ${factory} in ('J G Belts')
+      else: 'Unknown'
 
   - dimension: freight_cost_gbp
     sql: ${TABLE}.freight_cost_gbp
