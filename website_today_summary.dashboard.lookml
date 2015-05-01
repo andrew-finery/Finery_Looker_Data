@@ -9,11 +9,31 @@
     title: Latest Data Available
     type: single_value
     model: finery_data
-    explore: atomic_events
-    measures: [atomic_events.latest_update]
+    explore: sessions
+    dimensions: [sessions.start_hour]
+    filters:
+      sessions.start_date: today
+    sorts: [sessions.start_hour desc]
+    limit: 1
     font_size: small
+    show_null_points: false
+    show_value_labels: false
+    show_view_names: true
+    x_axis_gridlines: true
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_gridlines: true
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    x_axis_datetime_label: ''
+    x_axis_label: Hour of Day
+    stacking: ''
+    x_axis_scale: auto
+    point_style: none
+    interpolation: monotone
+    colors: [blue, red]
     height: 3
-    width: 6
+    width: 9
     top: 0
     left: 0
     
@@ -27,7 +47,7 @@
     measures: [sessions.conversion_rate]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -109,7 +129,7 @@
     measures: [transactions.count_transactions]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -191,7 +211,7 @@
     measures: [transactions.gross_revenue_ex_discount_ex_vat]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -273,7 +293,7 @@
     measures: [sessions.bounce_rate]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -356,7 +376,7 @@
     measures: [sessions.count]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -438,7 +458,7 @@
     measures: [sessions.sum_newsletter_signups]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
@@ -520,7 +540,7 @@
 #    measures: [email_subscriptions.count_referrals]
 #    filters:
 #      sessions.start_date: 0 days ago for 1 day
-#      sessions.start_time: before 1 hour ago
+#      sessions.start_time: before 0 hours ago
 #    font_size: small
 #    height: 3
 #    width: 3
@@ -602,7 +622,7 @@
     measures: [sessions.new_visitor_percentage]
     filters:
       sessions.start_date: 0 days ago for 1 day
-      sessions.start_time: before 1 hour ago
+      sessions.start_time: before 0 hours ago
     font_size: small
     height: 3
     width: 3
