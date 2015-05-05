@@ -64,7 +64,7 @@
     hidden: true
     
   - dimension_group: trans_time
-    label: TRANSACTION
+    label: Order Placed
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
     sql: ${TABLE}.collector_tstamp
@@ -112,49 +112,52 @@
     ###########################################################################################################################################################
     
   - measure: count_transactions
-    label: NUMBER OF ORDERS
+    label: Orders Total
     type: count_distinct
     sql: ${order_id}
 
   - measure: count_new_customers
-    label: NEW CUSTOMERS
+    label: New Customers Total
     type: count_distinct
     sql: ${order_id}
     filters:
       new_customer_flag: yes
   
   - measure: count_customers
-    label: NUMBER OF CUSTOMERS
+    label: Customer Total
     type: count_distinct
     sql: ${blended_user_id}
 
   - measure: gross_revenue_ex_discount_ex_vat
-    label: GROSS REVENUE EX. DISCOUNT, VAT
+    label: Gross Revenue ex. Discount, VAT Total
     type: sum
     decimals: 2
     sql: ${revenue_ex_coupon_and_vat} / ${exchange_rate}
     value_format: '"£"#,##0.00'
 
   - measure: avg_basket_size
-    label: AVERAGE BASKET SIZE
+    label: Average Basket Size
     type: number
     decimals: 2
     sql: ${gross_revenue_ex_discount_ex_vat} / ${count_transactions}
     value_format: '"£"#,##0.00'
   
   - measure: count_guest_checkouts
+    label: Guest Checkouts Total
     type: count_distinct
     sql: ${order_id}
     filters:
       guest_checkout_flag: Yes
 
   - measure: guest_checkout_percentage
+    label: Guest Checkout Percentage
     type: number
     decimals: 2
     sql: 100.0 * ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
     format: "%0.1f%"
 
   - measure: new_customer_percentage
+    label: New Customer Percentage
     type: number
     decimals: 4
     sql: ${count_new_customers}/NULLIF(${count_transactions},0)::REAL
@@ -164,14 +167,14 @@
 
   - measure: count_transactions_yesterday
     type: count_distinct
-    label: ORDERS YESTERDAY
+    label: Orders Yesterday
     sql: ${order_id}
     filters:
       trans_time_date: 1 day ago for 1 day
     hidden: true
 
   - measure: count_transactions_last_week
-    label: ORDERS LAST WEEK
+    label: Orders Last Week
     type: count_distinct
     sql: ${order_id}
     filters:
@@ -179,7 +182,7 @@
     hidden: true
 
   - measure: count_new_customers_yesterday
-    label: NEW CUSTOMERS
+    label: New Customers Yesterday
     type: count_distinct
     sql: ${order_id}
     filters:
@@ -188,7 +191,7 @@
     hidden: true
     
   - measure: count_new_customers_last_week
-    label: NUMBER OF NEW CUSTOMERS
+    label: New Customers Last Week
     type: count_distinct
     sql: ${order_id}
     filters:

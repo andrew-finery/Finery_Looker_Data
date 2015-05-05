@@ -20,6 +20,9 @@
         s.product_removed_from_cart,
         s.cart_events,
         s.checkout_progress,
+        s.product_impressions,
+        s.product_clicks,
+        s.product_views,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -209,6 +212,21 @@
     sql: ${TABLE}.checkout_progress
     hidden: true
 
+  - dimension: product_impressions
+    type: int
+    sql: ${TABLE}.product_impressions
+    hidden: true
+
+  - dimension: product_clicks
+    type: int
+    sql: ${TABLE}.product_clicks
+    hidden: true
+
+  - dimension: product_views
+    type: int
+    sql: ${TABLE}.product_views
+    hidden: true
+    
   - dimension: engaged_session
     label: Engaged Visit
     type: yesno
@@ -631,3 +649,18 @@
     label: Referrals Sent Total
     type: sum
     sql: ${referrals_sent}
+
+  - measure: sum_product_impressions
+    label: Product Impressions Total
+    type: sum
+    sql: ${product_impressions}
+    
+  - measure: sum_product_clicks
+    label: Product Clicks Total
+    type: sum
+    sql: ${product_clicks}
+    
+  - measure: sum_product_views
+    label: Product Views Total
+    type: sum
+    sql: ${product_views}

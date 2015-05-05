@@ -17,7 +17,10 @@
       coalesce(add_cart.products_added_to_cart,'0') as products_added_to_cart,
       coalesce(remove_cart.products_removed_from_cart,'0') as product_removed_from_cart,
       coalesce(cart.cart_events,'0') as cart_events,
-      coalesce(checkout.checkout_progress,'0') as checkout_progress
+      coalesce(checkout.checkout_progress,'0') as checkout_progress,
+      coalesce(product_impressions.product_impressions, '0') as product_impressions,
+      coalesce(product_clicks.product_clicks, '0') as product_clicks,
+      coalesce(product_views.distinct_product_views, '0') as product_views
       
       FROM
       
@@ -52,6 +55,12 @@
         ON cart.domain_userid = sessions.domain_userid and cart.domain_sessionidx = sessions.domain_sessionidx
       LEFT JOIN (select events.domain_userid, events.domain_sessionidx, max(case when checkout.checkout_step = 'started' then 1 when checkout.checkout_step = 'address' then 2 when checkout.checkout_step = 'delivery' then 3 when checkout.checkout_step = 'payment' then 3 else cast(checkout.checkout_step as int) end) as checkout_progress from atomic.com_finerylondon_checkout_1 checkout left join atomic.events events on checkout.root_id = events.event_id group by 1,2) checkout
         ON checkout.domain_userid = sessions.domain_userid and checkout.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as product_impressions from atomic.com_finerylondon_product_impression_1 prod_impression left join atomic.events events on prod_impression.root_id = events.event_id left join atomic.com_finerylondon_product_impression_context_1 prod_impression_context on prod_impression.root_id = prod_impression_context.root_id group by 1,2) product_impressions
+        ON product_impressions.domain_userid = sessions.domain_userid and product_impressions.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as product_clicks from atomic.com_finerylondon_product_clicked_1 prod_clicks left join atomic.events events on prod_clicks.root_id = events.event_id group by 1,2) product_clicks
+        ON product_clicks.domain_userid = sessions.domain_userid and product_clicks.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(distinct prod_views.prod_id) as distinct_product_views from atomic.com_finerylondon_page_view_context_1 prod_views left join atomic.events events on prod_views.root_id = events.event_id where events.event = 'page_view' and page_type = 'products/show' group by 1,2) product_views
+        ON product_views.domain_userid = sessions.domain_userid and product_views.domain_sessionidx = sessions.domain_sessionidx
         
       
       
