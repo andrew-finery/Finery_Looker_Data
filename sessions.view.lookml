@@ -13,6 +13,7 @@
         s.interaction_events,
         s.distinct_pages_viewed,
         s.free_gift_click_events,
+        s.referrals_sent,
         s.accounts_created,
         s.newsletter_signups,
         s.products_added_to_cart,
@@ -164,7 +165,7 @@
     hidden: true
   
   - dimension: log_in_flag
-    label: Login
+    label: Login Flag
     type: yesno
     sql: ${TABLE}.user_id is not null
     
@@ -198,6 +199,10 @@
     sql: ${TABLE}.cart_events
     hidden: true
 
+  - dimension: referrals_sent
+    type: int
+    sql: ${TABLE}.referrals_sent
+    hidden: true
 
   - dimension: checkout_progress
     type: int
@@ -224,6 +229,10 @@
       new: ${session_index} = 1
       returning: ${session_index} > 1
       else: unknown
+
+  - dimension: referral_sent_flag
+    type: yesno
+    sql: ${referrals_sent} > 0
    
   # Pages visited #
   - dimension: distinct_pages_viewed
@@ -242,17 +251,17 @@
     
   # Geo fields #
   - dimension: geography_country_two_letter_iso_code
+    label: Geo - Country Code
     sql: ${TABLE}.geo_country_code_2_characters
 
-  
   - dimension: geography_region
+    label: Geo - Region
     sql: ${TABLE}.geo_region
 
-    
   - dimension: geography_city
+    label: Geo - City
     sql: ${TABLE}.geo_city
 
-    
   - dimension: geography_zipcode
     sql: ${TABLE}.geo_zipcode
     hidden: true
@@ -277,7 +286,7 @@
     
     
   - dimension: landing_page
-    label: FULL LANDING PAGE
+    label: Landing Page Full
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path
     hidden: true
     
@@ -292,7 +301,7 @@
     sql: ${TABLE}.exit_page_path
     
   - dimension: exit_page
-    label: FULL EXIT PAGE
+    label: Exit Page Full
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
     hidden: true
 
@@ -321,7 +330,7 @@
       else: Brand
 
   - dimension: paid_unpaid_traffic_flag
-    label: Paid/Unpaid Visit
+    label: Paid/Unpaid
     sql_case:
       Paid: ${acquisition_channel} in ('SEM Brand', 'SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Unpaid
@@ -331,43 +340,43 @@
     sql: ${TABLE}.refr_medium_ga
     
   - dimension: referer_source
-    label: REFERRER SOURCE
+    label: Referrer Source
     sql: ${TABLE}.refr_source_ga
     
   - dimension: referer_term
-    label: REFERRER TERM
+    label: Referrer Term
     sql: ${TABLE}.refr_term_ga
     
   - dimension: referer_url_host
-    label: REFERRER HOST
+    label:  Referrer Host
     sql: ${TABLE}.refr_urlhost_ga
   
   - dimension: referer_url_path
-    label: REFERRER PATH
+    label: Referrer Path
     sql: ${TABLE}.refr_urlpath_ga
     
   # MKT fields (paid acquisition channels)
     
   - dimension: campaign_medium
-    label: CAMPAIGN MEDIUM
+    label: Campaign Medium
     sql: ${TABLE}.mkt_medium_ga
   
   - dimension: campaign_source
-    label: CAMPAIGN SOURCE
+    label: Campaign Source
     sql: ${TABLE}.mkt_source_ga
   
   - dimension: campaign_term
-    label: CAMPAIGN TERM
+    label: Campaign Term
     sql: ${TABLE}.mkt_term_ga
   
   - dimension: campaign_name
-    label: CAMPAIGN NAME
+    label: Campaign Name
     sql: ${TABLE}.mkt_campaign_ga
 
   # Device fields #
     
   - dimension: device_type
-    label: DEVICE TYPE
+    label: Device Type
     sql_case:
       Desktop: ${TABLE}.dvce_type = 'Computer'
       Tablet: ${TABLE}.dvce_type = 'Tablet'
@@ -375,7 +384,7 @@
       else: Other/Unknown
       
   - dimension: device_is_mobile
-    label: MOBILE DEVICE FLAG
+    label: Mobile Flag
     sql: ${TABLE}.dvce_ismobile
     hidden: true
     
@@ -390,33 +399,33 @@
   # OS fields #
     
   - dimension: operating_system
-    label: OPERATING SYSTEM
+    label: Operating System
     sql: ${TABLE}.os_name
     
   - dimension: operating_system_family
-    label: OPERATING SYSTEM FAMILY
+    label: Operating System Family
     sql: ${TABLE}.os_family
     
   - dimension: operating_system_manufacturer
-    label: OPERATING SYSTEM MANUFACTURER
+    label: Operating System Manufacturer
     sql: ${TABLE}.os_manufacturer
     
   # Browser fields #
   
   - dimension: browser
-    label: BROSWER
+    label: Browser
     sql: ${TABLE}.br_name
     
   - dimension: browser_version
-    label: BROSWER VERSION
+    label: Browser Version
     sql: ${TABLE}.br_version
     
   - dimension: browser_type
-    label: BROWSER TYPE
+    label: Browser Type
     sql: ${TABLE}.br_type
     
   - dimension: browser_family
-    label: BROSWER FAMILY
+    label: Browser Family
     sql: ${TABLE}.br_family
     
   - dimension: browser_renderengine
@@ -471,22 +480,22 @@
 ##########################################################################################################################################################
 
   - measure: count
-    label: VISITS COUNT
+    label: Visits Total
     type: count_distinct
     sql: ${session_id}
     
   - measure: count_running_total
-    label: VISITS RUNNING TOTAL
+    label: Visits Running Total
     type: running_total
     sql: ${count}
     
   - measure: count_percent_of_total
-    label: VISITS PERCENT OF TOTAL
+    label: Visits Percent of Total
     type: percent_of_total
     sql: ${count}
 
   - measure: bounced_sessions_count
-    label: BOUNCED SESSIONS COUNT
+    label: Bounced Visits Total
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -500,77 +509,84 @@
     value_format: '0.00%'
 
   - measure: engaged_sessions_count
-    label: ENGAGED SESSIONS COUNT
+    label: Engaged Sessions Total
     type: count_distinct
     sql: ${session_id}
     filters:
       engaged_session: yes
 
   - measure: engagement_rate
-    label: ENGAGEMENT RATE
+    label: Engagement Rate
     type: number
     decimals: 4
     sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
 
+  - measure: logged_in_sessions_count
+    label: Logged In Visits Total
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      log_in_flag: yes
+
   - measure: conversion_rate
-    label: CONVERSION RATE
+    label: Conversion Rate
     type: number
     decimals: 4
     sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
     
   - measure: revenue_per_session
-    label: REVENUE PER VISIT
+    label: Revenue Per Visit
     type: number
     decimals: 2
     sql: ${transactions.gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
     value_format: '"£"#0.00'
     
   - measure: sessions_from_new_visitors_count
-    label: NEW VISITS COUNT
+    label: New Visits Total
     type: count_distinct
     sql: ${session_id}
     filters:
       session_index: 1
   
   - measure: sessions_from_returning_visitor_count
-    label: RETURNING VISITS COUNT
+    label: Returning Visits Total
     type: number
     sql: ${count} - ${sessions_from_new_visitors_count}
   
   - measure: new_visitor_percentage
-    label: NEW VISITS PERCENTAGE
+    label: New Visit %
     type: number
     decimals: 2
     sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
 
   - measure: returning_visitor_percentage
-    label: RETURNING VISITS PERCENTAGE
+    label: Returning Visit %
     type: number
     decimals: 2
     sql: 100.0 * ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
 
   - measure: visitors_count
-    label: VISITORS COUNT
+    label: Total Visitors
     type: count_distinct
     sql: ${blended_user_id}
     
   - measure: events_count
-    label: EVENTS COUNT
+    label: Total Events
     type: sum
     sql: ${TABLE}.number_of_events
     
   - measure: events_per_session
-    label: EVENTS PER SESSION
+    label: Events Per Visit
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${count},0)::REAL
     
   - measure: events_per_visitor
-    label: EVENTS PER VISITOR
+    label: Events Per Visitor
     type: number
     decimals: 2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
@@ -582,31 +598,36 @@
     sql: ${sum_page_views}/NULLIF(${count},0)::REAL
     
   - measure: sum_accounts_created
-    label: TOTAL ACCOUNTS CREATED
+    label: Accounts Created Total
     type: sum
     sql: ${accounts_created}
 
   - measure: sum_newsletter_signups
-    label: TOTAL NEWSLETTER SIGNUPS
+    label: Newsletter Signups Total
     type: sum
     sql: ${newsletter_signups}
 
   - measure: sum_products_added_to_cart
-    label: TOTAL PRODUCTS ADDED TO CART
+    label: Products Added to Cart Total
     type: sum
     sql: ${products_added_to_cart}
 
   - measure: sum_product_removed_from_cart
-    label: TOTAL PRODUCTS REMOVED FROM CART
+    label: Products Removed from Cart Total
     type: sum
     sql: ${product_removed_from_cart}
 
   - measure: sum_cart_events
-    label: TOTAL CART EVENTS
+    label: Cart Views Total
     type: sum
     sql: ${cart_events}
 
   - measure: sum_page_views
-    label: TOTAL PAGE VIEWS
+    label: Page Views Total
     type: sum
     sql: ${distinct_pages_viewed}
+
+  - measure: sum_referrals_sent
+    label: Referrals Sent Total
+    type: sum
+    sql: ${referrals_sent}

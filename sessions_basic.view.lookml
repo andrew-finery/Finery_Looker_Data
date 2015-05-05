@@ -9,6 +9,7 @@
       sessions.number_of_events,
       sessions.interaction_events,
       sessions.free_gift_click_events,
+      coalesce(sessions.referrals_sent, '0') as referrals_sent,
       sessions.distinct_pages_viewed,
       sessions.user_id as user_id,
       coalesce(signups.accounts_created,'0') as accounts_created,
@@ -28,6 +29,7 @@
         count(*) AS number_of_events,
         sum(case when (event = 'page_ping' or unstruct_event like '%product_impression%') then 0 else 1 end) as interaction_events,
         sum(case when se_action = 'freeGiftClick' then 1 else 0 end) as free_gift_click_events,
+        sum(case when se_action = 'inviteFriends' then se_value else 0 end) as referrals_sent,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed,
         max(user_id) as user_id
       FROM
