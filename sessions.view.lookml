@@ -243,15 +243,15 @@
   # Geo fields #
   - dimension: geography_country_two_letter_iso_code
     sql: ${TABLE}.geo_country_code_2_characters
-    hidden: true
+
   
   - dimension: geography_region
     sql: ${TABLE}.geo_region
-    hidden: true
+
     
   - dimension: geography_city
     sql: ${TABLE}.geo_city
-    hidden: true
+
     
   - dimension: geography_zipcode
     sql: ${TABLE}.geo_zipcode
