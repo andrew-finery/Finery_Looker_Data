@@ -100,11 +100,13 @@
   - dimension: customer_id
     type: int
     sql: ${TABLE}.user_id
+    hidden: true
     
   - dimension_group: account_created_at
     type: time
     timeframes: [time, date, hour_of_day, hour, week, month]
     sql: ${TABLE}.created_at
+    hidden: true
     
   - dimension: first_name
     sql: ${TABLE}.first_name
@@ -118,18 +120,29 @@
   - dimension: newsletter_opt_in
     type: yesno
     sql: ${TABLE}.newsletter_opt_in = 1
+    hidden: true
 
   - dimension: newsletter_opt_in_yesterday
     type: yesno
     sql: ${TABLE}.newsletter_opt_in_yest = 1
+    hidden: true
     
   - dimension: sign_in_count
     sql: ${TABLE}.sign_in_count
+    hidden: true
   
   - dimension_group: birth_date
     type: time
     timeframes: [date, month, year]
     sql: ${TABLE}.birth_date
+    hidden: true
+  
+  - dimension: age
+    type: int
+    sql: |
+          case when floor((current_date - ${birth_date_date})/ 365) > 100 then null
+               when floor((current_date - ${birth_date_date})/ 365) < 10 then null
+              else floor((current_date - ${birth_date_date})/ 365) end
   
   - dimension_group: last_sign_in_at
     type: time
@@ -139,6 +152,7 @@
 
   - dimension: signup_credit_currency
     sql: ${TABLE}.signup_credit_currency
+    hidden: true
 
 ##############################################################################################################################################################################
 #################################################################### MEASURES ################################################################################################
@@ -153,6 +167,10 @@
     sql: ${customer_id}
     filters:
       newsletter_opt_in: yes
+  
+  - measure: average_age
+    type: average
+    sql: ${age}
   
   - measure: sum_referrals_sent
     type: sum
