@@ -116,7 +116,7 @@
     label: Product Price
     type: number
     decimals: 2
-    sql: ${TABLE}.price 
+    sql: ${TABLE}.price_gbp 
     value_format: '"£"##0.00'
   
   - dimension: about_me
