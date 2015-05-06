@@ -17,7 +17,7 @@
     hidden: true
 
   - dimension: category
-    label: DEPARTMENT
+    label: Department
     sql_case:
       Evening Dresses: ${TABLE}.category = 'Evening Dresses'
       Outerwear and Blazers: ${TABLE}.category = 'Outerwear & Blazers'
@@ -35,14 +35,14 @@
         <a href="https://finerylondon.looker.com/explore/finery_data/daily_sales?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&query=fqvpV63&filter_config=%7B%22product_lookup.category%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:5%7D%5D%7D&f%5Bproduct_lookup.category%5D={{value}}&run=1">{{value}}</a>
   
   - dimension: product_area
-    label: PRODUCT AREA
+    label: Product Area
     sql_case:
       Clothing: ${TABLE}.category in ('Evening Dresses', 'Outerwear & Blazers', 'Skirts', 'Woven Tops', 'Day Dresses', 'Knitwear', 'Trousers & Shorts', 'Jersey Tops')
       Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
   - dimension: colour_group
-    label: BP_COLOUR
+    label: BP Colour
     sql: ${TABLE}.colour_group
 
   - dimension: design
@@ -70,7 +70,7 @@
     
   - dimension_group: expected_delivery_date_first_batch
     type: time
-    label: EXPECTED DELIVERY
+    label: Expected Delivery
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.expected_delivery_date_first_batch
@@ -83,11 +83,11 @@
     hidden: true
     
   - dimension: factory
-    label: FACTORY
+    label: Factory
     sql: ${TABLE}.factory
   
   - dimension: supplier
-    label: SUPPLIER
+    label: Supplier
     sql_case:
       Alvex LTD: ${factory} in ('Alvex')
       Anglo Union: ${factory} in ('Anglo Union')
@@ -147,19 +147,19 @@
     hidden: true
     
   - dimension: style
-    label: BP_STYLE
+    label: BP Style
     sql: ${TABLE}.name
     html: |
         <a href="https://finerylondon.looker.com/explore/finery_data/daily_sales?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&query=mcBbKm7&filter_config=%7B%22product_lookup.style%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:6%7D%5D%7D&f%5Bproduct_lookup.style%5D=%22{{value}}%22&run=1">{{value}}</a>
   
   - dimension: option_name
-    label: BP_OPTION
+    label: BP Option
     sql: ${TABLE}.name||' - '||${TABLE}.colour_group
     html: |
         <a href="https://finerylondon.looker.com/explore/finery_data/daily_sales?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&query=M2XQ72k&filter_config=%7B%22product_lookup.option_name%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:7%7D%5D%7D&f%5Bproduct_lookup.option_name%5D=%22{{value}}%22&run=1">{{value}}</a>
   
   - dimension: model_name
-    label: MODEL NAME
+    label: Model Name
     sql: ${TABLE}.model_name
   
   - dimension: new_or_repeat
@@ -182,7 +182,7 @@
     hidden: true
     
   - dimension: parent_sku
-    label: PARENT SKU
+    label: Parent SKU
     sql: ${TABLE}.parent_sku
 
   - dimension: product_type
@@ -196,7 +196,7 @@
     hidden: true
     
   - dimension: size
-    label: BP_SIZE
+    label: BP Size
     sql: ${TABLE}.size
 
   - dimension: sku
@@ -204,7 +204,7 @@
     hidden: true
     
   - dimension: sub_season_code
-    label: SUB-SEASON
+    label: Sub-Season
     sql: ${TABLE}.sub_season_code
 
   - dimension: total_landed_cost_gbp
@@ -216,15 +216,15 @@
 ### Price Dimensions
 
   - dimension: max_selling_price
-    label: ORIGINAL PRICE
+    label: Original Price
     sql: coalesce(${TABLE}.max_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
  
   - dimension: current_price
-    label: CURRENT PRICE
+    label: Current Price
     sql: coalesce(${TABLE}.current_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
     
   - dimension: selling_price_tiered
-    label: CURRENT PRICE TIER
+    label: Current Price Tier
     sql_case:
       £0 - £20: ${current_price} < 20
       £20 - £40: ${current_price} < 40
@@ -237,7 +237,7 @@
       else: '£300 and over'
   
   - dimension: discount_level_tier
-    label: CURRENT DISCOUNT LEVEL TIER
+    label: Discount Level Tier
     sql_case:
       0% - 7.5%: ${current_price}/${max_selling_price} > 0.925 or ${max_selling_price} = 0
       7.5% - 17.5%: ${current_price}/${max_selling_price} > 0.825

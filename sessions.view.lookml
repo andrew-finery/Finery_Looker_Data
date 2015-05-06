@@ -154,6 +154,10 @@
     label: Session Duration Seconds
     sql: extract(epoch from ${end}) - extract(epoch from ${start})
 
+  - dimension: engagement_time_s
+    label: Engagement Time Seconds
+    sql: ${TABLE}.engagement_time_s
+    
   # Events per visit and bounces (infered) #
 
   - dimension: events_during_session
@@ -579,7 +583,11 @@
     decimals: 2
     sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
-
+  
+  - measure: average_engagement_time
+    type: average
+    sql: ${engagement_time_s}
+  
   - measure: returning_visitor_percentage
     label: Returning Visit %
     type: number
