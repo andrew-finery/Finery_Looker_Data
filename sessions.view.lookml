@@ -143,21 +143,17 @@
     sql: ${TABLE}.session_start_ts
 
   - dimension: start
-    sql: case when ${TABLE}.session_start_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_start_ts end
+    sql: ${TABLE}.session_start_ts
     hidden: true
     
   - dimension: end
-    sql: case when ${TABLE}.session_end_ts < '2014-11-01 00:00:00' then '2014-11-01 00:00:00' else ${TABLE}.session_end_ts end
+    sql: ${TABLE}.session_end_ts
     hidden: true
     
   - dimension: session_duration_seconds
     label: Session Duration Seconds
     sql: extract(epoch from ${end}) - extract(epoch from ${start})
 
-  - dimension: engagement_time_s
-    label: Engagement Time Seconds
-    sql: ${TABLE}.engagement_time_s
-    
   # Events per visit and bounces (infered) #
 
   - dimension: events_during_session
@@ -583,11 +579,7 @@
     decimals: 2
     sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
     format: "%0.2f%"
-  
-  - measure: average_engagement_time
-    type: average
-    sql: ${engagement_time_s}
-  
+
   - measure: returning_visitor_percentage
     label: Returning Visit %
     type: number
