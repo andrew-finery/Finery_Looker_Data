@@ -223,4 +223,7 @@
   - join: transactions
     sql_on: ${visitors.blended_user_id} = ${transactions.blended_user_id}
   - join: spree_exchange_rates
-    sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}    
+    sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
+    
+    
+- explore: spree_cms_product_information
