@@ -83,7 +83,6 @@
   
   - dimension: order_id
     sql: ${TABLE}.order_id
-    hidden: true
   
   - dimension: revenue_inc_vat
     sql: ${TABLE}.revenue
@@ -94,6 +93,7 @@
     hidden: true
     
   - dimension: revenue_ex_coupon_and_vat
+    label: Revenue ex. Discount, VAT
     sql: ${TABLE}.net_value
     
   - dimension: number_of_items

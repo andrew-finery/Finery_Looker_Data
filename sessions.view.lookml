@@ -108,13 +108,11 @@
   
   # Basic dimensions #
   
-  - dimension: user_id
+  - dimension: domain_user_id
     sql: ${TABLE}.domain_userid
-    hidden: true
   
   - dimension: domain_session_index
     sql: ${TABLE}.domain_sessionidx
-    hidden: true
   
   - dimension: blended_user_id
     sql: ${TABLE}.blended_user_id
