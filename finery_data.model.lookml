@@ -11,7 +11,7 @@
     sql_on: ${sessions.blended_user_id} = ${visitors.blended_user_id}
     relationship: many_to_one
   - join: transactions
-    sql_on: ${transactions.domain_userid} = ${sessions.user_id} and ${transactions.domain_sessionidx} = ${sessions.domain_session_index}
+    sql_on: ${transactions.domain_userid} = ${sessions.domain_user_id} and ${transactions.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
   - join: spree_exchange_rates
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
@@ -24,7 +24,7 @@
   - join: spree_exchange_rates
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}  
   - join: sessions
-    sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
+    sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
 
 
 - explore: facebook_daily_performance
