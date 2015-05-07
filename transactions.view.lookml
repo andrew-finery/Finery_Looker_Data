@@ -1,7 +1,7 @@
 - view: transactions
   derived_table:
     sql: |
-         select (select max(convert_timezone('UTC', 'Europe/London', collector_tstamp)) from atomic.events) as max_tstamp, domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label, rank() over(partition by blended_user_id order by collector_tstamp asc) as customer_order_number
+         select (select max(convert_timezone('UTC', 'Europe/London', collector_tstamp)) from atomic.events) as max_tstamp, domain_userid, domain_sessionidx, blended_user_id, convert_timezone('UTC', 'Europe/London', collector_tstamp) as collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label, rank() over(partition by blended_user_id order by collector_tstamp asc) as customer_order_number
           FROM
           (select domain_userid, domain_sessionidx, blended_user_id, collector_tstamp, event_id, customer_id, currency_code, order_id, revenue, shipping, tax, net_value, qty_total, total_adjustment, adjustment_label from
           (select
@@ -67,7 +67,7 @@
     label: Order Placed
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: ${TABLE}.max_tstamp
+    sql: ${TABLE}.collector_tstamp
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
