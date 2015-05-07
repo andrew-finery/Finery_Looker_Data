@@ -37,6 +37,7 @@
         s2.mkt_medium,
         s2.mkt_term,
         s2.mkt_campaign,
+        s2.mkt_content,
         s2.refr_source,
         s2.refr_medium,
         s2.refr_term,
@@ -351,6 +352,21 @@
     sql_case:
       Paid: ${acquisition_channel} in ('SEM Brand', 'SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
       else: Unpaid
+
+  - dimension: direct_session_flag
+    label: Direct Session Flag
+    type: yesno
+    sql: |
+          ${TABLE}.mkt_source is null and
+          ${TABLE}.mkt_medium is null and
+          ${TABLE}.mkt_term is null and
+          ${TABLE}.mkt_campaign is null and
+          ${TABLE}.mkt_content is null and
+          ${TABLE}.refr_source is null and
+          ${TABLE}.refr_medium is null and
+          ${TABLE}.refr_term is null and
+          ${TABLE}.refr_urlhost is null and
+          ${TABLE}.refr_urlpath is null
 
   - dimension: referer_medium
     label: Referrer Medium
