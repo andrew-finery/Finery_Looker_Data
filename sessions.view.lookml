@@ -46,6 +46,7 @@
         s2.mkt_medium_ga,
         s2.mkt_term_ga,
         s2.mkt_campaign_ga,
+        s2.mkt_content_ga,
         s2.refr_source_ga,
         s2.refr_medium_ga,
         s2.refr_term_ga,
@@ -388,6 +389,10 @@
   - dimension: campaign_name
     label: Campaign Name
     sql: ${TABLE}.mkt_campaign_ga
+
+  - dimension: campaign_content
+    label: Campaign Content
+    sql: ${TABLE}.mkt_content_ga
 
   # Device fields #
     
