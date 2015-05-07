@@ -67,7 +67,7 @@
     label: Order Placed
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: ${TABLE}.collector_tstamp
+    sql: ${TABLE}.max_tstamp
     
   - dimension: customer_id
     sql: ${TABLE}.customer_id
