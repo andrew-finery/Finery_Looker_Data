@@ -75,14 +75,11 @@
   
   - dimension: blended_user_id
     sql: ${TABLE}.blended_user_id
-    
-  - dimension: first_touch
-    sql: ${TABLE}.first_touch
-    
+
   - dimension_group: first_touch
-    label: FIRST TOUCH
+    label: First Touch
     type: time
-    timeframes: [time, hour, date, week, month]
+    timeframes: [time, hour, date, day_of_week, week, month]
     sql: ${TABLE}.first_touch
     
   - dimension: last_touch
