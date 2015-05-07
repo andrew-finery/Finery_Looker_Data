@@ -384,7 +384,7 @@
 ### Number of sku's in stock measures
   
   - measure: skus_in_stock_last_week
-    label: SIZES IN STOCK LAST WEEK
+    label: Sizes in Stock - Last Week
     type: count_distinct
     sql: ${TABLE}.sku
     filters:
@@ -393,7 +393,7 @@
       calendar_date_day_of_week_index: 6
 
   - measure: skus_in_stock_week_before
-    label: SIZES IN STOCK 2 WEEKS AGO
+    label: Sizes in Stock - 2 Weeks Ago
     type: count_distinct
     sql: ${TABLE}.sku
     filters:
@@ -402,7 +402,7 @@
       calendar_date_day_of_week_index: 6
   
   - measure: skus_in_stock_yesterday
-    label: SIZES IN STOCK YESTERDAY
+    label: Sizes in Stock - Yesterday
     type: count_distinct
     sql: ${TABLE}.sku
     filters:
@@ -412,35 +412,42 @@
 ####################### Weekly/Monthly Measures
 
   - measure: sum_items_sold_yesterday
-    label: UNITS SOLD YESTERDAY
+    label: Units Sold - Yesterday
     type: sum
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: 1 day ago for 1 day
     
   - measure: sum_items_sold_last_week
-    label: UNITS SOLD LAST WEEK
+    label: Units Sold - Last Week
     type: sum
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: last week
 
   - measure: sum_items_sold_week_before
-    label: UNITS SOLD WEEK BEFORE LAST
+    label:  Units Sold - Week Before Last
     type: sum
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: 2 weeks ago for 1 week
   
   - measure: sum_items_sold_last_7_days
-    label: UNITS SOLD LAST 7 DAYS
+    label: Units Sold - Last 7 Days
     type: sum
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: 7 days ago for 7 days 
 
+  - measure: sum_items_sold_week_to_date
+    label: Units Sold - Week to Date
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: this week
+
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_yesterday
-    label: GROSS REVENUE EX. VAT, DISCOUNT YESTERDAY
+    label: Gross Revenue ex. VAT, Discount - Yesterday
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
@@ -448,7 +455,7 @@
       calendar_date_date: 1 day ago for 1 day
 
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week
-    label: GROSS REVENUE EX. VAT, DISCOUNT LAST WEEK
+    label: Gross Revenue ex. VAT, Discount - Last Week
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
@@ -456,7 +463,7 @@
       calendar_date_date: last week
       
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_before
-    label: GROSS REVENUE EX. VAT, DISCOUNT WEEK BEFORE LAST
+    label: Gross Revenue ex. VAT, Discount - Week Before Last
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
@@ -464,41 +471,49 @@
       calendar_date_date: 2 weeks ago for 1 week
       
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days
-    label: GROSS REVENUE EX. VAT, DISCOUNT LAST 7 DAYS
+    label: Gross Revenue ex. VAT, Discount - Last 7 Days
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
     filters:
       calendar_date_date: 7 days ago for 7 days
 
+  - measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_to_date
+    label: Gross Revenue ex. VAT, Discount - Week to Date
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
+    value_format: '"£"#,##0.00'
+    filters:
+      calendar_date_date: this week
+
   - measure: sales_mix_last_7_days
-    label: SALES MIX - LAST 7 DAYS
+    label: Sales Mix - Last 7 Days
     type: percent_of_total
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days}
   
   - measure: weeks_cover_yesterday
-    label: WEEKS COVER YESTERDAY
+    label: Weeks Cover - Yesterday
     type: number
     decimals: 2
     sql: ${closing_stock_yesterday}/NULLIF(${sum_items_sold_last_7_days},0)::REAL
     value_format: '#.00' 
     
   - measure: weeks_cover_last_week
-    label: WEEKS COVER LAST WEEK
+    label: Weeks Cover - Last Week
     type: number
     decimals: 2
     sql: ${closing_stock_last_week}/NULLIF(${sum_items_sold_last_week},0)::REAL
     value_format: '#.00' 
     
   - measure: weeks_cover_week_before_last
-    label: WEEKS COVER WEEK BEFORE LAST
+    label: WWeeks Cover - Week Before Last
     type: number
     decimals: 2
     sql: ${closing_stock_week_before_last}/NULLIF(${sum_items_sold_week_before},0)::REAL
     value_format: '#.00' 
     
   - measure: units_sold_wow
-    label: UNITS SOLD WEEK ON WEEK
+    label: Units Sold - Week-On-Week
     type: number
     decimals: 2
     sql: (${sum_items_sold_last_week} - ${sum_items_sold_week_before})/NULLIF(${sum_items_sold_week_before},0)::REAL
@@ -513,7 +528,7 @@
         {% endif %}
 
   - measure: gross_revenue_wow
-    label: GROSS REVENUE WEEK ON WEEK
+    label: Gross Revenue - Week-On-Week
     type: number
     decimals: 2
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL
