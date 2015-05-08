@@ -88,7 +88,7 @@
     type: table
     model: finery_data
     explore: sessions
-    dimensions: [sessions.start_date]
+    dimensions: [transactions.trans_time_date]
     measures: [transactions.count_transactions]
     dynamic_fields:
     - table_calculation: week_on_week
@@ -96,8 +96,8 @@
       expression: |
         concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
     filters:
-      sessions.start_date: 15 days ago, 8 days ago, 1 day ago
-    sorts: [sessions.start_date desc]
+      transactions.trans_time_date: 15 days ago, 8 days ago, 1 day ago
+    sorts: [transactions.trans_time_date desc]
     limit: 500
     height: 4
     width: 6
