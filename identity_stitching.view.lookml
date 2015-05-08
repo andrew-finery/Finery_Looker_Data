@@ -24,7 +24,7 @@
         GROUP BY 1,
                  2
 
-     sql_trigger_value: SELECT COUNT(*) FROM ${page_views.SQL_TABLE_NAME}
+     sql_trigger_value: SELECT COUNT(*) FROM ${sessions_technology.SQL_TABLE_NAME}
      distkey: domain_userid
      sortkeys: [domain_userid]
      

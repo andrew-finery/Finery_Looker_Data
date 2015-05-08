@@ -1,4 +1,4 @@
-- view: returns
+- view: spree_returns
 
   derived_table:
      sql: |

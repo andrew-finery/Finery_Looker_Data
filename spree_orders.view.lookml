@@ -75,7 +75,7 @@
         LEFT JOIN (SELECT aaa.order_id,
                           SUM(bbb.price) AS return_item_total,
                           COUNT(*) AS items_returned
-                   FROM ${returns.SQL_TABLE_NAME} aaa
+                   FROM ${spree_returns.SQL_TABLE_NAME} aaa
                      LEFT JOIN (SELECT *
                                 FROM daily_snapshot.spree_line_items
                                 WHERE spree_timestamp = (SELECT MAX(spree_timestamp)

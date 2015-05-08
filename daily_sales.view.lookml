@@ -90,19 +90,19 @@
 #################################################################################################################################################################################################
 
   - dimension_group: calendar_date
-    label: CALENDAR
+    label: Calendar
     type: time
     timeframes: [date, day_of_week_index, week, month, month_num]
     convert_tz: false
     sql: ${TABLE}.calendar_date
 
   - dimension: year_week_number
-    label: YEAR WEEK NUMBER
+    label: Year Week Number
     sql: ${TABLE}.year_week_number
     hidden: true
     
   - dimension: sku
-    label: EAN
+    label: Ean
     sql: ${TABLE}.sku
     
   - dimension: count_on_hand
@@ -114,12 +114,12 @@
     hidden: true
 
   - dimension: after_first_option_sales_date_flag
-    label: AFTER FIRST SALES DATE FOR OPTION FLAG
+    label: After First Option Sales Date (Yes/No)
     type: yesno
     sql: ${TABLE}.calendar_date >= ${TABLE}.first_option_sales_date
       
   - dimension: full_option_availability_flag
-    label: FULL OPTION SIZE AVAILABILITY FLAG
+    label: Full Size Availability (Yes/No)
     type: yesno
     sql: ${TABLE}.full_option_availability_flag = 1
 
@@ -130,33 +130,40 @@
 # Item Measures 
 
   - measure: sum_items_sold
-    label: UNITS SOLD
+    label: Gross Units Sold
     type: sum
     sql: ${TABLE}.items_sold
 
   - measure: sum_items_sold_as_percent
-    label: UNITS SOLD MIX
+    label: Units Sold Mix
     type: percent_of_total
     sql: ${sum_items_sold}
 
   - measure: sum_items_returned
-    label: UNITS RETURNED
+    label: Units Returned
     type: sum
     sql: ${TABLE}.items_returned
     
   - measure: sum_items_sold_after_returns
-    label: NET UNITS SOLD
+    label: Net Units Sold
     type: sum
     sql: ${TABLE}.items_sold_after_returns
+  
+  - measure: return_rate
+    label: Return Rate
+    type: number
+    decimals: 4
+    sql: ${sum_items_sold}/NULLIF(${sum_items_returned},0)::REAL
+    value_format: '#0.00%'
     
   - measure: first_sale_date
-    label: FIRST SALES DATE
+    label: First Sales Date
     type: date
     sql: MIN(case when items_sold > 0 then ${calendar_date_date} else null end)
     convert_tz: false
 
   - measure: last_sale_date
-    label: LAST SALES DATE
+    label: Last Sales Date
     type: date
     sql: MAX(case when items_sold > 0 then ${calendar_date_date} else null end)
     convert_tz: false
@@ -165,48 +172,48 @@
 # Value Measures
 
   - measure: gross_item_revenue_gbp
-    label: GROSS REVENUE
+    label: Gross Revenue (pre Discount)
     type: sum
     sql: ${TABLE}.gross_revenue_gbp
     value_format: '"£"#,##0.00'
-
+    
   - measure: gross_item_revenue_gbp_ex_vat
-    label: GROSS REVENUE EX. VAT
+    label: Gross Revenue (pre Discount) ex. VAT
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat
     value_format: '"£"#,##0.00'
 
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount
-    label: GROSS REVENUE EX. VAT, DISCOUNT
+    label: Gross Revenue ex. VAT, Discount
     type: sum
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
 
   - measure: sales_mix
-    label: SALES MIX
+    label: Revenue Mix
     type: percent_of_total
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}
     
   - measure: net_item_revenue_gbp
-    label: NET REVENUE
+    label: Net Revenue (pre Discount)
     type: sum
     sql: ${TABLE}.net_revenue_gbp
     value_format: '"£"#,##0.00'
 
   - measure: net_item_revenue_gbp_ex_vat_ex_discount
-    label: NET REVENUE EX. VAT, DISCOUNT
+    label: Net Revenue ex. VAT, Discount
     type: sum
     sql: ${TABLE}.net_revenue_gbp_ex_vat_ex_discount
     value_format: '"£"#,##0.00'
   
   - measure: return_item_value_gbp
-    label: RETURN ITEM VALUE
+    label: Return Item Value
     type: number
     sql: ${gross_item_revenue_gbp} - ${net_item_revenue_gbp}
     value_format: '"£"#,##0.00'
     
   - measure: return_item_value_gbp_ex_vat_ex_discount
-    label: RETURN ITEM VALUE EX. VAT, DISCOUNT
+    label: Return Item Value ex. VAT, Discount
     type: number
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount}
     value_format: '"£"#,##0.00'
@@ -214,21 +221,21 @@
 # ASP
 
   - measure: asp
-    label: ASP
+    label: Average Selling Price
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp}/NULLIF(${sum_items_sold},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: asp_ex_vat
-    label: ASP EX. VAT
+    label: Average Selling Price ex. VAT
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp_ex_vat}/NULLIF(${sum_items_sold},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: asp_ex_vat_ex_discount
-    label: ASP EX. VAT, DISCOUNT
+    label: Average Selling Price ex. VAT, Discount
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_items_sold},0)::REAL
@@ -237,19 +244,19 @@
 # Margin Measures
 
   - measure: sum_cost_gbp
-    label: COST OF GOODS SOLD
+    label: Gross Cost of Goods Sold
     type: sum
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     value_format: '"£"#,##0.00'
 
   - measure: sum_net_cost_gbp
-    label: COST OF NET GOODS SOLD
+    label: Net Cost of Goods Sold
     type: sum
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns
     value_format: '"£"#,##0.00'
 
   - measure: gross_margin_percent
-    label: GROSS MARGIN %
+    label: Gross Margin %
     type: number
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount} - ${sum_cost_gbp})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount},0)::REAL
     value_format: '##.00%'
@@ -257,19 +264,19 @@
 # Stock Measures
 
   - measure: closing_stock
-    label: CLOSING STOCK TOTAL
+    label: Closing Stock Units
     type: sum
     sql: ${TABLE}.closing_stock
 
   - measure: closing_stock_yesterday
-    label: CLOSING STOCK YESTERDAY
+    label: Closing Stock Units - Yesterday
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
       calendar_date_date: 1 day ago for 1 day
   
   - measure: closing_stock_last_week
-    label: CLOSING STOCK LAST WEEK
+    label: Closing Stock Units - Last Week
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
@@ -277,7 +284,7 @@
       calendar_date_day_of_week_index: 6
 
   - measure: closing_stock_week_before_last
-    label: CLOSING STOCK 2 WEEKS AGO
+    label: Closing Stock Units - 2 Weeks Ago
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
@@ -285,7 +292,7 @@
       calendar_date_day_of_week_index: 6
 
   - measure: closing_stock_end_of_week
-    label: CLOSING STOCK - END OF WEEK
+    label: Closing Stock Units - End of Week
     type: sum
     sql: ${TABLE}.closing_stock
     filters:
@@ -294,13 +301,13 @@
 # stock value @ cost
 
   - measure: closing_stock_value_cost
-    label: CLOSING STOCK TOTAL @ COST
+    label: Closing Stock Value @ Cost
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_cost_yesterday
-    label: CLOSING STOCK YESTERDAY @ COST
+    label:  Closing Stock Value @ Cost - Yesterday
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
@@ -308,7 +315,7 @@
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_cost_last_week
-    label: CLOSING STOCK LAST WEEK @ COST
+    label: Closing Stock Value @ Cost - Last Week
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
@@ -317,7 +324,7 @@
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_cost_week_before_last
-    label: CLOSING STOCK 2 WEEKS AGO @ COST
+    label: Closing Stock Value @ Cost - 2 Weeks Ago
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
@@ -326,7 +333,7 @@
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_cost_end_of_week
-    label: CLOSING STOCK - END OF WEEK @ COST
+    label: Closing Stock Value @ Cost - End of Week
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
@@ -336,13 +343,13 @@
 # closing stock @ retail
 
   - measure: closing_stock_value_retail
-    label: CLOSING STOCK TOTAL @ RETAIL
+    label: Closing Stock Value @ Retail
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_retail_yesterday
-    label: CLOSING STOCK YESTERDAY @ RETAIL
+    label: Closing Stock Value @ Retail - Yesterday
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
@@ -350,13 +357,13 @@
     value_format: '"£"#,##0.00'
     
   - measure: stock_mix_retail_yesterday
-    label: STOCK RETAIL VALUE MIX YESTERDAY
+    label: Stock Retail Value Mix - Yesterday
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday}  
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_retail_last_week
-    label: CLOSING STOCK LAST WEEK @ RETAIL
+    label: Closing Stock Value @ Retail - Last Week
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
@@ -365,7 +372,7 @@
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_retail_week_before_last
-    label: CLOSING STOCK 2 WEEKS AGO @ RETAIL
+    label: Closing Stock Value @ Retail - 2 Weeks Ago
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
@@ -374,7 +381,7 @@
     value_format: '"£"#,##0.00'
     
   - measure: closing_stock_value_retail_end_of_week
-    label: CLOSING STOCK - END OF WEEK @ RETAIL
+    label: Closing Stock Value @ Retail - End of Week
     type: sum
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:

@@ -85,12 +85,12 @@
     title: Returns by Reason
     type: looker_pie
     model: finery_data
-    explore: returns
-    dimensions: [returns.return_reason]
-    measures: [returns.items_returned]
+    explore: spree_returns
+    dimensions: [spree_returns.return_reason]
+    measures: [spree_returns.items_returned]
     filters:
-      returns.reimbursement_status: '"reimbursed"'
-    sorts: [returns.items_returned desc]
+      spree_returns.reimbursement_status: '"reimbursed"'
+    sorts: [spree_returns.items_returned desc]
     limit: 500
     height: 4
     width: 6

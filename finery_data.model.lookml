@@ -151,15 +151,15 @@
   - join: calendar_weeks
     sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
 
-- explore: returns
+- explore: spree_returns
   fields: [ALL_FIELDS*, -online_products.option]
   joins:
   - join: product_lookup
     sql_on: |
-      returns.sku = product_lookup.ean
+      spree_returns.sku = product_lookup.ean
   - join: online_products
     sql_on: |
-      returns.sku = online_products.ean
+      spree_returns.sku = online_products.ean
 
       
 - explore: spree_refunds
