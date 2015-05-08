@@ -1,7 +1,9 @@
 - view: spree_users
   derived_table:
     sql: |
-       SELECT a.spree_timestamp,
+       SELECT 
+              --
+              a.spree_timestamp,
               a.id AS user_id,
               a.email AS email_address,
               convert_timezone('UTC', 'Europe/London', a.created_at) as created_at,
