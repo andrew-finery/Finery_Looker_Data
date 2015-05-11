@@ -169,7 +169,7 @@
        hidden: true
 
      - dimension: style
-       label: STYLE
+       label: Style
        sql: ${TABLE}.style
        
      - dimension: product_group_id
@@ -177,37 +177,37 @@
        hidden: true
        
      - dimension: option
-       label: OPTION
+       label: Option
        sql: ${TABLE}.option
 
      - dimension: option_for_returns_report
-       label: OPTION
+       label: Option
        sql: ${TABLE}.option
        html: |
-               <a href="https://finerylondon.looker.com/explore/finery_data/returns?dynamic_fields=%5B%5D&f%5Breturns.returned_at_date%5D=yesterday&filter_config=%7B%22online_products.option_for_returns_report%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:{{value}},%7B%7D%5D,%22id%22:1%7D%5D,%22returns.returned_at_date%22:%5B%7B%22type%22:%22advanced%22,%22values%22:%5B%7B%22date%22:%222015-04-23T08:59:11.258Z%22,%22unit%22:%22day%22,%22constant%22:%22yesterday%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&query=4V3MHG5&vis_config=%7B%22type%22:%22looker_column%22%7D&visible_ui_sections=data&show=data&vis=%7B%22type%22:%22looker_column%22%7D&f%5Bonline_products.option_for_returns_report%5D={{value}}">{{value}}</a>
+               <a href="https://finerylondon.looker.com/explore/finery_data/spree_returns?dynamic_fields=%5B%5D&f%5Bspree_returns.returned_at_date%5D=yesterday&filter_config=%7B%22online_products.option_for_returns_report%22:%5B%7B%22type%22:%22%3D%22,%22values%22:%5B%7B%22constant%22:{{value}}7D,%7B%7D%5D,%22id%22:0%7D%5D,%22spree_returns.returned_at_date%22:%5B%7B%22type%22:%22advanced%22,%22values%22:%5B%7B%22constant%22:%22yesterday%22%7D,%7B%7D%5D,%22id%22:1%7D%5D%7D&%20Black,%7B%7D%5D,%22id%22:1%7D%5D,%22spree_returns.returned_at_date%22:%5B%7B%22type%22:%22advanced%22,%22values%22:%5B%7B%22date%22:%222015-04-23T08:59:11.258Z%22,%22unit%22:%22day%22,%22constant%22:%22yesterday%22%7D,%7B%7D%5D,%22id%22:0%7D%5D%7D&query=BtN4vDw&vis_config=%7B%22type%22:%22looker_column%22%7D&visible_ui_sections=data&show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&f%5Bonline_products.option_for_returns_report%5D={{value}}">{{value}}</a>
 
      - dimension: product_id
        sql: ${TABLE}.product_id
        hidden: true
 
      - dimension: colour_group
-       label: ONLINE COLOUR GROUP
+       label: Colour Group
        sql: ${TABLE}.colour_group
        
      - dimension: colour
-       label: ONLINE COLOUR
+       label: Colour
        sql: ${TABLE}.colour
        
      - dimension: online_department
-       label: ONLINE DEPARTMENT
+       label: Online Department
        sql: ${TABLE}.department
        
      - dimension: online_sub_department
-       label: ONLINE SUB-DEPARTMENT
+       label: Sub-Department
        sql: ${TABLE}.sub_department       
        
      - dimension: size
-       label: SIZE
+       label: Size
        sql: ${TABLE}.size
     
      - dimension: current_price_gbp
@@ -229,11 +229,11 @@
        sql: ${TABLE}.available_on
        
      - dimension: weeks_online
-       label: WEEKS ONLINE
+       label: Weeks Online
        sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on) as integer) / 7 end
 
      - dimension: days_online
-       label: DAYS ONLINE
+       label: Days Online
        sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on) as integer) end
     
      - dimension: image_location
@@ -241,24 +241,24 @@
        hidden: true
        
      - dimension: online_flag
-       label: ONLINE FLAG
+       label: Online Flag
        type: yesno
        sql: ${TABLE}.online_flag = 'Yes'
 
      - dimension: coming_soon_flag
-       label: COMING SOON FLAG
+       label: Coming Soon Flag
        type: yesno
        sql: ${TABLE}.is_coming_soon = 'true'
      
      - dimension: option_image
-       label: OPTION IMAGE
+       label: Option Image
        type: string
        sql: ${TABLE}.option_image
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
      
      - dimension: style_image
-       label: STYLE IMAGE
+       label: Style Image
        type: string
        sql: ${TABLE}.style_image
        html: |
@@ -281,21 +281,21 @@
        hidden: true
        
      - measure: skus_online
-       label: SKUS ONLINE
+       label: Skus Online
        type: count_distinct
        sql: ${TABLE}.ean
        filters:
         online_flag: Yes 
       
      - measure: options_online
-       label: OPTIONS ONLINE
+       label:  Options Online
        type: count_distinct
        sql: ${TABLE}.product_id
        filters:
         online_flag: Yes 
        
      - measure: styles_online
-       label: STYLES ONLINE
+       label: Styles Online
        type: count_distinct
        sql: ${TABLE}.product_group_id
        filters:
