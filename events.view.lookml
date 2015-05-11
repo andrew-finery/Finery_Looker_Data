@@ -42,9 +42,9 @@
       WHERE e.domain_userid IS NOT NULL
       AND e.app_id = 'production'
     
-    sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
-    distkey: domain_userid
-    sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
+#    sql_trigger_value: SELECT MAX(collector_tstamp) FROM atomic.events
+#    distkey: domain_userid
+#    sortkeys: [domain_userid, domain_sessionidx, collector_tstamp]
     
   fields:
   

@@ -80,28 +80,15 @@
     sql_on: product_in_transaction.root_id = atomic_events.event_id
   - join: product_in_checkout
     sql_on: product_in_checkout.root_id = atomic_events.event_id
-    
   - join: mailchimp_campaigns_1
     from: mailchimp_campaigns
     sql_on: atomic_events.se_label = mailchimp_campaigns_1.email_id
   - join: mailchimp_campaigns_2
     from: mailchimp_campaigns
     sql_on: sessions.mkt_campaign_ga = mailchimp_campaigns_2.email_id
-
   - join: spree_products
     from: spree_products
     sql_on: ${atomic_events.product_id} = ${spree_products.product_id}
-
-
-- explore: users_signup
-  joins:
-  - join: spree_orders
-    sql_on: spree_orders.customer_id = users_signup.id
-  - join: hermes_delivery_tracking
-    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
-  - join: spree_addresses
-    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-
 
 - explore: spree_orders
   joins:
@@ -161,7 +148,6 @@
     sql_on: |
       spree_returns.sku = online_products.ean
 
-      
 - explore: spree_refunds
 
 - explore: goods_in
@@ -224,6 +210,7 @@
     sql_on: ${visitors.blended_user_id} = ${transactions.blended_user_id}
   - join: spree_exchange_rates
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
-    
-    
+
 - explore: spree_cms_product_information
+
+- explore: looker_table_updates
