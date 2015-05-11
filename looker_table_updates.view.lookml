@@ -39,7 +39,8 @@
     label: Table Built Start
     type: time
     timeframes: [time, date]
-    sql: ${TABLE}.session_start_ts
+    sql: ${TABLE}.start_time
+    convert_tz: false
   
   - dimension: creation_time_in_s
     label: Creation Time (seconds)
