@@ -149,6 +149,7 @@
 
   - dimension: spent
     type: number
+    decimals: 2
     sql: ${TABLE}.spent
     hidden: true
 
@@ -183,6 +184,7 @@
   - measure: sum_amount_spent
     label: Total Spend
     type: sum
+    decimals: 2
     sql: ${spent}
     value_format: '"£"#,##0.00'
 
