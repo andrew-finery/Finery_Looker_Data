@@ -1,5 +1,5 @@
-- dashboard: email_performance_dashboard
-  title: Email Dashboard - Overview
+- dashboard: crm_summary
+  title: CRM Summary
   layout: static
   tile_size: 100
   show_applied_filters: true

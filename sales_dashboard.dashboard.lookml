@@ -1,5 +1,5 @@
 - dashboard: sales_dashboard
-  title: Sales Dashboard - Overview
+  title: Sales Dashboard
   layout: static
   show_applied_filters: true
   tile_size: 100

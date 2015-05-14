@@ -1,5 +1,5 @@
-- dashboard: website_yesterday_acquisition
-  title: Web Dashboard - Yesterday - Acquisition
+- dashboard: website_channels
+  title: Website Channels
   layout: static
   tile_size: 100
   show_applied_filters: true

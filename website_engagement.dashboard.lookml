@@ -1,5 +1,5 @@
-- dashboard: website_yesterday_engagement
-  title: Web Dashboard - Yesterday - Engagement
+- dashboard: website_engagement
+  title: Website Engagement
   layout: static
   tile_size: 50
 

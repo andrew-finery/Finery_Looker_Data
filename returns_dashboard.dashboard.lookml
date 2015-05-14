@@ -1,5 +1,5 @@
 - dashboard: returns_dashboard
-  title: Returns Dashboard - Overview
+  title: Returns Dashboard
   layout: static
   show_applied_filters: true
   tile_size: 100
