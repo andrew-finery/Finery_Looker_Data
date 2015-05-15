@@ -17,6 +17,7 @@
         (d.max_selling_price - b.price) as discount,
         coalesce(e.items_returned, '0') as items_returned,
         e.return_reason,
+        e.return_tstamp,
         a.exchange_rate,
         a.tax_rate,
         a.item_total as order_total,
@@ -36,7 +37,7 @@
         on b.variant_id = d.variant_id
         and d.currency = a.currency
         left join
-        (select order_id, sku, count(*) as items_returned, max(name) as return_reason from ${spree_returns.SQL_TABLE_NAME} group by 1,2) e
+        (select order_id, sku, min(created_at) as return_tstamp, count(*) as items_returned, max(name) as return_reason from ${spree_returns.SQL_TABLE_NAME} group by 1,2) e
         on a.order_id = e.order_id
         and c.sku = e.sku
         where a.state not in ('canceled')
@@ -59,7 +60,7 @@
     type: time
     timeframes: [time, date, hour_of_day, week, month]
     sql: ${TABLE}.order_tstamp
-    
+
   - dimension: order_id
     primary_key: true
     sql: ${TABLE}.order_id
@@ -174,6 +175,15 @@
   - dimension: return_reason
     label: RETURN REASON
     sql: ${TABLE}.return_reason
+
+  - dimension_group: return_time
+    type: time
+    timeframes: [date]
+    sql: ${TABLE}.return_tstamp
+  
+  - dimension: days_to_process_return
+    type: int
+    sql: ${return_time_date} - ${order_time_date}
     
   - dimension: return_item_value_gbp
     type: number
