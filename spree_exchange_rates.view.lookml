@@ -27,7 +27,7 @@
           
           (select calendar_date, 'GBP' as currency, cast('1.00' as decimal(8,2)) as rate, cast(null as datetime) as spree_timestamp from finery.calendar)
 
-    sql_trigger_value: select max(spree_timestamp) from daily_snapshot.spree_exchange_rates
+    sql_trigger_value: select max(spree_timestamp) from daily_snapshot.spree_zones
     distkey: calendar_date
     sortkeys: [calendar_date, currency]
           
