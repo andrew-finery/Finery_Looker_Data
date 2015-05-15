@@ -70,7 +70,6 @@
   - dimension: order_id
     label: ORDER ID
     sql: ${TABLE}.order_id
-    hidden: true
        
   - dimension: shipment_id
     label: SHIPMENT ID
@@ -80,7 +79,6 @@
   - dimension: sku
     label: SKU
     sql: ${TABLE}.sku
-    hidden: true
 
   - dimension: return_reason
     label: RETURN REASON
