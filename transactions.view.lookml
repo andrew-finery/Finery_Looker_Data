@@ -91,6 +91,9 @@
   - dimension: shipping
     sql: ${TABLE}.shipping
     hidden: true
+  
+  - dimension: primary_promo_code
+    sql: ${TABLE}.adjustment_label
     
   - dimension: revenue_ex_coupon_and_vat
     label: Revenue ex. Discount, VAT
