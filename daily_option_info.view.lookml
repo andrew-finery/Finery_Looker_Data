@@ -34,7 +34,7 @@
                         (select calendar_date from
                         (select max(extract(epoch from calendar_date)) as calendar_date from ${daily_sales_option.SQL_TABLE_NAME})
                         union
-                        (select min(extract(epoch from calendar_date))as calendar_date from ${snowplow_product_page_views_daily.SQL_TABLE_NAME}))
+                        (select max(extract(epoch from calendar_date))as calendar_date from ${snowplow_product_page_views_daily.SQL_TABLE_NAME}))
     distkey: product_id
     sortkeys: [product_id, calendar_date]
 
