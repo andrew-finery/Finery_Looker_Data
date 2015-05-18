@@ -513,12 +513,17 @@
     value_format: '#.00' 
     
   - measure: weeks_cover_week_before_last
-    label: WWeeks Cover - Week Before Last
+    label: Weeks Cover - Week Before Last
     type: number
     decimals: 2
     sql: ${closing_stock_week_before_last}/NULLIF(${sum_items_sold_week_before},0)::REAL
     value_format: '#.00' 
     
+
+########################################################################################################################
+########################################## REPORTING MEASURES ##########################################################
+########################################################################################################################
+
   - measure: units_sold_wow
     label: Units Sold - Week-On-Week
     type: number
@@ -533,6 +538,7 @@
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
 
   - measure: gross_revenue_wow
     label: Gross Revenue - Week-On-Week
@@ -548,3 +554,103 @@
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
+    hidden: true
+    
+  
+  - measure: units_sold_l4w
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: 5 weeks ago for 4 weeks
+      
+  - measure: units_sold_mtd
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: this month
+      
+  - measure: units_sold_std
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: after 2015/02/01
+      
+  - measure: gross_rev_l4w
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
+    filters:
+      calendar_date_date: 5 weeks ago for 4 weeks
+      
+  - measure: gross_rev_mtd
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
+    filters:
+      calendar_date_date: this month
+      
+  - measure: gross_rev_std
+    type: sum
+    sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
+    filters:
+      calendar_date_date: after 2015/02/01
+      
+  - measure: cost_tw
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    filters:
+      calendar_date_date: last week
+    
+  - measure: cost_lw
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    filters:
+      calendar_date_date: 2 weeks ago for 1 week
+    
+  - measure: cost_l4w
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    filters:
+      calendar_date_date: 5 weeks ago for 4 weeks
+      
+  - measure: cost_mtd
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    filters:
+      calendar_date_date: this month
+      
+  - measure: cost_std
+    type: sum
+    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    filters:
+      calendar_date_date: after 2015/02/01
+    
+  - measure: pc1_tw
+    type: number
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${cost_tw}
+  
+  - measure: pc1_lw
+    type: number
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before} - ${cost_lw}
+  
+  - measure: pc1_l4w
+    type: number
+    sql: ${gross_rev_l4w} - ${cost_l4w}
+  
+  - measure: pc1_mtd
+    type: number
+    sql: ${gross_rev_mtd} - ${cost_mtd}
+  
+  - measure: pc1_std
+    type: number
+    sql: ${gross_rev_std} - ${cost_std}
+    
+  - measure: units_sold_for_returns
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: before 2 weeks ago
+
+  - measure: units_returned_for_returns
+    type: sum
+    sql: ${TABLE}.items_returned
+    filters:
+      calendar_date_date: before 2 weeks ago

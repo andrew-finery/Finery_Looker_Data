@@ -188,7 +188,6 @@
 
      - dimension: product_id
        sql: ${TABLE}.product_id
-       hidden: true
 
      - dimension: colour_group
        label: Colour Group
