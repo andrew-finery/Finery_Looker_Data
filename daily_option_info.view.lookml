@@ -105,31 +105,31 @@
 
    - measure: sum_items_sold
      type: sum
-     label: ITEMS SOLD
+     label: Items Sold
      sql: ${items_sold}
 
    - measure: sum_items_sold_last_week
      type: sum
-     label: ITEMS SOLD LAST WEEK
+     label: Items Sold LW
      sql: ${items_sold}
      filters:
       calendar_date_date: last week
 
    - measure: sum_items_returned
      type: sum
-     label: ITEMS RETURNED
+     label: Items Returned
      sql: ${items_returned}
 
    - measure: return_rate
      type: number
      decimals: 4
-     label: RETURN RATE
+     label: Return Rate
      sql: ${sum_items_returned}/NULLIF(${sum_items_sold},0)::REAL
      value_format: '0.00%'
 
    - measure: sum_closing_stock_yesterday
      type: sum
-     label: CLOSING STOCK YESTERDAY
+     label: Closing Stock Yesterday
      sql: ${closing_stock}
      filters:
       calendar_date_date: yesterday
@@ -137,28 +137,28 @@
    - measure: sum_gross_revenue_gbp
      type: sum
      decimals: 2
-     label: GROSS REVENUE
+     label: Gross Revenue
      sql: ${gross_revenue_gbp}
      value_format: '"£"#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat
      type: sum
      decimals: 2
-     label: GROSS REVENUE EX. VAT
+     label: Gross Revenue ex. VAT
      sql: ${gross_revenue_gbp_ex_vat}
      value_format: '"£"#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount
      type: sum
      decimals: 2
-     label: GROSS REVENUE EX. VAT, DISCOUNT
+     label: Gross Revenue ex. VAT, Discount
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
      value_format: '"£"#,##0.00'
 
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount_last_week
      type: sum
      decimals: 2
-     label: GROSS REVENUE EX. VAT, DISCOUNT LAST WEEK
+     label: Gross Revenue ex. VAT, DIscount LW
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
      value_format: '"£"#,##0.00'
      filters:
@@ -166,41 +166,75 @@
       
    - measure: sum_product_page_views
      type: sum
-     label: PAGE VIEWS
+     label: Page Views
      sql: ${product_page_views}
      
    - measure: sum_product_impressions
      type: sum
-     label: IMPRESSIONS
+     label: Impressions
      sql: ${product_impressions}
      
    - measure: sum_product_clicks
      type: sum
-     label: CLICKS
+     label: Clicks
      sql: ${product_clicks}
 
    - measure: click_through_rate
      type: number
      decimals: 4
-     label: CLICK-THROUGH RATE
+     label: Click-Through Rate
      sql: ${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL
      value_format: '0.00%'
 
    - measure: conversion_rate
      type: number
      decimals: 4
-     label: CONVERSION RATE
+     label: Conversion Rate
      sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL
      value_format: '0.00%'
   
    - measure: go_live_date
      type: string
-     label: GO LIVE DATE
-     sql: min(case when ${product_impressions} < 10 then null else ${calendar_date_date} end)
+     label: Go-Live Date
+     sql: min(case when ${product_impressions} < 50 then null else ${calendar_date_date} end)
   
    - measure: options_online
      type: count_distinct
-     label: OPTIONS ONLINE
+     label: Options Online
      sql: ${product_id}
      filters:
-      product_impressions: '>10'
+      product_impressions: '>50'
+
+#################################### REPORTING MEASURES ###################################
+
+   - measure: impressions_tw
+     type: sum
+     sql: ${product_impressions}
+     filters:
+      calendar_date_date: last week
+
+   - measure: clicks_tw
+     type: sum
+     sql: ${product_clicks}
+     filters:
+      calendar_date_date: last week
+
+   - measure: page_views_tw
+     type: sum
+     sql: ${product_page_views}
+     filters:
+      calendar_date_date: last week
+      
+   - measure: options_online_tw
+     type: count_distinct
+     sql: ${product_id}
+     filters:
+      calendar_date_date: last week
+      product_impressions: '>50'
+      
+   - measure: options_online_lw
+     type: count_distinct
+     sql: ${product_id}
+     filters:
+      calendar_date_date: 2 weeks ago for 1 week
+      product_impressions: '>50'
