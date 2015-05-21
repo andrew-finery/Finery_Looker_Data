@@ -119,6 +119,11 @@
     type: count_distinct
     sql: ${order_id}
 
+  - measure: transactions_percent_of_total
+    label: Orders Percent of Total
+    type: percent_of_total
+    sql: ${count_transactions}
+
   - measure: count_new_customers
     label: New Customers Total
     type: count_distinct

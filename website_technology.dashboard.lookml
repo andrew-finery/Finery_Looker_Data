@@ -1,7 +1,7 @@
 - dashboard: website_technology
   title: Website Technology
   layout: static
-  tile_size: 50
+  tile_size: 20
   show_applied_filters: true
 
 #  filters:
@@ -9,7 +9,7 @@
   elements:
 
   - name: orders_by_hour_by_device_yest
-    title: Orders by Hour by Device - Yesterday
+    title: Visits by Hour by Device - Yesterday
     type: looker_area
     model: finery_data
     explore: sessions
@@ -19,11 +19,10 @@
     filters:
       sessions.device_type: -Other/Unknown
       sessions.start_date: yesterday
-    sorts: [sessions.start_hour_of_day]
+    sorts: [sessions.start_hour_of_day, sessions.device_type asc]
     limit: 500
     column_limit: ''
     show_value_labels: false
-    show_view_names: true
     stacking: normal
     show_null_labels: false
     interpolation: monotone
@@ -42,349 +41,349 @@
     show_view_names: false
     top: 0
     left: 0
-    height: 6
-    width: 12
-    
-  - name: visit_split_by_device
-    title: Visit Split by Device - Last 30 Days
-    type: looker_pie
+    height: 14
+    width: 30
+
+#### VISITS
+
+  - name: visits_yesterday_v_last_week
+    title: Visits Yesterday vs Last Week
+    type: table
     model: finery_data
     explore: sessions
-    dimensions: [sessions.device_type]
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.count]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${sessions.count} - offset(${sessions.count},1))/offset(${sessions.count},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 8 days ago, 1 day ago
+    sorts: [sessions.start_date desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 14
+    left: 0
+    height: 14
+    width: 22
+
+  - name: visits_yesterday_v_last_week
+    title: Visits Last Week vs Week Before
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.start_week, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.count]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${sessions.count} - offset(${sessions.count},1))/offset(${sessions.count},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 3 weeks ago for 2 weeks
+    sorts: [sessions.start_week desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 14
+    left: 22
+    height: 14
+    width: 22
+
+  - name: visits_last_30_days
+    title: Visits by Device - Last 30 Days
+    type: looker_line
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
     measures: [sessions.count]
     filters:
       sessions.device_type: -Other/Unknown
-      sessions.start_date: last 30 days
-    sorts: [sessions.count desc]
+      sessions.start_date: 31 days ago for 30 days
+    sorts: [sessions.start_date]
     limit: 500
     column_limit: ''
-    show_view_names: true
-    show_value_labels: false
-    show_null_labels: false
-    stacking: percent
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_gridlines: true
+    show_null_points: true
+    x_axis_gridlines: false
     show_x_axis_label: true
     show_x_axis_ticks: true
-    x_axis_gridlines: false
+    show_value_labels: false
     show_view_names: false
-    top: 0
-    left: 12
-    height: 6
-    width: 6
+    point_style: none
+    interpolation: monotone
+    stacking: ''
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    x_axis_scale: auto
+    top: 14
+    left: 44
+    height: 14
+    width: 22
 
-  - name: orders_split_by_device
-    title: Orders Split by Device - Last 30 Days
-    type: looker_pie
+## ORDERS
+  
+  - name: orders_yesterday_v_last_week
+    title: Orders Yesterday vs Last Week
+    type: table
     model: finery_data
     explore: sessions
-    dimensions: [sessions.device_type]
+    dimensions: [transactions.trans_time_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [transactions.count_transactions]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      transactions.trans_time_date: 8 days ago, 1 day ago
+    sorts: [transactions.trans_time_date desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 28
+    left: 0
+    height: 14
+    width: 22
+
+  - name: orders_yesterday_v_last_week
+    title: Orders Last Week vs Week Before
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [transactions.trans_time_week, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [transactions.count_transactions]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      transactions.trans_time_date: 3 weeks ago for 2 weeks
+    sorts: [transactions.trans_time_week desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 28
+    left: 22
+    height: 14
+    width: 22
+
+  - name: orders_last_30_days
+    title: Orders by Device - Last 30 Days
+    type: looker_line
+    model: finery_data
+    explore: sessions
+    dimensions: [transactions.trans_time_date, sessions.device_type]
+    pivots: [sessions.device_type]
     measures: [transactions.count_transactions]
     filters:
       sessions.device_type: -Other/Unknown
-      sessions.start_date: last 30 days
-    sorts: [transactions.count_transactions desc]
+      transactions.trans_time_date: 31 days ago for 30 days
+    sorts: [transactions.trans_time_date]
     limit: 500
     column_limit: ''
-    show_view_names: true
+    show_null_points: true
+    x_axis_gridlines: false
+    show_x_axis_label: true
+    show_x_axis_ticks: true
     show_value_labels: false
-    show_null_labels: false
-    stacking: percent
+    show_view_names: false
+    point_style: none
+    interpolation: monotone
+    stacking: ''
+    y_axis_gridlines: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
-    y_axis_gridlines: true
-    show_x_axis_label: true
-    show_x_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    x_axis_scale: auto
+    top: 28
+    left: 44
+    height: 14
+    width: 22
+
+## CONVERSION RATE
+
+  - name: orders_yesterday_v_last_week
+    title: Orders Yesterday vs Last Week
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${sessions.conversion_rate_short_name} - offset(${sessions.conversion_rate_short_name},1))/offset(${sessions.conversion_rate_short_name},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 8 days ago, 1 day ago
+    sorts: [sessions.start_date desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 42
+    left: 0
+    height: 14
+    width: 22
+
+  - name: orders_yesterday_v_last_week
+    title: Orders Last Week vs Week Before
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.start_week, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
+    dynamic_fields:
+    - table_calculation: week_on_week
+      label: Week on Week
+      expression: |
+        concat(round(100 * (${sessions.conversion_rate_short_name} - offset(${sessions.conversion_rate_short_name},1))/offset(${sessions.conversion_rate_short_name},1),2),"%")
+    filters:
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 3 weeks ago for 2 weeks
+    sorts: [sessions.start_week desc]
+    limit: 500
+    column_limit: ''
+    show_view_names: false
+    top: 42
+    left: 22
+    height: 14
+    width: 22
+
+  - name: orders_last_30_days
+    title: Orders by Device - Last 30 Days
+    type: looker_line
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
+    filters:
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 31 days ago for 30 days
+    sorts: [sessions.start_date]
+    limit: 500
+    column_limit: ''
+    show_null_points: true
     x_axis_gridlines: false
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    show_value_labels: false
     show_view_names: false
-    top: 0
-    left: 18
-    height: 6
-    width: 6
-
-## Visits Tables
+    point_style: none
+    interpolation: monotone
+    stacking: ''
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    x_axis_scale: auto
+    top: 42
+    left: 44
+    height: 14
+    width: 22
     
-  - name: dektop_visits_table
-    title: Computer Visits
+## CONVERSION RATE
+
+  - name: conversion_rate_short_name_yesterday_v_last_week
+    title: Conversion Rate Yesterday vs Last Week
     type: table
     model: finery_data
     explore: sessions
-    dimensions: [sessions.start_date]
-    measures: [sessions.count]
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${sessions.count} - offset(${sessions.count},1))/offset(${sessions.count},1),2),"%")
+        concat(round(100 * (${sessions.conversion_rate_short_name} - offset(${sessions.conversion_rate_short_name},1))/offset(${sessions.conversion_rate_short_name},1),2),"%")
     filters:
-      sessions.start_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Desktop
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 8 days ago, 1 day ago
     sorts: [sessions.start_date desc]
-    show_view_name: false
     limit: 500
-    height: 4
-    width: 8
-    top: 6
-    left: 0
-
-  - name: mobile_visits_table
-    title: Mobile Visits
-    type: table
-    model: finery_data
-    explore: sessions
-    dimensions: [sessions.start_date]
-    measures: [sessions.count]
-    dynamic_fields:
-    - table_calculation: week_on_week
-      label: Week on Week
-      expression: |
-        concat(round(100 * (${sessions.count} - offset(${sessions.count},1))/offset(${sessions.count},1),2),"%")
-    filters:
-      sessions.start_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Mobile
-    sorts: [sessions.start_date desc]
+    column_limit: ''
     show_view_names: false
-    limit: 500
-    height: 4
-    width: 8
-    top: 6
-    left: 8
+    top: 42
+    left: 0
+    height: 14
+    width: 22
 
-  - name: tablet_visits_table
-    title: Tablet Visits
+  - name: conversion_rate_short_name_yesterday_v_last_week
+    title: Conversion Rate Last Week vs Week Before
     type: table
     model: finery_data
     explore: sessions
-    dimensions: [sessions.start_date]
-    measures: [sessions.count]
+    dimensions: [sessions.start_week, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${sessions.count} - offset(${sessions.count},1))/offset(${sessions.count},1),2),"%")
+        concat(round(100 * (${sessions.conversion_rate_short_name} - offset(${sessions.conversion_rate_short_name},1))/offset(${sessions.conversion_rate_short_name},1),2),"%")
     filters:
-      sessions.start_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Tablet
-    sorts: [sessions.start_date desc]
-    show_view_name: false
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 3 weeks ago for 2 weeks
+    sorts: [sessions.start_week desc]
     limit: 500
-    height: 4
-    width: 8
-    top: 6
-    left: 16
+    column_limit: ''
+    show_view_names: false
+    top: 42
+    left: 22
+    height: 14
+    width: 22
 
-## Visits Graphs
-
-  - name: sessions_tw_vs_lw_computer
-    title: Visits This Week vs Last Week vs Week Before Last - Computer
+  - name: conversion_rate_short_name_last_30_days
+    title: Conversion Rate by Device - Last 30 Days
     type: looker_line
     model: finery_data
     explore: sessions
-    dimensions: [sessions.start_day_of_week, sessions.start_week]
-    pivots: [sessions.start_week]
-    measures: [sessions.count]
+    dimensions: [sessions.start_date, sessions.device_type]
+    pivots: [sessions.device_type]
+    measures: [sessions.conversion_rate_short_name]
     filters:
-      sessions.start_date: 2 weeks ago for 3 weeks
-      sessions.start_time: before 0 days ago
-      sessions.device_type: Desktop
-    sorts: [sessions.start_day_of_week, sessions.start_week desc]
+      sessions.device_type: -Other/Unknown
+      sessions.start_date: 31 days ago for 30 days
+    sorts: [sessions.start_date]
     limit: 500
-    total: false
-    font_size: small
-    show_null_points: false
+    column_limit: ''
+    show_null_points: true
+    x_axis_gridlines: false
+    show_x_axis_label: true
+    show_x_axis_ticks: true
     show_value_labels: false
     show_view_names: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    x_axis_datetime_label: ''
-    x_axis_label: Day
-    discontinuous_nulls: false
-    interpolation: monotone
-    colors: [blue, red, lightgreen]
-    stacking: ''
-    x_axis_scale: auto
     point_style: none
-    height: 6
-    width: 8
-    top: 10
-    left: 0
-
-  - name: sessions_tw_vs_lw_mobile
-    title: Visits This Week vs Last Week vs Week Before Last - Mobile
-    type: looker_line
-    model: finery_data
-    explore: sessions
-    dimensions: [sessions.start_day_of_week, sessions.start_week]
-    pivots: [sessions.start_week]
-    measures: [sessions.count]
-    filters:
-      sessions.start_date: 2 weeks ago for 3 weeks
-      sessions.start_time: before 0 days ago
-      sessions.device_type: Mobile
-    sorts: [sessions.start_day_of_week, sessions.start_week desc]
-    limit: 500
-    total: false
-    font_size: small
-    show_null_points: false
-    show_value_labels: false
-    show_view_names: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    x_axis_datetime_label: ''
-    x_axis_label: Day
-    discontinuous_nulls: false
     interpolation: monotone
-    colors: [blue, red, lightgreen]
     stacking: ''
-    x_axis_scale: auto
-    point_style: none
-    height: 6
-    width: 8
-    top: 10
-    left: 8
-
-  - name: sessions_tw_vs_lw_tablet
-    title: Visits This Week vs Last Week vs Week Before Last - Tablet
-    type: looker_line
-    model: finery_data
-    explore: sessions
-    dimensions: [sessions.start_day_of_week, sessions.start_week]
-    pivots: [sessions.start_week]
-    measures: [sessions.count]
-    filters:
-      sessions.start_date: 2 weeks ago for 3 weeks
-      sessions.start_time: before 0 days ago
-      sessions.device_type: Tablet
-    sorts: [sessions.start_day_of_week, sessions.start_week desc]
-    limit: 500
-    total: false
-    font_size: small
-    show_null_points: false
-    show_value_labels: false
-    show_view_names: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    show_y_axis_labels: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
     show_y_axis_ticks: true
-    x_axis_datetime_label: ''
-    x_axis_label: Day
-    discontinuous_nulls: false
-    interpolation: monotone
-    colors: [blue, red, lightgreen]
-    stacking: ''
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
     x_axis_scale: auto
-    point_style: none
-    height: 6
-    width: 8
-    top: 10
-    left: 16
-    
-## Orders Tables
-    
-  - name: computer_orders_table
-    title: Computer Orders
-    type: table
-    model: finery_data
-    explore: sessions
-    dimensions: [transactions.trans_time_date]
-    measures: [transactions.count_transactions]
-    dynamic_fields:
-    - table_calculation: week_on_week
-      label: Week on Week
-      expression: |
-        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
-    filters:
-      transactions.trans_time_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Desktop
-    sorts: [transactions.trans_time_date desc]
-    show_view_name: false
-    limit: 500
-    height: 4
-    width: 8
-    top: 16
-    left: 0
-
-  - name: mobile_orders_table
-    title: Mobile Orders
-    type: table
-    model: finery_data
-    explore: sessions
-    dimensions: [transactions.trans_time_date]
-    measures: [transactions.count_transactions]
-    dynamic_fields:
-    - table_calculation: week_on_week
-      label: Week on Week
-      expression: |
-        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
-    filters:
-      transactions.trans_time_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Mobile
-    sorts: [transactions.trans_time_date desc]
-    show_view_name: false
-    height: 4
-    width: 8
-    top: 16
-    left: 8
-
-  - name: tablet_orders_table
-    title: Tablet Orders
-    type: table
-    model: finery_data
-    explore: sessions
-    dimensions: [transactions.trans_time_date]
-    measures: [transactions.count_transactions]
-    dynamic_fields:
-    - table_calculation: week_on_week
-      label: Week on Week
-      expression: |
-        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
-    filters:
-      transactions.trans_time_date: 15 days ago, 8 days ago, 1 day ago
-      sessions.device_type: Tablet
-    sorts: [transactions.trans_time_date desc]
-    show_view_name: false
-    height: 4
-    width: 8
-    top: 16
-    left: 16
-
-  - name: computer orders_tw_vs_lw
-    title: Orders This Week vs Last Week vs Week Before Last - Computer
-    type: looker_line
-    model: finery_data
-    explore: sessions
-    dimensions: [sessions.start_day_of_week, sessions.start_week]
-    pivots: [sessions.start_week]
-    measures: [transactions.count_transactions]
-    filters:
-      sessions.start_date: 2 weeks ago for 3 weeks
-      sessions.start_time: before 0 days ago
-      sessions.device_type: Desktop
-    sorts: [sessions.start_day_of_week, sessions.start_week desc]
-    limit: 500
-    total: false
-    font_size: small
-    show_null_points: false
-    show_value_labels: false
-    show_view_names: true
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    x_axis_datetime_label: ''
-    x_axis_label: Day
-    discontinuous_nulls: false
-    interpolation: monotone
-    colors: [blue, red, lightgreen]
-    stacking: ''
-    x_axis_scale: auto
-    point_style: none
-    height: 6
-    width: 8
-    top: 20
-    left: 0
+    top: 42
+    left: 44
+    height: 14
+    width: 22

@@ -573,6 +573,14 @@
     decimals: 4
     sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
+
+  - measure: conversion_rate_short_name
+    label: Conv. Rate
+    type: number
+    decimals: 4
+    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    value_format: '0.00%'
+    hidden: true
     
   - measure: revenue_per_session
     label: Revenue Per Visit
