@@ -30,7 +30,7 @@
 ##################################################################################################################################################################################
 
   - dimension: confirm_date
-    label: GOODS RECEIVED
+    label: Goods Received Date
     type: date
     sql: ${TABLE}.confirm_date
   
@@ -43,7 +43,7 @@
     hidden: true
   
   - dimension: stock_type
-    label: STOCK TYPE (ECOM/WS)
+    label: Stock Type (Ecom/Wholesale)
     sql: ${TABLE}.stock_type
     
 ##################################################################################################################################################################################
@@ -51,23 +51,23 @@
     ##################################################################################################################################################################################
 
   - measure: sum_received_quantity
-    label: RECEIVED QUANTITY
+    label: Received Quantity
     type: sum
     sql: ${received_quantity}
  
   - measure: sum_expected_quantity_quantity
-    label: EXPECTED QUANTITY
+    label: Expected Quantity
     type: sum
     sql: ${expected_quantity}
   
   - measure: received_value_cost
-    label: RECEIVED VALUE @ COST
+    label: Received Value @ Cost
     type: sum
     sql: ${received_quantity} * ${product_lookup.total_landed_cost_gbp}
     format: "£%0.2f"
     
   - measure: received_value_retail
-    label: RECEIVED VALUE @ RETAIL
+    label: Received Value @ Retail
     type: sum
     sql: ${received_quantity} * ${product_lookup.max_selling_price}
     format: "£%0.2f"

@@ -52,7 +52,7 @@
     model: finery_data
     explore: sessions
     dimensions: [sessions.start_date, sessions.device_type]
-    pivots: [sessions.device_type]
+    pivots: [sessions.start_date]
     measures: [sessions.count]
     dynamic_fields:
     - table_calculation: week_on_week

@@ -3,38 +3,37 @@
   fields:
 
   - dimension_group: calendar_date
-    label: CALENDAR
+    label: Calendar
     type: time
     timeframes: [date, day_of_week_index, week, month, month_num]
     convert_tz: false
     sql: ${TABLE}.calendar_date
-    hidden: true
 
   - dimension: year_week_number
-    label: YEAR WEEK NUMBER
+    label: Year Week Number
     sql: ${TABLE}.year_week_number
   
   - dimension: year
-    label: YEAR
+    label: Year
     sql: ${TABLE}.year
     
   - dimension: week_number
-    label: WEEK NUMBER
+    label: Week Number
     sql: ${TABLE}.week_number
   
   - dimension: period
-    label: PERIOD
+    label: Period
     sql: ${TABLE}.period
     
   - dimension: year_period_number
-    label: YEAR PERIOD
+    label: Year Period
     sql: ${TABLE}.year_period
     
   - dimension: quarter
-    label: QUARTER
+    label: Quarter
     sql: ${TABLE}.quarter
   
   - dimension: year_quarter_number
-    label: YEAR QUARTER NUMBER
+    label: Year Quarter
     sql: ${TABLE}.year_quarter
     
