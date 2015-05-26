@@ -512,6 +512,7 @@
     
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
+    hidden: true
 
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
@@ -555,6 +556,13 @@
 
   - measure: engagement_rate
     label: Engagement Rate
+    type: number
+    decimals: 4
+    sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
+    value_format: '0.00%'
+
+  - measure: engagement_rate_short_name
+    label: Engag. Rate
     type: number
     decimals: 4
     sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
@@ -674,7 +682,7 @@
     sql: ${distinct_pages_viewed}
 
   - measure: sum_referrals_sent
-    label: Referrals Sent Total
+    label: Referrals Sent
     type: sum
     sql: ${referrals_sent}
 
