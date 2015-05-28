@@ -209,7 +209,7 @@
     hidden: true
 
   - dimension_group: completed
-    label: ORDER PLACED
+    label: Order
     type: time
     timeframes: [time, date, hour_of_day, week, month, time_of_day, day_of_week_index, day_of_week, day_of_month]
     sql: ${TABLE}.completed_at
@@ -505,16 +505,17 @@
     hidden: true
     
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
+    label: Basket Size Tier
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate}))) / ${exchange_rate}
 
   - dimension: london_flag
-    label: LONDON FLAG
+    label: London Flag
     sql: ${spree_addresses.london_flag}
 
   - dimension: primary_promotion
-    label: PRIMARY PROMOTION
+    label: Promotion
     sql: ${TABLE}.promotion
   
 ####################### FLAGS ######################################################################################
@@ -569,40 +570,69 @@
 ################################################## BASIC ORDER MEASURES ################################################################
   
   - measure: count_orders
-    label: COUNT ORDERS
+    label: Orders
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
       state: -canceled
+  
+  - measure: orders_perc_of_total
+    label: Orders %
+    type: percent_of_total
+    sql: ${count_orders}
+    direction: column
+
+  - measure: orders_running_total
+    label: Orders Running Total
+    type: running_total
+    sql: ${count_orders}
+    direction: column
 
   - measure: count_orders_inc_cancelled
-    label: COUNT ORDERS INC. CANCELED
+    label: Orders (Including Cancelled)
     type: count_distinct
     sql: ${TABLE}.order_id
     
   - measure: cancellation_rate
-    label: CANCELLATION RATE
+    label: Cancellation Rate
     type: number
     decimals: 2
     sql: 100.0 * (1 - (${count_orders})/${count_orders_inc_cancelled}::REAL)
     format: "%0.2f%"
 
   - measure: orders_with_returns
-    label: COUNT ORDERS WITH RETURNS
+    label: Orders with Returns
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
       items_returned: -0, -NULL
+ 
+  - measure: orders_with_discount
+    label: Orders with Discount
+    type: count_distinct
+    sql: ${TABLE}.order_id
+    filters:
+      state: -canceled
+      discount_flag: Yes
+
+  - measure: new_customers_with_discount
+    label: New Customers with Discount
+    type: count_distinct
+    sql: ${TABLE}.order_id
+    filters:
+      state: -canceled
+      discount_flag: Yes
+      order_sequence_number: 1
   
   - measure: count_customers
-    label: COUNT CUSTOMERS
+    label: Customers
     type: count_distinct
     sql: ${blended_email}
     filters:
       state: -canceled
 
   - measure: count_new_customers
-    label: COUNT NEW CUSTOMERS
+    label: New Customers
     type: count_distinct
     sql: ${blended_email}
     filters:
@@ -610,32 +640,54 @@
       order_sequence_number: 1
   
   - measure: total_items
-    label: SUM ITEMS PURCHASED
+    label: Items
     type: sum
     sql: ${TABLE}.item_count
     filters:
       state: -canceled
   
   - measure: avg_items_in_basket
-    label: AVERAGE BASKET SIZE
+    label: Avg items in basket
     type: number
     decimals: 2
     sql: ${total_items}/${count_orders}::REAL
     format: "%0.2f"
+  
+  - measure: asp
+    label: Avg Selling Price
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/${total_items}
+    value_format: '"£"##0.00'
+
 
   - measure: orders_per_customer
-    label: ORDERS PER CUSTOMER
+    label: Orders per customer
     type: number
     decimals: 2
     sql: cast(${count_orders} as decimal(8,2))/nullif(cast(${count_customers} as decimal(8,2)),0)::REAL
     format: "%0.2f"
 
   - measure: new_customer_percentage
-    label: NEW CUSTOMER %
+    label: New Customer %
     type: number
     decimals: 2
     sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_orders} as decimal(8,2)),0)::REAL
     format: "%0.2f%"
+
+  - measure: orders_with_discount_percentage
+    label: Orders with Discount (%)
+    type: number
+    decimals: 2
+    sql: ${orders_with_discount}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.0%'
+
+  - measure: new_customers_using_discount_percentage
+    label: New Cust w/ Discount
+    type: number
+    decimals: 2
+    sql: ${new_customers_with_discount}/NULLIF(${count_new_customers},0)::REAL
+    value_format: '#0.0%'
     
 ################################################# GROSS REVENUE MEASURES ##############################################################
 
@@ -648,7 +700,7 @@
     hidden: true
   
   - measure: sum_gross_revenue_in_gbp
-    label: SUM GROSS REVENUE
+    label: Gross Revenue (inc. VAT, Discount, Shipping)
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
@@ -664,7 +716,7 @@
     hidden: true
   
   - measure: sum_gross_revenue_in_gbp_ex_vat
-    label: SUM GROSS REVENUE EX. VAT
+    label: Gross Revenue (ex. VAT, inc. Discount, Shipping)
     type: sum
     sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
@@ -678,7 +730,7 @@
     hidden: true
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
-    label: SUM GROSS REVENUE INC. CANCELLED
+    label: Gross Revenue (inc. Cancelled Orders, VAT, Discount, Shipping)
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
     format: "£%0.2f"
@@ -827,16 +879,26 @@
 ################################################# GROSS REVENUE MEASURES EXCLUDING SHIPPING ############################################################
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
-    label: SUM GROSS REVENUE EX. DISCOUNT, SHIPPING, VAT
+    label: Gross Revenue (ex. VAT, Discount, Shipping)
     type: sum
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}
     format: "£%0.2f"
     filters:
       state: -canceled
+  
+  - measure: revenue_percent_of_total
+    type: percent_of_total
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}
+    direction: column
+  
+  - measure: revenue_running_total
+    type: running_total
+    sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}
+    direction: column
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k
     type: sum
-    label: GROSS REVENUE K
+    label: Gross Revenue (£k)
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate} / 1000
     format: "£%0.1fk"
     filters:
@@ -844,13 +906,13 @@
     hidden: true
   
   - measure: average_discount
-    label: AVERAGE DISCOUNT %
+    label: Avg Discount
     type: number
     sql: 100.0 * (${sum_total_discount_gbp}/${sum_total_of_items_gbp})::REAL
     format: "%0.1f%"
  
   - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
-    label: AVG BASKET SIZE EX. DISCOUNT, SHIPPING, VAT
+    label: Avg Basket Size
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL
@@ -864,16 +926,17 @@
     hidden: true
     
   - measure: orders_per_day
-    label: ORDERS PER DAY
+    label: Orders per Day
     type: number
     decimals: 0
     sql: ${count_orders}/${count_days}::REAL
 
   - measure: revenue_per_day
-    label: REVENUE PER DAY
+    label: Revenue per Day
     type: number
     decimals: 0
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/${count_days}::REAL
+    value_format: '"£"#,##0'
 
 ############################ OTHER GROSS REVENUE SUMS ###################################################################################################
 

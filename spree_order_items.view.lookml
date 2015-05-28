@@ -60,6 +60,7 @@
     type: time
     timeframes: [time, date, hour_of_day, week, month]
     sql: ${TABLE}.order_tstamp
+    hidden: true
 
   - dimension: order_id
     primary_key: true
@@ -158,7 +159,7 @@
     decimals: 2
     sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))) end
     format: "£%0.2f"
-  
+
   # Margin Dimensions
   - dimension: landed_cost_gbp
     type: number
@@ -270,6 +271,7 @@
     format: "£%0.2f"
 
   - measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp
+    label: Gross Revenue
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
     format: "£%0.2f"
@@ -283,6 +285,18 @@
     type: sum
     sql: (${price} * (${quantity} - ${items_returned}) * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
     format: "£%0.2f"
+
+  - measure: count_days
+    type: count_distinct
+    sql: ${order_time_date}
+    hidden: true
+  
+  - measure: revenue_per_day
+    label: Revenue per Day
+    type: number
+    decimals: 0
+    sql: ${sum_gross_item_revenue_ex_discount_ex_vat_gbp}/nullif(${count_days},0)::REAL
+    value_format: '"£"#,##0'
   
   ########################################################## GROSS Margin Measures ########################################################################################################
   
