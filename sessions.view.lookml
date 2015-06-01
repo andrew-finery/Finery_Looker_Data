@@ -334,7 +334,7 @@
       SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
       CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
-      Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram'
+      Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram' or ${TABLE}.mkt_source_ga = 'fb'
       Search: ${TABLE}.refr_medium_ga = 'search'
       Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate'
       Referrals: ${TABLE}.refr_medium_ga = 'unknown'

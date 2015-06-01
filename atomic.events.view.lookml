@@ -282,7 +282,11 @@
   - measure: orders_per_day
     type: number
     sql: ${transactions.count_transactions} / ${count_days}
-
+  
+  - measure: latest_snowplow_update
+    type: string
+    sql: max(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp))
+  
   - measure: latest_update
     label: LATEST UPDATE
     type: string
@@ -852,87 +856,87 @@
 
 # Counts
 
-  - measure: count_sessions_yesterday
-    label: SESSIONS YESTERDAY
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      domain_userid: -EMPTY
-      domain_sessionidx: -EMPTY
-      event_time_date: 1 day ago for 1 day
-      app_id: production
-    hidden: true
-      
-  - measure: count_sessions_last_week
-    label: SESSIONS LAST WEEK
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      domain_userid: -EMPTY
-      domain_sessionidx: -EMPTY
-      event_time_date: 8 days ago for 1 day
-      app_id: production
-    hidden: true
+#  - measure: count_sessions_yesterday
+#    label: SESSIONS YESTERDAY
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      domain_userid: -EMPTY
+#      domain_sessionidx: -EMPTY
+#      event_time_date: 1 day ago for 1 day
+#      app_id: production
+#    hidden: true
+#      
+#  - measure: count_sessions_last_week
+#    label: SESSIONS LAST WEEK
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      domain_userid: -EMPTY
+#      domain_sessionidx: -EMPTY
+#      event_time_date: 8 days ago for 1 day
+#      app_id: production
+#    hidden: true
 
-  - measure: conversion_rate_yesterday
-    label: CONVERSION RATE YESTERDAY
-    type: number
-    decimals: 2
-    sql: 100.0 * ${transactions.count_transactions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
-    format: "%0.2f%"
-    hidden: true
+#  - measure: conversion_rate_yesterday
+#    label: CONVERSION RATE YESTERDAY
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${transactions.count_transactions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+#    format: "%0.2f%"
+#    hidden: true
 
-  - measure: conversion_rate_last_week
-    label: CONVERSION RATE LAST WEEK
-    type: number
-    decimals: 2
-    sql: 100.0 * ${transactions.count_transactions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
-    format: "%0.2f%"
-    hidden: true
+#  - measure: conversion_rate_last_week
+#    label: CONVERSION RATE LAST WEEK
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${transactions.count_transactions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
+#    format: "%0.2f%"
+#    hidden: true
 
-  - measure: count_new_sessions_yesterday
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      domain_userid: -EMPTY
-      domain_sessionidx: 1
-      app_id: production
-      event_time_date: 1 day ago for 1 day
-    hidden: true
-      
-  - measure: count_new_sessions_last_week
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      domain_userid: -EMPTY
-      domain_sessionidx: 1
-      app_id: production
-      event_time_date:  8 days ago for 1 day
-    hidden: true
-
-  - measure: new_session_perc_yesterday
-    type: number
-    label: NEW SESSION % YESTERDAY
-    decimals: 2
-    sql: 100.0 * ${count_new_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
-    format: "%0.2f%"
-    hidden: true
-    
-  - measure: new_session_perc_last_week
-    type: number
-    label: NEW SESSION % LAST WEEK
-    decimals: 2
-    sql: 100.0 * ${count_new_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
-    format: "%0.2f%"
-    hidden: true
-  
-  - measure: sum_revenue_yesterday
-    type: sum
-    label: REVENUE YESTERDAY
-    sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
-    hidden: true
-    filters:
-      event_time_date: 1 day ago for 1 day
+#  - measure: count_new_sessions_yesterday
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      domain_userid: -EMPTY
+#      domain_sessionidx: 1
+#      app_id: production
+#      event_time_date: 1 day ago for 1 day
+#    hidden: true
+#      
+#  - measure: count_new_sessions_last_week
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      domain_userid: -EMPTY
+#      domain_sessionidx: 1
+#      app_id: production
+#      event_time_date:  8 days ago for 1 day
+#    hidden: true
+#
+#  - measure: new_session_perc_yesterday
+#    type: number
+#    label: NEW SESSION % YESTERDAY
+#    decimals: 2
+#    sql: 100.0 * ${count_new_sessions_yesterday}/NULLIF(${count_sessions_yesterday},0)::REAL
+#    format: "%0.2f%"
+#    hidden: true
+#    
+#  - measure: new_session_perc_last_week
+#    type: number
+#    label: NEW SESSION % LAST WEEK
+#    decimals: 2
+#    sql: 100.0 * ${count_new_sessions_last_week}/NULLIF(${count_sessions_last_week},0)::REAL
+#    format: "%0.2f%"
+#    hidden: true
+#  
+#  - measure: sum_revenue_yesterday
+#    type: sum
+#    label: REVENUE YESTERDAY
+#    sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
+#    hidden: true
+#    filters:
+#      event_time_date: 1 day ago for 1 day
 
   - measure: sum_revenue_last_week
     type: sum
