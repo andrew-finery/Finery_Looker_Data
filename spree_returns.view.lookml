@@ -9,12 +9,12 @@
         convert_timezone('UTC', 'Europe/London', h.completed_at) as order_completed_tstamp,
         a.id as return_id,
         c.order_id,
+        h."number" as order_code,
         h.user_id,
         c.variant_id,
         g.sku,
         g.product_id,
         c.shipment_id,
-        d.name,
         b.reception_status,
         b.acceptance_status,
         b.pre_tax_amount,
@@ -24,8 +24,11 @@
         e."number" as reimbursemenet_code,
         f."number" as customer_return_code,
         e.reimbursement_status,
-        e.total as total_reimbursed
-        
+        e.total as total_reimbursed,
+        returns_temp.return_auth_code,
+        a.return_authorization_reason_id,
+        d.name
+                
         from
         (select * from daily_snapshot.spree_return_authorizations where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorizations)) a
         left join
@@ -34,9 +37,6 @@
         left join
         (select * from daily_snapshot.spree_inventory_units where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_inventory_units)) c
         on b.inventory_unit_id = c.id
-        left join
-        (select * from daily_snapshot.spree_return_authorization_reasons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorization_reasons)) d
-        on a.return_authorization_reason_id = d.id
         left join
         (select * from daily_snapshot.spree_reimbursements where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_reimbursements)) e
         on b.reimbursement_id = e.id
@@ -49,6 +49,15 @@
         left join
         (select * from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders)) h
         on c.order_id = h.id
+        left join finery.returns_temp returns_temp
+        on h."number" = returns_temp.order_code
+        and g.sku = returns_temp.ean
+
+        left join
+        (select * from daily_snapshot.spree_return_authorization_reasons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorization_reasons)) d
+        on coalesce(returns_temp.return_auth_code, a.return_authorization_reason_id) = d.id
+
+        
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
           and b.reception_status = 'received' and b.acceptance_status = 'accepted'
         
