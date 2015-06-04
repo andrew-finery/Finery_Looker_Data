@@ -443,6 +443,13 @@
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: 1 day ago for 1 day
+
+  - measure: sum_items_sold_same_day_last_week
+    label: Units Sold - Same Day Last Week
+    type: sum
+    sql: ${TABLE}.items_sold    
+    filters:
+      calendar_date_date: 8 day ago for 1 day
     
   - measure: sum_items_sold_last_week
     label: Units Sold - Last Week
@@ -563,6 +570,21 @@
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
     hidden: true
+
+  - measure: units_sold_yest_vs_lw
+    label: Units Sold - Yesterday vs Last Week
+    type: number
+    decimals: 2
+    sql: (${sum_items_sold_yesterday} - ${sum_items_sold_same_day_last_week})/NULLIF(${sum_items_sold_same_day_last_week},0)::REAL
+    value_format: '#.00%'
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
 
   - measure: gross_revenue_wow
     label: Gross Revenue - Week-On-Week
