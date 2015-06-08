@@ -55,7 +55,7 @@
 
         left join
         (select * from daily_snapshot.spree_return_authorization_reasons where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_return_authorization_reasons)) d
-        on coalesce(returns_temp.return_auth_code, a.return_authorization_reason_id) = d.id
+        on coalesce(b.return_authorization_reason_id, returns_temp.return_auth_code, a.return_authorization_reason_id) = d.id
 
         
           where b.id is not null -- making sure that the return authorizations row has a corresponsing row in the spree return items table
