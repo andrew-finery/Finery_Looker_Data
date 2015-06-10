@@ -1,6 +1,6 @@
 - dashboard: website_engagement
   title: Website Engagement
-  layout: static
+  layout: grid
   tile_size: 50
 
   elements:

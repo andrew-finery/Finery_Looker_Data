@@ -1,6 +1,6 @@
 - dashboard: website_today_summary
   title: Website - Today so Far
-  layout: static
+  layout: grid
   tile_size: 50
 
   elements:

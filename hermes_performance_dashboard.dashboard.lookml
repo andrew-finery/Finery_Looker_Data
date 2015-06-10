@@ -1,6 +1,6 @@
 - dashboard: hermes_performance_dashboard
   title: Hermes Performance
-  layout: static
+  layout: grid
   tile_size: 100
 
   filters:

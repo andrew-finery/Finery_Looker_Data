@@ -1,6 +1,6 @@
 - dashboard: website_summary
   title: Website Summary
-  layout: static
+  layout: grid
   tile_size: 50
 
 #  filters:

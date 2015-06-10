@@ -1,6 +1,6 @@
 - dashboard: sales_last_month
   title: Sales - Last Month
-  layout: static
+  layout: grid
   tile_size: 50
 
   elements:

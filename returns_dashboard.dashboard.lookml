@@ -1,6 +1,6 @@
 - dashboard: returns_dashboard
   title: Returns Dashboard
-  layout: static
+  layout: grid
   show_applied_filters: true
   tile_size: 100
 

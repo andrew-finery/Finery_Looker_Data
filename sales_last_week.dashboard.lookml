@@ -1,6 +1,6 @@
 - dashboard: sales_last_week
   title: Weekly Sales Dashboard
-  layout: static
+  layout: grid
   tile_size: 50
 
   elements:
