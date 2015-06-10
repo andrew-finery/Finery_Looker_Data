@@ -1,6 +1,6 @@
 - dashboard: customer_dashboard
   title: Customer Dashboard
-  layout: grid
+  layout: tile
   tile_size: 100
 
 #  filters:

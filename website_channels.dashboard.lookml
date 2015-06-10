@@ -1,6 +1,6 @@
 - dashboard: website_channels
   title: Website Channels
-  layout: grid
+  layout: tile
   tile_size: 100
   show_applied_filters: true
 
@@ -48,5 +48,3 @@
     width: 20
     top: 5
     left: 0
-
-

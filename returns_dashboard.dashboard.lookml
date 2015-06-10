@@ -1,6 +1,6 @@
 - dashboard: returns_dashboard
   title: Returns Dashboard
-  layout: grid
+  layout: tile
   show_applied_filters: true
   tile_size: 100
 
@@ -144,8 +144,3 @@
     top: 9
     left: 0
    
-
-
-
-
-

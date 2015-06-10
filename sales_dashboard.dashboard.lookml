@@ -1,6 +1,6 @@
 - dashboard: sales_dashboard
   title: Sales Dashboard
-  layout: grid
+  layout: tile
   show_applied_filters: true
   tile_size: 100
 

@@ -1,6 +1,6 @@
 - dashboard: website_engagement
   title: Website Engagement
-  layout: grid
+  layout: tile
   tile_size: 50
 
   elements:
@@ -106,4 +106,3 @@
     width: 12
     top: 9
     left: 12
-
