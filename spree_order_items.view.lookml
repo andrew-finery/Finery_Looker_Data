@@ -263,27 +263,32 @@
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
     sql: ${price} * ${quantity} / ${exchange_rate}
+    decimals: 2
     value_format: '#,##0.00'
     
   - measure: sum_net_item_revenue_gbp
     type: sum
     sql: ${price} * (${quantity} - ${items_returned}) / ${exchange_rate}
+    decimals: 2
     value_format: '"£"#,##0.00'
 
   - measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp
     label: Gross Revenue
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '"£"#,##0.00'
   
   - measure: sum_gross_item_revenue_in_gbp_ex_vat
     type: sum
     sql: (${price} * ${quantity} * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
+    decimals: 2
     value_format: '"£"#,##0.00'
     
   - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
     sql: (${price} * (${quantity} - ${items_returned}) * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
+    decimals: 2
     value_format: '"£"#,##0.00'
 
   - measure: count_days
@@ -303,6 +308,7 @@
   - measure: sum_gross_landed_cost_gbp
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * ${quantity}
+    decimals: 2
     value_format: '"£"#,##0.00'
 
   - measure: sum_gross_margin_gbp_ex_vat
@@ -322,6 +328,7 @@
   - measure: sum_net_landed_cost_gbp
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * (${quantity} - ${items_returned})
+    decimals: 2
     value_format: '"£"#,##0.00'
 
   - measure: sum_net_margin_gbp_ex_vat
@@ -346,6 +353,7 @@
   - measure: gross_rev_ex_discount_ex_vat_tw
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '#,##0.00'
     filters:
       order_time_date: last week
@@ -353,6 +361,7 @@
   - measure: gross_rev_ex_discount_ex_vat_lw
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '#,##0.00'
     filters:
       order_time_date: "2 weeks ago"
@@ -360,6 +369,7 @@
   - measure: gross_rev_ex_discount_ex_vat_l4w
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '#,##0.00'
     filters:
       order_time_date: 5 weeks ago for 4 weeks
@@ -367,6 +377,7 @@
   - measure: gross_rev_ex_discount_ex_vat_mtd
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '#,##0.00'
     filters:
       order_time_date: this month
@@ -375,6 +386,7 @@
   - measure: gross_rev_ex_discount_ex_vat_std
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
     value_format: '#,##0.00'
     filters:
       order_time_date: after 2015/02/01
