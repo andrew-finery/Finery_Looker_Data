@@ -1,6 +1,6 @@
 - dashboard: crm_summary
   title: CRM Summary
-  layout: tile
+  layout: static
   tile_size: 100
   show_applied_filters: true
 

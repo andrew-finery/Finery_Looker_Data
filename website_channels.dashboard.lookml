@@ -1,6 +1,6 @@
 - dashboard: website_channels
   title: Website Channels
-  layout: tile
+  layout: static
   tile_size: 100
   show_applied_filters: true
 

@@ -475,33 +475,33 @@
     type: number
     decimals: 2
     sql: ${TABLE}.order_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: item_total
     type: number
     decimals: 2
     sql: ${TABLE}.item_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     
   - dimension: shipping_total
     type: number
     decimals: 2
     sql: ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: discount
     type: number
     decimals: 2
     sql: ${TABLE}.adjustment_total * (-1)
-    format: "£%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: store_credit_used
     type: number
     sql: ${TABLE}.store_credit_used
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
@@ -538,28 +538,28 @@
     type: number
     decimals: 2
     sql:  ${TABLE}.return_item_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: amount_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.amount_refunded
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: store_credit_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.store_credit_refunded
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: cash_refunded
     type: number
     decimals: 2
     sql:  ${TABLE}.cash_refunded
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
 
     
@@ -597,8 +597,8 @@
     label: Cancellation Rate
     type: number
     decimals: 2
-    sql: 100.0 * (1 - (${count_orders})/${count_orders_inc_cancelled}::REAL)
-    format: "%0.2f%"
+    sql: 1 - (${count_orders})/${count_orders_inc_cancelled}::REAL
+    value_format: '#.00%'
 
   - measure: orders_with_returns
     label: Orders with Returns
@@ -651,8 +651,8 @@
     type: number
     decimals: 2
     sql: ${total_items}/${count_orders}::REAL
-    format: "%0.2f"
-  
+    value_format: '#,##0.00'
+    
   - measure: asp
     label: Avg Selling Price
     type: number
@@ -666,35 +666,35 @@
     type: number
     decimals: 2
     sql: cast(${count_orders} as decimal(8,2))/nullif(cast(${count_customers} as decimal(8,2)),0)::REAL
-    format: "%0.2f"
+    value_format: '#,##0.00'
 
   - measure: new_customer_percentage
     label: New Customer %
     type: number
     decimals: 2
-    sql: 100.0 * cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_orders} as decimal(8,2)),0)::REAL
-    format: "%0.2f%"
+    sql: cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_orders} as decimal(8,2)),0)::REAL
+    value_format: '#0.00%'
 
   - measure: orders_with_discount_percentage
     label: Orders with Discount (%)
     type: number
     decimals: 2
     sql: ${orders_with_discount}/NULLIF(${count_orders},0)::REAL
-    value_format: '#0.0%'
+    value_format: '#0.00%'
 
   - measure: new_customers_using_discount_percentage
     label: New Cust w/ Discount
     type: number
     decimals: 2
     sql: ${new_customers_with_discount}/NULLIF(${count_new_customers},0)::REAL
-    value_format: '#0.0%'
+    value_format: '#0.00%'
     
 ################################################# GROSS REVENUE MEASURES ##############################################################
 
   - measure: sum_gross_revenue
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -703,14 +703,14 @@
     label: Gross Revenue (inc. VAT, Discount, Shipping)
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_vat
     type: sum
     sql: (${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -719,28 +719,28 @@
     label: Gross Revenue (ex. VAT, inc. Discount, Shipping)
     type: sum
     sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
   
   - measure: sum_gross_revenue_inc_canceled
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     hidden: true
   
   - measure: sum_gross_revenue_in_gbp_inc_canceled
     label: Gross Revenue (inc. Cancelled Orders, VAT, Discount, Shipping)
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
 ################################################# DISCOUNT/STORE CREDIT MEASURES ##############################################################
 
   - measure: sum_total_discount
     type: sum
     sql: ${TABLE}.adjustment_total * (-1)
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -749,14 +749,14 @@
     label: SUM DISCOUNT
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
   
   - measure: sum_store_credit_used
     type: sum
     sql: ${TABLE}.store_credit_used
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -765,14 +765,14 @@
     label: SUM STORE CREDIT
     type: sum
     sql: ${TABLE}.store_credit_used / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_total_discount_ex_vat
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) * (1/(1+${tax_rate}))
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -781,14 +781,14 @@
     label: SUM DISCOUNT EX. VAT
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) * ${exchange_rate}  *(1/(1+${tax_rate}))
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
   
   - measure: sum_store_credit_used_ex_vat
     type: sum
     sql: ${TABLE}.store_credit_used*(1/(1+${tax_rate}))
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -797,7 +797,7 @@
     label: SUM STORE CREDIT EX. VAT
     type: sum
     sql: ${TABLE}.store_credit_used / ${exchange_rate} * (1/(1+${tax_rate}))
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -807,7 +807,7 @@
   - measure: sum_gross_revenue_ex_discount
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1))
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -816,14 +816,14 @@
     label: SUM GROSS REVENUE EX. DISCOUNT
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_ex_vat
     type: sum
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total 
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -832,7 +832,7 @@
     label: SUM GROSS REVENUE EX. DISCOUNT, VAT
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -847,7 +847,7 @@
   - measure: sum_gross_revenue_ex_discount_and_store_credit
     type: sum
     sql: ${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -856,14 +856,14 @@
     label: SUM GROSS REVENUE EX. DISCOUNT, STORE CREDIT
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_and_store_credit_ex_vat
     type: sum
     sql: ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -872,7 +872,7 @@
     label: SUM GROSS REVENUE EX. DISCOUNT, STORE CREDIT, VAT
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -882,7 +882,7 @@
     label: Gross Revenue (ex. VAT, Discount, Shipping)
     type: sum
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
   
@@ -908,15 +908,15 @@
   - measure: average_discount
     label: Avg Discount
     type: number
-    sql: 100.0 * (${sum_total_discount_gbp}/${sum_total_of_items_gbp})::REAL
-    format: "%0.1f%"
+    sql: ${sum_total_discount_gbp}/${sum_total_of_items_gbp}::REAL
+    value_format: '#0.00%'
  
   - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
     label: Avg Basket Size
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
   
 ################################################ COUNT DAYS AND MEASURES PER DAY #######################################################################
 
@@ -943,7 +943,7 @@
   - measure: sum_total_of_items
     type: sum
     sql: ${TABLE}.item_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -952,14 +952,14 @@
     label: SUM TOTAL ITEM VALUE
     type: sum
     sql: ${TABLE}.item_total / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_shipping_total
     type: sum
     sql: ${TABLE}.shipment_total
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -968,7 +968,7 @@
     label: SUM SHIPPING REVENUE
     type: sum
     sql: ${TABLE}.shipment_total / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -979,70 +979,70 @@
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
       
   - measure: avg_gross_revenue_ex_discount_in_gbp
     label: AVERAGE BASKET SIZE EX. DISCOUNT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp
     label: AVERAGE BASKET SIZE EX. DISCOUNT, STORE CREDIT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_gbp_ex_vat
     label: AVERAGE BASKET SIZE EX. VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
       
   - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat
     label: AVERAGE BASKET SIZE EX. DISCOUNT, VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
     label: AVERAGE BASKET SIZE EX. DISCOUNT, STORE CREDIT, VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: avg_discount_in_gbp
     label: AVERAGE DISCOUNT VALUE
     type: number
     decimals: 2
     sql: ${sum_total_discount_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: avg_discount_in_gbp_ex_vat
     label: AVERAGE DISCOUNT EX. VAT
     type: number
     decimals: 2
     sql: ${sum_total_discount_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
   - measure: avg_store_credit_used_gbp
     label: AVERAGE STORE CREDIT USED
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     
   - measure: avg_store_credit_used_gbp_ex_vat
     label: AVERAGE STORE CREDIT USED EX. VAT
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
 
 ############################################################## RETURNS MEASUERS #############################################################################################
 
@@ -1056,7 +1056,7 @@
   - measure: sum_return_item_total
     type: sum
     sql: ${return_item_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1065,14 +1065,14 @@
     label: SUM RETURN ITEM TOTAL
     type: sum
     sql: ${return_item_total} / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_amount_refunded
     type: sum
     sql: ${amount_refunded}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1081,14 +1081,14 @@
     label: SUM TOTAL AMOUNT REFUNDED
     type: sum
     sql: ${amount_refunded} / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
   
   - measure: sum_cash_refunded
     type: sum
     sql: ${cash_refunded}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1097,14 +1097,14 @@
     label: SUM CASH REFUNDED
     type: sum
     sql: ${cash_refunded} / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
       
   - measure: sum_store_credit_refunded
     type: sum
     sql: ${store_credit_refunded}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1113,7 +1113,7 @@
     label: SUM STORE CERDIT REFUNDED
     type: sum
     sql: ${store_credit_refunded} / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -1123,7 +1123,7 @@
   - measure: sum_net_revenue
     type: sum
     sql: ${item_total} + ${shipping_total} - ${return_item_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled  
     hidden: true
@@ -1132,14 +1132,14 @@
     label: SUM NET REVENUE
     type: sum
     sql: (${item_total} + ${shipping_total} - ${return_item_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
       
   - measure: sum_net_revenue_ex_vat
     type: sum
     sql: ((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled  
     hidden: true
@@ -1148,14 +1148,14 @@
     label: SUM NET REVENUE EX. VAT
     type: sum
     sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_net_revenue_ex_discount
     type: sum
     sql: ${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1164,14 +1164,14 @@
     label: SUM NET REVENUE EX. DISCOUNT
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_net_revenue_ex_discount_ex_vat
     type: sum
     sql: ((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1180,14 +1180,14 @@
     label: SUM NET REVENUE EX. DISCOUNT, VAT
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_net_revenue_ex_discount_ex_store_credit
     type: sum
     sql: ${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1196,14 +1196,14 @@
     label: SUM NET REVENUE EX. DISCOUNT, STORE CREDIT
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
   - measure: sum_net_revenue_ex_discount_ex_store_credit_ex_vat
     type: sum
     sql: ((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}
-    format: "%0.2f"
+    value_format: '#,##0.00'
     filters:
       state: -canceled
     hidden: true
@@ -1212,7 +1212,7 @@
     label: SUM NET REVENUE EX. DISCOUNT, STORE CREDIT, VAT
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     filters:
       state: -canceled
 
@@ -1259,20 +1259,22 @@
     label: HERMES ON TIME %
     type: number
     decimals: 2
-    sql: 100.0 * (1 - ${count_hermes_late_orders}/nullif(${count_hermes_completed_orders},0)::REAL)
-    format: "%0.2f%"
+    sql: 1 - ${count_hermes_late_orders}/nullif(${count_hermes_completed_orders},0)::REAL
+    value_format: '#0.00%'
 
   - measure: hermes_no_tracking_info_percentage
     label: HERMES NO TRACKING INFO %
     type: number
     decimals: 2
-    sql: 100.0 * (1 - ${count_hermes_no_tracking_info}/nullif(${count_hermes_completed_orders},0)::REAL)
+    sql: 1 - ${count_hermes_no_tracking_info}/nullif(${count_hermes_completed_orders},0)::REAL
+    value_format: '#0.00%'
 
   - measure: more_info_required_percentage
     label: HERMES MORE INFO REQUIRED %
     type: number
     decimals: 2
-    sql: 100.0 * (1 - ${more_info_required_orders}/nullif(${count_hermes_completed_orders},0)::REAL)
+    sql: 1 - ${more_info_required_orders}/nullif(${count_hermes_completed_orders},0)::REAL
+    value_format: '#0.00%'
   
   
  

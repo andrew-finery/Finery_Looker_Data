@@ -1,6 +1,6 @@
 - dashboard: sales_month_so_far
   title: Sales - Month so Far
-  layout: tile
+  layout: static
   tile_size: 50
 
 

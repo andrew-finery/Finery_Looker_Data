@@ -576,7 +576,7 @@
     type: number
     decimals: 2
     sql: (${sum_items_sold_yesterday} - ${sum_items_sold_same_day_last_week})/NULLIF(${sum_items_sold_same_day_last_week},0)::REAL
-    value_format: '#.00%'
+    value_format: '#0.00%'
     html: |
         {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
@@ -591,7 +591,7 @@
     type: number
     decimals: 2
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL
-    value_format: '#.00%'
+    value_format: '#0.00%'
     html: |
         {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>

@@ -1,6 +1,6 @@
 - dashboard: website_technology
   title: Website Technology
-  layout: tile
+  layout: static
   tile_size: 20
   show_applied_filters: true
 
