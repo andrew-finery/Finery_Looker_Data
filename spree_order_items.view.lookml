@@ -234,7 +234,7 @@
     
   - measure: return_rate
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${total_items_returned}/NULLIF(${total_items_sold},0)::REAL
     value_format: '#0.00%'
     
@@ -254,7 +254,7 @@
     
   - measure: return_rate_value
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${sum_return_item_value_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
     value_format: '#0.00%'
   
@@ -319,7 +319,7 @@
   
   - measure: gross_margin_percent_ex_vat
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${sum_gross_margin_gbp_ex_vat}/NULLIF(${sum_gross_item_revenue_in_gbp_ex_vat},0)::REAL
     value_format: '#0.00%'
     
@@ -339,7 +339,7 @@
   
   - measure: net_margin_percent_ex_vat
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
     value_format: '#0.00%'
 

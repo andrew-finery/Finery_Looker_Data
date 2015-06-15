@@ -671,21 +671,21 @@
   - measure: new_customer_percentage
     label: New Customer %
     type: number
-    decimals: 2
+    decimals: 4
     sql: cast(${count_new_customers} as decimal(8,2))/nullif(cast(${count_orders} as decimal(8,2)),0)::REAL
     value_format: '#0.00%'
 
   - measure: orders_with_discount_percentage
     label: Orders with Discount (%)
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${orders_with_discount}/NULLIF(${count_orders},0)::REAL
     value_format: '#0.00%'
 
   - measure: new_customers_using_discount_percentage
     label: New Cust w/ Discount
     type: number
-    decimals: 2
+    decimals: 4
     sql: ${new_customers_with_discount}/NULLIF(${count_new_customers},0)::REAL
     value_format: '#0.00%'
     
@@ -934,7 +934,7 @@
     type: number
     decimals: 4
     sql: ${sum_total_discount_gbp}/${sum_total_of_items_gbp}::REAL
-    value_format: '#0.00%'
+    value_format: '#0.0%'
  
   - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping
     label: Avg Basket Size
@@ -1307,21 +1307,21 @@
   - measure: hermes_on_time_percentage
     label: HERMES ON TIME %
     type: number
-    decimals: 2
+    decimals: 4
     sql: 1 - ${count_hermes_late_orders}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
 
   - measure: hermes_no_tracking_info_percentage
     label: HERMES NO TRACKING INFO %
     type: number
-    decimals: 2
+    decimals: 4
     sql: 1 - ${count_hermes_no_tracking_info}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
 
   - measure: more_info_required_percentage
     label: HERMES MORE INFO REQUIRED %
     type: number
-    decimals: 2
+    decimals: 4
     sql: 1 - ${more_info_required_orders}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
   
