@@ -932,6 +932,7 @@
   - measure: average_discount
     label: Avg Discount
     type: number
+    decimals: 4
     sql: ${sum_total_discount_gbp}/${sum_total_of_items_gbp}::REAL
     value_format: '#0.00%'
  
