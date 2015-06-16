@@ -35,6 +35,10 @@
     type: date
     sql: ${TABLE}.confirm_date
   
+  - dimension: receipt_reference
+    label: Receipt Reference
+    sql: ${TABLE}.rcpt_ref_num
+  
   - dimension: received_quantity
     sql: ${TABLE}.received_quantity
     hidden: true
