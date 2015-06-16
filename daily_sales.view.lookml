@@ -122,6 +122,10 @@
     label: Full Size Availability (Yes/No)
     type: yesno
     sql: ${TABLE}.full_option_availability_flag = 1
+  
+  - dimension: product_on_sale_flag
+    label: On Sale Flag
+    sql: case when ${online_products.on_sale_date} <= ${calendar_date_date} then 'On Sale' else 'Full Price' end
 
 #################################################################################################################################################################################################
 ########################################################## MEASURES #############################################################################################################################

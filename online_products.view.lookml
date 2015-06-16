@@ -23,7 +23,9 @@
           sub_departments.department as sub_department,
           products.name || ' ' || coalesce(colours.name, '') as option,
           case when date(products.available_on) > current_date or variants.deleted_at is not null then 'No' else 'Yes' end as online_flag,
-          products.is_coming_soon
+          products.is_coming_soon,
+          case when pre_sale_prices.amount = 0 then null else pre_sale_prices.amount end as pre_sale_price,
+          on_sale_dates.on_sale_date
           
           from
           
@@ -152,6 +154,14 @@
           where taxons.parent_id is not null
           and taxons.parent_id not in (72, 1)) group by 1,2,3) sub_departments
           on sub_departments.product_id = variants.product_id
+          
+          left join
+          (select * from daily_snapshot.spree_pre_sale_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_pre_sale_prices) and deleted_at is null and currency = 'GBP') pre_sale_prices
+          on pre_sale_prices.variant_id = variants.id
+          
+          left join
+          (select variant_id, min(date(spree_timestamp)) - 1 as on_sale_date from daily_snapshot.spree_pre_sale_prices where deleted_at is null and amount > 0 group by 1) on_sale_dates
+          on on_sale_dates.variant_id = variants.id
 
      sql_trigger_value: SELECT COUNT(*) FROM daily_snapshot.spree_products
      distkey: ean
@@ -210,18 +220,40 @@
        sql: ${TABLE}.size
     
      - dimension: current_price_gbp
+       label: Current Price
        type: number
        decimals: 2
        sql: ${TABLE}.current_price
        format: "£%0.2f"
-       hidden: true
-       
-     - dimension: max_price
+
+     - dimension: first_price
+       label: Maximum Price
        type: number
        decimals: 2
        sql: ${TABLE}.max_price
-       hidden: true
-       
+
+     - dimension: pre_sale_price
+       label: Pre-Sale Price
+       type: number
+       decimals: 2
+       sql: ${TABLE}.pre_sale_price
+      
+     - dimension: max_price
+       label: Original Price
+       type: number
+       decimals: 2
+       sql: coalesce(${pre_sale_price}, ${first_price})
+     
+     - dimension: on_sale_flag
+       label: Currently on Sale Flag
+       sql: case when ${pre_sale_price} is not null then 'On Sale' else 'Full Price' end
+
+     - dimension_group: on_sale
+       label: On Sale
+       type: time
+       timeframes: [date]
+       sql: ${TABLE}.on_sale_date
+      
      - dimension_group: available_on
        type: time
        timeframes: [date, week, month]

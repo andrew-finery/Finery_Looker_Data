@@ -21,7 +21,11 @@
         a.exchange_rate,
         a.tax_rate,
         a.item_total as order_total,
-        a.adjustment_total
+        a.adjustment_total,
+        pre_sale_prices.pre_sale_price,
+        case when pre_sale_prices.pre_sale_price is null then 0
+             when b.price < pre_sale_prices.pre_sale_price then 1
+             else 0 end as product_on_sale_flag
         
         from
 
@@ -40,6 +44,11 @@
         (select order_id, sku, min(created_at) as return_tstamp, count(*) as items_returned, max(name) as return_reason from ${spree_returns.SQL_TABLE_NAME} group by 1,2) e
         on a.order_id = e.order_id
         and c.sku = e.sku
+        left join
+        (select variant_id, currency, max(amount) as pre_sale_price from daily_snapshot.spree_pre_sale_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_pre_sale_prices) and deleted_at is null and amount > 0 group by 1,2) pre_sale_prices
+        on pre_sale_prices.variant_id = b.variant_id
+        and a.currency = pre_sale_prices.currency
+        
         where a.state not in ('canceled')
 
         
@@ -91,7 +100,12 @@
     decimals: 2
     sql: ${TABLE}.price
     value_format: '#,##0.00'
-
+  
+  - dimension: on_sale_flag
+    label: Sale Product Flag
+    type: yesno
+    sql: ${TABLE}.product_on_sale_flag = 1
+  
   - dimension: price_gbp
     type: number
     decimals: 2
