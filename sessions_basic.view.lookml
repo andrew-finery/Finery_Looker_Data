@@ -20,7 +20,12 @@
       coalesce(checkout.checkout_progress,'0') as checkout_progress,
       coalesce(product_impressions.product_impressions, '0') as product_impressions,
       coalesce(product_clicks.product_clicks, '0') as product_clicks,
-      coalesce(product_views.distinct_product_views, '0') as product_views
+      coalesce(product_views.distinct_product_views, '0') as product_views,
+      coalesce(sale_link_clicks.sale_link_clicks, '0') as sale_link_clicks,
+      sessions.successful_logins,
+      sessions.unsuccessful_logins,
+      sessions.unsuccessful_registrations,
+      sessions.sale_events
       
       FROM
       
@@ -33,6 +38,10 @@
         sum(case when (event = 'page_ping' or unstruct_event like '%product_impression%') then 0 else 1 end) as interaction_events,
         sum(case when se_action = 'freeGiftClick' then 1 else 0 end) as free_gift_click_events,
         sum(case when se_action = 'inviteFriends' then se_value else 0 end) as referrals_sent,
+        sum(case when unstruct_event like '%login_success%' then 1 else 0 end) as successful_logins,
+        sum(case when unstruct_event like '%login_failure%' then 1 else 0 end) as unsuccessful_logins,
+        sum(case when unstruct_event like '%registration_failure%' then 1 else 0 end) as unsuccessful_registrations,
+        sum(case when page_urlpath like '%final-call%' then 1 else 0 end) as sale_events,
         COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed,
         max(user_id) as user_id
       FROM
@@ -61,6 +70,9 @@
         ON product_clicks.domain_userid = sessions.domain_userid and product_clicks.domain_sessionidx = sessions.domain_sessionidx
       LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(distinct prod_views.prod_id) as distinct_product_views from atomic.com_finerylondon_page_view_context_1 prod_views left join atomic.events events on prod_views.root_id = events.event_id where events.event = 'page_view' and page_type = 'products/show' group by 1,2) product_views
         ON product_views.domain_userid = sessions.domain_userid and product_views.domain_sessionidx = sessions.domain_sessionidx
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as sale_link_clicks from atomic.com_snowplowanalytics_snowplow_link_click_1 sale_link left join atomic.events events on sale_link.root_id = events.event_id where target_url like '%final-call%' group by 1,2) sale_link_clicks
+        ON sale_link_clicks.domain_userid = sessions.domain_userid and sale_link_clicks.domain_sessionidx = sessions.domain_sessionidx
+
         
       
       

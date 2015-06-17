@@ -23,6 +23,11 @@
         s.product_impressions,
         s.product_clicks,
         s.product_views,
+        s.sale_link_clicks,
+        s.successful_logins,
+        s.unsuccessful_logins,
+        s.unsuccessful_registrations,
+        s.sale_events,
         g.geo_country_code_2_characters,
         g.geo_region,
         g.geo_city,
@@ -322,6 +327,42 @@
     label: Exit Page Full
     sql: ${TABLE}.exit_page_host || ${TABLE}.exit_page_path
     hidden: true
+
+ # Sale tracking dimensions flag
+
+  - dimension: sale_link_clicked_flag
+    type: yesno
+    sql: ${TABLE}.sale_link_clicks > 0
+
+  - dimension: successful_registration_flag
+    type: yesno
+    sql: ${TABLE}.accounts_created > 0
+
+  - dimension: successful_login_flag
+    type: yesno
+    sql: ${TABLE}.successful_logins > 0
+
+  - dimension: unsuccessful_logins_flag
+    type: yesno
+    sql: ${TABLE}.unsuccessful_logins > 0
+
+  - dimension: unsuccessful_registrations_flag
+    type: yesno
+    sql: ${TABLE}.unsuccessful_registrations > 0
+    
+  - dimension: viewed_sale_flag
+    type: yesno
+    sql: ${TABLE}.sale_events > 0
+
+  - dimension: sale_link_click_outcome
+    sql_case:
+      Clicked Sale Link - Registered: ${TABLE}.sale_link_clicks > 0 and ${accounts_created} > 0 and ${TABLE}.sale_events > 0
+      Clicked Sale Link - Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.successful_logins > 0 and ${TABLE}.sale_events > 0
+      Clicked Sale Link - Already Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.user_id is not null and ${TABLE}.sale_events > 0
+      Clicked Sale Link - Login Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_logins > 0 and ${TABLE}.sale_events = 0
+      CLicked Sale Link - Registration Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_registrations > 0 and ${TABLE}.sale_events = 0
+      Clicked Sale Link - Bounced: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events = 0
+      else: Did not click Sale Link
 
 ################################ MARKETING #################################################################################################
 
