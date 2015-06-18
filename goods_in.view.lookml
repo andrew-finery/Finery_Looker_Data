@@ -17,7 +17,7 @@
               and TRIM('UN' FROM expected_qty) = 0
               and len(rcpt_ref_num) in (10,11,12,13)
               and receieved_qty in (0,1,2,3))
-              or rcpt_ref_num in ('c', 'RETURNSTOCK')
+              or rcpt_ref_num in ('c', 'RETURNSTOCK', '(ECOM) FIN 8 JUN A')
               or left(rcpt_ref_num, 3) = 'POP')
 
      sql_trigger_value: SELECT count(*) from finery.goods_in
