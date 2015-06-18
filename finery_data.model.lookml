@@ -26,7 +26,6 @@
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
 
-
 - explore: facebook_daily_performance
 
 - explore: events
@@ -89,7 +88,9 @@
   - join: spree_products
     from: spree_products
     sql_on: ${atomic_events.product_id} = ${spree_products.product_id}
-
+  - join: snowplow_link_clicks
+    sql_on: ${atomic_events.event_id} = ${snowplow_link_clicks.root_id}
+    
 - explore: spree_orders
   joins:
   - join: calendar_weeks

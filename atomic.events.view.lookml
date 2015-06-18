@@ -13,16 +13,19 @@
 
   - dimension: app_id
     sql: ${TABLE}.app_id
-    hidden: true
   
   - dimension: event
     sql: ${TABLE}.event
     hidden: true
-  
+
+  - dimension: page_url_host
+    label: URL Host
+    sql: ${TABLE}.page_urlhost
+
   - dimension: page_url_path
-    label: PAGE PATH
+    label: URL Path
     sql: ${TABLE}.page_urlpath
-  
+
   - dimension: unstruct_event
     label: UNSTRUCTURED EVENT
     sql: ${TABLE}.unstruct_event
@@ -359,46 +362,46 @@
     sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.2f%"
   
-  - measure: avg_basket_size
-    label: AVERAGE BASKET SIZE
-    type: number
-    decimals: 2
-    sql: ${items_purchased}/NULLIF(${transactions.count_transactions},0)::REAL
+#  - measure: avg_basket_size
+#    label: AVERAGE BASKET SIZE
+#    type: number
+#    decimals: 2
+#    sql: ${items_purchased}/NULLIF(${transactions.count_transactions},0)::REAL
   
-  - measure: avg_basket_value
-    label: AVERAGE BASKET VALUE
-    type: number
-    decimals: 2
-    sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
-    format: "£%0.2f"
+#  - measure: avg_basket_value
+#    label: AVERAGE BASKET VALUE
+#    type: number
+#    decimals: 2
+#    sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
+#    format: "£%0.2f"
 
 ############################################################ Page Measures #######################################################################################################
 
-  - dimension: landing_page_flag
-    type: yesno
-    sql: ${page_url_path} = ${sessions.landing_page_path}
-    hidden: true
+#  - dimension: landing_page_flag
+#    type: yesno
+#    sql: ${page_url_path} = ${sessions.landing_page_path}
+#    hidden: true
   
   - dimension: exit_page_flag
     type: yesno
     sql: ${page_url_path} = ${sessions.exit_page_path}
     hidden: true
   
-  - measure: count_landed_sessions
-    label: LANDED SESSIONS COUNT
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      landing_page_flag: yes
+#  - measure: count_landed_sessions
+#    label: LANDED SESSIONS COUNT
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      landing_page_flag: yes
   
   - measure: count_exit_sessions
     label: EXIT SESSIONS COUNT
     type: count_distinct
     sql: ${session_id}
     filters:
-      app_id: production
-      exit_page_flag: yes
+    app_id: production
+    exit_page_flag: yes
       
   - measure: page_exit_rate
     label: PAGE EXIT RATE

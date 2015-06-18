@@ -354,15 +354,15 @@
     type: yesno
     sql: ${TABLE}.sale_events > 0
 
-  - dimension: sale_link_click_outcome
-    sql_case:
-      Clicked Sale Link - Registered: ${TABLE}.sale_link_clicks > 0 and ${accounts_created} > 0 and ${TABLE}.sale_events > 0
-      Clicked Sale Link - Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.successful_logins > 0 and ${TABLE}.sale_events > 0
-      Clicked Sale Link - Already Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.user_id is not null and ${TABLE}.sale_events > 0
-      Clicked Sale Link - Login Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_logins > 0 and ${TABLE}.sale_events = 0
-      CLicked Sale Link - Registration Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_registrations > 0 and ${TABLE}.sale_events = 0
-      Clicked Sale Link - Bounced: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events = 0
-      else: Did not click Sale Link
+  #- dimension: sale_link_click_outcome
+  #  sql_case:
+  #    Clicked Sale Link - Registered: ${TABLE}.sale_link_clicks > 0 and ${accounts_created} > 0 and ${TABLE}.sale_events > 0
+  #    Clicked Sale Link - Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.successful_logins > 0 and ${TABLE}.sale_events > 0
+  #    Clicked Sale Link - Already Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.user_id is not null and ${TABLE}.sale_events > 0
+  #    Clicked Sale Link - Login Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_logins > 0 and ${TABLE}.sale_events = 0
+  #    CLicked Sale Link - Registration Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_registrations > 0 and ${TABLE}.sale_events = 0
+  #    Clicked Sale Link - Bounced: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events = 0
+  #    else: Did not click Sale Link
 
 ################################ MARKETING #################################################################################################
 
@@ -377,7 +377,7 @@
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
       Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram' or ${TABLE}.mkt_source_ga = 'fb'
       Search: ${TABLE}.refr_medium_ga = 'search'
-      Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate'
+      Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate' or ${TABLE}.refr_urlhost_ga = 'www.polyvore.com'
       Referrals: ${TABLE}.refr_medium_ga = 'unknown'
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
