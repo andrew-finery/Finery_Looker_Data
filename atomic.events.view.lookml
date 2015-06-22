@@ -25,7 +25,41 @@
   - dimension: page_url_path
     label: URL Path
     sql: ${TABLE}.page_urlpath
+    hidden: true
+  
+  - dimension: page_urlpath_adjusted_for_country
+    label: Page URL Path
+    sql: |
+        case
 
+        when ${TABLE}.page_urlpath like '%/uk' then replace(${TABLE}.page_urlpath, '/uk', '/')
+        when ${TABLE}.page_urlpath like '%/uk/%' then replace(${TABLE}.page_urlpath, '/uk/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/us' then replace(${TABLE}.page_urlpath, '/us', '/')
+        when ${TABLE}.page_urlpath like '%/us/%' then replace(${TABLE}.page_urlpath, '/us/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/ie' then replace(${TABLE}.page_urlpath, '/ie', '/')
+        when ${TABLE}.page_urlpath like '%/ie/%' then replace(${TABLE}.page_urlpath, '/ie/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/au' then replace(${TABLE}.page_urlpath, '/au', '/')
+        when ${TABLE}.page_urlpath like '%/au/%' then replace(${TABLE}.page_urlpath, '/au/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/ca' then replace(${TABLE}.page_urlpath, '/ca', '/')
+        when ${TABLE}.page_urlpath like '%/ca/%' then replace(${TABLE}.page_urlpath, '/ca/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/sg' then replace(${TABLE}.page_urlpath, '/sg', '/')
+        when ${TABLE}.page_urlpath like '%/sg/%' then replace(${TABLE}.page_urlpath, '/sg/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/hk' then replace(${TABLE}.page_urlpath, '/hk', '/')
+        when ${TABLE}.page_urlpath like '%/hk/%' then replace(${TABLE}.page_urlpath, '/hk/', '/')
+        
+        when ${TABLE}.page_urlpath like '%/ae' then replace(${TABLE}.page_urlpath, '/ae', '/')
+        when ${TABLE}.page_urlpath like '%/ae/%' then replace(${TABLE}.page_urlpath, '/ae/', '/')
+        
+        else ${TABLE}.page_urlpath
+        
+        end
+  
   - dimension: unstruct_event
     label: UNSTRUCTURED EVENT
     sql: ${TABLE}.unstruct_event

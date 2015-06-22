@@ -3,13 +3,23 @@
   fields:
 
   - dimension: element_classes
-    label: Link Type
+    label: Link Class
     sql: ${TABLE}.element_classes
     
   - dimension: element_id
     sql: ${TABLE}.element_id
     hidden: true
-
+  
+  - dimension: link_type
+    sql_case:
+      Homepage Hero Image: ${element_classes} like '%homepage-promotion-banner%'
+      Navigation Link: ${element_classes} like '%navigation__link%'
+      Product Size Guide: ${element_classes} like '%product__size-guide%'
+      Finery Logo: ${element_classes} like '%finery-logo%'
+      Promotion Link: ${element_classes} like '%promotion__link%'
+      Taxon Promotion Link: ${element_classes} like '%taxon-promotion%'
+      else: Other
+      
   - dimension: element_target
     sql: ${TABLE}.element_target
 
