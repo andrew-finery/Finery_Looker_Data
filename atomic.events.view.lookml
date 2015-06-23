@@ -180,7 +180,7 @@
     hidden: true
 
   - dimension: email_campaign
-    label: EMAIL CAMPAIGN TITLE
+    label: Email Campaign Title
     sql: |
          case
          when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_subject} != 'Other' then ${mailchimp_campaigns_2.email_subject}
@@ -189,7 +189,7 @@
          else null end
 
   - dimension: email_description
-    label: EMAIL DESCRIPTION
+    label: Email Description
     sql: |
          case
          when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_description} != 'Other' then ${mailchimp_campaigns_2.email_description}
@@ -198,7 +198,7 @@
          else null end
     
   - dimension: email_list
-    label: EMAIL LIST
+    label: Email List
     sql: |
          case
          when ${sessions.campaign_medium} = 'email' and ${mailchimp_campaigns_2.email_list} != 'Other' then ${mailchimp_campaigns_2.email_list}
@@ -209,12 +209,12 @@
 
   - dimension: email_latest_send_date
     type: date
-    label: EMAIL SENT
+    label: Email Sent
     sql: case when ${sessions.campaign_medium} = 'email' then ${mailchimp_campaigns_2.latest_send_date} when ${structured_event_category} = 'email' then ${mailchimp_campaigns_1.latest_send_date} else null end
     hidden: true
   
   - dimension: campaign
-    label: SUB-CHANNEL
+    label: Sub-Channel
     sql: |
          case
          when ${sessions.acquisition_channel} = 'Email' then ${mailchimp_campaigns_2.email_subject}
@@ -233,12 +233,12 @@
 
 ################### Users and Sessions Counts
   - measure: count_events
-    label: COUNT EVENTS
+    label: Count Events
     type: count_distinct
     sql: ${event_id}
 
   - measure: count_users
-    label: USERS
+    label: Count Users
     type: count_distinct
     sql: ${blended_user_id}
     filters:
@@ -247,7 +247,7 @@
       app_id: production
 
   - measure: count_new_users
-    label: NEW USERS
+    label: Count New Users
     type: count_distinct
     sql: ${blended_user_id}
     filters:
@@ -256,7 +256,7 @@
       app_id: production
   
   - measure: count_sessions
-    label: SESSIONS
+    label: Count Sessions
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -265,7 +265,7 @@
       app_id: production
 
   - measure: count_new_sessions
-    label: NEW SESSIONS
+    label: Count New Sessions
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -274,7 +274,7 @@
       app_id: production
 
   - measure: count_session_logged_in
-    label: LOGGED IN SESSIONS
+    label: Count Logged in Sessions
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -284,28 +284,28 @@
       app_id: production
 
   - measure: count_users_logged_in
-    label: USERS LOGGED IN
+    label: Count Logged in Users
     type: count_distinct
     sql: ${user_id}
     filters:
       app_id: production
     
   - measure: new_user_percentage
-    label: NEW USER %
+    label: New User %
     type: number
     decimals: 2
     sql: 100.0 * ${count_new_users}/NULLIF(${count_users},0)::REAL
     format: "%0.1f%"
 
   - measure: new_session_percentage
-    label: NEW SESSION %
+    label: New Session %
     type: number
     decimals: 2
     sql: 100.0 * ${count_new_sessions}/NULLIF(${count_sessions},0)::REAL
     format: "%0.1f%"
   
   - measure: user_logged_in_percentage
-    label: LOGGED IN %
+    label: Logged In %
     type: number
     decimals: 2
     sql: 100.0 * ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
@@ -325,7 +325,7 @@
     sql: max(convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp))
   
   - measure: latest_update
-    label: LATEST UPDATE
+    label: Latest Update
     type: string
     sql: |
         case
@@ -337,7 +337,7 @@
         end
 
   - measure: count_page_views
-    label: PAGE VIEWS
+    label: Page Views
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -345,7 +345,7 @@
       app_id: production
 
   - measure: page_views_per_session
-    label: PAGE VIEWS PER SESSION
+    label: PPage Views per Session
     type: number
     decimals: 2
     sql: ${count_page_views}/NULLIF(${count_sessions},0)::REAL
@@ -372,25 +372,25 @@
     hidden: true
 
   - measure: engagement_time_per_session_minutes
-    label: AVERAGE SESSION DURATION
+    label: Average Session Duration
     type: string
     sql: floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)) || ':' || right(cast('00' as varchar) || cast((((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL) - floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL))) * 60) as integer), 2)
 
 ############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
-    label: GROSS REVENUE EX COUPON, VAT
+    label: Gross Revenue ex. Discount, VAT
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
     format: "£%d"
 
   - measure: items_purchased
-    label: ITEMS PURCHASED
+    label: Items Purchased
     type: sum
     sql: ${transactions.number_of_items}
   
   - measure: conversion_rate
-    label: CONVERSION RATE
+    label: Conversion Rate
     type: number
     decimals: 2
     sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
@@ -430,7 +430,7 @@
 #      landing_page_flag: yes
   
   - measure: count_exit_sessions
-    label: EXIT SESSIONS COUNT
+    label: Exit Sessions Count
     type: count_distinct
     sql: ${session_id}
     filters:
@@ -438,13 +438,13 @@
     exit_page_flag: yes
       
   - measure: page_exit_rate
-    label: PAGE EXIT RATE
+    label: Page Exit Rate
     type: number
     sql: ${count_exit_sessions}/NULLIF(${count_sessions},0)::REAL
     value_format: '#.00%'
   
   - measure: page_bounce_rate
-    label: PAGE BOUNCE RATE
+    label: Page Bounce Rate
     type: number
     sql: ${sessions.bounced_sessions_count}/NULLIF(${count_landed_sessions},0)::REAL
     value_format: '#.00%'
@@ -452,21 +452,21 @@
 ############################################################################## EMAIL MEASURES ####################################################################################
     
   - measure: newsletter_signup_rate
-    label: NEWSLETTER SIGNUP RATE
+    label: Newsletter Signup Rate
     type: number
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
     format: "%0.1f%"
     
   - measure: referral_rate
-    label: REFERRAL RATE
+    label: Referral Rate
     type: number
     decimals: 1
     sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
     format: "%0.1f%"
   
   - measure: count_total_opens
-    label: TOTAL EMAIL OPENS
+    label: Total Email Opens
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -475,7 +475,7 @@
       app_id: production
 
   - measure: count_unique_opens
-    label: UNIQUE EMAIL OPENS
+    label: Unique Email Opens
     type: count_distinct
     sql: ${structured_event_label} || '-' || ${structured_event_property}
     filters:
@@ -486,7 +486,7 @@
 ################################################################## Structured Events ##########################################################################
 
   - measure: count_customer_service_events
-    label: CUSTOMER SERVICE LINK CLICKED
+    label: CS Link Clicked
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -494,7 +494,7 @@
       app_id: production
 
   - measure: count_contact_form_events
-    label: CONTACT FORM SUBMITTED
+    label: Contact Form Submitted
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -502,7 +502,7 @@
       app_id: production
 
   - measure: free_gift_click_event
-    label: FREE GIFT BUTTON CLICKS
+    label: Free Gift Button Clicks
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -510,7 +510,7 @@
       app_id: production
 
   - measure: invite_friends_events
-    label: INVITE FRIENDS EVENT
+    label: Invite Friends Event
     type: count_distinct
     sql: ${event_id}
     filters:
@@ -518,7 +518,7 @@
       app_id: production
   
   - measure: total_friends_invited
-    label: TOTAL FRIENDS INVITED
+    label: Total Friends Invited
     type: sum
     sql: ${structured_event_value}
     filters:
@@ -526,14 +526,14 @@
       app_id: production
       
   - measure: button_clicks_invite_ratio
-    label: FRIENDS INVITED-BUTTON CLICKS RATIO
+    label: Friends Invited - Button Clicked Ratio
     type: number
     decimals: 2
     sql:  coalesce(${invite_friends_events}/NULLIF(${free_gift_click_event},0)::REAL, '0')
     value_format: '#.##%'  
 
   - measure: avg_friend_invites_sent
-    label: AVG FRIENDS INVITED
+    label: Average Friends Invited
     type: number
     decimals: 2
     sql:  coalesce(${total_friends_invited}/NULLIF(${invite_friends_events},0)::REAL, '0')
@@ -542,11 +542,11 @@
 ####################################################################### Product Dimensions and Measures##########################################################################################
   
   - dimension: product_id
-    label: PRODUCT ID
+    label: Product ID
     sql: coalesce(cast(${product_impressions.product_id} as int), cast(${product_clicked.product_id} as int), cast(${product_quick_views.product_id} as int), ${page_contexts.product_id}, cast(${product_in_cart.product_id} as int), cast(${product_in_transaction.product_id} as int), cast(${product_in_checkout.product_id} as int))
     
   - dimension: category
-    label: CATEGORY PAGE
+    label: Category Page
     sql: |
           case
           when ${product_impressions.list} = 'taxons/show' then coalesce(${product_impressions.category}, ${product_clicked.category}, ${product_quick_views.category}, ${page_contexts.category})
@@ -558,15 +558,15 @@
           end
     
   - dimension: image_style
-    label: PRODUCT IMAGE STYLE
+    label: Product Image Style
     sql: coalesce(${product_impressions.style}, ${product_clicked.style}, ${product_quick_views.style})
 
   - dimension: list
-    label: DISPLAY LIST
+    label: Display List
     sql: coalesce(${product_impressions.list}, ${product_clicked.list}, ${product_quick_views.list})
     
   - dimension: position
-    label: LIST POSITION
+    label: List Position
     sql: coalesce(${product_impressions.position}, ${product_clicked.position}, ${product_quick_views.position})
     
   - measure: count_product_impressions
@@ -672,154 +672,154 @@
     
 ############################################################## Payment Funnel Stuff #########################################################################################################################################################################
 
-  - measure: count_sessions_with_catalog_page_view
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      event: page_view
-      page_contexts.page_type: taxons/show
-    hidden: true
+#  - measure: count_sessions_with_catalog_page_view
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      event: page_view
+#      page_contexts.page_type: taxons/show
+#    hidden: true
 
-  - measure: count_sessions_with_product_page_view
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      event: page_view
-      page_contexts.page_type: products/show
-    hidden: true
+#  - measure: count_sessions_with_product_page_view
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      event: page_view
+#      page_contexts.page_type: products/show
+#    hidden: true
       
-  - measure: count_sessions_with_cart
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      product_in_cart.event_id: -NULL
-    hidden: true
+#  - measure: count_sessions_with_cart
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      product_in_cart.event_id: -NULL
+#    hidden: true
       
-  - measure: count_sessions_with_checkout_1
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      product_in_checkout.checkout_step: '1'
-    hidden: true
+#  - measure: count_sessions_with_checkout_1
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      product_in_checkout.checkout_step: '1'
+#    hidden: true
       
-  - measure: count_sessions_with_checkout_2
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      product_in_checkout.checkout_step: '2'
-    hidden: true
+#  - measure: count_sessions_with_checkout_2
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      product_in_checkout.checkout_step: '2'
+#    hidden: true
       
-  - measure: count_sessions_with_checkout_3
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      product_in_checkout.checkout_step: '3'
-    hidden: true
+#  - measure: count_sessions_with_checkout_3
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      product_in_checkout.checkout_step: '3'
+#    hidden: true
   
-  - measure: count_sessions_with_transaction
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-      app_id: production
-      transactions.event_id: -NULL
-    hidden: true
+#  - measure: count_sessions_with_transaction
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      transactions.event_id: -NULL
+#    hidden: true
   
-  - measure: perc_all_sessions
-    label: SESSIONS - ALL SESSIONS
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_all_sessions
+#    label: SESSIONS - ALL SESSIONS
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
     
-  - measure: perc_sessions_catalog
-    label: SESSIONS - CATALOG PAGE
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_catalog_page_view}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_catalog
+#    label: SESSIONS - CATALOG PAGE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_catalog_page_view}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: perc_sessions_product
-    label: SESSIONS - PRODUCT PAGE
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_product_page_view}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_product
+#    label: SESSIONS - PRODUCT PAGE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_product_page_view}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: perc_sessions_cart
-    label: SESSIONS - ADD TO CART
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_cart}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_cart
+#    label: SESSIONS - ADD TO CART
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_cart}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
   
-  - measure: perc_sessions_checkout_1
-    label: SESSIONS - CHECKOUT STARTED
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_checkout_1}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_checkout_1
+#    label: SESSIONS - CHECKOUT STARTED
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_checkout_1}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: perc_sessions_checkout_2
-    label: SESSIONS - CHECKOUT ADDRESS ENTERED
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_checkout_2}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_checkout_2
+#    label: SESSIONS - CHECKOUT ADDRESS ENTERED
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_checkout_2}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: perc_sessions_checkout_3
-    label: SESSIONS - CHECKOUT DELIVERY METHOD SELECTED
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_checkout_3}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_checkout_3
+#    label: SESSIONS - CHECKOUT DELIVERY METHOD SELECTED
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_checkout_3}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: perc_sessions_transaction
-    label: SESSIONS - ORDER COMPLETED
-    type: number
-    decimals: 2
-    sql: 100.0 * ${count_sessions_with_transaction}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: perc_sessions_transaction
+#    label: SESSIONS - ORDER COMPLETED
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * ${count_sessions_with_transaction}/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
   
-  - measure: dropout_rate_visitor
-    label: DROPOUT RATE - VISITOR
-    type: number
-    decimals: 2
-    sql: 100.0 * (${perc_all_sessions} - ${perc_sessions_catalog})/NULLIF(${perc_all_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: dropout_rate_visitor
+#    label: DROPOUT RATE - VISITOR
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${perc_all_sessions} - ${perc_sessions_catalog})/NULLIF(${perc_all_sessions},0)::REAL
+#    format: "%0.2f%"
   
-  - measure: dropout_rate_catalogue
-    label: DROPOUT RATE - CATALOGUE
-    type: number
-    decimals: 2
-    sql: 100.0 * (${perc_sessions_catalog} - ${perc_sessions_product})/NULLIF(${perc_sessions_catalog},0)::REAL
-    format: "%0.2f%"
+#  - measure: dropout_rate_catalogue
+#    label: DROPOUT RATE - CATALOGUE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${perc_sessions_catalog} - ${perc_sessions_product})/NULLIF(${perc_sessions_catalog},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: dropout_rate_product
-    label: DROPOUT RATE - PRODUCT
-    type: number
-    decimals: 2
-    sql: 100.0 * (${perc_sessions_product} - ${perc_sessions_cart})/NULLIF(${perc_sessions_product},0)::REAL
-    format: "%0.2f%"
+#  - measure: dropout_rate_product
+#    label: DROPOUT RATE - PRODUCT
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${perc_sessions_product} - ${perc_sessions_cart})/NULLIF(${perc_sessions_product},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: dropout_rate_cart
-    label: DROPOUT RATE - CART
-    type: number
-    decimals: 2
-    sql: 100.0 * (${perc_sessions_cart} - ${perc_sessions_checkout_1})/NULLIF(${perc_sessions_cart},0)::REAL
-    format: "%0.2f%"
+#  - measure: dropout_rate_cart
+#    label: DROPOUT RATE - CART
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${perc_sessions_cart} - ${perc_sessions_checkout_1})/NULLIF(${perc_sessions_cart},0)::REAL
+#    format: "%0.2f%"
 
-  - measure: dropout_rate_checkout
-    label: DROPOUT RATE - CHECKOUT
-    type: number
-    decimals: 2
-    sql: 100.0 * (${perc_sessions_checkout_1} - ${perc_sessions_transaction})/NULLIF(${perc_sessions_checkout_1},0)::REAL
-    format: "%0.2f%"
+#  - measure: dropout_rate_checkout
+#    label: DROPOUT RATE - CHECKOUT
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${perc_sessions_checkout_1} - ${perc_sessions_transaction})/NULLIF(${perc_sessions_checkout_1},0)::REAL
+#    format: "%0.2f%"
 
 ################################## Web Goals Engagement Stuff ###########################################################
 

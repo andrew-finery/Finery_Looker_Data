@@ -35,6 +35,40 @@
     
   - dimension: target_url
     sql: ${TABLE}.target_url
+    hidden: true
+
+  - dimension: target_url_adjusted_for_country
+    label: Target URL
+    sql: |
+        case
+
+        when ${TABLE}.target_url like '%/uk' then replace(${TABLE}.target_url, '/uk', '/')
+        when ${TABLE}.target_url like '%/uk/%' then replace(${TABLE}.target_url, '/uk/', '/')
+        
+        when ${TABLE}.target_url like '%/us' then replace(${TABLE}.target_url, '/us', '/')
+        when ${TABLE}.target_url like '%/us/%' then replace(${TABLE}.target_url, '/us/', '/')
+        
+        when ${TABLE}.target_url like '%/ie' then replace(${TABLE}.target_url, '/ie', '/')
+        when ${TABLE}.target_url like '%/ie/%' then replace(${TABLE}.target_url, '/ie/', '/')
+        
+        when ${TABLE}.target_url like '%/au' then replace(${TABLE}.target_url, '/au', '/')
+        when ${TABLE}.target_url like '%/au/%' then replace(${TABLE}.target_url, '/au/', '/')
+        
+        when ${TABLE}.target_url like '%/ca' then replace(${TABLE}.target_url, '/ca', '/')
+        when ${TABLE}.target_url like '%/ca/%' then replace(${TABLE}.target_url, '/ca/', '/')
+        
+        when ${TABLE}.target_url like '%/sg' then replace(${TABLE}.target_url, '/sg', '/')
+        when ${TABLE}.target_url like '%/sg/%' then replace(${TABLE}.target_url, '/sg/', '/')
+        
+        when ${TABLE}.target_url like '%/hk' then replace(${TABLE}.target_url, '/hk', '/')
+        when ${TABLE}.target_url like '%/hk/%' then replace(${TABLE}.target_url, '/hk/', '/')
+        
+        when ${TABLE}.target_url like '%/ae' then replace(${TABLE}.target_url, '/ae', '/')
+        when ${TABLE}.target_url like '%/ae/%' then replace(${TABLE}.target_url, '/ae/', '/')
+        
+        else ${TABLE}.target_url
+        
+        end
 
   - measure: link_clicks_count
     type: number
