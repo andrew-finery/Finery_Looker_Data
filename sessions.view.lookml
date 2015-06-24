@@ -353,16 +353,18 @@
   - dimension: viewed_sale_flag
     type: yesno
     sql: ${TABLE}.sale_events > 0
-
-  #- dimension: sale_link_click_outcome
-  #  sql_case:
-  #    Clicked Sale Link - Registered: ${TABLE}.sale_link_clicks > 0 and ${accounts_created} > 0 and ${TABLE}.sale_events > 0
-  #    Clicked Sale Link - Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.successful_logins > 0 and ${TABLE}.sale_events > 0
-  #    Clicked Sale Link - Already Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.user_id is not null and ${TABLE}.sale_events > 0
-  #    Clicked Sale Link - Login Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_logins > 0 and ${TABLE}.sale_events = 0
-  #    CLicked Sale Link - Registration Failure: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.unsuccessful_registrations > 0 and ${TABLE}.sale_events = 0
-  #    Clicked Sale Link - Bounced: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events = 0
-  #    else: Did not click Sale Link
+  
+  - dimension: sale_interaction
+    sql_case:
+      Clicked Sale Link - Viewed Sale - Already Logged In: ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events > 0 and ${TABLE}.successful_logins = 0 and ${TABLE}.accounts_created = 0
+      Clicked Sale Link - Viewed Sale - Signed In/Created Account (Non-Bounce From Modal): ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events > 0 and (${TABLE}.successful_logins > 0 or ${TABLE}.accounts_created > 0)
+      Clicked Sale Link - Did Not View Sale (Bounced From Modal): ${TABLE}.sale_link_clicks > 0 and ${TABLE}.sale_events = 0
+      No Sale Links Click - Landed on Sale Page: ${TABLE}.sale_link_clicks = 0 and ${TABLE}.sale_events > 0
+      No Sale Link Click - Non-Bounce: ${TABLE}.sale_link_clicks = 0 and not(${bounce})
+      No Sale Link Click - Bounce: ${TABLE}.sale_link_clicks = 0 and ${bounce}
+      else: Other
+  
+  
 
 ################################ MARKETING #################################################################################################
 
