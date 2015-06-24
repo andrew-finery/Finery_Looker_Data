@@ -329,10 +329,11 @@
     explore: spree_orders
     dimensions: [spree_orders.completed_date]
     measures: [spree_orders.average_discount]
-    listen:
-      date: spree_orders.completed_date
+    filters:
+      spree_orders.completed_date: 7 days ago for 7 days
     sorts: [spree_orders.completed_date desc]
     limit: 500
+    column_limit: ''
     show_null_points: true
     stacking: ''
     show_value_labels: false
@@ -351,10 +352,11 @@
     y_axis_gridlines: true
     y_axis_labels: [Number of Orders]
     y_axis_combined: false
-    y_axis_min: 0
-    y_axis_max: 20
     interpolation: linear
     x_axis_datetime_tick_count: 7
+    label_density: 10
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
     width: 6
     height: 3
     top: 13
