@@ -1,9 +1,7 @@
-- view: com_mandrill_message_clicked_1
+- view: mandrill_message_clicked
   sql_table_name: atomic.com_mandrill_message_clicked_1
   fields:
 
-  - dimension: _id
-    sql: ${TABLE}._id
 
   - dimension: ip
     sql: ${TABLE}.ip
@@ -32,8 +30,8 @@
   - dimension: locationtimezone
     sql: ${TABLE}.location.timezone
 
-  - dimension: msg_id
-    sql: ${TABLE}.msg._id
+  - dimension: message_id
+    sql: ${TABLE}."msg._id"
 
   - dimension: msg_version
     sql: ${TABLE}.msg._version

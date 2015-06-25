@@ -1,12 +1,9 @@
-- view: com_mandrill_message_sent_1
+- view: mandrill_message_sent
   sql_table_name: atomic.com_mandrill_message_sent_1
   fields:
 
-  - dimension: _id
-    sql: ${TABLE}._id
-
-  - dimension: msg_id
-    sql: ${TABLE}.msg._id
+  - dimension: message_id
+    sql: ${TABLE}."msg._id"
 
   - dimension: msg_version
     sql: ${TABLE}.msg._version
@@ -42,7 +39,7 @@
     sql: ${TABLE}.msg.subaccount
 
   - dimension: msgsubject
-    sql: ${TABLE}.msg.subject
+    sql: ${TABLE}."msg.subject"
 
   - dimension: msgtags
     sql: ${TABLE}.msg.tags
@@ -55,15 +52,6 @@
     timeframes: [time, date, week, month]
     sql: ${TABLE}.msg.ts
 
-  - dimension: ref_parent
-    sql: ${TABLE}.ref_parent
-
-  - dimension: ref_root
-    sql: ${TABLE}.ref_root
-
-  - dimension: ref_tree
-    sql: ${TABLE}.ref_tree
-
   - dimension: root_id
     sql: ${TABLE}.root_id
 
@@ -71,23 +59,6 @@
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.root_tstamp
-
-  - dimension: schema_format
-    sql: ${TABLE}.schema_format
-
-  - dimension: schema_name
-    sql: ${TABLE}.schema_name
-
-  - dimension: schema_vendor
-    sql: ${TABLE}.schema_vendor
-
-  - dimension: schema_version
-    sql: ${TABLE}.schema_version
-
-  - dimension_group: ts
-    type: time
-    timeframes: [time, date, week, month]
-    sql: ${TABLE}.ts
 
   - measure: count
     type: count

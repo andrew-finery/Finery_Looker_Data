@@ -139,6 +139,13 @@
   - join: calendar_weeks
     sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
 
+- explore: mandrill_message_sent
+  joins:
+  - join: mandrill_message_opened
+    sql_on: ${mandrill_message_sent.message_id} = ${mandrill_message_opened.message_id}  
+  - join: mandrill_message_clicked
+    sql_on: ${mandrill_message_sent.message_id} = ${mandrill_message_clicked.message_id}
+    
 - explore: spree_returns
   fields: [ALL_FIELDS*, -online_products.option]
   joins:
