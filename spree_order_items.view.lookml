@@ -100,11 +100,27 @@
     decimals: 2
     sql: ${TABLE}.price
     value_format: '#,##0.00'
+
+  - dimension: pre_sale_price
+    type: number
+    decimals: 2
+    sql: |
+          case
+          when ${TABLE}.pre_sale_price is null then ${TABLE}.price
+          when ${TABLE}.price >= ${TABLE}.pre_sale_price then ${TABLE}.price
+          else ${TABLE}.pre_sale_price end
+    value_format: '#,##0.00'
   
   - dimension: on_sale_flag
     label: Sale Product Flag
     type: yesno
     sql: ${TABLE}.product_on_sale_flag = 1
+  
+  - dimension: pre_retail_markdown_price_gbp
+    type: number
+    decimals: 2
+    sql: coalesce(${pre_sale_price}, ${price}) / ${exchange_rate}
+    value_format: '"£"#,##0.00'    
   
   - dimension: price_gbp
     type: number
@@ -161,11 +177,22 @@
     sql: ${TABLE}.price * ${TABLE}.quantity
     value_format: '#,##0.00'
     hidden: true
-  
+
+  - dimension: gross_item_revenue_pre_retail_markdown_gbp
+    type: number
+    sql: ${pre_retail_markdown_price_gbp} * ${TABLE}.quantity
+    value_format: '"£"#,##0.00' 
+    
   - dimension: gross_item_revenue_in_gbp
     type: number
     decimals: 2
     sql: ${price_gbp} * ${TABLE}.quantity
+    value_format: '"£"#,##0.00'
+
+  - dimension: gross_item_revenue_ex_voucher_discount_gbp
+    type: number
+    decimals: 2
+    sql: case when ${TABLE}.order_total = 0 then 0 else ${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end
     value_format: '"£"#,##0.00'
     
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
@@ -273,10 +300,22 @@
     value_format: '#0.00%'
   
   ######################################################## GROSS Revenue Measures #######################################################################################################
+
+  - measure: sum_pre_retail_markdown_item_revenue_in_gbp
+    type: sum
+    sql: ${gross_item_revenue_pre_retail_markdown_gbp}
+    decimals: 2
+    value_format: '#,##0.00'
     
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
     sql: ${price} * ${quantity} / ${exchange_rate}
+    decimals: 2
+    value_format: '#,##0.00'
+
+  - measure: sum_gross_item_revenue_ex_voucher_discount_gbp
+    type: sum
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp}
     decimals: 2
     value_format: '#,##0.00'
     
@@ -357,6 +396,25 @@
     sql: ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
     value_format: '#0.00%'
 
+###################################################### DISCOUNT STUFF ##################################################
+
+  - measure: avg_retail_markdown
+    type: number
+    decimals: 4
+    sql: (${sum_pre_retail_markdown_item_revenue_in_gbp} - ${sum_gross_item_revenue_in_gbp})/NULLIF(${sum_pre_retail_markdown_item_revenue_in_gbp},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: avg_voucher_discount
+    type: number
+    decimals: 4
+    sql: (${sum_gross_item_revenue_in_gbp} - ${sum_gross_item_revenue_ex_voucher_discount_gbp})/NULLIF(${sum_pre_retail_markdown_item_revenue_in_gbp},0)::REAL
+    value_format: '#0.00%'
+  
+  - measure: avg_total_discount
+    type: number
+    decimals: 4
+    sql: ${avg_retail_markdown} + ${avg_voucher_discount}
+    value_format: '#0.00%'
 
     ####################################################################################    
   ################################################# TW, LW, L4W, MTD, STD #######################################################################################################################
