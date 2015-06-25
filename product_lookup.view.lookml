@@ -2,12 +2,12 @@
   derived_table:
    sql: |
         select * from finery.brightpearl_export bp
-        left join (select parent_sku as online_parent_sku, max(style_name) as online_style_name, max(max_price) as max_price, max(current_price) as current_price from ${spree_products.SQL_TABLE_NAME} group by 1) prices
-        on bp.parent_sku = prices.online_parent_sku
+        left join (select ean as ean2, current_price, coalesce(pre_sale_price, max_price) as original_price from ${online_products.SQL_TABLE_NAME}) prices
+        on bp.ean = prices.ean2
 
-   sql_trigger_value: SELECT count(*) from ${spree_products.SQL_TABLE_NAME}
-   distkey: ean
-   sortkeys: [ean]
+   sql_trigger_value: SELECT count(*) from ${online_products.SQL_TABLE_NAME}
+#   distkey: bp.ean
+#   sortkeys: [bp.ean]
      
      
   fields:
@@ -223,7 +223,7 @@
 
   - dimension: max_selling_price
     label: Original Price
-    sql: coalesce(${TABLE}.max_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    sql: coalesce(${TABLE}.original_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
  
   - dimension: current_price
     label: Current Price
