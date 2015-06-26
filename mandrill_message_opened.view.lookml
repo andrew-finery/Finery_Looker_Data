@@ -57,48 +57,63 @@
 
   - dimension: user_agent_parsedmobile
     sql: ${TABLE}."user_agent_parsed.mobile"
+    hidden: true
 
   - dimension: user_agent_parsedos_company
     sql: ${TABLE}."user_agent_parsed.os_company"
+    hidden: true
 
   - dimension: user_agent_parsedos_company_url
     sql: ${TABLE}."user_agent_parsed.os_company_url"
+    hidden: true
 
   - dimension: user_agent_parsedos_family
     sql: ${TABLE}."user_agent_parsed.os_family"
+    hidden: true
 
   - dimension: user_agent_parsedos_icon
     sql: ${TABLE}."user_agent_parsed.os_icon"
+    hidden: true
 
   - dimension: user_agent_parsedos_name
     sql: ${TABLE}."user_agent_parsed.os_name"
+    hidden: true
 
   - dimension: user_agent_parsedos_url
     sql: ${TABLE}."user_agent_parsed.os_url"
+    hidden: true
 
   - dimension: user_agent_parsedtype
     sql: ${TABLE}."user_agent_parsed.type"
+    hidden: true
 
   - dimension: user_agent_parsedua_company
     sql: ${TABLE}."user_agent_parsed.ua_company"
+    hidden: true
 
   - dimension: user_agent_parsedua_company_url
     sql: ${TABLE}."user_agent_parsed.ua_company_url"
+    hidden: true
 
   - dimension: user_agent_parsedua_family
     sql: ${TABLE}."user_agent_parsed.ua_family"
+    hidden: true
 
   - dimension: user_agent_parsedua_icon
     sql: ${TABLE}."user_agent_parsed.ua_icon"
+    hidden: true
 
   - dimension: user_agent_parsedua_name
     sql: ${TABLE}."user_agent_parsed.ua_name"
+    hidden: true
 
   - dimension: user_agent_parsedua_url
     sql: ${TABLE}."user_agent_parsed.ua_url"
+    hidden: true
 
   - dimension: user_agent_parsedua_version
     sql: ${TABLE}."user_agent_parsed.ua_version"
+    hidden: true
 
   - measure: count_opens
     type: count_distinct
