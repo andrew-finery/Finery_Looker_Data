@@ -563,8 +563,8 @@
   
   - measure: latest_data
     type: string
-    sql: TO_CHAR(max(${start_time}), 'YYYY-MM-DD HH24:00')
-  
+    sql: max(${start_time})
+    
   - measure: count
     label: Visits Total
     type: count_distinct
