@@ -30,7 +30,7 @@
   - dimension: locationtimezone
     sql: ${TABLE}.location.timezone
 
-  - dimension: message_id
+  - dimension: email_id
     sql: ${TABLE}."msg._id"
 
   - dimension: msg_version

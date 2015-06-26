@@ -1,19 +1,20 @@
-- dashboard: sales_last_month
-  title: Sales - Last Month
+- dashboard: sales_week_so_far
+  title: Sales - Week so Far
   layout: static
   tile_size: 50
 
   elements:
 
-  - name: month_number
-    title: Month
+  - name: week_number
+    title: Week Number
     type: single_value
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     filters:
-      calendar_weeks.calendar_date_date: last month
-    sorts: [calendar_weeks.calendar_date_month]
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number]
     limit: 500
     column_limit: ''
     font_size: small
@@ -22,14 +23,15 @@
     height: 3
     width: 4
 
-  - name: orders_last_month
+  - name: orders_this_week
     title: Orders
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.count_orders]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.count_orders desc]
     limit: 1
     column_limit: ''
@@ -39,14 +41,15 @@
     height: 3
     width: 4
     
-  - name: gross_rev_last_month
+  - name: gross_rev_this_week
     title: Revenue
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k desc]
     limit: 1
     column_limit: ''
@@ -56,14 +59,15 @@
     height: 3
     width: 4
     
-  - name: basket_size_last_month
+  - name: basket_size_this_week
     title: Basket Size
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping desc]
     limit: 1
     column_limit: ''
@@ -73,14 +77,15 @@
     height: 3
     width: 4
     
-  - name: average_discount_last_month
+  - name: average_discount_this_week
     title: Average Total Discount
     type: single_value
     model: finery_data
     explore: spree_order_items
     measures: [spree_order_items.avg_total_discount]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_order_items.avg_total_discount desc]
     limit: 1
     column_limit: ''
@@ -90,21 +95,21 @@
     height: 3
     width: 4
 
-  - name: orders_tm_v_lm
-    title: Orders v Previous Month
+  - name: orders_tw_v_lw
+    title: Orders v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.count_orders]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.count_orders} - offset(${spree_orders.count_orders},1))/offset(${spree_orders.count_orders},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -113,21 +118,21 @@
     height: 4
     width: 5
 
-  - name: revenue_tm_v_lm
-    title: Revenue v Previous Month
+  - name: revenue_tw_v_lw
+    title: Revenue v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k} - offset(${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k},1))/offset(${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -136,21 +141,22 @@
     height: 4
     width: 5
 
-  - name: basket_size_tm_v_lm
-    title: Basket Size v Previous Month
+  - name: basket_size_tw_v_lw
+    title: Basket Size v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping} - offset(${spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping},1))/offset(${spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -159,21 +165,22 @@
     height: 4
     width: 5
 
-  - name: avg_discount_tm_v_lm
-    title: Total Discount v Previous Month
+  - name: avg_discount_tw_v_lw
+    title: Discount v Previous Week
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_order_items.avg_total_discount]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_order_items.avg_total_discount} - offset(${spree_order_items.avg_total_discount},1))/offset(${spree_order_items.avg_total_discount},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -182,24 +189,25 @@
     height: 4
     width: 5
 
-  - name: orders_by_dom
-    title: Orders by Day of Month
+  - name: orders_by_weekday
+    title: Orders by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.count_orders]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -216,24 +224,25 @@
     height: 6
     width: 5
 
-  - name: revenue_by_dom
-    title: Revenue by Day of Month
+  - name: revenue_by_weekday
+    title: Revenue by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -250,24 +259,25 @@
     height: 6
     width: 5
 
-  - name: basket_size_by_dom
-    title: Basket Size by Day of Month
+  - name: basket_size_by_weekday
+    title: Basket Size by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -284,24 +294,25 @@
     height: 6
     width: 5
 
-  - name: discount_by_dom
-    title: Total Discount by Day of Month
+  - name: discount_by_weekday
+    title: Discount by Weekday
     type: looker_line
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_order_items.avg_total_discount]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -319,19 +330,20 @@
     width: 5
     
   - name: orders_by_hour
-    title: Avg Orders by Hour v Previous Month
+    title: Avg Orders by Hour v Previous Week
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_hour_of_day]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_hour_of_day]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.orders_per_day]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_hour_of_day]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_hour_of_day]
     limit: 24
     column_limit: ''
-    show_null_points: false
+    show_null_points: true
     interpolation: monotone
     show_value_labels: false
     point_style: none
@@ -354,20 +366,21 @@
     width: 10
 
   - name: basket_size_distrn
-    title: Basket Size Distribution v Previous Month
+    title: Basket Size Distribution v Previous Week
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.orders_perc_of_total]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier]
     limit: 100
     column_limit: ''
     show_view_names: false
-    show_null_points: false
+    show_null_points: true
     interpolation: monotone
     show_value_labels: false
     point_style: none
@@ -392,14 +405,15 @@
 
 ########### SECOND SECTION
 
-  - name: avg_items_last_month
+  - name: avg_items_this_week
     title: Avg. Items in Basket
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.avg_items_in_basket]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.avg_items_in_basket desc]
     limit: 1
     column_limit: ''
@@ -409,14 +423,15 @@
     height: 3
     width: 5
 
-  - name: new_cust_last_month
+  - name: new_cust_this_week
     title: New Customers
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.new_customer_percentage]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.new_customer_percentage desc]
     limit: 1
     column_limit: ''
@@ -426,14 +441,15 @@
     height: 3
     width: 5
 
-  - name: asp_last_month
+  - name: asp_this_week
     title: Average Selling Price
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.asp]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.asp desc]
     limit: 1
     column_limit: ''
@@ -443,14 +459,15 @@
     height: 3
     width: 5
 
-  - name: new_customers_using_discount_last_month
+  - name: new_customers_using_discount_this_week
     title: New Customers Using Discount
     type: single_value
     model: finery_data
     explore: spree_orders
     measures: [spree_orders.new_customers_using_discount_percentage]
     filters:
-      calendar_weeks.calendar_date_date: last month
+      calendar_weeks.calendar_date_date: this week
+      spree_orders.completed_time: before today
     sorts: [spree_orders.new_customers_using_discount_percentage desc]
     limit: 1
     column_limit: ''
@@ -460,21 +477,22 @@
     height: 3
     width: 5
 
-  - name: avg_items_in_basket_tm_v_lm
-    title: Avg Items in Basket v Previous Month
+  - name: avg_items_in_basket_tw_v_lw
+    title: Avg Items in Basket v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.avg_items_in_basket]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.avg_items_in_basket} - offset(${spree_orders.avg_items_in_basket},1))/offset(${spree_orders.avg_items_in_basket},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -483,21 +501,22 @@
     height: 4
     width: 5
 
-  - name: new_customer_percentage_tm_v_lm
-    title: New Customers v Previous Month
+  - name: new_customer_percentage_tw_v_lw
+    title: New Customers v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.new_customer_percentage]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.new_customer_percentage} - offset(${spree_orders.new_customer_percentage},1))/offset(${spree_orders.new_customer_percentage},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -506,21 +525,22 @@
     height: 4
     width: 5
 
-  - name: asp_tm_v_lm
-    title: Avg. Selling Price v Previous Month
+  - name: asp_tw_v_lw
+    title: Avg. Selling Price v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.asp]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.asp} - offset(${spree_orders.asp},1))/offset(${spree_orders.asp},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -529,21 +549,22 @@
     height: 4
     width: 5
 
-  - name: new_customers_using_discount_percentage_tm_v_lm
-    title: New Customers Using Discount v Previous Month
+  - name: new_customers_using_discount_percentage_tw_v_lw
+    title: New Customers Using Discount v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.new_customers_using_discount_percentage]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: |
         concat(round(100 * (${spree_orders.new_customers_using_discount_percentage} - offset(${spree_orders.new_customers_using_discount_percentage},1))/offset(${spree_orders.new_customers_using_discount_percentage},1),2),"%")
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc]
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
     show_view_names: false
@@ -552,24 +573,25 @@
     height: 4
     width: 5
 
-  - name: avg_items_in_basket_by_dom
-    title: Avg. Items in Basket by Day of Month
+  - name: avg_items_in_basket_by_weekday
+    title: Avg. Items in Basket by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.avg_items_in_basket]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -586,24 +608,25 @@
     height: 6
     width: 5
     
-  - name: new_customers_by_dom
-    title: New Customers by Day of Month
+  - name: new_customers_by_weekday
+    title: New Customers by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.new_customer_percentage]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -620,24 +643,25 @@
     height: 6
     width: 5
     
-  - name: asp_by_dom
-    title: Avg. Selling Price by Day of Month
+  - name: asp_by_weekday
+    title: Avg. Selling Price by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.asp]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -654,24 +678,25 @@
     height: 6
     width: 5
     
-  - name: new_customers_using_discount_percentage_by_dom
-    title: New Customers Using Discount by Day of Month
+  - name: new_customers_using_discount_percentage_by_weekday
+    title: New Customers Using Discount by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
-    dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.new_customers_using_discount_percentage]
     filters:
-      calendar_weeks.calendar_date_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
-    limit: 31
+      calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]
+    limit: 7
     column_limit: ''
     show_view_names: false
     show_null_points: false
     interpolation: monotone
     show_value_labels: false
-    point_style: none
+    point_style: circle_outline
     colors: [purple, skyblue]
     x_axis_gridlines: true
     show_x_axis_label: false
@@ -689,21 +714,22 @@
     width: 5
 
   - name: country_performance_v_previous_week
-    title: Orders by Country v Previous Month
+    title: Orders by Country v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_addresses.country, calendar_weeks.calendar_date_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [spree_addresses.country, calendar_weeks.year_week_number]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.count_orders]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: concat(round(100 * (${spree_orders.count_orders} - pivot_offset(${spree_orders.count_orders},1))/pivot_offset(${spree_orders.count_orders},1),2),"%")
     filters:
-      spree_orders.completed_date: 2 months ago for 2 months
-    sorts: [spree_orders.count_orders desc 0, calendar_weeks.calendar_date_month desc]
-    limit: 31
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [spree_orders.count_orders desc 0, calendar_weeks.year_week_number desc]
+    limit: 7
     column_limit: ''
     show_view_names: false
     top: 33
@@ -716,17 +742,18 @@
     type: table
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.primary_promotion, calendar_weeks.calendar_date_month]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [spree_orders.primary_promotion, calendar_weeks.year_week_number]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_orders.count_orders]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: concat(round(100 * (${spree_orders.count_orders} - pivot_offset(${spree_orders.count_orders},1))/pivot_offset(${spree_orders.count_orders},1),2),"%")
     filters:
-      spree_orders.completed_date: 2 months ago for 2 months
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
       spree_orders.primary_promotion: -NULL
-    sorts: [spree_orders.count_orders desc 0, calendar_weeks.calendar_date_month desc]
+    sorts: [spree_orders.count_orders desc 0, calendar_weeks.year_week_number desc]
     limit: 7
     column_limit: ''
     show_view_names: false
@@ -738,21 +765,22 @@
 ##### 3rd Section
 
   - name: sales_by_dept
-    title: Sales by Dept v Previous Month
+    title: Sales by Dept v Previous Week
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.calendar_date_month, product_lookup.category]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, product_lookup.category]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: concat(round(100 * (${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp} - pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1))/pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1),2),"%")
     filters:
-      spree_orders.completed_date: 2 months ago for 2 months
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
     sorts: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0,
-      calendar_weeks.calendar_date_month desc]
+      calendar_weeks.year_week_number desc]
     limit: 500
     column_limit: ''
     show_view_names: false
@@ -762,21 +790,22 @@
     width: 10
     
   - name: sales_by_size
-    title: Sales by Size v Previous Month (Apparel)
+    title: Sales by Size v Previous Week (Apparel)
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.calendar_date_month, online_products.size]
-    pivots: [calendar_weeks.calendar_date_month]
+    dimensions: [calendar_weeks.year_week_number, online_products.size]
+    pivots: [calendar_weeks.year_week_number]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     dynamic_fields:
     - table_calculation: week_on_week
-      label: Month on Month
+      label: Week on Week
       expression: concat(round(100 * (${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp} - pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1))/pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1),2),"%")
     filters:
       online_products.size: '"6","8","10","14","16","18","12"'
-      spree_orders.completed_date: 2 months ago for 2 months
-    sorts: [calendar_weeks.calendar_date_month desc, spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0]
+      spree_orders.completed_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
+    sorts: [calendar_weeks.year_week_number desc, spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0]
     limit: 500
     column_limit: ''
     top: 41

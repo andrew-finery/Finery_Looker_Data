@@ -79,15 +79,15 @@
     width: 4
     
   - name: average_discount_last_month
-    title: Average Discount
+    title: Average Total Discount
     type: single_value
     model: finery_data
-    explore: spree_orders
-    measures: [spree_orders.average_discount]
+    explore: spree_order_items
+    measures: [spree_order_items.avg_total_discount]
     filters:
       calendar_weeks.calendar_date_date: this month
       spree_orders.completed_date: before 0 days ago
-    sorts: [spree_orders.average_discount desc]
+    sorts: [spree_order_items.avg_total_discount desc]
     limit: 1
     column_limit: ''
     font_size: small
@@ -169,17 +169,17 @@
     width: 5
 
   - name: avg_discount_tm_v_lm
-    title: Discount v Previous Month
+    title: Total Discount v Previous Month
     type: table
     model: finery_data
-    explore: spree_orders
+    explore: spree_order_items
     dimensions: [calendar_weeks.calendar_date_month]
-    measures: [spree_orders.average_discount]
+    measures: [spree_order_items.avg_total_discount]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Month on Month
       expression: |
-        concat(round(100 * (${spree_orders.average_discount} - offset(${spree_orders.average_discount},1))/offset(${spree_orders.average_discount},1),2),"%")
+        concat(round(100 * (${spree_order_items.avg_total_discount} - offset(${spree_order_items.avg_total_discount},1))/offset(${spree_order_items.avg_total_discount},1),2),"%")
     filters:
       calendar_weeks.calendar_date_date: 1 month ago for 2 months
       spree_orders.completed_date: before 0 days ago
@@ -298,13 +298,13 @@
     width: 5
 
   - name: discount_by_dom
-    title: Discount by Day of Month
+    title: Total Discount by Day of Month
     type: looker_line
     model: finery_data
-    explore: spree_orders
+    explore: spree_order_items
     dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
     pivots: [calendar_weeks.calendar_date_month]
-    measures: [spree_orders.average_discount]
+    measures: [spree_order_items.avg_total_discount]
     filters:
       calendar_weeks.calendar_date_date: 1 month ago for 2 months
       spree_orders.completed_date: before 0 days ago

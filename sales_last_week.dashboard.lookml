@@ -74,14 +74,14 @@
     width: 4
     
   - name: average_discount_last_week
-    title: Average Discount
+    title: Average Total Discount
     type: single_value
     model: finery_data
-    explore: spree_orders
-    measures: [spree_orders.average_discount]
+    explore: spree_order_items
+    measures: [spree_order_items.avg_total_discount]
     filters:
       calendar_weeks.calendar_date_date: last week
-    sorts: [spree_orders.average_discount desc]
+    sorts: [spree_order_items.avg_total_discount desc]
     limit: 1
     column_limit: ''
     font_size: small
@@ -163,14 +163,14 @@
     title: Discount v Previous Week
     type: table
     model: finery_data
-    explore: spree_orders
+    explore: spree_order_items
     dimensions: [calendar_weeks.year_week_number]
-    measures: [spree_orders.average_discount]
+    measures: [spree_order_items.avg_total_discount]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${spree_orders.average_discount} - offset(${spree_orders.average_discount},1))/offset(${spree_orders.average_discount},1),2),"%")
+        concat(round(100 * (${spree_order_items.avg_total_discount} - offset(${spree_order_items.avg_total_discount},1))/offset(${spree_order_items.avg_total_discount},1),2),"%")
     filters:
       calendar_weeks.calendar_date_date: 2 weeks ago for 2 weeks
     sorts: [calendar_weeks.year_week_number desc]
@@ -288,10 +288,10 @@
     title: Discount by Weekday
     type: looker_line
     model: finery_data
-    explore: spree_orders
+    explore: spree_order_items
     dimensions: [calendar_weeks.year_week_number, spree_orders.completed_day_of_week]
     pivots: [calendar_weeks.year_week_number]
-    measures: [spree_orders.average_discount]
+    measures: [spree_order_items.avg_total_discount]
     filters:
       calendar_weeks.calendar_date_date: 2 weeks ago for 2 weeks
     sorts: [calendar_weeks.year_week_number desc, spree_orders.completed_day_of_week]

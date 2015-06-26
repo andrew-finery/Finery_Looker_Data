@@ -58,11 +58,11 @@
     left: 6
 
   - name: average_discount_yesterday
-    title: Average Discount Yesterday
+    title: Average Total Discount Yesterday
     type: single_value
     model: finery_data
-    explore: spree_orders
-    measures: [spree_orders.average_discount]
+    explore: spree_order_items
+    measures: [spree_order_items.avg_total_discount]
     filters:
       spree_orders.completed_date: yesterday
     font_size: medium
@@ -116,11 +116,11 @@
     left: 6
 
   - name: average_discount
-    title: Average Discount
+    title: Average Total Discount
     type: single_value
     model: finery_data
-    explore: spree_orders
-    measures: [spree_orders.average_discount]
+    explore: spree_order_items
+    measures: [spree_order_items.avg_total_discount]
     listen:
      date: spree_orders.completed_date
     font_size: medium
@@ -324,39 +324,35 @@
 
   - name: add_a_unique_name_71
     title: Average Discount
-    type: looker_line
+    type: looker_area
     model: finery_data
-    explore: spree_orders
-    dimensions: [spree_orders.completed_date]
-    measures: [spree_orders.average_discount]
-    filters:
-      spree_orders.completed_date: 7 days ago for 7 days
-    sorts: [spree_orders.completed_date desc]
+    explore: spree_order_items
+    dimensions: [calendar_weeks.calendar_date_date]
+    measures: [spree_order_items.avg_retail_markdown, spree_order_items.avg_voucher_discount]
+    listen:
+     date: spree_orders.completed_date
+    sorts: [calendar_weeks.calendar_date_date]
     limit: 500
     column_limit: ''
-    show_null_points: true
-    stacking: ''
+    stacking: normal
     show_value_labels: false
+    label_density: 10
+    x_axis_gridlines: false
+    y_axis_gridlines: true
     show_view_names: false
-    swap_axes: false
-    point_style: circle
-    hide_legend: false
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_gridlines: true
-    x_axis_scale: auto
-    x_axis_label: Date
-    x_axis_datetime_label: '%a %d %b'
     show_y_axis_labels: true
     show_y_axis_ticks: true
-    y_axis_gridlines: true
-    y_axis_labels: [Number of Orders]
-    y_axis_combined: false
-    interpolation: linear
-    x_axis_datetime_tick_count: 7
-    label_density: 10
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    show_null_labels: false
+    x_padding_left: 0
+    point_style: circle
+    y_axis_value_format: '#0%'
+    show_null_points: true
+    interpolation: linear
     width: 6
     height: 3
     top: 13
