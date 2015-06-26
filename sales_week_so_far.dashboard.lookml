@@ -101,14 +101,15 @@
     model: finery_data
     explore: spree_orders
     dimensions: [calendar_weeks.year_week_number]
-    measures: [spree_orders.count_orders]
+    measures: [spree_orders.orders_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${spree_orders.count_orders} - offset(${spree_orders.count_orders},1))/offset(${spree_orders.count_orders},1),2),"%")
+        concat(round(100 * (${spree_orders.orders_per_day} - offset(${spree_orders.orders_per_day},1))/offset(${spree_orders.orders_per_day},1),2),"%")
     filters:
       calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
     sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
@@ -124,14 +125,15 @@
     model: finery_data
     explore: spree_orders
     dimensions: [calendar_weeks.year_week_number]
-    measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k]
+    measures: [spree_orders.revenue_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k} - offset(${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k},1))/offset(${spree_orders.sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping_in_k},1),2),"%")
+        concat(round(100 * (${spree_orders.revenue_per_day} - offset(${spree_orders.revenue_per_day},1))/offset(${spree_orders.revenue_per_day},1),2),"%")
     filters:
       calendar_weeks.calendar_date_date: 1 week ago for 2 weeks
+      spree_orders.completed_time: before today
     sorts: [calendar_weeks.year_week_number desc]
     limit: 2
     column_limit: ''
@@ -166,7 +168,7 @@
     width: 5
 
   - name: avg_discount_tw_v_lw
-    title: Discount v Previous Week
+    title: Total Discount v Previous Week
     type: table
     model: finery_data
     explore: spree_order_items
@@ -295,7 +297,7 @@
     width: 5
 
   - name: discount_by_weekday
-    title: Discount by Weekday
+    title: Total Discount by Weekday
     type: looker_line
     model: finery_data
     explore: spree_order_items
@@ -460,7 +462,7 @@
     width: 5
 
   - name: new_customers_using_discount_this_week
-    title: New Customers Using Discount
+    title: New Customers Using Voucher
     type: single_value
     model: finery_data
     explore: spree_orders
@@ -550,7 +552,7 @@
     width: 5
 
   - name: new_customers_using_discount_percentage_tw_v_lw
-    title: New Customers Using Discount v Previous Week
+    title: New Customers Using Voucher v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
@@ -679,7 +681,7 @@
     width: 5
     
   - name: new_customers_using_discount_percentage_by_weekday
-    title: New Customers Using Discount by Weekday
+    title: New Customers Using DVoucher by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
@@ -720,15 +722,15 @@
     explore: spree_orders
     dimensions: [spree_addresses.country, calendar_weeks.year_week_number]
     pivots: [calendar_weeks.year_week_number]
-    measures: [spree_orders.count_orders]
+    measures: [spree_orders.orders_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
-      expression: concat(round(100 * (${spree_orders.count_orders} - pivot_offset(${spree_orders.count_orders},1))/pivot_offset(${spree_orders.count_orders},1),2),"%")
+      expression: concat(round(100 * (${spree_orders.orders_per_day} - pivot_offset(${spree_orders.orders_per_day},1))/pivot_offset(${spree_orders.orders_per_day},1),2),"%")
     filters:
       spree_orders.completed_date: 1 week ago for 2 weeks
       spree_orders.completed_time: before today
-    sorts: [spree_orders.count_orders desc 0, calendar_weeks.year_week_number desc]
+    sorts: [spree_orders.order_per_day desc 0, calendar_weeks.year_week_number desc]
     limit: 7
     column_limit: ''
     show_view_names: false
@@ -738,22 +740,22 @@
     width: 10
     
   - name: top_discount_codes
-    title: Top Discount Codes
+    title: Top Voucher Codes
     type: table
     model: finery_data
     explore: spree_orders
     dimensions: [spree_orders.primary_promotion, calendar_weeks.year_week_number]
     pivots: [calendar_weeks.year_week_number]
-    measures: [spree_orders.count_orders]
+    measures: [spree_orders.orders_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
-      expression: concat(round(100 * (${spree_orders.count_orders} - pivot_offset(${spree_orders.count_orders},1))/pivot_offset(${spree_orders.count_orders},1),2),"%")
+      expression: concat(round(100 * (${spree_orders.orders_per_day} - pivot_offset(${spree_orders.orders_per_day},1))/pivot_offset(${spree_orders.orders_per_day},1),2),"%")
     filters:
       spree_orders.completed_date: 1 week ago for 2 weeks
       spree_orders.completed_time: before today
       spree_orders.primary_promotion: -NULL
-    sorts: [spree_orders.count_orders desc 0, calendar_weeks.year_week_number desc]
+    sorts: [spree_orders.orders_per_day desc 0, calendar_weeks.year_week_number desc]
     limit: 7
     column_limit: ''
     show_view_names: false
@@ -771,15 +773,15 @@
     explore: spree_order_items
     dimensions: [calendar_weeks.year_week_number, product_lookup.category]
     pivots: [calendar_weeks.year_week_number]
-    measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
+    measures: [spree_order_items.revenue_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
-      expression: concat(round(100 * (${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp} - pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1))/pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1),2),"%")
+      expression: concat(round(100 * (${spree_order_items.revenue_per_day} - pivot_offset(${spree_order_items.revenue_per_day},1))/pivot_offset(${spree_order_items.revenue_per_day},1),2),"%")
     filters:
       spree_orders.completed_date: 1 week ago for 2 weeks
       spree_orders.completed_time: before today
-    sorts: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0,
+    sorts: [spree_order_items.revenue_per_day 0,
       calendar_weeks.year_week_number desc]
     limit: 500
     column_limit: ''
@@ -796,16 +798,16 @@
     explore: spree_order_items
     dimensions: [calendar_weeks.year_week_number, online_products.size]
     pivots: [calendar_weeks.year_week_number]
-    measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
+    measures: [spree_order_items.revenue_per_day]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
-      expression: concat(round(100 * (${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp} - pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1))/pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1),2),"%")
+      expression: concat(round(100 * (${spree_order_items.revenue_per_day} - pivot_offset(${spree_order_items.revenue_per_day},1))/pivot_offset(${spree_order_items.revenue_per_day},1),2),"%")
     filters:
       online_products.size: '"6","8","10","14","16","18","12"'
       spree_orders.completed_date: 1 week ago for 2 weeks
       spree_orders.completed_time: before today
-    sorts: [calendar_weeks.year_week_number desc, spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0]
+    sorts: [calendar_weeks.year_week_number desc, spree_order_items.revenue_per_day desc 0]
     limit: 500
     column_limit: ''
     top: 41

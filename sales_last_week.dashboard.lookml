@@ -1,5 +1,5 @@
 - dashboard: sales_last_week
-  title: Weekly Sales Dashboard
+  title: Sales - Last Week
   layout: static
   tile_size: 50
 
@@ -160,7 +160,7 @@
     width: 5
 
   - name: avg_discount_tw_v_lw
-    title: Discount v Previous Week
+    title: Total Discount v Previous Week
     type: table
     model: finery_data
     explore: spree_order_items
@@ -285,7 +285,7 @@
     width: 5
 
   - name: discount_by_weekday
-    title: Discount by Weekday
+    title: Total Discount by Weekday
     type: looker_line
     model: finery_data
     explore: spree_order_items
@@ -444,7 +444,7 @@
     width: 5
 
   - name: new_customers_using_discount_last_week
-    title: New Customers Using Discount
+    title: New Customers Using Voucher
     type: single_value
     model: finery_data
     explore: spree_orders
@@ -530,7 +530,7 @@
     width: 5
 
   - name: new_customers_using_discount_percentage_tw_v_lw
-    title: New Customers Using Discount v Previous Week
+    title: New Customers Using Voucher v Previous Week
     type: table
     model: finery_data
     explore: spree_orders
@@ -655,7 +655,7 @@
     width: 5
     
   - name: new_customers_using_discount_percentage_by_weekday
-    title: New Customers Using Discount by Weekday
+    title: New Customers Using Voucher by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
@@ -712,7 +712,7 @@
     width: 10
     
   - name: top_discount_codes
-    title: Top Discount Codes
+    title: Top Voucher Codes
     type: table
     model: finery_data
     explore: spree_orders

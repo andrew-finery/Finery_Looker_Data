@@ -444,7 +444,7 @@
     width: 5
 
   - name: new_customers_using_discount_last_month
-    title: New Customers Using Discount
+    title: New Customers Using Voucher
     type: single_value
     model: finery_data
     explore: spree_orders
@@ -530,7 +530,7 @@
     width: 5
 
   - name: new_customers_using_discount_percentage_tm_v_lm
-    title: New Customers Using Discount v Previous Month
+    title: New Customers Using Voucher v Previous Month
     type: table
     model: finery_data
     explore: spree_orders
@@ -655,7 +655,7 @@
     width: 5
     
   - name: new_customers_using_discount_percentage_by_dom
-    title: New Customers Using Discount by Day of Month
+    title: New Customers Using Voucher by Day of Month
     type: looker_line
     model: finery_data
     explore: spree_orders
@@ -712,7 +712,7 @@
     width: 10
     
   - name: top_discount_codes
-    title: Top Discount Codes
+    title: Top Voucher Codes
     type: table
     model: finery_data
     explore: spree_orders
