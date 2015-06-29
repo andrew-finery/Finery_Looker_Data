@@ -91,3 +91,7 @@
     type: number
     sql: approximate count(distinct ${root_id})
 
+  - measure: link_clicks
+    label: Link Clicks %
+    type: percent_of_total
+    sql: ${link_clicks_count}
