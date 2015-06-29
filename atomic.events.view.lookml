@@ -391,7 +391,7 @@
 
 ##### Click-Through Rate Measures
 
-  - measure: product_ctr
+  - measure: product_click_through_rate
     label: CTR (to any Product Page)
     type: number
     sql: ${snowplow_link_clicks.sessions_with_product_click_count}/${sessions.count}
