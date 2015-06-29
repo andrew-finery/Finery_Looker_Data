@@ -394,7 +394,7 @@
   - measure: product_click_through_rate
     label: CTR (to any Product Page)
     type: number
-    sql: ${snowplow_link_clicks.sessions_with_product_click_count}/${sessions.count}
+    sql: ${snowplow_link_clicks.sessions_with_product_click_count}/NULLIF(${sessions.count},0)::REAL
     value_format: '#0.00%'
     
 ############################################################################# TRANSACTION MEASURES ###############################################################################

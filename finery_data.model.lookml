@@ -18,7 +18,7 @@
     relationship: many_to_one
   - join: session_start_calendar
     from: calendar_weeks
-    sql_on: ${calendar_weeks.calendar_date_date} = ${sessions.start_date}
+    sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     
 - explore: snowplow_transaction_attribution
   joins:
@@ -95,7 +95,7 @@
     sql_on: ${atomic_events.event_id} = ${snowplow_link_clicks.root_id}
   - join: event_calendar
     from: calendar_weeks
-    sql_on: ${calendar_weeks.calendar_date_date} = ${atomic_events.event_time_date}
+    sql_on: ${event_calendar.calendar_date_date} = ${atomic_events.event_time_date}
     
 - explore: spree_orders
   joins:
