@@ -64,13 +64,13 @@
     label: Page Type
     sql_case:
       Homepage: ${page_urlpath_adjusted_for_country} in ('/', '//')
-      Product Listing Page: ${page_urlpath_adjusted_for_country} like '%/t/%'
-      Product Detail Page: ${page_urlpath_adjusted_for_country} like '%/product/%'
+      Product Listing Page: ${page_url_path} like '%/t/%'
+      Product Detail Page: ${page_url_path} like '%/products/%'
       Chapters Home: ${page_urlpath_adjusted_for_country} = '/chapters'
-      Editorial: ${page_urlpath_adjusted_for_country} like '%/chapters/%'
+      Editorial: ${page_url_path} like '%/chapters/%'
       Cart: ${page_urlpath_adjusted_for_country} = '/cart'
       Checkout: ${page_urlpath_adjusted_for_country} = '/checkout'
-      Order Complete: ${page_urlpath_adjusted_for_country} like '/orders/%'
+      Order Complete: ${page_url_path} like '/orders/%'
       else: Other
       
   - dimension: unstruct_event
@@ -389,6 +389,14 @@
     type: string
     sql: floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)) || ':' || right(cast('00' as varchar) || cast((((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL) - floor((${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL))) * 60) as integer), 2)
 
+##### Click-Through Rate Measures
+
+  - measure: product_ctr
+    label: CTR (to any Product Page)
+    type: number
+    sql: ${snowplow_link_clicks.sessions_with_product_click_count}/${sessions.count}
+    value_format: '#0.00%'
+    
 ############################################################################# TRANSACTION MEASURES ###############################################################################
   
   - measure: sum_revenue_ex_coupon_and_vat
@@ -422,46 +430,7 @@
 #    sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
 #    format: "£%0.2f"
 
-############################################################ Page Measures #######################################################################################################
 
-#  - dimension: landing_page_flag
-#    type: yesno
-#    sql: ${page_url_path} = ${sessions.landing_page_path}
-#    hidden: true
-  
-  - dimension: exit_page_flag
-    type: yesno
-    sql: ${page_url_path} = ${sessions.exit_page_path}
-    hidden: true
-  
-#  - measure: count_landed_sessions
-#    label: LANDED SESSIONS COUNT
-#    type: count_distinct
-#    sql: ${session_id}
-#    filters:
-#      app_id: production
-#      landing_page_flag: yes
-  
-  - measure: count_exit_sessions
-    label: Exit Sessions Count
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-    app_id: production
-    exit_page_flag: yes
-      
-  - measure: page_exit_rate
-    label: Page Exit Rate
-    type: number
-    sql: ${count_exit_sessions}/NULLIF(${count_sessions},0)::REAL
-    value_format: '#.00%'
-  
-  - measure: page_bounce_rate
-    label: Page Bounce Rate
-    type: number
-    sql: ${sessions.bounced_sessions_count}/NULLIF(${count_landed_sessions},0)::REAL
-    value_format: '#.00%'
-    
 ############################################################################## EMAIL MEASURES ####################################################################################
     
   - measure: newsletter_signup_rate
@@ -836,56 +805,96 @@
 
 ################################## Web Goals Engagement Stuff ###########################################################
 
-  - measure: count_registration_sessions
-    label: COUNT SESSIONS WITH REGISTRATION
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-     app_id: production
-     register_success.event_id: -NULL
+#  - measure: count_registration_sessions
+#    label: COUNT SESSIONS WITH REGISTRATION
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#     app_id: production
+#     register_success.event_id: -NULL
       
-  - measure: count_newsletter_subscription_sessions
-    type: count_distinct
-    sql: ${session_id}
-    filters:
-     app_id: production
-     newsletter_subscriptions.event_id: -NULL
-    hidden: true
+#  - measure: count_newsletter_subscription_sessions
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#     app_id: production
+#     newsletter_subscriptions.event_id: -NULL
+#    hidden: true
 
-  - measure: count_engaged_sessions
-    type: count_distinct
-    label: COUNT ENGAGED SESSIONS
-    sql: |
-        case
-        when (
-        ${register_success.event_id} is not null
-        or ${newsletter_subscriptions.event_id} is not null
-        or ${transactions.event_id} is not null
-        or ${product_in_checkout.event_id} is not null
-        or ${product_in_cart.event_id} is not null
-        or ${sessions.distinct_pages_viewed} > 6
-        or ${sessions.session_duration_seconds} > 239
-        ) then ${session_id} else null end
-    filters:
-     app_id: production
+#  - measure: count_engaged_sessions
+#    type: count_distinct
+#    label: COUNT ENGAGED SESSIONS
+#    sql: |
+#        case
+#        when (
+#        ${register_success.event_id} is not null
+#        or ${newsletter_subscriptions.event_id} is not null
+#        or ${transactions.event_id} is not null
+#        or ${product_in_checkout.event_id} is not null
+#        or ${product_in_cart.event_id} is not null
+#        or ${sessions.distinct_pages_viewed} > 6
+#        or ${sessions.session_duration_seconds} > 239
+#        ) then ${session_id} else null end
+#    filters:
+#     app_id: production
      
-  - measure: newsletter_subscription_rate
-    label: NEWSLETTER SUBSCRIPTION RATE
-    type: number
-    decimals: 2
-    sql: 100.0 * (${count_newsletter_subscription_sessions})/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: newsletter_subscription_rate
+#    label: NEWSLETTER SUBSCRIPTION RATE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${count_newsletter_subscription_sessions})/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
      
-  - measure: signup_rate
-    label: CREATE ACCOUNT RATE
-    type: number
-    decimals: 2
-    sql: 100.0 * (${count_registration_sessions})/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: signup_rate
+#    label: CREATE ACCOUNT RATE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${count_registration_sessions})/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
   
-  - measure: engagement_rate
-    label: ENGAGEMENT RATE
-    type: number
-    decimals: 2
-    sql: 100.0 * (${count_engaged_sessions})/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+#  - measure: engagement_rate
+#    label: ENGAGEMENT RATE
+#    type: number
+#    decimals: 2
+#    sql: 100.0 * (${count_engaged_sessions})/NULLIF(${count_sessions},0)::REAL
+#    format: "%0.2f%"
+
+############################################################ Page Measures #######################################################################################################
+
+#  - dimension: landing_page_flag
+#    type: yesno
+#    sql: ${page_url_path} = ${sessions.landing_page_path}
+#    hidden: true
+  
+#  - dimension: exit_page_flag
+#    type: yesno
+#    sql: ${page_url_path} = ${sessions.exit_page_path}
+#    hidden: true
+  
+#  - measure: count_landed_sessions
+#    label: LANDED SESSIONS COUNT
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#      app_id: production
+#      landing_page_flag: yes
+  
+#  - measure: count_exit_sessions
+#    label: Exit Sessions Count
+#    type: count_distinct
+#    sql: ${session_id}
+#    filters:
+#    app_id: production
+#    exit_page_flag: yes
+      
+#  - measure: page_exit_rate
+#    label: Page Exit Rate
+#    type: number
+#    sql: ${count_exit_sessions}/NULLIF(${count_sessions},0)::REAL
+#    value_format: '#.00%'
+  
+#  - measure: page_bounce_rate
+#    label: Page Bounce Rate
+#    type: number
+#    sql: ${sessions.bounced_sessions_count}/NULLIF(${count_landed_sessions},0)::REAL
+#    value_format: '#.00%'

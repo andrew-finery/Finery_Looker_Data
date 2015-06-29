@@ -16,6 +16,9 @@
   - join: spree_exchange_rates
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
     relationship: many_to_one
+  - join: session_start_calendar
+    from: calendar_weeks
+    sql_on: ${calendar_weeks.calendar_date_date} = ${sessions.start_date}
     
 - explore: snowplow_transaction_attribution
   joins:
@@ -28,17 +31,17 @@
 
 - explore: facebook_daily_performance
 
-- explore: events
-  joins:
-  - join: identity_stitching
-    sql_on: |
-      identity_stitching.domain_userid = events.domain_userid
+#- explore: events
+#  joins:
+#  - join: identity_stitching
+#    sql_on: |
+#      identity_stitching.domain_userid = events.domain_userid
       
-- explore: spree_invitations
-  joins:
-  - join: spree_users
-    sql_on: |
-      lower(spree_invitations.email) = lower(spree_users.email_address)
+#- explore: spree_invitations
+#  joins:
+#  - join: spree_users
+#    sql_on: |
+#      lower(spree_invitations.email) = lower(spree_users.email_address)
 
 - explore: spree_users
   joins:
@@ -90,6 +93,9 @@
     sql_on: ${atomic_events.product_id} = ${spree_products.product_id}
   - join: snowplow_link_clicks
     sql_on: ${atomic_events.event_id} = ${snowplow_link_clicks.root_id}
+  - join: event_calendar
+    from: calendar_weeks
+    sql_on: ${calendar_weeks.calendar_date_date} = ${atomic_events.event_time_date}
     
 - explore: spree_orders
   joins:

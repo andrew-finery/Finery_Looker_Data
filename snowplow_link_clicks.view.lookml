@@ -18,7 +18,6 @@
       Finery Logo: ${element_classes} like '%finery-logo%'
       Promotion Link: ${element_classes} like '%promotion__link%'
       Taxon Promotion Link: ${element_classes} like '%taxon-promotion%'
-
       else: Other
 
   - dimension: link_type_2
@@ -28,6 +27,7 @@
       No Thanks Button on Sale Pop-Up: ${element_classes} like '%soft-locked-modal__no-thanks%'
       Mini Basket - Checkout: ${element_classes} like '%basket__checkout%'
       Social Link: ${element_classes} like '%social__hashtag--footer%' or ${element_classes} = '["social__link","js-social-footer-link"]'
+      else: Other
       
   - dimension: element_target
     sql: ${TABLE}.element_target
@@ -86,12 +86,39 @@
         else ${TABLE}.target_url
         
         end
-
+  
+  - dimension: target_url_type
+    label: Target URL Type
+    sql_case:
+      Homepage: ${target_url_adjusted_for_country} in ('/', '//')
+      Product Listing Page: ${target_url} like '%/t/%'
+      Product Detail Page: ${target_url} like '%/products/%'
+      Chapters Home: ${target_url_adjusted_for_country} = '/chapters'
+      Editorial: ${target_url} like '%/chapters/%'
+      Cart: ${target_url_adjusted_for_country} = '/cart'
+      Checkout: ${target_url_adjusted_for_country} = '/checkout'
+      Order Complete: ${target_url} like '/orders/%'
+      else: Other
+  
   - measure: link_clicks_count
-    type: number
-    sql: approximate count(distinct ${root_id})
+    type: count_distinct
+    sql: ${root_id}
+  
+  - measure: sessions_with_product_click_count
+    type: count_distinct
+    sql: ${atomic_events.session_id}
+    filters:
+      target_url_type: Product Detail Page
+  
+  - measure: distinct_product_clicks_count
+    type: count_distinct
+    sql: ${target_url_adjusted_for_country}
+    filters:
+      target_url_type: Product Detail Page
+
 
   - measure: link_clicks
     label: Link Clicks %
     type: percent_of_total
     sql: ${link_clicks_count}
+    
