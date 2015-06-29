@@ -52,7 +52,7 @@
         AND domain_sessionidx IS NOT NULL
       GROUP BY 1,2) sessions
       
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as accounts_created from atomic.com_finerylondon_registration_success_1 reg left join atomic.events events on reg.root_id = events.event_id group by 1,2) signups
+      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(distinct customer_id) as accounts_created from atomic.com_finerylondon_registration_success_1 reg left join atomic.events events on reg.root_id = events.event_id group by 1,2) signups
         ON signups.domain_userid = sessions.domain_userid and signups.domain_sessionidx = sessions.domain_sessionidx
       LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as newsletter_signups from atomic.com_finerylondon_newsletter_subscription_1 sub left join atomic.events events on sub.root_id = events.event_id group by 1,2) newsletter
         ON newsletter.domain_userid = sessions.domain_userid and newsletter.domain_sessionidx = sessions.domain_sessionidx

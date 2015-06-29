@@ -60,6 +60,19 @@
         
         end
   
+  - dimension: page_type
+    label: Page Type
+    sql_case:
+      Homepage: ${page_urlpath_adjusted_for_country} in ('/', '//')
+      Product Listing Page: ${page_urlpath_adjusted_for_country} like '%/t/%'
+      Product Detail Page: ${page_urlpath_adjusted_for_country} like '%/product/%'
+      Chapters Home: ${page_urlpath_adjusted_for_country} = '/chapters'
+      Editorial: ${page_urlpath_adjusted_for_country} like '%/chapters/%'
+      Cart: ${page_urlpath_adjusted_for_country} = '/cart'
+      Checkout: ${page_urlpath_adjusted_for_country} = '/checkout'
+      Order Complete: ${page_urlpath_adjusted_for_country} like '/orders/%'
+      else: Other
+      
   - dimension: unstruct_event
     label: UNSTRUCTURED EVENT
     sql: ${TABLE}.unstruct_event
