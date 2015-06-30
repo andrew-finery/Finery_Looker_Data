@@ -1,7 +1,7 @@
 - view: spree_customers
   derived_table:
     sql: |
-        select email, convert_timezone('UTC', 'Europe/London', first_order_time) as first_order_time, first_order_id, convert_timezone('UTC', 'Europe/London', last_order_time) as last_order_time, last_order_id, count(distinct order_id) as number_of_orders from
+        select email, first_order_time, first_order_id, last_order_time, last_order_id, count(distinct order_id) as number_of_orders from
         (select orders.order_id,
         lower(coalesce(users.email_address, orders.email)) as email,
         first_value(orders.completed_at) over(partition by lower(coalesce(users.email_address, orders.email)) order by completed_at asc rows between unbounded preceding and unbounded following) as first_order_time,
