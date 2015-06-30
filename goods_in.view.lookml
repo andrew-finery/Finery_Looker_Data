@@ -68,12 +68,14 @@
   - measure: received_value_cost
     label: Received Value @ Cost
     type: sum
+    decimals: 2
     sql: ${received_quantity} * ${product_lookup.total_landed_cost_gbp}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
     
   - measure: received_value_retail
     label: Received Value @ Retail
     type: sum
+    decimals: 2
     sql: ${received_quantity} * ${product_lookup.max_selling_price}
-    format: "£%0.2f"
+    value_format: '"£"#,##0.00'
   
