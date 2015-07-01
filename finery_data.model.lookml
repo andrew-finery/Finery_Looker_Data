@@ -119,6 +119,8 @@
   joins:
   - join: spree_orders
     sql_on: spree_orders.order_id = spree_order_items.order_id
+  - join: spree_customers
+    sql_on: spree_customers.email = spree_orders.blended_email
   - join: spree_users
     sql_on: spree_orders.customer_id = spree_users.user_id
     relationship: many_to_one

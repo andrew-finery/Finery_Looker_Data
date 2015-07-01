@@ -27,16 +27,16 @@
     sql: ${TABLE}.email
   
   - dimension_group: first_order
-    label: FIRST ORDER
+    label: First Order
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.first_order_time
 
   - dimension: number_of_orders
-    label: NUMBER OF ORDERS
+    label: Number of Orders
     sql: ${TABLE}.number_of_orders
     
-  - measure: total_orders
-    label: TOTAL ORDERS
-    type: sum
-    sql: ${number_of_orders}
+#  - measure: total_orders
+#    label: TOTAL ORDERS
+#    type: sum
+#    sql: ${number_of_orders}
