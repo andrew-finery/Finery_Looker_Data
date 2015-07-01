@@ -156,7 +156,7 @@
           on sub_departments.product_id = variants.product_id
           
           left join
-          (select * from daily_snapshot.spree_pre_sale_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_pre_sale_prices) and deleted_at is null and currency = 'GBP') pre_sale_prices
+          (select variant_id, max(amount) as amount from daily_snapshot.spree_pre_sale_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_pre_sale_prices) and deleted_at is null and currency = 'GBP' group by 1) pre_sale_prices
           on pre_sale_prices.variant_id = variants.id
           
           left join
