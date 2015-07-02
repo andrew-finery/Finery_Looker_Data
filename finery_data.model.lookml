@@ -17,6 +17,7 @@
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
     relationship: many_to_one
   - join: session_start_calendar
+    relationship: many_to_one
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     

@@ -660,15 +660,15 @@
     label: New Visit %
     type: number
     decimals: 2
-    sql: 100.0 * ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
-    format: "%0.2f%"
+    sql: ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
 
   - measure: returning_visitor_percentage
     label: Returning Visit %
     type: number
     decimals: 2
     sql: 100.0 * ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
-    format: "%0.2f%"
+    value_format: '#0.00%'
 
   - measure: visitors_count
     label: Total Visitors
@@ -747,3 +747,61 @@
     label: Product Views Total
     type: sum
     sql: ${product_views}
+
+# Payment Funnel Measures
+
+  - meausre: 1_payment_funnel_all_sessions
+    label: Payment Funnel 1 (All Sessions)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: 2_payment_funnel_category_page
+    label: Payment Funnel 2 (Category Page)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 3_payment_funnel_product_page
+    label: Payment Funnel 3 (Product Page)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 4_payment_funnel_add_to_cart
+    label: Payment Funnel 4 (Cart)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 5_payment_funnel_checkout_address
+    label: Payment Funnel 5 (Checkout - Enter Address)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 6_payment_funnel_checkout_delivery
+    label: Payment Funnel 6 (Checkout - Delivery Method)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 7_payment_funnel_checkout_payment
+    label: Payment Funnel 7 (Checkout - Payment)
+    type: number
+    decimals: 2
+    sql: ${count}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 8_payment_funnel_order
+    label: Payment Funnel 8 (Placed Order)
+    type: number
+    decimals: 2
+    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
