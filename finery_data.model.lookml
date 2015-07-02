@@ -17,11 +17,16 @@
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
     relationship: many_to_one
   - join: session_start_calendar
-    relationship: many_to_one
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
+    relationship: many_to_one
+  - join: pages
+    from: snowplow_pages_viewed
+    sql_on: ${sessions.session_id} = ${pages.session_id}
+    relationship: one_to_many    
     
 - explore: snowplow_transaction_attribution
+  fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
   joins:
   - join: transactions
     sql_on: ${snowplow_transaction_attribution.order_id} = ${transactions.order_id}
@@ -29,7 +34,7 @@
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}  
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
-
+    
 - explore: facebook_daily_performance
 
 #- explore: events
@@ -54,6 +59,7 @@
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
 
 - explore: atomic_events
+  fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
   joins:
   - join: identity_stitching
     sql_on: identity_stitching.domain_userid = atomic_events.domain_userid

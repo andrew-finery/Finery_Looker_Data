@@ -6,8 +6,8 @@
         on bp.ean = prices.ean2
 
    sql_trigger_value: SELECT count(*) from ${online_products.SQL_TABLE_NAME}
-#   distkey: bp.ean
-#   sortkeys: [bp.ean]
+   distkey: ean
+   sortkeys: [ean]
      
      
   fields:

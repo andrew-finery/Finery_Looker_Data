@@ -103,7 +103,7 @@
       LEFT JOIN ${identity_stitching.SQL_TABLE_NAME} AS id
         on s.domain_userid = id.domain_userid
       
-    sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM ${snowplow_pages_viewed.SQL_TABLE_NAME}
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
     
@@ -306,12 +306,29 @@
   - dimension: landing_page_path
     label: Landing Page Path
     sql: ${TABLE}.landing_page_path
-    
-    
+
   - dimension: landing_page
     label: Landing Page Full
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path
     hidden: true
+
+  - dimension: landing_page_type
+    sql: |
+         case
+          when ${landing_page_path} in ('/', '//', '/uk', '/uk/', '/us', '/us/', '/ie', '/ie/', '/ca', '/ca/', '/hk', '/hk/', '/ae', '/ae/','/sg', '/sg/','/au', '/au/') or ${landing_page_path} is null then 'Homepage'
+          when ${landing_page_path} like '%/products/%' then 'Product Page'
+          when ${landing_page_path} like '%/orders/%' then 'Order Confirmation Page'
+          when ${landing_page_path} like '%/cart%' then 'Cart Page'
+          when ${landing_page_path} like '%/chapters' or ${landing_page_path} like '%/chapters/' then 'Chapters Page'
+          when ${landing_page_path} like '%/chapters/%' then 'Editorial Page'
+          when ${landing_page_path} like '%/checkout/registration' then 'Checkout - Registration Page'
+          when ${landing_page_path} like '%/checkout' or ${landing_page_path} like '%checkout/address' or ${landing_page_path} like '%checkout/update/address' then 'Checkout - Address Page'
+          when ${landing_page_path} like '%/checkout/delivery' or ${landing_page_path} like '%/checkout/update/delivery' then 'Checkout - Delivery Page'
+          when ${landing_page_path} like '%/checkout/payment' or ${landing_page_path} like '%/checkout/update/payment' then 'Checkout - Payment Page'
+          when ${landing_page_path} like '%/404' then '404 Page'
+          when ${landing_page_path} like '%/wishlist' then 'Wishlist Page'
+          when ${landing_page_path} like '%/t/%' then 'Category Page'
+          else 'Other' end
     
   # Exit page
   
@@ -747,10 +764,138 @@
     label: Product Views Total
     type: sum
     sql: ${product_views}
+    
+#################################################################################################################
+########################################### Payment Funnel Measures #############################################
+#################################################################################################################
 
-# Payment Funnel Measures
 
-  - meausre: 1_payment_funnel_all_sessions
+  - measure: payment_funnel_2
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (pages.page_type = 'Category Page'
+                OR ${pages.page_type} = 'Product Page'
+                OR ${pages.page_type} = 'Cart Page'
+                OR ${pages.page_type} = 'Checkout - Registration Page'
+                OR ${cart_events} > 0
+                OR ${products_added_to_cart} > 0
+                OR ${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_3
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${pages.page_type} = 'Product Page'
+                OR ${pages.page_type} = 'Cart Page'
+                OR ${pages.page_type} = 'Checkout - Registration Page'
+                OR ${cart_events} > 0
+                OR ${products_added_to_cart} > 0
+                OR ${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_4
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${pages.page_type} = 'Cart Page'
+                OR ${pages.page_type} = 'Checkout - Registration Page'
+                OR ${cart_events} > 0
+                OR ${products_added_to_cart} > 0
+                OR ${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_5
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${pages.page_type} = 'Cart Page'
+                OR ${pages.page_type} = 'Checkout - Registration Page'
+                OR ${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)  
+    hidden: true
+    
+  - measure: payment_funnel_6
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${pages.page_type} = 'Checkout - Registration Page'
+                OR ${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_7
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${transactions.event_id} is not null
+                OR ${checkout_progress} > 0)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_8
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${transactions.event_id} is not null
+                OR ${checkout_progress} > 1)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+  
+  - measure: payment_funnel_9
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${transactions.event_id} is not null
+                OR ${checkout_progress} > 2)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: payment_funnel_10
+    type: number
+    sql: |
+          COUNT(DISTINCT
+          CASE
+          WHEN (${transactions.event_id} is not null)
+          THEN ${session_id}
+          ELSE NULL
+          END)
+    hidden: true
+    
+  - measure: 1_payment_funnel_all_sessions
     label: Payment Funnel 1 (All Sessions)
     type: number
     decimals: 2
@@ -761,47 +906,61 @@
     label: Payment Funnel 2 (Category Page)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_2}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
   - measure: 3_payment_funnel_product_page
     label: Payment Funnel 3 (Product Page)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_3}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
   - measure: 4_payment_funnel_add_to_cart
-    label: Payment Funnel 4 (Cart)
+    label: Payment Funnel 4 (Add to Cart)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_4}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 5_payment_funnel_checkout_address
-    label: Payment Funnel 5 (Checkout - Enter Address)
+  - measure: 5_payment_funnel_view_cart
+    label: Payment Funnel 5 (View Cart)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_5}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: 6_payment_funnel_checkout_registration
+    label: Payment Funnel 6 (Checkout - Registration)
+    type: number
+    decimals: 2
+    sql: ${payment_funnel_6}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 6_payment_funnel_checkout_delivery
-    label: Payment Funnel 6 (Checkout - Delivery Method)
+  - measure: 7_payment_funnel_checkout_address
+    label: Payment Funnel 7 (Checkout - Enter Address)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_7}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 7_payment_funnel_checkout_payment
-    label: Payment Funnel 7 (Checkout - Payment)
+  - measure: 8_payment_funnel_checkout_delivery
+    label: Payment Funnel 8 (Checkout - Delivery Method)
     type: number
     decimals: 2
-    sql: ${count}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_8}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 8_payment_funnel_order
-    label: Payment Funnel 8 (Placed Order)
+  - measure: 9_payment_funnel_checkout_payment
+    label: Payment Funnel 9 (Checkout - Payment)
     type: number
     decimals: 2
-    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    sql: ${payment_funnel_9}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: 10_payment_funnel_order
+    label: Payment Funnel 10 (Placed Order)
+    type: number
+    decimals: 2
+    sql: ${payment_funnel_10}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
