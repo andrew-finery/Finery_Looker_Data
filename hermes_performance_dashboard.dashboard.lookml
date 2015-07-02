@@ -117,10 +117,10 @@
     show_x_axis_label: true
     show_x_axis_ticks: true
     x_axis_scale: auto
-    y_axis_max: ['100']
-    y_axis_min: ['80']
+    y_axis_max: ['1']
+    y_axis_min: ['0.8']
     reference_lines:
-      - value: 98.8
+      - value: 0.988
         label: Hermes SLA
         color: crimson
     point_style: none
@@ -158,10 +158,10 @@
     show_x_axis_label: true
     show_x_axis_ticks: true
     x_axis_scale: auto
-    y_axis_max: ['100']
-    y_axis_min: ['96']
+    y_axis_max: ['1']
+    y_axis_min: ['0.96']
     reference_lines:
-      - value: 99.0
+      - value: 0.99
         label: Hermes SLA
         color: crimson
     point_style: none
@@ -199,10 +199,10 @@
     show_x_axis_label: true
     show_x_axis_ticks: true
     x_axis_scale: auto
-    y_axis_max: ['100']
-    y_axis_min: ['90']
+    y_axis_max: ['1']
+    y_axis_min: ['0.9']
     reference_lines:
-      - value: 99.0
+      - value: 0.99
         label: Hermes SLA
         color: crimson
     point_style: none
