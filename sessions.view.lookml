@@ -317,16 +317,6 @@
          case
           when ${landing_page_path} in ('/', '//', '/uk', '/uk/', '/us', '/us/', '/ie', '/ie/', '/ca', '/ca/', '/hk', '/hk/', '/ae', '/ae/','/sg', '/sg/','/au', '/au/') or ${landing_page_path} is null then 'Homepage'
           when ${landing_page_path} like '%/products/%' then 'Product Page'
-          when ${landing_page_path} like '%/orders/%' then 'Order Confirmation Page'
-          when ${landing_page_path} like '%/cart%' then 'Cart Page'
-          when ${landing_page_path} like '%/chapters' or ${landing_page_path} like '%/chapters/' then 'Chapters Page'
-          when ${landing_page_path} like '%/chapters/%' then 'Editorial Page'
-          when ${landing_page_path} like '%/checkout/registration' then 'Checkout - Registration Page'
-          when ${landing_page_path} like '%/checkout' or ${landing_page_path} like '%checkout/address' or ${landing_page_path} like '%checkout/update/address' then 'Checkout - Address Page'
-          when ${landing_page_path} like '%/checkout/delivery' or ${landing_page_path} like '%/checkout/update/delivery' then 'Checkout - Delivery Page'
-          when ${landing_page_path} like '%/checkout/payment' or ${landing_page_path} like '%/checkout/update/payment' then 'Checkout - Payment Page'
-          when ${landing_page_path} like '%/404' then '404 Page'
-          when ${landing_page_path} like '%/wishlist' then 'Wishlist Page'
           when ${landing_page_path} like '%/t/%' then 'Category Page'
           else 'Other' end
     
