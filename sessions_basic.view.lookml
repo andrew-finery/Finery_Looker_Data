@@ -73,8 +73,7 @@
       LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as sale_link_clicks from atomic.com_snowplowanalytics_snowplow_link_click_1 sale_link left join atomic.events events on sale_link.root_id = events.event_id where target_url like '%final-call%' group by 1,2) sale_link_clicks
         ON sale_link_clicks.domain_userid = sessions.domain_userid and sale_link_clicks.domain_sessionidx = sessions.domain_sessionidx
 
-    persist_for: 24 hours
-#    sql_trigger_value: SELECT count(*) from atomic.events # Trigger table generation when new data loaded into atomic.events
+    sql_trigger_value: SELECT FLOOR((EXTRACT(epoch from NOW()) - 60*60*3)/(60*60*24)) # Trigger table generation when new data loaded into atomic.events
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx]
     
