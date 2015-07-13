@@ -56,11 +56,42 @@
           when page_urlpath like '%/t/%' then 'Category Page'
           else 'Other' end as page_type,
           
+          case
+          when page_urlpath like '%/t/dresses%' then 'Dresses'
+          when page_urlpath like '%/t/the-full-collection%' then 'The Edit'
+          when page_urlpath like '%/t/tops%' then 'Tops'
+          when page_urlpath like '%/t/shoes%' then 'Shoes'
+          when page_urlpath like '%/t/skirts-and-trousers%' then 'Skirts and Trousers'
+          when page_urlpath like '%/t/jackets-and-coats%' then 'Jackets & Coats'
+          when page_urlpath like '%/t/accessories%' then 'Accessories'
+          when page_urlpath like '%/t/knitwear%' then 'Knitwear'
+          when page_urlpath like '%/t/florals-reimagined%' then 'Florals Reimagined'
+          when page_urlpath like '%/t/final-call' then 'Sale Home'
+          when page_urlpath like '%/t/final-call/' then 'Sale Home'
+          when page_urlpath like '%/t/finery-picks%' then 'Finery Picks'
+          when page_urlpath like '%/t/final-call/dresses%' then 'Sale Dresses'
+          when page_urlpath like '%/t/final-call/shoes%' then 'Sale Shoes'
+          when page_urlpath like '%/t/final-call/knitwear%' then 'Sale Tops'
+          when page_urlpath like '%/t/final-call/skirts-and-trousers%' then 'Sale Skirts & Trousers'
+          when page_urlpath like '%/t/final-call/jackets-and-coats%' then 'Sale Jackets & Coats'
+          when page_urlpath like '%/t/jewellery%' then 'Jewellery'
+          when page_urlpath like '%/t/final-call/accessories%' then 'Sale Accessories'
+          when page_urlpath like '%/t/final-call/finery-picks%' then 'Sale Picks'
+          when page_urlpath like '%/t/final-call/all%' then 'All Sale'
+          when page_urlpath like '%/t/clothing/dresses%' then 'Dresses'
+          when page_urlpath like '%/t/clothing/the-full-collection%' then 'The Edit'
+          when page_urlpath like '%/t/clothing/tops%' then 'Tops'
+          when page_urlpath like '%/t/clothing/shoes%' then 'Shoes'
+          when page_urlpath like '%/t/clothing/skirts-and-trousers%' then 'Skirts and Trousers'
+          when page_urlpath like '%/t/clothing/jackets-and-coats%' then 'Jackets & Coats'
+          when page_urlpath like '%/t/clothing/accessories%' then 'Accessories'
+          else 'Other' end as category_page_type,                  
+
           convert_timezone('UTC', 'Europe/London', min(collector_tstamp)) as time_stamp,
           rank() over (partition by domain_userid || domain_sessionidx order by time_stamp asc) as page_number
           from atomic.events
           where app_id = 'production'
-          group by 1,2,3,4,5,6,7,8
+          group by 1,2,3,4,5,6,7,8,9
       
     sql_trigger_value: SELECT COUNT(*) FROM ${visitors.SQL_TABLE_NAME}
     distkey: domain_userid
@@ -89,6 +120,9 @@
   
   - dimension: page_type
     sql: ${TABLE}.page_type
+
+  - dimension: category_page_type
+    sql: ${TABLE}.category_page_type
   
   - dimension: page_url_path
     sql: ${TABLE}.page_urlpath_country_removed
