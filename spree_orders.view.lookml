@@ -215,16 +215,16 @@
     sql: ${TABLE}.completed_at
 
   - dimension: item_count
-    label: ITEMS IN ORDER
+    label: Items in Order
     type: int
     sql: ${TABLE}.item_count
 
   - dimension: order_code
-    label: ORDER CODE
+    label: Order Code
     sql: ${TABLE}.order_code
 
   - dimension: primary_payment_method
-    label: PRIMARY PAYMENT METHOD
+    label: Primary Payment Method
     sql: ${TABLE}.primary_payment_method
 
   - dimension: state
@@ -276,46 +276,46 @@
 # Shipping Dimensions
 
   - dimension: shipping_method
-    label: DELIVERY METHOD
+    label: Delivery Method
     sql: ${TABLE}.shipping_method
 
   - dimension: shipment_number
-    label: SHIPMENT NUMBER
+    label: Shipment Number
     sql: ${TABLE}.shipment_number
 
   - dimension: tracking_number
-    label: TRACKING NUMBER
+    label: Tracking Number
     type: string
     sql: ${TABLE}.tracking_number || 'a'
 
   - dimension: tracking_link
-    label: HERMES TRACKING LINK
+    label: Hermes Tracking Link
     type: string
     sql: ${TABLE}.tracking_number
     html: |
         <a href="http://www.hermes-europe.co.uk/customerparceltrackingservice/trackingDetailsHermes.jsp?barcode={{value}}">{{value}}</a>
 
   - dimension_group: shipped_at
-    label: SHIPPED
+    label: Shipped at
     type: time
     timeframes: [date, day_of_week_index]
     sql: ${TABLE}.shipped_at_date
   
   - dimension: delivery_company
-    label: DELIVERY COMPANY
+    label: Delivery Company
     sql: ${TABLE}.consignee
   
   - dimension: delivery_type
-    label: DELIVERY TYPE
+    label: Delivery Type
     sql: ${TABLE}.delivery_type
   
   - dimension: tracking_info_available
-    label: TRACKING INFO AVAILABLE FLAG
+    label: Tracking Info Available
     type: yesno
     sql: ${tracking_number} <> 'a'
 
   - dimension: delivered_flag
-    label: DELIEVRED FLAG
+    label: Delivered Flag
     type: yesno
     sql: |
         ${hermes_delivery_tracking.delivery_confirmed_time_time} is not null
@@ -421,7 +421,7 @@
         end
   
   - dimension: expected_delivery_date
-    label: EXPECTED DELIVERY
+    label: Expected Delivery
     type: date
     sql: |
         case
@@ -828,7 +828,7 @@
     hidden: true
     
   - measure: sum_gross_revenue_ex_discount_in_gbp
-    label: SUM GROSS REVENUE EX. DISCOUNT
+    label: Gross Revenue ex. Voucher
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate}
     decimals: 2
@@ -846,7 +846,7 @@
     hidden: true
     
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat
-    label: SUM GROSS REVENUE EX. DISCOUNT, VAT
+    label: Gross Revenue ex. Voucher, VAT
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate}
     decimals: 2
@@ -855,7 +855,7 @@
       state: -canceled
 
   - measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k
-    label: SUM GROSS REVENUE EX. DISCOUNT, VAT (K)
+    label: Gross Revenue ex. Voucher, VAT (K)
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total) / ${exchange_rate} / 1000
     decimals: 2
@@ -873,7 +873,7 @@
     hidden: true
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp
-    label: SUM GROSS REVENUE EX. DISCOUNT, STORE CREDIT
+    label: Gross Revenue ex. Voucher, Store Credit
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}
     decimals: 2
@@ -891,7 +891,7 @@
     hidden: true
     
   - measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
-    label: SUM GROSS REVENUE EX. DISCOUNT, STORE CREDIT, VAT
+    label: Gross Revenue ex. Voucher, Store Credit, VAT
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  / ${exchange_rate}
     decimals: 2
@@ -975,7 +975,7 @@
     hidden: true
     
   - measure: sum_total_of_items_gbp
-    label: SUM TOTAL ITEM VALUE
+    label:  Gross Item Revenue
     type: sum
     sql: ${TABLE}.item_total / ${exchange_rate}
     decimals: 2
@@ -993,7 +993,7 @@
     hidden: true
     
   - measure: sum_shipping_total_gbp
-    label: SUM SHIPPING REVENUE
+    label: Shipping Revenue
     type: sum
     sql: ${TABLE}.shipment_total / ${exchange_rate}
     decimals: 2
@@ -1004,70 +1004,70 @@
   ############################################################## REVENUE AVERAGES ##############################################################################
 
   - measure: avg_gross_revenue_gbp
-    label: AVERAGE BASKET SIZE
+    label: Avg Basket Size
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
       
   - measure: avg_gross_revenue_ex_discount_in_gbp
-    label: AVERAGE BASKET SIZE EX. DISCOUNT
+    label: Avg Basket Size ex. Voucher
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp
-    label: AVERAGE BASKET SIZE EX. DISCOUNT, STORE CREDIT
+    label: Avg Basket Size ex. Voucher, Store Credit
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_gbp_ex_vat
-    label: AVERAGE BASKET SIZE EX. VAT
+    label: Avg Basket Size ex. VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
       
   - measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat
-    label: AVERAGE BASKET SIZE EX. DISCOUNT, VAT
+    label: Avg Basket Size ex. Voucher, VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat
-    label: AVERAGE BASKET SIZE EX. DISCOUNT, STORE CREDIT, VAT
+    label: Avg Basket Size ex. Voucher, Store Credit, VAT
     type: number
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
 
   - measure: avg_discount_in_gbp
-    label: AVERAGE DISCOUNT VALUE
+    label: Avg Discount Value
     type: number
     decimals: 2
     sql: ${sum_total_discount_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
 
   - measure: avg_discount_in_gbp_ex_vat
-    label: AVERAGE DISCOUNT EX. VAT
+    label: Avg Discount Value ex. VAT
     type: number
     decimals: 2
     sql: ${sum_total_discount_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
 
   - measure: avg_store_credit_used_gbp
-    label: AVERAGE STORE CREDIT USED
+    label: Avg Store Credit Used
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '"£"#,##0.00'
     
   - measure: avg_store_credit_used_gbp_ex_vat
-    label: AVERAGE STORE CREDIT USED EX. VAT
+    label: AAvg Store Credit Used ex. VAT
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL
@@ -1239,7 +1239,7 @@
     hidden: true
     
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp
-    label: SUM NET REVENUE EX. DISCOUNT, STORE CREDIT
+    label: Net Revenue ex. Voucher, Store Credit
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) / ${exchange_rate}
     decimals: 2
@@ -1257,7 +1257,7 @@
     hidden: true
     
   - measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat
-    label: SUM NET REVENUE EX. DISCOUNT, STORE CREDIT, VAT
+    label: Net Revenue ex. Voucher, Store Credit, VAT
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     decimals: 2
