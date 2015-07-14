@@ -28,6 +28,7 @@
       Mini Basket - Checkout: ${element_classes} like '%basket__checkout%'
       Social Link: ${element_classes} like '%social__hashtag--footer%' or ${element_classes} = '["social__link","js-social-footer-link"]'
       else: Other
+    hidden: true
       
   - dimension: element_target
     sql: ${TABLE}.element_target
@@ -45,45 +46,53 @@
   - dimension: target_url
     sql: ${TABLE}.target_url
     hidden: true
-
+  
+  - dimension: target_url_query_string_removed
+    sql: |
+          case
+          when charindex('?', target_url) = 0 then target_url
+          else left(target_url, charindex('?', target_url) - 1)
+          end
+    hidden: true
+  
   - dimension: target_url_adjusted_for_country
     label: Target URL
     sql: |
         case
 
-        when ${TABLE}.target_url like '%/uk' then replace(${TABLE}.target_url, '/uk', '/')
-        when ${TABLE}.target_url like '%/uk#' then replace(${TABLE}.target_url, '/uk', '/')
-        when ${TABLE}.target_url like '%/uk/%' then replace(${TABLE}.target_url, '/uk/', '/')
+        when ${target_url_query_string_removed} like '%/uk' then replace(${target_url_query_string_removed}, '/uk', '/')
+        when ${target_url_query_string_removed} like '%/uk#' then replace(${target_url_query_string_removed}, '/uk', '/')
+        when ${target_url_query_string_removed} like '%/uk/%' then replace(${target_url_query_string_removed}, '/uk/', '/')
         
-        when ${TABLE}.target_url like '%/us' then replace(${TABLE}.target_url, '/us', '/')
-        when ${TABLE}.target_url like '%/us#' then replace(${TABLE}.target_url, '/us', '/')
-        when ${TABLE}.target_url like '%/us/%' then replace(${TABLE}.target_url, '/us/', '/')
+        when ${target_url_query_string_removed} like '%/us' then replace(${target_url_query_string_removed}, '/us', '/')
+        when ${target_url_query_string_removed} like '%/us#' then replace(${target_url_query_string_removed}, '/us', '/')
+        when ${target_url_query_string_removed} like '%/us/%' then replace(${target_url_query_string_removed}, '/us/', '/')
         
-        when ${TABLE}.target_url like '%/ie' then replace(${TABLE}.target_url, '/ie', '/')
-        when ${TABLE}.target_url like '%/ie#' then replace(${TABLE}.target_url, '/ie', '/')
-        when ${TABLE}.target_url like '%/ie/%' then replace(${TABLE}.target_url, '/ie/', '/')
+        when ${target_url_query_string_removed} like '%/ie' then replace(${target_url_query_string_removed}, '/ie', '/')
+        when ${target_url_query_string_removed} like '%/ie#' then replace(${target_url_query_string_removed}, '/ie', '/')
+        when ${target_url_query_string_removed} like '%/ie/%' then replace(${target_url_query_string_removed}, '/ie/', '/')
         
-        when ${TABLE}.target_url like '%/au' then replace(${TABLE}.target_url, '/au', '/')
-        when ${TABLE}.target_url like '%/au#' then replace(${TABLE}.target_url, '/au', '/')
-        when ${TABLE}.target_url like '%/au/%' then replace(${TABLE}.target_url, '/au/', '/')
+        when ${target_url_query_string_removed} like '%/au' then replace(${target_url_query_string_removed}, '/au', '/')
+        when ${target_url_query_string_removed} like '%/au#' then replace(${target_url_query_string_removed}, '/au', '/')
+        when ${target_url_query_string_removed} like '%/au/%' then replace(${target_url_query_string_removed}, '/au/', '/')
         
-        when ${TABLE}.target_url like '%/ca' then replace(${TABLE}.target_url, '/ca', '/')
-        when ${TABLE}.target_url like '%/ca#' then replace(${TABLE}.target_url, '/ca', '/')
-        when ${TABLE}.target_url like '%/ca/%' then replace(${TABLE}.target_url, '/ca/', '/')
+        when ${target_url_query_string_removed} like '%/ca' then replace(${target_url_query_string_removed}, '/ca', '/')
+        when ${target_url_query_string_removed} like '%/ca#' then replace(${target_url_query_string_removed}, '/ca', '/')
+        when ${target_url_query_string_removed} like '%/ca/%' then replace(${target_url_query_string_removed}, '/ca/', '/')
         
-        when ${TABLE}.target_url like '%/sg' then replace(${TABLE}.target_url, '/sg', '/')
-        when ${TABLE}.target_url like '%/sg#' then replace(${TABLE}.target_url, '/sg', '/')
-        when ${TABLE}.target_url like '%/sg/%' then replace(${TABLE}.target_url, '/sg/', '/')
+        when ${target_url_query_string_removed} like '%/sg' then replace(${target_url_query_string_removed}, '/sg', '/')
+        when ${target_url_query_string_removed} like '%/sg#' then replace(${target_url_query_string_removed}, '/sg', '/')
+        when ${target_url_query_string_removed} like '%/sg/%' then replace(${target_url_query_string_removed}, '/sg/', '/')
         
-        when ${TABLE}.target_url like '%/hk' then replace(${TABLE}.target_url, '/hk', '/')
-        when ${TABLE}.target_url like '%/hk#' then replace(${TABLE}.target_url, '/hk', '/')
-        when ${TABLE}.target_url like '%/hk/%' then replace(${TABLE}.target_url, '/hk/', '/')
+        when ${target_url_query_string_removed} like '%/hk' then replace(${target_url_query_string_removed}, '/hk', '/')
+        when ${target_url_query_string_removed} like '%/hk#' then replace(${target_url_query_string_removed}, '/hk', '/')
+        when ${target_url_query_string_removed} like '%/hk/%' then replace(${target_url_query_string_removed}, '/hk/', '/')
         
-        when ${TABLE}.target_url like '%/ae' then replace(${TABLE}.target_url, '/ae', '/')
-        when ${TABLE}.target_url like '%/ae#' then replace(${TABLE}.target_url, '/ae', '/')
-        when ${TABLE}.target_url like '%/ae/%' then replace(${TABLE}.target_url, '/ae/', '/')
+        when ${target_url_query_string_removed} like '%/ae' then replace(${target_url_query_string_removed}, '/ae', '/')
+        when ${target_url_query_string_removed} like '%/ae#' then replace(${target_url_query_string_removed}, '/ae', '/')
+        when ${target_url_query_string_removed} like '%/ae/%' then replace(${target_url_query_string_removed}, '/ae/', '/')
         
-        else ${TABLE}.target_url
+        else ${target_url_query_string_removed}
         
         end
   
