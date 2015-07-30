@@ -176,7 +176,14 @@
     relationship: many_to_one
 
 - explore: spree_refunds
-
+  joins:
+  - join: spree_orders
+    sql_on: ${spree_orders.order_id} = ${spree_refunds.order_id}
+    relationship: many_to_one
+  - join: spree_addresses
+    sql_on: ${spree_orders.ship_address_id} = ${spree_addresses.address_id}
+    relationship: many_to_one
+    
 - explore: goods_in
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
