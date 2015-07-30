@@ -165,11 +165,15 @@
   fields: [ALL_FIELDS*, -online_products.option]
   joins:
   - join: product_lookup
-    sql_on: |
-      spree_returns.sku = product_lookup.ean
+    sql_on: spree_returns.sku = product_lookup.ean
   - join: online_products
-    sql_on: |
-      spree_returns.sku = online_products.ean
+    sql_on: spree_returns.sku = online_products.ean
+  - join: spree_orders
+    sql_on: ${spree_orders.order_id} = ${spree_returns.order_id}
+    relationship: many_to_one
+  - join: spree_addresses
+    sql_on: ${spree_orders.ship_address_id} = ${spree_addresses.address_id}
+    relationship: many_to_one
 
 - explore: spree_refunds
 

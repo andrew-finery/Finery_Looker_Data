@@ -274,7 +274,11 @@
       else: Online
 
 # Shipping Dimensions
-
+  
+  - dimension: ship_address_id
+    sql: ${TABLE}.ship_address_id
+    hidden: true
+  
   - dimension: shipping_method
     label: Delivery Method
     sql: ${TABLE}.shipping_method
