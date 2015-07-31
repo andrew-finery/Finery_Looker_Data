@@ -123,6 +123,7 @@
 
 - explore: spree_order_items
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
+  always_join: [spree_orders]
   joins:
   - join: spree_orders
     sql_on: spree_orders.order_id = spree_order_items.order_id
