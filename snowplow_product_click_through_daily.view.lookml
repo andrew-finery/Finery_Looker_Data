@@ -9,7 +9,7 @@
    - dimension_group: impression_date
      type: time
      label: CALENDAR
-     sql: ${TABLE}.calendar_date
+     sql: ${TABLE}.impression_date
      timeframes: [date, week, month]
 
    - dimension: brand

@@ -14,7 +14,7 @@
           and pagecx.prod_id is not null
           group by 1,2
 
-     sql_trigger_value: select max(calendar_date) from ${snowplow_product_click_through_daily.SQL_TABLE_NAME}
+     sql_trigger_value: select max(impression_date) from finery.product_click_through_daily
      distkey: product_id
      sortkeys: [product_id, calendar_date]
 

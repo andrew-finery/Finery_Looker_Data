@@ -13,8 +13,8 @@
           sales.net_revenue_gbp_ex_vat_ex_discount,
           sales.closing_stock,
           page_views.product_page_views,
-          click_through.distinct_impressions,
-          click_through.distinct_clicks
+          click_through.product_impressions,
+          click_through.product_clicks
           
           from
           (select product_id, calendar_date from (select product_id from ${online_products.SQL_TABLE_NAME} group by 1) cross join (select calendar_date from finery.calendar where calendar_date < current_date)) option_date_matrix
@@ -25,7 +25,7 @@
           left join (select calendar_date, product_id, product_page_views from ${snowplow_product_page_views_daily.SQL_TABLE_NAME}) page_views
           on option_date_matrix.calendar_date = page_views.calendar_date and option_date_matrix.product_id = page_views.product_id
           
-          left join (select calendar_date, id, sum(product_impressions) as product_impressions, sum(product_clicks) as product_clicks from ${snowplow_product_click_through_daily.SQL_TABLE_NAME} group by 1,2) click_through
+          left join (select impression_date as calendar_date, id, sum(distinct_impressions) as product_impressions, sum(distinct_clicks) as product_clicks from finery.product_click_through_daily group by 1,2) click_through
           on option_date_matrix.calendar_date = click_through.calendar_date and option_date_matrix.product_id = click_through.id
 
     sql_trigger_value: |
