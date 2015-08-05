@@ -13,8 +13,8 @@
           sales.net_revenue_gbp_ex_vat_ex_discount,
           sales.closing_stock,
           page_views.product_page_views,
-          click_through.product_impressions,
-          click_through.product_clicks
+          click_through.distinct_impressions,
+          click_through.distinct_clicks
           
           from
           (select product_id, calendar_date from (select product_id from ${online_products.SQL_TABLE_NAME} group by 1) cross join (select calendar_date from finery.calendar where calendar_date < current_date)) option_date_matrix

@@ -1,33 +1,5 @@
 - view: snowplow_product_click_through_daily
-  derived_table:
-     sql: |
-          select
-          impressions.impression_date as calendar_date,
-          clicks.click_date,
-          impressions.brand,
-          impressions.category,
-          impressions.id,
-          impressions.list,
-          impressions. "position",
-          impressions.style,
-          impressions.product_impressions,
-          clicks.product_clicks
-          from
-          ${snowplow_product_impressions_daily.SQL_TABLE_NAME} impressions
-          left join
-          ${snowplow_product_clicked_daily.SQL_TABLE_NAME} clicks
-          on impressions.impression_date = clicks.click_date
-          and impressions.brand = clicks.brand
-          and impressions.category = clicks.category
-          and impressions.id = clicks.id
-          and impressions.list = clicks.list
-          and impressions."position" = clicks."position"
-          and impressions.style = clicks.style
-
-     sql_trigger_value: select max(click_date) from ${snowplow_product_clicked_daily.SQL_TABLE_NAME}
-     distkey: id
-     sortkeys: [id, click_date]
-
+  sql_table_name: finery.product_click_through_daily
   fields:
 
     #################################################################################################################################################
@@ -67,11 +39,11 @@
      sql: ${TABLE}.style
 
    - dimension: product_impressions
-     sql: ${TABLE}.product_impressions
+     sql: ${TABLE}.distinct_impressions
      hidden: true
    
    - dimension: product_clicks
-     sql: ${TABLE}.product_clicks
+     sql: ${TABLE}.distinct_clicks
      hidden: true
 
     #################################################################################################################################################
