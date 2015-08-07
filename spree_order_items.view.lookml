@@ -16,7 +16,7 @@
         d.max_selling_price/a.exchange_rate as max_selling_price_gbp,
         (d.max_selling_price - b.price) as discount,
         coalesce(e.items_returned, '0') as items_returned,
-        e.return_reason,
+        case when e.return_reason like 'Other%' then 'Other' else e.return_reason end as return_reason,
         e.return_tstamp,
         a.exchange_rate,
         a.tax_rate,
@@ -215,7 +215,6 @@
     sql: ${TABLE}.items_returned
   
   - dimension: return_reason
-    label: RETURN REASON
     sql: ${TABLE}.return_reason
 
   - dimension_group: return_time
