@@ -180,21 +180,21 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: gross_item_revenue_gbp_ex_vat
     label: Gross Revenue (pre Discount) ex. VAT
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount
     label: Gross Revenue ex. VAT, Discount
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: sales_mix
     label: Revenue Mix
@@ -206,28 +206,28 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.net_revenue_gbp
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: net_item_revenue_gbp_ex_vat_ex_discount
     label: Net Revenue ex. VAT, Discount
     type: sum
     decimals: 2
     sql: ${TABLE}.net_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
   
   - measure: return_item_value_gbp
     label: Return Item Value
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp} - ${net_item_revenue_gbp}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: return_item_value_gbp_ex_vat_ex_discount
     label: Return Item Value ex. VAT, Discount
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
 # ASP
 
@@ -236,21 +236,21 @@
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp}/NULLIF(${sum_items_sold},0)::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: asp_ex_vat
     label: Average Selling Price ex. VAT
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp_ex_vat}/NULLIF(${sum_items_sold},0)::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: asp_ex_vat_ex_discount
     label: Average Selling Price ex. VAT, Discount
     type: number
     decimals: 2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_items_sold},0)::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
 # Margin Measures
 
@@ -259,14 +259,14 @@
     type: sum
     decimals: 2
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: sum_net_cost_gbp
     label: Net Cost of Goods Sold
     type: sum
     decimals: 2
     sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: gross_margin_percent
     label: Gross Margin %
@@ -318,7 +318,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_cost_yesterday
     label:  Closing Stock Value @ Cost - Yesterday
@@ -327,7 +327,7 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 1 day ago for 1 day
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_cost_last_week
     label: Closing Stock Value @ Cost - Last Week
@@ -337,7 +337,7 @@
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_cost_week_before_last
     label: Closing Stock Value @ Cost - 2 Weeks Ago
@@ -347,7 +347,7 @@
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_cost_end_of_week
     label: Closing Stock Value @ Cost - End of Week
@@ -356,7 +356,7 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
 # closing stock @ retail
 
@@ -365,7 +365,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_yesterday
     label: Closing Stock Value @ Retail - Yesterday
@@ -374,13 +374,13 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_date: 1 day ago for 1 day
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: stock_mix_retail_yesterday
     label: Stock Retail Value Mix - Yesterday
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday}  
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_last_week
     label: Closing Stock Value @ Retail - Last Week
@@ -390,7 +390,7 @@
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_week_before_last
     label: Closing Stock Value @ Retail - 2 Weeks Ago
@@ -400,7 +400,7 @@
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_end_of_week
     label: Closing Stock Value @ Retail - End of Week
@@ -409,7 +409,7 @@
     sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
     filters:
       calendar_date_day_of_week_index: 6
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
 ### Number of sku's in stock measures
   
@@ -488,7 +488,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     filters:
       calendar_date_date: 1 day ago for 1 day
 
@@ -497,7 +497,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     filters:
       calendar_date_date: last week
       
@@ -506,7 +506,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     filters:
       calendar_date_date: 2 weeks ago for 1 week
       
@@ -515,7 +515,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     filters:
       calendar_date_date: 7 days ago for 7 days
 
@@ -524,7 +524,7 @@
     type: sum
     decimals: 2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     filters:
       calendar_date_date: this week
 
