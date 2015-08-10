@@ -141,14 +141,14 @@
     type: sum
     decimals: 2
     sql: ${revenue_ex_coupon_and_vat} / ${exchange_rate}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: avg_basket_size
     label: Average Basket Size
     type: number
     decimals: 2
     sql: ${gross_revenue_ex_discount_ex_vat} / ${count_transactions}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
   
   - measure: count_guest_checkouts
     label: Guest Checkouts Total

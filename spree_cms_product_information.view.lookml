@@ -117,7 +117,7 @@
 #    type: number
 #    decimals: 2
 #    sql: ${TABLE}.price_gbp 
-#    value_format: '"£"##0.00'
+#    value_format: '##0.00'
   
 #  - dimension: about_me
 #    label: About Me

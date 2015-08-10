@@ -120,25 +120,25 @@
     type: number
     decimals: 2
     sql: coalesce(${pre_sale_price}, ${price}) / ${exchange_rate}
-    value_format: '"£"#,##0.00'    
+    value_format: '#,##0.00'    
   
   - dimension: price_gbp
     type: number
     decimals: 2
     sql: ${price} / ${exchange_rate}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - dimension: max_selling_price
     type: number
     decimals: 2
     sql: ${TABLE}.max_selling_price
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - dimension: max_selling_price_gbp
     type: number
     decimals: 2
     sql: ${max_selling_price} / ${exchange_rate}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - dimension: selling_price_tiered
     sql_case:
@@ -159,7 +159,7 @@
     type: number
     decimals: 2
     sql: ${product_lookup.total_landed_cost_gbp}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
   
   - dimension: discount_level_tier
     sql_case:
@@ -181,32 +181,32 @@
   - dimension: gross_item_revenue_pre_retail_markdown_gbp
     type: number
     sql: ${pre_retail_markdown_price_gbp} * ${TABLE}.quantity
-    value_format: '"£"#,##0.00' 
+    value_format: '#,##0.00' 
     
   - dimension: gross_item_revenue_in_gbp
     type: number
     decimals: 2
     sql: ${price_gbp} * ${TABLE}.quantity
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - dimension: gross_item_revenue_ex_voucher_discount_gbp
     type: number
     decimals: 2
     sql: case when ${TABLE}.order_total = 0 then 0 else ${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
     type: number
     decimals: 2
     sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))) end
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   # Margin Dimensions
   - dimension: landed_cost_gbp
     type: number
     decimals: 2
     sql: ${landed_cost_per_unit_gbp} * ${quantity}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
     
  #################################### Returns Dimensions #########################################################################################################################
@@ -230,14 +230,14 @@
     type: number
     decimals: 2
     sql: ${price_gbp} * ${TABLE}.items_returned
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     hidden: true
     
   - dimension: net_reveune_after_returns_gbp
     type: number
     decimals: 2
     sql: ${price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     hidden: true
 
 #################################################################################################################################################################################
@@ -282,14 +282,14 @@
     type: sum
     decimals: 2
     sql: ${price} * ${items_returned} / ${exchange_rate}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     hidden: true
       
   - measure: sum_return_item_value_gbp_ex_vat
     type: sum
     decimals: 2
     sql: ${price} * ${items_returned} * (1/(1+${spree_orders.tax_rate})) / ${exchange_rate}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     hidden: true
     
   - measure: return_rate_value
@@ -322,26 +322,26 @@
     type: sum
     sql: ${price} * (${quantity} - ${items_returned}) / ${exchange_rate}
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp
     label: Gross Revenue
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
   
   - measure: sum_gross_item_revenue_in_gbp_ex_vat
     type: sum
     sql: (${price} * ${quantity} * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
     sql: (${price} * (${quantity} - ${items_returned}) * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: count_days
     type: count_distinct
@@ -353,7 +353,7 @@
     type: number
     decimals: 0
     sql: ${sum_gross_item_revenue_ex_discount_ex_vat_gbp}/nullif(${count_days},0)::REAL
-    value_format: '"£"#,##0'
+    value_format: '#,##0'
   
   ########################################################## GROSS Margin Measures ########################################################################################################
   
@@ -361,13 +361,13 @@
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * ${quantity}
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: sum_gross_margin_gbp_ex_vat
     type: number
     decimals: 2
     sql: ${sum_gross_item_revenue_in_gbp_ex_vat} - ${sum_gross_landed_cost_gbp}
-    value_format: '"£"#,##0.00' 
+    value_format: '#,##0.00' 
   
   - measure: gross_margin_percent_ex_vat
     type: number
@@ -381,13 +381,13 @@
     type: sum
     sql: ${product_lookup.total_landed_cost_gbp} * (${quantity} - ${items_returned})
     decimals: 2
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: sum_net_margin_gbp_ex_vat
     type: number
     decimals: 2
     sql: ${sum_net_item_revenue_gbp_ex_vat} - ${sum_net_landed_cost_gbp}
-    value_format: '"£"#,##0.00' 
+    value_format: '#,##0.00' 
   
   - measure: net_margin_percent_ex_vat
     type: number

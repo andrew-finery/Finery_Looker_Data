@@ -178,7 +178,7 @@
     label: Revenue
     type: sum
     sql: ${revenue}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     hidden: true
 
   - measure: sum_amount_spent
@@ -186,7 +186,7 @@
     type: sum
     decimals: 2
     sql: ${spent}
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
 
   - measure: roi
     label: ROI
@@ -204,14 +204,14 @@
   - measure: cost_per_click
     type: number
     sql: ${sum_amount_spent}/ NULLIF(${sum_clicks},0) ::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: cost_per_mille
     type: number
     sql: 1000 * ${sum_amount_spent}/ NULLIF(${sum_impressions},0) ::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'
     
   - measure: cost_per_order
     type: number
     sql: ${sum_amount_spent}/ NULLIF(${sum_orders},0) ::REAL
-    value_format: '"£"#,##0.00'
+    value_format: '#,##0.00'

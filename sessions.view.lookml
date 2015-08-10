@@ -649,7 +649,7 @@
     type: number
     decimals: 2
     sql: ${transactions.gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
-    value_format: '"£"#0.00'
+    value_format: '#0.00'
     
   - measure: sessions_from_new_visitors_count
     label: New Visits Total

@@ -139,28 +139,28 @@
      decimals: 2
      label: Gross Revenue
      sql: ${gross_revenue_gbp}
-     value_format: '"£"#,##0.00'
+     value_format: '#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat
      type: sum
      decimals: 2
      label: Gross Revenue ex. VAT
      sql: ${gross_revenue_gbp_ex_vat}
-     value_format: '"£"#,##0.00'
+     value_format: '#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount
      type: sum
      decimals: 2
      label: Gross Revenue ex. VAT, Discount
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
-     value_format: '"£"#,##0.00'
+     value_format: '#,##0.00'
 
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount_last_week
      type: sum
      decimals: 2
      label: Gross Revenue ex. VAT, DIscount LW
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
-     value_format: '"£"#,##0.00'
+     value_format: '#,##0.00'
      filters:
       calendar_date_date: last week
       
