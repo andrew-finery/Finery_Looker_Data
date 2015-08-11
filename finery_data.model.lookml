@@ -246,6 +246,6 @@
   - join: spree_exchange_rates
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
 
-#- explore: spree_cms_product_information
+- explore: spree_cms_product_information
 
 - explore: looker_table_updates
