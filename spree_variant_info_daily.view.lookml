@@ -65,14 +65,17 @@
       
       
       left join
-      (select order_date, variant_id, sum(quantity) as approx_items_sold from
+      (select order_date, line_items.variant_id, variant_ean_lookup.ean, sum(quantity) as approx_items_sold from
       (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) line_items
       left join
-      (select date(completed_at) as order_date, id from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders) and completed_at is not null) orders
+      (select date(convert_timezone('UTC', 'Europe/London', completed_at)) as order_date, id from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders) and completed_at is not null) orders
       on line_items.order_id = orders.id
+      left join
+      (select * from (select sku as ean, first_value(id) over (partition by id order by deleted_at desc rows between unbounded preceding and unbounded following) as variant_id  from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <> 1) group by 1,2) variant_ean_lookup
+      on variant_ean_lookup.variant_id = line_items.variant_id
       where order_date is not null
-      group by 1,2) sales
-      on sales.variant_id = spree_variants.variant_id
+      group by 1,2,3) sales
+      on sales.ean = spree_variants.ean
       and sales.order_date = spree_variants.calendar_date
 
     sql_trigger_value: select count(*) from daily_snapshot.spree_zones

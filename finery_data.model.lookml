@@ -154,6 +154,9 @@
     sql_on: daily_sales.sku = online_products.ean
   - join: calendar_weeks
     sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
+  - join: variant_info_daily
+    from: spree_variant_info_daily
+    sql_on: ${daily_sales.calendar_date_date} = ${variant_info_daily.calendar_date} and ${daily_sales.sku} = ${variant_info_daily.ean}
 
 - explore: mandrill_message_sent
   joins:
