@@ -249,3 +249,5 @@
 - explore: spree_cms_product_information
 
 - explore: looker_table_updates
+
+- explore: spree_variant_info_daily
