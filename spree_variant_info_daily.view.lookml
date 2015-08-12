@@ -1,84 +1,56 @@
 - view: spree_variant_info_daily
   derived_table:
     sql: |
-      select
-      cal.calendar_date,
-      spree_variants.variant_id,
-      spree_variants.ean,
-      spree_variants.product_id,
-      coalesce(spree_variants.is_live, true) as is_live,
-      spree_variants.available_on,
-      spree_variants.pre_sale_price,
-      spree_variants.price,
-      spree_variants.count_on_hand,
-      spree_variants.on_sale_flag,
-      coalesce(sales.approx_items_sold, 0) as approx_items_sold
-      
-      
-      from 
-      
-      (select
-      calendar_date,
-      case
-      when calendar_date < '2014-12-10' then '2014-12-10'
-      else calendar_date end as join_date
-      from finery.calendar
-      where calendar_date < current_date
-      and calendar_date > '2014-11-22') cal
-      
-      left join
-      
-      (select
-      date(variants.spree_timestamp) as calendar_date,
-      variants.id as variant_id,
-      variants.sku as ean,
-      variants.product_id as product_id,
-      products.is_live,
-      products.available_on,
-      
-      max(pre_sale_prices.amount) as pre_sale_price,
-      max(prices.amount) as price,
-      sum(stock_items.count_on_hand) as count_on_hand,
-      
-        case
-        when max(pre_sale_prices.amount) is null then 'No'
-        else 'Yes' end
-        as on_sale_flag
-        
-      from
-      (select * from daily_snapshot.spree_variants where deleted_at is null and is_master <> 1) variants
-      inner join
-      (select * from daily_snapshot.spree_stock_items where deleted_at is null) stock_items
-      on variants.id = stock_items.variant_id and date(variants.spree_timestamp) = date(stock_items.spree_timestamp)
-      inner join
-      (select spree_timestamp, variant_id, max(amount) as amount from daily_snapshot.spree_prices where deleted_at is null and currency = 'GBP' group by 1,2) prices
-      on variants.id = prices.variant_id and date(variants.spree_timestamp) = date(prices.spree_timestamp)
-      left join
-      (select spree_timestamp, variant_id, max(amount) as amount from daily_snapshot.spree_pre_sale_prices where deleted_at is null and currency = 'GBP' and amount > 0 group by 1,2) pre_sale_prices
-      on variants.id = pre_sale_prices.variant_id and date(variants.spree_timestamp) = date(pre_sale_prices.spree_timestamp)
-      left join
-      (select * from daily_snapshot.spree_products where deleted_at is null) products
-      on products.id = variants.product_id and date(variants.spree_timestamp) = date(products.spree_timestamp)
-      
-      group by 1,2,3,4,5,6) spree_variants
-      on spree_variants.calendar_date = cal.join_date
-      
-      
-      left join
-      (select order_date, line_items.variant_id, variant_ean_lookup.ean, sum(quantity) as approx_items_sold from
-      (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) line_items
-      left join
-      (select date(convert_timezone('UTC', 'Europe/London', completed_at)) as order_date, id from daily_snapshot.spree_orders where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_orders) and completed_at is not null) orders
-      on line_items.order_id = orders.id
-      left join
-      (select * from (select sku as ean, first_value(id) over (partition by id order by deleted_at desc rows between unbounded preceding and unbounded following) as variant_id  from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants) and is_master <> 1) group by 1,2) variant_ean_lookup
-      on variant_ean_lookup.variant_id = line_items.variant_id
-      where order_date is not null
-      group by 1,2,3) sales
-      on sales.ean = spree_variants.ean
-      and sales.order_date = spree_variants.calendar_date
+            select
+            daily_sales.calendar_date,
+            daily_sales.sku as ean,
+            daily_sales.items_sold,
+            daily_sales.closing_stock,
+            lead(daily_sales.closing_stock, 1) over (partition by daily_sales.sku order by daily_sales.calendar_date desc) as opening_stock,
+            spree_variants.variant_id,
+            spree_variants.product_id,
+            spree_variants.is_live,
+            spree_variants.available_on,                                     
+            spree_variants.pre_sale_price,
+            spree_variants.price,                                              
+            spree_variants.on_sale_flag
+            from
+            ${daily_sales.SQL_TABLE_NAME} daily_sales
+            left join
+                  (select
+                  date(variants.spree_timestamp) - 1 as calendar_date,
+                  variants.id as variant_id,
+                  variants.sku as ean,
+                  variants.product_id as product_id,
+                  coalesce(products.is_live, true) as is_live,
+                  products.available_on,
+                  
+                  max(pre_sale_prices.amount) as pre_sale_price,
+                  max(prices.amount) as price,
+                  
+                    case
+                    when max(pre_sale_prices.amount) is null then 'No'
+                    else 'Yes' end
+                    as on_sale_flag
+                    
+                  from
+                  (select * from daily_snapshot.spree_variants where deleted_at is null and is_master <> 1) variants
+                  inner join
+                  (select spree_timestamp, variant_id, max(amount) as amount from daily_snapshot.spree_prices where deleted_at is null and currency = 'GBP' group by 1,2) prices
+                  on variants.id = prices.variant_id and date(variants.spree_timestamp) = date(prices.spree_timestamp)
+                  left join
+                  (select spree_timestamp, variant_id, max(amount) as amount from daily_snapshot.spree_pre_sale_prices where deleted_at is null and currency = 'GBP' and amount > 0 group by 1,2) pre_sale_prices
+                  on variants.id = pre_sale_prices.variant_id and date(variants.spree_timestamp) = date(pre_sale_prices.spree_timestamp)
+                  left join
+                  (select * from daily_snapshot.spree_products where deleted_at is null) products
+                  on products.id = variants.product_id and date(variants.spree_timestamp) = date(products.spree_timestamp)
+                  
+                  group by 1,2,3,4,5,6) spree_variants
+            on daily_sales.sku = spree_variants.ean
+            and daily_sales.calendar_date = spree_variants.calendar_date
 
-    sql_trigger_value: select count(*) from daily_snapshot.spree_zones
+
+    sql_trigger_value: select count(*) from ${daily_sales.SQL_TABLE_NAME}
     distkey: ean
     sortkeys: [ean, calendar_date]
 
@@ -121,25 +93,25 @@
     type: number
     sql: ${TABLE}.price
 
-  - dimension: count_on_hand
+  - dimension: closing_stock
     type: number
-    sql: ${TABLE}.count_on_hand
+    sql: ${TABLE}.closing_stock
     hidden: true
 
   - dimension: on_sale_flag
     sql: ${TABLE}.on_sale_flag
 
-  - dimension: approx_items_sold
-    sql: ${TABLE}.approx_items_sold
+  - dimension: items_sold
+    sql: ${TABLE}.items_sold
     hidden: true
   
   - dimension: on_site_flag
     sql: |
           case
-          when ${approx_items_sold} > 0 then 'Yes'
+          when ${items_sold} > 0 then 'Yes'
           when ${is_live} = 'No' then 'No'
           when date(${available_on}) > ${calendar_date} then 'No'
-          when ${count_on_hand} = 0 then 'No'
+          when ${closing_stock} = 0 then 'No'
           else 'Yes' end
 
 ####### MEASURES
