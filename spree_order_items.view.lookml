@@ -267,6 +267,20 @@
     label: Items Returned
     type: sum
     sql: coalesce(${items_returned}, 0)
+
+  - measure: total_items_returned_size
+    label: Items Returned - Size Issues
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's too small, It's too large
+
+  - measure: total_items_returned_doesnt_suit
+    label: Items Returned - It Doesn't Suit Me
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It doesn't suit me
   
   - measure: items_sold_after_returns
     type: sum
