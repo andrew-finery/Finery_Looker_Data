@@ -77,8 +77,8 @@
     hidden: true
 
   - dimension: is_live
-    sql: |
-          case when ${TABLE}.is_live = true then 'Yes' else 'No' end
+    sql: ${TABLE}.is_live
+    hidden: true
 
   - dimension: available_on
     sql: ${TABLE}.available_on
@@ -98,6 +98,11 @@
     sql: ${TABLE}.closing_stock
     hidden: true
 
+  - dimension: opening_stock
+    type: number
+    sql: ${TABLE}.opening_stock
+    hidden: true
+
   - dimension: on_sale_flag
     sql: ${TABLE}.on_sale_flag
 
@@ -109,9 +114,10 @@
     sql: |
           case
           when ${items_sold} > 0 then 'Yes'
-          when ${is_live} = 'No' then 'No'
+          when ${is_live} is null then 'No'
+          when ${is_live} = false then 'No'
           when date(${available_on}) > ${calendar_date} then 'No'
-          when ${closing_stock} = 0 then 'No'
+          when (${closing_stock} = 0 and ${opening_stock} = 0) then 'No'
           else 'Yes' end
 
 ####### MEASURES

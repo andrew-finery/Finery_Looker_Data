@@ -220,14 +220,17 @@
     hidden: true
 
 ### Price Dimensions
-
+  
+  - dimension: retail_price
+    sql: ${TABLE}.retail
+  
   - dimension: max_selling_price
     label: Original Price
-    sql: coalesce(${TABLE}.original_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    sql: coalesce(${TABLE}.original_price, round((${retail_price}), 0))
  
   - dimension: current_price
     label: Current Price
-    sql: coalesce(${TABLE}.current_price, round((${total_landed_cost_gbp} * ${retail_markup_inc_vat}), 0))
+    sql: coalesce(${TABLE}.current_price, round((${retail_price}), 0))
     
   - dimension: selling_price_tiered
     label: Current Price Tier

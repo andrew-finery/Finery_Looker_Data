@@ -10,6 +10,7 @@
           products.available_on as available_on,
           first_value(products.name) over (partition by products.product_group_id order by products.name asc rows between unbounded preceding and unbounded following) as style,
           products.product_group_id as product_group_id,
+          products.is_live,
           product_group.sku as parent_sku,
           prices.amount as current_price,
           max_prices.amount as max_price,
@@ -22,7 +23,7 @@
           departments.permalink as permalink,
           sub_departments.department as sub_department,
           products.name || ' ' || coalesce(colours.name, '') as option,
-          case when date(products.available_on) > current_date or variants.deleted_at is not null then 'No' else 'Yes' end as online_flag,
+          case when date(products.available_on) > current_date or variants.deleted_at is not null or products.is_live = false then 'No' else 'Yes' end as online_flag,
           products.is_coming_soon,
           case when pre_sale_prices.amount = 0 then null else pre_sale_prices.amount end as pre_sale_price,
           on_sale_dates.on_sale_date
