@@ -264,11 +264,11 @@
     sql: ${TABLE}.number_of_skus != ${TABLE}.number_of_products
 
   - dimension: order_email
-    label: EMAIL
+    label: Email Address
     sql: ${TABLE}.email
   
   - dimension: in_store_flag
-    label: IN STORE FLAG
+    label: In Store Flag
     sql_case:
       In-Store: ${TABLE}.in_store_flag = 1
       else: Online
@@ -757,7 +757,7 @@
     hidden: true
     
   - measure: sum_total_discount_gbp
-    label: SUM DISCOUNT
+    label: Total Voucher Discount
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) / ${exchange_rate}
     decimals: 2
@@ -775,7 +775,7 @@
     hidden: true
     
   - measure: sum_store_credit_used_gbp
-    label: SUM STORE CREDIT
+    label: Total Store Credit
     type: sum
     sql: ${TABLE}.store_credit_used / ${exchange_rate}
     decimals: 2
@@ -793,7 +793,7 @@
     hidden: true
     
   - measure: sum_total_discount_gbp_ex_vat
-    label: SUM DISCOUNT EX. VAT
+    label: Total Discount ex. VAT
     type: sum
     sql: ${TABLE}.adjustment_total * (-1) * ${exchange_rate}  *(1/(1+${tax_rate}))
     decimals: 2
@@ -811,7 +811,7 @@
     hidden: true
     
   - measure: sum_store_credit_used_gbp_ex_vat
-    label: SUM STORE CREDIT EX. VAT
+    label: Total Store Credit ex. VAT
     type: sum
     sql: ${TABLE}.store_credit_used / ${exchange_rate} * (1/(1+${tax_rate}))
     decimals: 2
@@ -862,8 +862,8 @@
     label: Gross Revenue ex. Voucher, VAT (K)
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total) / ${exchange_rate} / 1000
-    decimals: 2
-    format: "£%0.1fk"
+    decimals: 1
+    value_format: '"£"##0.0"k"'
     filters:
       state: -canceled
 
@@ -928,7 +928,7 @@
     type: sum
     label: Gross Revenue (£k)
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate} / 1000
-    format: "£%0.1fk"
+    value_format: '"£"##0.0"k"'
     filters:
       state: -canceled
     hidden: true
@@ -1080,7 +1080,7 @@
 ############################################################## RETURNS MEASUERS #############################################################################################
 
   - measure: sum_items_returned
-    label: SUM ITEMS RETURNED
+    label: Items Returned
     type: sum
     sql: ${items_returned}
     filters:
@@ -1096,7 +1096,7 @@
     hidden: true
     
   - measure: sum_return_item_total_gbp
-    label: SUM RETURN ITEM TOTAL
+    label: Return Item Value
     type: sum
     sql: ${return_item_total} / ${exchange_rate}
     decimals: 2
@@ -1114,7 +1114,7 @@
     hidden: true
     
   - measure: sum_amount_refunded_gbp
-    label: SUM TOTAL AMOUNT REFUNDED
+    label: Total Amount Refunded
     type: sum
     sql: ${amount_refunded} / ${exchange_rate}
     decimals: 2
@@ -1132,7 +1132,7 @@
     hidden: true
     
   - measure: sum_cash_refunded_gbp
-    label: SUM CASH REFUNDED
+    label: Total Cash Refunded
     type: sum
     sql: ${cash_refunded} / ${exchange_rate}
     decimals: 2
@@ -1150,7 +1150,7 @@
     hidden: true
     
   - measure: sum_store_credit_refunded_gbp
-    label: SUM STORE CERDIT REFUNDED
+    label: Total Store Credit Refunded
     type: sum
     sql: ${store_credit_refunded} / ${exchange_rate}
     decimals: 2
@@ -1171,7 +1171,7 @@
     hidden: true
     
   - measure: sum_net_revenue_gbp
-    label: SUM NET REVENUE
+    label: Net Revenue
     type: sum
     sql: (${item_total} + ${shipping_total} - ${return_item_total}) / ${exchange_rate}
     decimals: 2
@@ -1189,7 +1189,7 @@
     hidden: true
     
   - measure: sum_net_revenue_gbp_ex_vat
-    label: SUM NET REVENUE EX. VAT
+    label: Net Revenue ex. VAT
     type: sum
     sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     decimals: 2
@@ -1207,7 +1207,7 @@
     hidden: true
     
   - measure: sum_net_revenue_ex_discount_gbp
-    label: SUM NET REVENUE EX. DISCOUNT
+    label: Net Revenue ex. Discount
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) / ${exchange_rate}
     decimals: 2
@@ -1225,7 +1225,7 @@
     hidden: true
     
   - measure: sum_net_revenue_ex_discount_gbp_ex_vat
-    label: SUM NET REVENUE EX. DISCOUNT, VAT
+    label: Net. Revenue ex. Discount, VAT
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate}
     decimals: 2
@@ -1273,7 +1273,7 @@
 ################################### DELIVERY MEASURES ################################################################################
 
   - measure: count_hermes_completed_orders
-    label: COUNT ORDERS SHIPPED WITH HERMES
+    label: Orders Shipped with Hermes
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
@@ -1282,7 +1282,7 @@
       late_delivery_reason: -Parcel to be Delivered, -Parcel Currently Late - Not Delivered
       
   - measure: count_hermes_late_orders
-    label: COUNT HERMES LATE DELIVERIES
+    label: Hermes Late Deliveries
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
@@ -1291,7 +1291,7 @@
       late_delivery_reason: Parcel Lost by Hermes, Late to Hub, Delay at Depot, Misrouted to Incorrect Depot, Carried Forward, Late - Other Reason, Late to Depot, Delay in Courier Receiving Package, Hermes Delay, Missort to Incorrect Courier
 
   - measure: count_hermes_no_tracking_info
-    label: COUNT HERMES ORDER - NO TRACKING
+    label: Hermes Deliveries - No Tracking
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
@@ -1300,7 +1300,7 @@
       late_delivery_reason: No Tracking Info - Hermes
 
   - measure: more_info_required_orders
-    label: COUNT HERMES ORDERS - MORE INFO REQUIRED
+    label: Hermes Deliveries - More Info Required
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
@@ -1309,21 +1309,21 @@
       late_delivery_reason: More Info Required
 
   - measure: hermes_on_time_percentage
-    label: HERMES ON TIME %
+    label: Hermes On Time %
     type: number
     decimals: 4
     sql: 1 - ${count_hermes_late_orders}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
 
   - measure: hermes_no_tracking_info_percentage
-    label: HERMES NO TRACKING INFO %
+    label: Hermes No Tracking Info %
     type: number
     decimals: 4
     sql: 1 - ${count_hermes_no_tracking_info}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
 
   - measure: more_info_required_percentage
-    label: HERMES MORE INFO REQUIRED %
+    label: Hermes More Info Required %
     type: number
     decimals: 4
     sql: 1 - ${more_info_required_orders}/nullif(${count_hermes_completed_orders},0)::REAL

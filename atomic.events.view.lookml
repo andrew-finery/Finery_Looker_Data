@@ -19,11 +19,11 @@
     hidden: true
 
   - dimension: page_url_host
-    label: URL Host
+    label: Page URL Host
     sql: ${TABLE}.page_urlhost
 
   - dimension: page_url_path
-    label: URL Path
+    label: Page URL Path
     sql: ${TABLE}.page_urlpath
     hidden: true
   
@@ -74,11 +74,11 @@
       else: Other
       
   - dimension: unstruct_event
-    label: UNSTRUCTURED EVENT
+    label: Unstructured Event
     sql: ${TABLE}.unstruct_event
   
   - dimension: event_type
-    label: EVENT TYPE
+    label: Event Type
     sql: |
         case
         when ${TABLE}.event = 'struct' then 'Structured Event'
@@ -146,18 +146,18 @@
     hidden: true
     
   - dimension_group: event_time
-    label: EVENT
+    label: Event
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week_index, day_of_week, week, month]
     sql: convert_timezone('UTC', 'Europe/London', ${TABLE}.collector_tstamp)
 
   - dimension: today_tw_lw_flag
-    label: FLAG
+    label: Flag
     sql: case when ${event_time_date} = current_date then 'Today' when ${event_time_date} = current_date - 7 then 'Last Week' else null end
     hidden: true
 
   - dimension: yesterday_tw_lw_flag
-    label: FLAG
+    label: Flag
     sql: case when ${event_time_date} = current_date - 1 then 'Yesterday' when ${event_time_date} = current_date - 8 then 'Last Week' else null end
     hidden: true
     
@@ -180,7 +180,7 @@
     hidden: true
   
   - dimension: new_session_flag
-    label: NEW SESSION FLAG
+    label: New Session Flag
     type: yesno
     sql: ${domain_sessionidx} = 1
     
@@ -307,22 +307,22 @@
     label: New User %
     type: number
     decimals: 2
-    sql: 100.0 * ${count_new_users}/NULLIF(${count_users},0)::REAL
-    format: "%0.1f%"
+    sql: ${count_new_users}/NULLIF(${count_users},0)::REAL
+    value_format: '#.00%'
 
   - measure: new_session_percentage
     label: New Session %
     type: number
     decimals: 2
-    sql: 100.0 * ${count_new_sessions}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.1f%"
+    sql: ${count_new_sessions}/NULLIF(${count_sessions},0)::REAL
+    value_format: '#.00%'
   
   - measure: user_logged_in_percentage
     label: Logged In %
     type: number
     decimals: 2
-    sql: 100.0 * ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
-    format: "%0.1f%"
+    sql: ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
+    value_format: '#.00%'
 
   - measure: count_days
     type: count_distinct
@@ -358,11 +358,11 @@
       app_id: production
 
   - measure: page_views_per_session
-    label: PPage Views per Session
+    label: Page Views per Session
     type: number
     decimals: 2
     sql: ${count_page_views}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f"
+    value_format: '#.00'
   
   - measure: total_usage_time_10s
     type: count_distinct
@@ -392,7 +392,7 @@
 ##### Click-Through Rate Measures
 
   - measure: product_click_through_rate
-    label: CTR (to any Product Page)
+    label: Click Through Rate (to any Product Page)
     type: number
     sql: ${snowplow_link_clicks.sessions_with_product_click_count}/NULLIF(${count_sessions},0)::REAL
     value_format: '#0.00%'
@@ -403,7 +403,7 @@
     label: Gross Revenue ex. Discount, VAT
     type: sum
     sql: ${transactions.revenue_ex_coupon_and_vat} / ${transactions.exchange_rate}
-    format: "£%d"
+    value_format: '#,##0.00'
 
   - measure: items_purchased
     label: Items Purchased
@@ -414,8 +414,8 @@
     label: Conversion Rate
     type: number
     decimals: 2
-    sql: 100.0 * ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
-    format: "%0.2f%"
+    sql: ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
+    value_format: '#.00%'
   
 #  - measure: avg_basket_size
 #    label: AVERAGE BASKET SIZE
@@ -437,15 +437,15 @@
     label: Newsletter Signup Rate
     type: number
     decimals: 1
-    sql: 100.0 * ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
-    format: "%0.1f%"
+    sql: ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
+    value_format: '##0.0%'
     
   - measure: referral_rate
     label: Referral Rate
     type: number
     decimals: 1
-    sql: 100.0 * ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
-    format: "%0.1f%"
+    sql: ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
+    value_format: '##0.0%'
   
   - measure: count_total_opens
     label: Total Email Opens
@@ -552,22 +552,22 @@
     sql: coalesce(${product_impressions.position}, ${product_clicked.position}, ${product_quick_views.position})
     
   - measure: count_product_impressions
-    label: COUNT PRODUCT IMPRESSIONS
+    label: Product Impressions
     type: int
     sql: APPROXIMATE COUNT (DISTINCT case when ${app_id} = 'production' then ${product_impressions.product_impression_id} else null end)
 
   - measure: count_product_clicks
-    label: COUNT PRODUCT CLICKS
+    label: Product Clicks
     type: int
     sql: APPROXIMATE COUNT (DISTINCT case when ${app_id} = 'production' then coalesce(${product_clicked.event_id},null) else null end)
   
   - measure: count_product_quick_views
-    label: COUNT PRODUCT QUICK VIEWS
+    label: Product Quick Views
     type: int
     sql: APPROXIMATE COUNT(DISTINCT case when ${app_id} = 'production' then ${product_quick_views.event_id} else null end)
    
   - measure: count_product_page_views
-    label: COUNT PRODUCT PAGE VIEWS
+    label: Product Page Views
     type: count_distinct
     sql: ${session_id} || ${page_contexts.product_id}
     filters:
@@ -576,35 +576,35 @@
       page_contexts.page_type: products/show
 
   - measure: count_products_in_cart
-    label: COUNT PRODUCTS IN CART
+    label: Products In Cart
     type: count_distinct
     sql: ${session_id} || ${product_in_cart.product_id}
     filters:
       app_id: production
 
   - measure: count_products_in_transaction
-    label: COUNT PRODUCTS PURCHASED
+    label: Products Purchased
     type: sum
     sql: coalesce(${product_in_transaction.quantity}, '0')
     filters:
       app_id: production
 
   - measure: product_ctr
-    label: PRODUCT CLICK-THROUGH RATE
+    label: Product Click-Through Rate
     type: number
     decimals: 2
-    sql: coalesce(100.0 * ${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL,'0')
-    format: "%0.2f%"
+    sql: coalesce(${count_product_clicks}/NULLIF(${count_product_impressions},0)::REAL,'0')
+    value_format: '##0.00'
   
   - measure: product_cr
-    label: PRODUCT CONVERSION RATE
+    label: Product Conversion Rate
     type: number
     decimals: 2
-    sql:  coalesce(100.0 * ${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL, '0')
-    format: "%0.2f%"
+    sql:  coalesce(${count_products_in_transaction}/NULLIF(${count_product_page_views},0)::REAL, '0')
+    value_format: '##0.00'
   
   - measure: category_page_views
-    label: CATEGORY UNIQUE PAGE VIEWS
+    label: Category Unique Page Views
     type: count_distinct
     sql: ${session_id} || ${product_impressions.category}
     filters:
@@ -613,7 +613,7 @@
       product_impressions.list: taxons/show
       
   - measure: category_clicks
-    label: CATEGORY UNIQUE PAGE CLICKS
+    label: Category Unique Page Clicks
     type: count_distinct
     sql: ${session_id} || ${product_clicked.category}
     filters:
@@ -621,32 +621,32 @@
       product_clicked.category: -NULL
       
   - measure: category_click_through_rate
-    label: CATEGORY CLICK-THROUGH RATE
+    label: Category Click-Through Rate
     type: number
     decimals: 2
     sql:  coalesce(${category_clicks}/NULLIF(${category_page_views},0)::REAL, '0')
     value_format: '#.00%'
 
   - measure: count_distinct_product_impressions
-    label: DISTINCT PRODUCT IMPRESSIONS
+    label: Distinct Product Impressions
     type: count_distinct
     sql: ${product_impressions.product_id} || ${session_id} || ${product_impressions.category}
     hidden: true
 
   - measure: max_products_in_category
-    label: CATEGORY TOTAL PRODUCTS
+    label: Category Total
     type: max
     sql: cast(${product_impressions.position} as int)
 
   - measure: product_impressions_per_session
-    label: CATEGORY AVERAGE PRODUCTS SCROLLED
+    label: Category Average Products Scrolled
     type: number
     decimals: 2
     sql:  coalesce(${count_distinct_product_impressions}/NULLIF(${count_sessions},0)::REAL, '0')
     value_format: '#.##'
   
   - measure: avg_scroll_percentage
-    label: CATEGORY AVERAGE SCROLL PERCENTAGE
+    label: Category Average Scroll Percentage
     type: number
     decimals: 2
     sql:  coalesce(${product_impressions_per_session}/NULLIF(${max_products_in_category},0)::REAL, '0')

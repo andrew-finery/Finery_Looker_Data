@@ -181,24 +181,24 @@
   - measure: sum_signup_credit_granted
     type: sum
     sql: ${TABLE}.signup_credit
-    format: "%0.2f"
+    value_format: '#,##0.00'
   
   - measure: sum_signup_credit_granted_gbp
     type: sum
     sql: ${TABLE}.signup_credit_gbp
-    format: "£%0.2f"
+    value_format: '#,##0.00'
   
   - measure: sum_total_credit_granted_gbp
     type: sum
     sql: ${TABLE}.total_credit_granted_gbp
-    format: "£%0.2f"
+    value_format: '#,##0.00'
     
   - measure: sum_total_credit_used_gbp
     type: sum
     sql: ${TABLE}.total_credit_used_gbp
-    format: "£%0.2f"
+    value_format: '#,##0.00'
     
   - measure: sum_current_live_credit_gbp
     type: sum
     sql: ${TABLE}.current_credit_gbp
-    format: "£%0.2f"
+    value_format: '#,##0.00'

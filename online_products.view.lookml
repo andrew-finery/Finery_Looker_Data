@@ -225,7 +225,7 @@
        type: number
        decimals: 2
        sql: ${TABLE}.current_price
-       format: "£%0.2f"
+       value_format: '##0.00'
 
      - dimension: first_price
        label: Maximum Price

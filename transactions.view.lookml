@@ -161,8 +161,8 @@
     label: Guest Checkout Percentage
     type: number
     decimals: 2
-    sql: 100.0 * ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
-    format: "%0.1f%"
+    sql: ${count_guest_checkouts}/NULLIF(${count_transactions},0)::REAL
+    value_format: '0.00%'
 
   - measure: new_customer_percentage
     label: New Customer Percentage

@@ -65,7 +65,7 @@
   - dimension: variant_id
     type: number
     sql: ${TABLE}.variant_id
-    hidde: true
+    hidden: true
 
   - dimension: ean
     sql: ${TABLE}.ean

@@ -257,14 +257,14 @@
     sql: ${TABLE}.sku
   
   - measure: total_items_sold
-    label: TOTAL ITEMS SOLD
+    label: Items Sold
     type: sum
     sql: ${TABLE}.quantity
   
   ########################################### Returns Measures #################################################################################################################
     
   - measure: total_items_returned
-    label: TOTAL ITEMS RETURNED
+    label: Items Returned
     type: sum
     sql: coalesce(${items_returned}, 0)
   

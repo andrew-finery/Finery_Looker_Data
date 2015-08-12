@@ -84,8 +84,8 @@
      label: NEWSLETTER SUBSCRIBERS WEEK ON WEEK
      type: number
      decimals: 2
-     sql: 100.0 * (${count_newsletter_subscribers_yesterday} - ${count_newsletter_subscribers_last_week})/NULLIF(${count_newsletter_subscribers_last_week},0)::REAL
-     format: "%0.2f%"
+     sql: (${count_newsletter_subscribers_yesterday} - ${count_newsletter_subscribers_last_week})/NULLIF(${count_newsletter_subscribers_last_week},0)::REAL
+     value_format: '#.00%'
      html: |
           {% if value < 0 - Red' %}
           <font color="#D77070"> {{ rendered_value }} </font>
@@ -101,8 +101,8 @@
      label: REFERRALS WEEK ON WEEK
      type: number
      decimals: 2
-     sql: 100.0 * (${count_referrals_yesterday} - ${count_referrals_last_week})/NULLIF(${count_referrals_last_week},0)::REAL
-     format: "%0.2f%"
+     sql: (${count_referrals_yesterday} - ${count_referrals_last_week})/NULLIF(${count_referrals_last_week},0)::REAL
+     value_format: '#.00%'
      html: |
           {% if value < 0 - Red' %}
           <font color="#D77070"> {{ rendered_value }} </font>

@@ -51,8 +51,8 @@
     label: NEWSLETTER CONVERSION %
     type: number
     decimals: 2
-    sql: 100.0 * ${count_converted}/${count_newsletter_subscribers}::REAL
-    format: "%0.2f%"
+    sql: ${count_converted}/${count_newsletter_subscribers}::REAL
+    value_format: '#0.00%'
 
   - measure: running_total_converted
     label: NEWSLETTER SUBSCRIBERS CONVERTED - RUNNING TOTAL
