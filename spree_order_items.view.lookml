@@ -275,12 +275,61 @@
     filters:
       return_reason: It's too small, It's too large
 
+  - measure: total_items_returned_too_big
+    label: Items Returned - Too Big
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's too large
+
   - measure: total_items_returned_doesnt_suit
-    label: Items Returned - It Doesn't Suit Me
+    label: Items Returned - Doesn't Suit Me
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
       return_reason: It doesn't suit me
+
+  - measure: total_items_returned_too_small
+    label: Items Returned - Too Small
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's too small
+
+  - measure: total_items_returned_not_as_pictured_not_as_described
+    label: Items Returned - Not as Pictured or Described
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's not as described, It's not as pictured
+
+  - measure: total_items_returned_not_as_described
+    label: Items Returned - Not as Described
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's not as described
+      
+  - measure: total_items_returned_not_as_pictured
+    label: Items Returned - Not as Pictured
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's not as pictured
+
+  - measure: total_items_returned_other
+    label: Items Returned - Other Please Specify
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: Other 
+
+  - measure: total_items_returned_faulty
+    label: Items Returned - Faulty
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It's faulty/in a poor condition
   
   - measure: items_sold_after_returns
     type: sum
