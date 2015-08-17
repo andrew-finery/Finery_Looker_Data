@@ -111,6 +111,25 @@
           else ${TABLE}.pre_sale_price end
     value_format: '#,##0.00'
   
+  - dimension: retail_markdown
+    type: number
+    decimals: 2
+    sql: case when ${pre_sale_price} = 0 then 0 else (${pre_sale_price} - ${price}) / ${pre_sale_price} end
+    value_format: '#0.00%'
+  
+  - dimension: retail_markdown_tier
+    sql_case:
+      0%: ${retail_markdown} = 0
+      0 - 7.5%: ${retail_markdown} < 0.075
+      7.5 - 15%: ${retail_markdown} < 0.15
+      15% - 22.5%: ${retail_markdown} < 0.225
+      22.5% - 30%: ${retail_markdown} < 0.3
+      30% - 37.5%: ${retail_markdown} < 0.375
+      37.5% - 45%: ${retail_markdown} < 0.45
+      45% - 52.5%: ${retail_markdown} < 0.525
+      52.5% - 60%: ${retail_markdown} < 0.6
+      else: '60% +'
+    
   - dimension: on_sale_flag
     label: Sale Product Flag
     type: yesno

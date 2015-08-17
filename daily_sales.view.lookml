@@ -126,7 +126,42 @@
   - dimension: product_on_sale_flag
     label: On Sale Flag
     sql: case when ${online_products.on_sale_date} <= ${calendar_date_date} then 'On Sale' else 'Full Price' end
+    
+  - dimension: price
+    type: number
+    decimals: 2
+    sql: coalesce(${variant_info_daily.price}, ${product_lookup.retail_price})
 
+  - dimension: original_price
+    type: number
+    decimals: 2
+    sql: |
+          case
+          when ${variant_info_daily.pre_sale_price} is null then ${price}
+          when ${price} >= ${variant_info_daily.pre_sale_price} then ${price}
+          else coalesce(${variant_info_daily.pre_sale_price}, ${product_lookup.retail_price}) end
+    value_format: '#,##0.00'
+
+  - dimension: retail_markdown
+    type: number
+    decimals: 2
+    sql: case when ${original_price} = 0 then 0 else (${original_price} - ${price}) / ${original_price} end
+    value_format: '#0.00%'
+  
+  - dimension: retail_markdown_tier
+    sql_case:
+      0%: ${retail_markdown} = 0
+      0 - 7.5%: ${retail_markdown} < 0.075
+      7.5 - 15%: ${retail_markdown} < 0.15
+      15% - 22.5%: ${retail_markdown} < 0.225
+      22.5% - 30%: ${retail_markdown} < 0.3
+      30% - 37.5%: ${retail_markdown} < 0.375
+      37.5% - 45%: ${retail_markdown} < 0.45
+      45% - 52.5%: ${retail_markdown} < 0.525
+      52.5% - 60%: ${retail_markdown} < 0.6
+      else: '60% +'
+    
+    
 #################################################################################################################################################################################################
 ########################################################## MEASURES #############################################################################################################################
 #################################################################################################################################################################################################
@@ -364,14 +399,14 @@
     label: Closing Stock Value @ Retail
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    sql: ${TABLE}.closing_stock*${price}
     value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_yesterday
     label: Closing Stock Value @ Retail - Yesterday
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    sql: ${TABLE}.closing_stock*${price}
     filters:
       calendar_date_date: 1 day ago for 1 day
     value_format: '#,##0.00'
@@ -386,7 +421,7 @@
     label: Closing Stock Value @ Retail - Last Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    sql: ${TABLE}.closing_stock*${price}
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
@@ -396,7 +431,7 @@
     label: Closing Stock Value @ Retail - 2 Weeks Ago
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    sql: ${TABLE}.closing_stock*${price}
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
@@ -406,7 +441,54 @@
     label: Closing Stock Value @ Retail - End of Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.current_price},'0')
+    sql: ${TABLE}.closing_stock*${price}
+    filters:
+      calendar_date_day_of_week_index: 6
+    value_format: '#,##0.00'
+
+# closing stock @ retail (FULL PRICE)
+
+  - measure: closing_stock_value_retail_full_price
+    label: Closing Stock Value @ Retail (Full Price)
+    type: sum
+    decimals: 2
+    sql: ${TABLE}.closing_stock*${original_price}
+    value_format: '#,##0.00'
+    
+  - measure: closing_stock_value_retail_yesterday_full_price
+    label: Closing Stock Value @ Retail - Yesterday (Full Price)
+    type: sum
+    decimals: 2
+    sql: ${TABLE}.closing_stock*${original_price}
+    filters:
+      calendar_date_date: 1 day ago for 1 day
+    value_format: '#,##0.00'
+
+  - measure: closing_stock_value_retail_last_week_full_price
+    label: Closing Stock Value @ Retail - Last Week (Full Price)
+    type: sum
+    decimals: 2
+    sql: ${TABLE}.closing_stock*${original_price}
+    filters:
+      calendar_date_date: last week
+      calendar_date_day_of_week_index: 6
+    value_format: '#,##0.00'
+    
+  - measure: closing_stock_value_retail_week_before_last_full_price
+    label: Closing Stock Value @ Retail - 2 Weeks Ago (Full Price)
+    type: sum
+    decimals: 2
+    sql: ${TABLE}.closing_stock*${original_price}
+    filters:
+      calendar_date_date: 2 weeks ago
+      calendar_date_day_of_week_index: 6
+    value_format: '#,##0.00'
+    
+  - measure: closing_stock_value_retail_end_of_week_full_price
+    label: Closing Stock Value @ Retail - End of Week (Full Price)
+    type: sum
+    decimals: 2
+    sql: ${TABLE}.closing_stock*${original_price}
     filters:
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'

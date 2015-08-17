@@ -50,7 +50,7 @@
             and daily_sales.calendar_date = spree_variants.calendar_date
 
 
-    sql_trigger_value: select count(*) from ${daily_sales.SQL_TABLE_NAME}
+    sql_trigger_value: select sum(closing_stock + items_sold) from ${daily_sales.SQL_TABLE_NAME}
     distkey: ean
     sortkeys: [ean, calendar_date]
 
