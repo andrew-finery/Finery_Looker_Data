@@ -277,6 +277,19 @@
     label: Geo - Country Code
     sql: ${TABLE}.geo_country_code_2_characters
 
+  - dimension: geography_country
+    label: Geo - Country
+    sql_case:
+      UK: ${geography_country_two_letter_iso_code} = 'GB'
+      USA: ${geography_country_two_letter_iso_code} = 'US'
+      Australia: ${geography_country_two_letter_iso_code} = 'AU'
+      Hong Kong: ${geography_country_two_letter_iso_code} = 'HK'
+      Ireland: ${geography_country_two_letter_iso_code} = 'IE'
+      Singapore: ${geography_country_two_letter_iso_code} = 'SG'
+      UAE: ${geography_country_two_letter_iso_code} = 'AE'
+      Canada: ${geography_country_two_letter_iso_code} = 'CA'
+      else: Other
+
   - dimension: geography_region
     label: Geo - Region
     sql: ${TABLE}.geo_region
