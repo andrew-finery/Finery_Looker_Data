@@ -770,11 +770,12 @@
     sql: ${product_views}
     
 #################################################################################################################
-########################################### Payment Funnel Measures #############################################
+########################################### Conversion Funnel Measures ##########################################
 #################################################################################################################
 
 
-  - measure: payment_funnel_2
+  - measure: conversion_funnel_2
+    label: Conversion Funnel 2 - Category Page Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -792,7 +793,8 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_3
+  - measure: conversion_funnel_3
+    label: Conversion Funnel 3 - Product Page Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -809,7 +811,8 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_4
+  - measure: conversion_funnel_4
+    label: Conversion Funnel 4 - Add to Cart Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -825,8 +828,9 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_5
+  - measure: conversion_funnel_5
     type: number
+    label: Conversion Funnel 5 - View Cart Visits
     sql: |
           COUNT(DISTINCT
           CASE
@@ -839,7 +843,8 @@
           END)  
     hidden: true
     
-  - measure: payment_funnel_6
+  - measure: conversion_funnel_6
+    label: Conversion Funnel 6 - Checkout - Registration Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -852,7 +857,8 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_7
+  - measure: conversion_funnel_7
+    label: Conversion Funnel 7 - Checkout - Enter Address Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -864,7 +870,8 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_8
+  - measure: conversion_funnel_8
+    label: Conversion Funnel 8 - Checkout - Delivery Method Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -876,7 +883,8 @@
           END)
     hidden: true
   
-  - measure: payment_funnel_9
+  - measure: conversion_funnel_9
+    label: Conversion Funnel 9 - Checkout - Payment Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -888,7 +896,8 @@
           END)
     hidden: true
     
-  - measure: payment_funnel_10
+  - measure: conversion_funnel_10
+    label: Conversion Funnel 10 - Order Completed Visits
     type: number
     sql: |
           COUNT(DISTINCT
@@ -899,72 +908,74 @@
           END)
     hidden: true
     
-  - measure: 1_payment_funnel_all_sessions
-    label: Payment Funnel 1 (All Sessions)
+  - measure: 1_conversion_funnel_all_sessions
+    label: Conversion Funnel 1 (All Sessions)
     type: number
     decimals: 4
     sql: ${count}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
 
-  - measure: 2_payment_funnel_category_page
-    label: Payment Funnel 2 (Category Page)
+  - measure: 2_conversion_funnel_category_page
+    label: Conversion Funnel 2 (Category Page)
     type: number
     decimals: 4
-    sql: ${payment_funnel_2}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_2}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 3_payment_funnel_product_page
-    label: Payment Funnel 3 (Product Page)
+  - measure: 3_conversion_funnel_product_page
+    label: Conversion Funnel 3 (Product Page)
     type: number
     decimals: 4
-    sql: ${payment_funnel_3}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_3}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 4_payment_funnel_add_to_cart
-    label: Payment Funnel 4 (Add to Cart)
+  - measure: 4_conversion_funnel_add_to_cart
+    label: Conversion Funnel 4 (Add to Cart)
     type: number
     decimals: 4
-    sql: ${payment_funnel_4}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_4}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 5_payment_funnel_view_cart
-    label: Payment Funnel 5 (View Cart)
+  - measure: 5_conversion_funnel_view_cart
+    label: Conversion Funnel 5 (View Cart)
     type: number
     decimals: 4
-    sql: ${payment_funnel_5}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_5}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
 
-  - measure: 6_payment_funnel_checkout_registration
-    label: Payment Funnel 6 (Checkout - Registration)
+  - measure: 6_conversion_funnel_checkout_registration
+    label: Conversion Funnel 6 (Checkout - Registration)
     type: number
     decimals: 4
-    sql: ${payment_funnel_6}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_6}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 7_payment_funnel_checkout_address
-    label: Payment Funnel 7 (Checkout - Enter Address)
+  - measure: 7_conversion_funnel_checkout_address
+    label: Conversion Funnel 7 (Checkout - Enter Address)
     type: number
     decimals: 4
-    sql: ${payment_funnel_7}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_7}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 8_payment_funnel_checkout_delivery
-    label: Payment Funnel 8 (Checkout - Delivery Method)
+  - measure: 8_conversion_funnel_checkout_delivery
+    label: Conversion Funnel 8 (Checkout - Delivery Method)
     type: number
     decimals: 4
-    sql: ${payment_funnel_8}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_8}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 9_payment_funnel_checkout_payment
-    label: Payment Funnel 9 (Checkout - Payment)
+  - measure: 9_conversion_funnel_checkout_payment
+    label: Conversion Funnel 9 (Checkout - Payment)
     type: number
     decimals: 4
-    sql: ${payment_funnel_9}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_9}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
-  - measure: 10_payment_funnel_order
-    label: Payment Funnel 10 (Placed Order)
+  - measure: 10_conversion_funnel_order
+    label: Conversion Funnel 10 (Placed Order)
     type: number
     decimals: 4
-    sql: ${payment_funnel_10}/NULLIF(${count},0)::REAL
+    sql: ${conversion_funnel_10}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
+
+    
