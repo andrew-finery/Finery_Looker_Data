@@ -198,13 +198,13 @@
   - measure: first_sale_date
     label: First Sales Date
     type: date
-    sql: MIN(case when items_sold > 0 then ${calendar_date_date} else null end)
+    sql: MIN(case when ${items_sold} > 0 then ${calendar_date_date} else null end)
     convert_tz: false
 
   - measure: last_sale_date
     label: Last Sales Date
     type: date
-    sql: MAX(case when items_sold > 0 then ${calendar_date_date} else null end)
+    sql: MAX(case when ${items_sold} > 0 then ${calendar_date_date} else null end)
     convert_tz: false
       
 
