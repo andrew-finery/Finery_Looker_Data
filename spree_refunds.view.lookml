@@ -92,5 +92,6 @@
            
   - measure: total_refunded_gbp
     type: sum
+    decimals: 2
     sql: ${amount_refunded_gbp}
     value_format: '##0.00'
