@@ -189,7 +189,7 @@
     value_format: '#,##0.00'
 
   - measure: roi
-    label: ROI
+    label: Return on Investment
     type: number
     sql: (${sum_revenue} - ${sum_amount_spent})/ NULLIF(${sum_amount_spent},0) ::REAL    
     value_format: '0.00%'

@@ -58,7 +58,7 @@
     hidden: true
     
   - dimension: ean
-    label: EAN
+    label: ean
     sql: ${TABLE}.ean
     
   - dimension_group: ex_factory

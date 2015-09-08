@@ -97,19 +97,19 @@
 # Time and Description of latest event
     
   - dimension_group: latest_event_time
-    label: LATEST EVENT
+    label: Latest Event
     type: time
     timeframes: [time, date]
     sql: ${TABLE}.latest_event_time
        
   - dimension: latest_delivery_event
-    label: LATEST EVENT
+    label: Latest Event Description
     sql: ${TABLE}.current_status
 
 # Time of first attempt
 
   - dimension_group: first_attempt_time
-    label: FIRST DELIVERY ATTEMPT
+    label: First Delivery Attempt
     type: time
     timeframes: [time, date]
     sql: ${TABLE}.first_attempt_time

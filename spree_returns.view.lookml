@@ -72,35 +72,29 @@
 ##############################################################################################################################################
 
   - dimension: return_id
-    label: RETURN ID
     sql: ${TABLE}.return_id
     hidden: true
      
   - dimension: order_id
-    label: ORDER ID
     sql: ${TABLE}.order_id
        
   - dimension: shipment_id
-    label: SHIPMENT ID
     sql: ${TABLE}.shipment_id
     hidden: true
 
   - dimension: sku
-    label: SKU
+    label: sku
     sql: ${TABLE}.sku
 
   - dimension: return_reason
-    label: RETURN REASON
     sql: ${TABLE}.name
 
   - dimension_group: returned_at
-    label: RETURNED
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.created_at
   
   - dimension_group: order_completed
-    label: ORDER PLACED
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.order_completed_tstamp
@@ -150,7 +144,7 @@
     sql: count(*)
   
   - measure: average_days_to_process_return
-    label: AVERAGE DAYS TO RETURN
+    label: Average Days to Return
     type: average
     sql: cast(${days_to_process_return} as decimal(8,2))
     value_format: '#.00'

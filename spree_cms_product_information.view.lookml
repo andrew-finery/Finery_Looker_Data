@@ -129,7 +129,7 @@
     sql: ${TABLE}.slug
 
   - dimension: seo_page_title
-    label: SEO Page Title
+    label: Seo Page Title
     sql: ${TABLE}.seo_page_title
 
   - dimension: meta_title
@@ -201,7 +201,7 @@
     sql: ${TABLE}.quote_author
 
   - dimension: pdp_promo_block
-    label:  PDP Promo Block
+    label:  Pdp Promo Block
     sql: ${TABLE}.pdp_promo_block
 
   - dimension: taxon
@@ -221,7 +221,7 @@
     sql: ${TABLE}.variant_id
 
   - dimension: ean
-    label: EAN
+    label: ean
     sql: ${TABLE}.ean
 
   - dimension: option_type

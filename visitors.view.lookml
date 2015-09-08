@@ -132,7 +132,7 @@
   # Referer source dimensions #
 
   - dimension: acquisition_channel
-    label: VISITOR ACQUISITION CHANNEL
+    label: First Touch Acquisition Channel
     sql_case:
       Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
       SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483'

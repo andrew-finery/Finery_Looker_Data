@@ -60,13 +60,11 @@
 ###################################################################################################################################   
    
    - measure: attributed_orders
-     label: ATTRIBUTED ORDERS
      type: sum
      decimals: 2
      sql: ${attribution_ratio}
 
    - measure: attributed_new_customers
-     label: ATTRIBUTED NEW CUSTOMERS
      type: sum
      decimals: 2
      sql: ${attribution_ratio}
@@ -74,7 +72,7 @@
       transactions.new_customer_flag: yes
      
    - measure: attributed_revenue_ex_discount_ex_vat
-     label: ATTRIBUTED REVENUE EX. DISCOUNT, VAT
+     label: Attributed Revenue ex. discount, VAT
      type: sum
      decimals: 2
      value_format: '#,##0.00'

@@ -21,12 +21,10 @@
 ###########################################################################################################################################
 
   - dimension: email
-    label: EMAIL
     sql: ${TABLE}.email
     hidden: true
 
   - dimension: email_list
-    label: EMAIL LIST
     sql_case:
       Newsletter Subscribers: ${TABLE}.list = '179a8621fb'
       Newsletter Welcome Chain: ${TABLE}.list = '292b2aee8e'
@@ -35,12 +33,12 @@
       else: Other
   
   - dimension: list
-    label: LIST ID
+    label: List ID
     sql: ${TABLE}.list
     hidden: true
   
   - dimension_group: subscribe_time
-    label: SUBSCRIBED
+    label: Subscribed
     type: time
     timeframes: [time, date, week]
     sql: ${TABLE}.subscribe_time
@@ -51,12 +49,12 @@
 ###########################################################################################################################################
 
   - measure: count_all_time_subscribers
-    label: ALL TIME SUBSCRIBERS
+    label: All Time Subscribers
     type: count_distinct
     sql: ${email} || ${list}
 
   - measure: count_current_emails
-    label: COUNT CURRENT EMAILS
+    label: Current Emails in List
     type: count_distinct
     sql: ${email} || ${list}
     filters:
@@ -64,19 +62,16 @@
       mailchimp_cleaned_email.email_cleaned_time: "NULL"
 
   - measure: list_size_running_total
-    label: LIST SIZE RUNNING TOTAL
     type: running_total
     sql: ${count_current_emails}
 
   - measure: unsubscription_rate
-    label: UNSUBSCRIPTION RATE
     type: number
     decimals: 2
     sql:  coalesce(${mailchimp_unsubscribe.count_unsubscriptions_from_campaign}/NULLIF(${count_all_time_subscribers},0)::REAL, '0')
     value_format: '#.##%'
   
   - measure: cleaned_email_rate
-    label: CLEANED EMAIL RATE
     type: number
     type: number
     decimals: 2

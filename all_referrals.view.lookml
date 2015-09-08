@@ -24,13 +24,11 @@
     hidden: true
     
   - dimension_group: referral
-    label: REFERRAL
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.message_sent_at 
   
   - dimension: customer_referred_flag
-    label: CUSTOMER REFERRED FLAG
     type: yesno
     sql: ${email} is not null
   
@@ -39,30 +37,32 @@
     hidden: true
 
   - dimension: time_to_convert_tier
-    label: CONVERSION DAYS TIER
+    label: Conversion Days Tier
     type: tier
     tiers: [0,1,2,3,4,5,6,7,8,15,22,29]
     sql: ${time_to_convert}
+
+# Measures
   
   - measure: count_referrals
-    label: REFERRALS
+    label: Referrals Total
     type: count_distinct
     sql: ${email}
 
   - measure: count_converted
-    label: REFERRALS CONVERTED
+    label: Referrals Converted Total
     type: count_distinct
     sql: ${spree_customers.email}
 
   - measure: conversion_percentage
-    label: REFERRAL CONVERSION %
+    label: Referral Conversion %
     type: number
     decimals: 2
     sql: ${count_converted}/${count_referrals}::REAL
     value_format: '#.00%'
 
   - measure: running_total_converted
-    label: REFERRALS CONVERTED - RUNNING TOTAL
+    label: Referrals Converted - Running Total
     type: running_total
     sql: ${count_converted}
     direction: column

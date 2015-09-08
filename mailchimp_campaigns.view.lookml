@@ -10,22 +10,18 @@
   fields:
 
   - dimension: email_subject
-    label: EMAIL
     sql: ${TABLE}.email_subject
     hidden: true
     
   - dimension: campaign_id
-    label: CAMPAIGN ID
     sql: ${TABLE}.email_id
     hidden: true
 
   - dimension: list_id
-    label: LIST ID
     sql: ${TABLE}.list_id
     hidden: true
   
   - dimension: email_description
-    label: EMAIL DESCRIPTION
     sql_case:
       Newsletter Subscription Email: ${TABLE}.email_id = '99f17ae0cc'
       Newsletter WC Reminder 1: ${TABLE}.email_id = 'a60618fcc7'
@@ -43,7 +39,6 @@
     hidden: true
   
   - dimension: email_list
-    label: EMAIL LIST
     sql_case:
       Newsletter Subscribers: ${TABLE}.list_id = '179a8621fb'
       Newsletter Welcome Chain: ${TABLE}.list_id = '292b2aee8e'
@@ -53,7 +48,7 @@
     hidden: true
 
   - dimension_group: latest_send
-    label: LATEST SEND
+    label: Sent
     type: time
     timeframes: [time, date, week]
     sql: ${TABLE}.latest_send_time

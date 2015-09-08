@@ -15,34 +15,29 @@
   fields:
 
   - dimension: email
-    label: EMAIL
     sql: ${TABLE}.email
     hidden: true
   
   - dimension: list
-    label: LIST ID
+    label: List ID
     sql: ${TABLE}.list
     hidden: true
   
   - dimension_group: unsubscribe
-    label: UNSUBSCRIBE
     type: time
     timeframes: [time]
     sql: ${TABLE}.unsubscribe_time
     hidden: true
 
   - dimension: unsubscribe_campaign_id
-    label: UNSUBSCRIBE CAMPAIGN ID
     sql: ${TABLE}.unsub_campaign_id
     hidden: true
 
   - measure: count_unsubscriptions
-    label: COUNT UNSUBSCRIPTIONS
     type: count_distinct
     sql: ${email} || ${list}
 
   - measure: count_unsubscriptions_from_campaign
-    label: COUNT UNSUBSCRIPTIONS FROM CAMPAIGN
     type: count_distinct
     sql: ${email} || ${list}
     filters:

@@ -8,34 +8,28 @@
 
    - dimension_group: impression_date
      type: time
-     label: CALENDAR
+     label: Calendar
      sql: ${TABLE}.impression_date
      timeframes: [date, week, month]
 
    - dimension: brand
-     label: BRAND
      sql: ${TABLE}.brand
      hidden: true
    
    - dimension: category
-     label: CATEGORY
      sql: ${TABLE}.category
 
    - dimension: product_id
-     label: PRODUCT ID
      sql: ${TABLE}.id
 
    - dimension: list
-     label: LIST
      sql: ${TABLE}.list
      
    - dimension: position
      type: int
-     label: POSITION
      sql: cast(${TABLE}."position" as integer)
 
    - dimension: style
-     label: STYLE
      sql: ${TABLE}.style
 
    - dimension: product_impressions
@@ -52,16 +46,16 @@
      
    - measure: sum_product_impressions
      type: sum
-     label: PRODUCT IMPRESSIONS
+     label: Product Impressions
      sql: ${product_impressions}
    
    - measure: sum_product_clicks
      type: sum
-     label: PRODUCT CLICKS
+     label: Product Clicks
      sql: ${product_clicks}
    
    - measure: click_through_rate
      type: number
-     label: CLICK-THROUGH RATE
+     label: Click-Through Rate
      sql: ${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL
      value_format: '#0.00%'

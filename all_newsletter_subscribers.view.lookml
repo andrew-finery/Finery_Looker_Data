@@ -22,7 +22,6 @@
     hidden: true
   
   - dimension_group: newsletter_subscription
-    label: NEWSLETTER SUBSCRIPTION
     type: time
     timeframes: [date, week, month]
     sql: ${TABLE}.message_sent_at 
@@ -32,30 +31,30 @@
     hidden: true
 
   - dimension: time_to_convert_tier
-    label: CONVERSION DAYS TIER
+    label: Conversion Days Tier
     type: tier
     tiers: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
     sql: ${time_to_convert}
   
   - measure: count_newsletter_subscribers
-    label: NEWSLETTER SUBSCRIBERS
+    label: Newsletter Subscribers Total
     type: count_distinct
     sql: ${email}
 
   - measure: count_converted
-    label: NEWSLETTER SUBSCRIBERS CONVERTED
+    label: Newsletter Subscribers Converted
     type: count_distinct
     sql: ${spree_customers.email}
 
   - measure: conversion_percentage
-    label: NEWSLETTER CONVERSION %
+    label: Newsletter Conversion %
     type: number
     decimals: 2
     sql: ${count_converted}/${count_newsletter_subscribers}::REAL
     value_format: '#0.00%'
 
   - measure: running_total_converted
-    label: NEWSLETTER SUBSCRIBERS CONVERTED - RUNNING TOTAL
+    label: Newsletter Subscribers COnverted - Running Total
     type: running_total
     sql: ${count_converted}
     direction: column

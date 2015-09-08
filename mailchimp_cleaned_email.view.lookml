@@ -15,28 +15,24 @@
   fields:
 
   - dimension: email
-    label: EMAIL
     sql: ${TABLE}.email
     hidden: true
   
   - dimension: list
-    label: LIST ID
+    label: List ID
     sql: ${TABLE}.list
     hidden: true
   
   - dimension_group: email_cleaned
-    label: EMAIL CLEANED
     type: time
     timeframes: [time]
     sql: ${TABLE}.cleaned_time
     hidden: true
 
   - dimension: cleaned_campaign_id
-    label: CLEANED CAMPAIGN ID
     sql: ${TABLE}.cleaned_campaign_id
     hidden: true
   
   - measure: count_cleaned_emails
     type: count_distinct
-    label: COUNT CLEANED EMAILS
     sql: ${email} || ${list}

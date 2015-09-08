@@ -46,7 +46,7 @@
 
    - dimension_group: calendar_date
      type: time
-     label: CALENDAR
+     label: Calendar
      sql: ${TABLE}.calendar_date
      timeframes: [date, week, month]
      

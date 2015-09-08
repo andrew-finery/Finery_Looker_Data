@@ -48,67 +48,67 @@
   
   # WoW stuff
   
-   - measure: count_newsletter_subscribers_yesterday
-     type: count_distinct
-     sql: ${email_id}
-     filters:
-      email_list_name: Newsletter
-      event_time_date: 1 day ago for 1 day
-     hidden: true
+#   - measure: count_newsletter_subscribers_yesterday
+#     type: count_distinct
+#     sql: ${email_id}
+#     filters:
+#      email_list_name: Newsletter
+#      event_time_date: 1 day ago for 1 day
+#     hidden: true
 
-   - measure: count_newsletter_subscribers_last_week
-     type: count_distinct
-     sql: ${email_id}
-     filters:
-      email_list_name: Newsletter
-      event_time_date: 8 days ago for 1 day
-     hidden: true
+#   - measure: count_newsletter_subscribers_last_week
+#     type: count_distinct
+#     sql: ${email_id}
+#     filters:
+#      email_list_name: Newsletter
+#      event_time_date: 8 days ago for 1 day
+#     hidden: true
   
-   - measure: count_referrals_yesterday
-     type: count_distinct
-     sql: ${email_id}
-     filters:
-      email_list_name: Referrals
-      event_time_date: 1 day ago for 1 day
-     hidden: true
+#   - measure: count_referrals_yesterday
+#     type: count_distinct
+#     sql: ${email_id}
+#     filters:
+#      email_list_name: Referrals
+#      event_time_date: 1 day ago for 1 day
+#     hidden: true
   
-   - measure: count_referrals_last_week
-     type: count_distinct
-     sql: ${email_id}
-     filters:
-      email_list_name: Referrals
-      event_time_date: 8 days ago for 1 day
-     hidden: true
+#   - measure: count_referrals_last_week
+#     type: count_distinct
+#     sql: ${email_id}
+#     filters:
+#      email_list_name: Referrals
+#      event_time_date: 8 days ago for 1 day
+#     hidden: true
   
-   - measure: newsletter_subscribers_wow
-     label: NEWSLETTER SUBSCRIBERS WEEK ON WEEK
-     type: number
-     decimals: 2
-     sql: (${count_newsletter_subscribers_yesterday} - ${count_newsletter_subscribers_last_week})/NULLIF(${count_newsletter_subscribers_last_week},0)::REAL
-     value_format: '#.00%'
-     html: |
-          {% if value < 0 - Red' %}
-          <font color="#D77070"> {{ rendered_value }} </font>
-          {% elsif value > 0 - Green' %}
-          <font color="#3CB371> {{ rendered_value }} </font>
-          {% else %}
-          <font color="#000000> {{ rendered_value }} </font>
-          {% endif %}
-     hidden: true
+#   - measure: newsletter_subscribers_wow
+#     label: Newsletter Subscribers Week on Week
+#     type: number
+#     decimals: 2
+#     sql: (${count_newsletter_subscribers_yesterday} - ${count_newsletter_subscribers_last_week})/NULLIF(${count_newsletter_subscribers_last_week},0)::REAL
+#     value_format: '#.00%'
+#     html: |
+#          {% if value < 0 - Red' %}
+#          <font color="#D77070"> {{ rendered_value }} </font>
+#          {% elsif value > 0 - Green' %}
+#          <font color="#3CB371> {{ rendered_value }} </font>
+#          {% else %}
+#          <font color="#000000> {{ rendered_value }} </font>
+#          {% endif %}
+#     hidden: true
      
 
-   - measure: referrals_wow
-     label: REFERRALS WEEK ON WEEK
-     type: number
-     decimals: 2
-     sql: (${count_referrals_yesterday} - ${count_referrals_last_week})/NULLIF(${count_referrals_last_week},0)::REAL
-     value_format: '#.00%'
-     html: |
-          {% if value < 0 - Red' %}
-          <font color="#D77070"> {{ rendered_value }} </font>
-          {% elsif value > 0 - Green' %}
-          <font color="#3CB371> {{ rendered_value }} </font>
-          {% else %}
-          <font color="#000000> {{ rendered_value }} </font>
-          {% endif %}
-     hidden: true      
+#   - measure: referrals_wow
+#     label: Referrals Week on Week
+#     type: number
+#     decimals: 2
+#     sql: (${count_referrals_yesterday} - ${count_referrals_last_week})/NULLIF(${count_referrals_last_week},0)::REAL
+#     value_format: '#.00%'
+#     html: |
+#          {% if value < 0 - Red' %}
+#          <font color="#D77070"> {{ rendered_value }} </font>
+#          {% elsif value > 0 - Green' %}
+#          <font color="#3CB371> {{ rendered_value }} </font>
+#          {% else %}
+#          <font color="#000000> {{ rendered_value }} </font>
+#          {% endif %}
+#     hidden: true      

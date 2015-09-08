@@ -43,5 +43,4 @@
     hidden: true
 
   - dimension: exchange_rate
-    label: EXCHANGE RATE
     sql: ${TABLE}.rate

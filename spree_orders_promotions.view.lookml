@@ -23,5 +23,4 @@
   fields:
   
   - dimension: promotion_code
-    label: PROMOTION CODE
     sql: ${TABLE}.code
