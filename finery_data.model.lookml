@@ -37,18 +37,6 @@
     
 - explore: facebook_daily_performance
 
-#- explore: events
-#  joins:
-#  - join: identity_stitching
-#    sql_on: |
-#      identity_stitching.domain_userid = events.domain_userid
-      
-#- explore: spree_invitations
-#  joins:
-#  - join: spree_users
-#    sql_on: |
-#      lower(spree_invitations.email) = lower(spree_users.email_address)
-
 - explore: spree_users
   joins:
   - join: spree_orders
