@@ -153,11 +153,14 @@
     
 ########### MEASURES
   
-  - measure: gross_page_views
+  - measure: count_total_page_views
     type: count
 
-  - measure: distinct_page_views
+  - measure: count_distinct_page_views
     type: count_distinct
     sql: ${session_id} || ${page_urlpath}
 
+  - measure: count_sessions
+    type: count_distinct
+    sql: ${session_id}
 
