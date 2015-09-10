@@ -242,3 +242,5 @@
 - explore: looker_table_updates
 
 - explore: spree_variant_info_daily
+
+- explore: website_page_views
