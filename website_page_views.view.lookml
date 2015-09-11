@@ -213,6 +213,10 @@
     filters:
       landing_page_flag: yes
 
+  - measure: count_urls
+    type: count_distinct
+    sql: ${page_urlpath}
+
   - measure: exit_rate
     type: number
     decimals: 4
