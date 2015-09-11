@@ -688,7 +688,7 @@
     label: Returning Visit %
     type: number
     decimals: 2
-    sql: 100.0 * ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
+    sql: ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
 
   - measure: visitors_count
