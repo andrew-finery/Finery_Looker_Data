@@ -34,9 +34,32 @@
 
   - dimension: number_of_orders
     label: Number of Orders
+    type: number
     sql: ${TABLE}.number_of_orders
+
+  - dimension: has_repurchased
+    type: yesno
+    sql: ${number_of_orders} != 1
     
-#  - measure: total_orders
-#    label: TOTAL ORDERS
-#    type: sum
-#    sql: ${number_of_orders}
+## Measures
+    
+  - measure: total_customers
+    type: count_distinct
+    sql: ${email}
+    
+  - measure: repurchasing_customers
+    type: count_distinct
+    sql: ${email}
+    filters:
+      has_repurchased: Yes
+
+  - measure: non_repurchasing_customers
+    type: count_distinct
+    sql: ${email}
+    filters:
+      has_repurchased: No
+      
+  - measure: repurchase_rate
+    type: number
+    sql: ${repurchasing_customers}/NULLIF(${total_customers},0)::REAL
+    value_format: '#0.00%'
