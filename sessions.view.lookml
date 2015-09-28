@@ -401,7 +401,7 @@
       Search: ${TABLE}.refr_medium_ga = 'search'
       Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate' or ${TABLE}.refr_urlhost_ga = 'www.polyvore.com'
       Referrals: ${TABLE}.refr_medium_ga = 'unknown'
-      Facebook - Paid Marketing: ${TABLE}.mkt_medium_ga in ('paid', 'unpaid')
+      Facebook - Paid Marketing: ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
   
