@@ -14,7 +14,7 @@
           FROM finery.goods_in
           WHERE confirm_date IS NOT NULL
           AND not((left(rcpt_ref_num, 1) in ('h','H','R')
-              and TRIM('UN' FROM expected_qty) = 0
+              and TRIM('UN' FROM expected_qty) in (0, 1, 2)
               and len(rcpt_ref_num) in (10,11,12,13)
               and receieved_qty in (0,1,2,3))
               or rcpt_ref_num in ('c', 'RETURNSTOCK', '(ECOM) FIN 8 JUN A')
