@@ -1,77 +1,79 @@
 - view: sessions_basic
   derived_table:
     sql: |
-      SELECT
-      sessions.domain_userid,
-      sessions.domain_sessionidx,
-      convert_timezone('UTC', 'Europe/London', sessions.session_start_ts) as session_start_ts,
-      convert_timezone('UTC', 'Europe/London', sessions.session_end_ts) as session_end_ts,
-      sessions.number_of_events,
-      sessions.interaction_events,
-      sessions.free_gift_click_events,
-      coalesce(sessions.referrals_sent, '0') as referrals_sent,
-      sessions.distinct_pages_viewed,
-      sessions.user_id as user_id,
-      coalesce(signups.accounts_created,'0') as accounts_created,
-      coalesce(newsletter.newsletter_signups,'0') as newsletter_signups,
-      coalesce(add_cart.products_added_to_cart,'0') as products_added_to_cart,
-      coalesce(remove_cart.products_removed_from_cart,'0') as product_removed_from_cart,
-      coalesce(cart.cart_events,'0') as cart_events,
-      coalesce(checkout.checkout_progress,'0') as checkout_progress,
-      coalesce(product_impressions.product_impressions, '0') as product_impressions,
-      coalesce(product_clicks.product_clicks, '0') as product_clicks,
-      coalesce(product_views.distinct_product_views, '0') as product_views,
-      coalesce(sale_link_clicks.sale_link_clicks, '0') as sale_link_clicks,
-      sessions.successful_logins,
-      sessions.unsuccessful_logins,
-      sessions.unsuccessful_registrations,
-      sessions.sale_events
-      
-      FROM
-      
-      (SELECT
-        domain_userid,
-        domain_sessionidx,
-        MIN(collector_tstamp) AS session_start_ts,
-        MAX(collector_tstamp) AS session_end_ts,
-        count(*) AS number_of_events,
-        sum(case when (event = 'page_ping' or unstruct_event like '%product_impression%') then 0 else 1 end) as interaction_events,
-        sum(case when se_action = 'freeGiftClick' then 1 else 0 end) as free_gift_click_events,
-        sum(case when se_action = 'inviteFriends' then se_value else 0 end) as referrals_sent,
-        sum(case when unstruct_event like '%login_success%' then 1 else 0 end) as successful_logins,
-        sum(case when unstruct_event like '%login_failure%' then 1 else 0 end) as unsuccessful_logins,
-        sum(case when unstruct_event like '%registration_failure%' then 1 else 0 end) as unsuccessful_registrations,
-        sum(case when page_urlpath like '%final-call%' then 1 else 0 end) as sale_events,
-        COUNT(DISTINCT page_urlpath) AS distinct_pages_viewed,
-        max(user_id) as user_id
-      FROM
-        atomic.events
-      WHERE domain_userid IS NOT NULL
-        AND domain_userid <> ''
-        AND app_id = 'production'
-        AND domain_sessionidx IS NOT NULL
-      GROUP BY 1,2) sessions
-      
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(distinct customer_id) as accounts_created from atomic.com_finerylondon_registration_success_1 reg left join atomic.events events on reg.root_id = events.event_id group by 1,2) signups
-        ON signups.domain_userid = sessions.domain_userid and signups.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as newsletter_signups from atomic.com_finerylondon_newsletter_subscription_1 sub left join atomic.events events on sub.root_id = events.event_id group by 1,2) newsletter
-        ON newsletter.domain_userid = sessions.domain_userid and newsletter.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as products_added_to_cart from atomic.com_finerylondon_add_to_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) add_cart
-        ON add_cart.domain_userid = sessions.domain_userid and add_cart.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as products_removed_from_cart from atomic.com_finerylondon_remove_from_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) remove_cart
-        ON remove_cart.domain_userid = sessions.domain_userid and remove_cart.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as cart_events from atomic.com_finerylondon_cart_1 cart left join atomic.events events on cart.root_id = events.event_id group by 1,2) cart
-        ON cart.domain_userid = sessions.domain_userid and cart.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, max(case when checkout.checkout_step = 'started' then 1 when checkout.checkout_step = 'address' then 2 when checkout.checkout_step = 'delivery' then 3 when checkout.checkout_step = 'payment' then 3 else cast(checkout.checkout_step as int) end) as checkout_progress from atomic.com_finerylondon_checkout_1 checkout left join atomic.events events on checkout.root_id = events.event_id group by 1,2) checkout
-        ON checkout.domain_userid = sessions.domain_userid and checkout.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as product_impressions from atomic.com_finerylondon_product_impression_1 prod_impression left join atomic.events events on prod_impression.root_id = events.event_id left join atomic.com_finerylondon_product_impression_context_1 prod_impression_context on prod_impression.root_id = prod_impression_context.root_id group by 1,2) product_impressions
-        ON product_impressions.domain_userid = sessions.domain_userid and product_impressions.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as product_clicks from atomic.com_finerylondon_product_clicked_1 prod_clicks left join atomic.events events on prod_clicks.root_id = events.event_id group by 1,2) product_clicks
-        ON product_clicks.domain_userid = sessions.domain_userid and product_clicks.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(distinct prod_views.prod_id) as distinct_product_views from atomic.com_finerylondon_page_view_context_1 prod_views left join atomic.events events on prod_views.root_id = events.event_id where events.event = 'page_view' and page_type = 'products/show' group by 1,2) product_views
-        ON product_views.domain_userid = sessions.domain_userid and product_views.domain_sessionidx = sessions.domain_sessionidx
-      LEFT JOIN (select events.domain_userid, events.domain_sessionidx, count(*) as sale_link_clicks from atomic.com_snowplowanalytics_snowplow_link_click_1 sale_link left join atomic.events events on sale_link.root_id = events.event_id where target_url like '%final-call%' group by 1,2) sale_link_clicks
-        ON sale_link_clicks.domain_userid = sessions.domain_userid and sale_link_clicks.domain_sessionidx = sessions.domain_sessionidx
+          with step_1 as (
+          select event_id, domain_userid, domain_sessionidx, app_id, user_id, page_urlpath, event, unstruct_event, se_action, se_value, min(collector_tstamp) as collector_tstamp
+          from atomic.events
+          group by 1,2,3,4,5,6,7,8,9,10
+          ), step_2 as (
+          select root_id, customer_id from atomic.com_finerylondon_registration_success_1 group by 1,2
+          ), step_3 as (
+          select root_id, email from atomic.com_finerylondon_newsletter_subscription_1 group by 1,2
+          ), step_4 as (
+          select root_id from atomic.com_finerylondon_add_to_cart_1 group by 1
+          ), step_5 as (
+          select root_id from atomic.com_finerylondon_remove_from_cart_1 group by 1
+          ), step_6 as (
+          select root_id from atomic.com_finerylondon_cart_1 group by 1
+          ), step_7 as (
+          select root_id, checkout_step from atomic.com_finerylondon_checkout_1 group by 1,2
+          ), step_8_1 as (
+          select root_id from atomic.com_finerylondon_product_impression_1 group by 1
+          ), step_8_2 as (
+          select root_id, id from atomic.com_finerylondon_product_impression_context_1 group by 1,2
+          ), step_8 as (
+          select a.root_id, count(*) as impressions from step_8_1 a left join step_8_2 b on a.root_id = b.root_id group by 1
+          ), step_9 as (
+          select root_id from atomic.com_finerylondon_product_clicked_1 group by 1
+          ), step_10 as (
+          select root_id, prod_id, page_type from atomic.com_finerylondon_page_view_context_1 group by 1,2,3
+          ), step_11 as (
+          select root_id, target_url from atomic.com_snowplowanalytics_snowplow_link_click_1 group by 1,2
+          )
+          
+          select
+          events.domain_userid,
+          events.domain_sessionidx,
+          min(convert_timezone('UTC', 'Europe/London', events.collector_tstamp)) as session_start_ts,
+          max(convert_timezone('UTC', 'Europe/London', events.collector_tstamp)) as session_end_ts,
+          count(*) AS number_of_events,
+          sum(case when (events.event = 'page_ping' or events.unstruct_event like '%product_impression%') then 0 else 1 end) as interaction_events,
+          sum(case when events.se_action = 'freeGiftClick' then 1 else 0 end) as free_gift_click_events,
+          sum(case when events.se_action = 'inviteFriends' then se_value else 0 end) as referrals_sent,
+          COUNT(DISTINCT events.page_urlpath) AS distinct_pages_viewed,
+          max(events.user_id) as user_id,
+          count(distinct reg.customer_id) as accounts_created,
+          count(nl.root_id) as newsletter_signups,
+          count(atc.root_id) as products_added_to_cart,
+          count(rfc.root_id) as product_removed_from_cart,
+          count(cart.root_id) as cart_events,
+          coalesce(max(case when chk.checkout_step = 'started' then 1 when chk.checkout_step = 'address' then 2 when chk.checkout_step = 'delivery' then 3 when chk.checkout_step = 'payment' then 3 else cast(chk.checkout_step as int) end), '0') as checkout_progress,
+          coalesce(sum(pim.impressions), '0') as product_impressions,
+          count(pcl.root_id) as product_clicks,
+          count(distinct case when events.event = 'page_view' and pv.page_type = 'products/show' then pv.prod_id else null end) as product_views,
+          count(case when lc.target_url like '%final-call%' then lc.root_id else null end) as sale_link_clicks,
+          sum(case when events.unstruct_event like '%login_success%' then 1 else 0 end) as successful_logins,
+          sum(case when events.unstruct_event like '%login_failure%' then 1 else 0 end) as unsuccessful_logins,
+          sum(case when events.unstruct_event like '%registration_failure%' then 1 else 0 end) as unsuccessful_registrations,
+          sum(case when events.page_urlpath like '%final-call%' then 1 else 0 end) as sale_events
+          
+          from
+          
+          step_1 events
+          left join step_2 reg on events.event_id = reg.root_id
+          left join step_3 nl on events.event_id = nl.root_id
+          left join step_4 atc on events.event_id = atc.root_id
+          left join step_5 rfc on events.event_id = rfc.root_id
+          left join step_6 cart on events.event_id = cart.root_id
+          left join step_7 chk on events.event_id = chk.root_id
+          left join step_8 pim on events.event_id = pim.root_id
+          left join step_9 pcl on events.event_id = pcl.root_id
+          left join step_10 pv on events.event_id = pv.root_id
+          left join step_11 lc on events.event_id = lc.root_id
+          
+          where events.app_id = 'production'
+          
+          group by 1,2
 
     sql_trigger_value: SELECT FLOOR((EXTRACT(epoch from NOW()) - 60*60*3)/(60*60*24)) # Trigger table generation when new data loaded into atomic.events
     distkey: domain_userid
