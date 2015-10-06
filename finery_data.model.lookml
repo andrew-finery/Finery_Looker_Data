@@ -199,7 +199,10 @@
   - join: spree_customers
     sql_on: all_newsletter_subscribers.email = spree_customers.email
     relationship: one_to_one
-
+  - join: spree_orders
+    sql_on: spree_orders.email = all_newsletter_subscribers.email
+    relationship: one_to_many
+    
 - explore: all_referrals
   joins:
   - join: spree_customers

@@ -6,6 +6,7 @@
             matrix.year_week_number,
             matrix.sku,
             coalesce(option_availability.full_option_availability_flag, '0') as full_option_availability_flag,
+            coalesce(option_availability.option_low_in_stock_flag, '0') as option_low_in_stock_flag,
             first_option_sales_date.first_option_sales_date as first_option_sales_date,
             coalesce(closing.closing_stock, '0') as closing_stock,
             coalesce(sales.items_sold, '0') as items_sold,
@@ -57,7 +58,8 @@
             left join
               (select
               online_products.product_id, closing_stock.closing_stock_date,
-              case when cast(sum(case when coalesce(closing_stock.closing_stock,'0') > 0 then 1 else 0 end) as decimal(8,2))/cast(count(distinct closing_stock.sku) as decimal(8,2)) = 1 then 1 else 0 end as full_option_availability_flag
+              case when cast(sum(case when coalesce(closing_stock.closing_stock,'0') > 0 then 1 else 0 end) as decimal(8,2))/cast(count(distinct closing_stock.sku) as decimal(8,2)) = 1 then 1 else 0 end as full_option_availability_flag,
+              case when cast(sum(case when coalesce(closing_stock.closing_stock,'0') > 0 then 1 else 0 end) as decimal(8,2))/cast(count(distinct closing_stock.sku) as decimal(8,2)) < 0.7 then 1 else 0 end as option_low_in_stock_flag
               from ${daily_closing_stock.SQL_TABLE_NAME} closing_stock
               left join ${online_products.SQL_TABLE_NAME} online_products
               on closing_stock.sku = online_products.ean
@@ -122,6 +124,11 @@
     label: Full Size Availability (Yes/No)
     type: yesno
     sql: ${TABLE}.full_option_availability_flag = 1
+
+  - dimension: option_low_in_stock_flag
+    label: Option Low Stock (Yes/No)
+    type: yesno
+    sql: ${TABLE}.option_low_in_stock_flag = 1
   
   - dimension: product_on_sale_flag
     label: On Sale Flag
