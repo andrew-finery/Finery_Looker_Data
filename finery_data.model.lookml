@@ -213,6 +213,8 @@
   joins:
   - join: spree_products
     sql_on: ${snowplow_product_click_through_daily.product_id} = ${spree_products.product_id}
+  - join: spree_product_info_daily
+    sql_on: ${snowplow_product_click_through_daily.product_id} = ${spree_product_info_daily.product_id} and ${snowplow_product_click_through_daily.impression_date_date} = ${spree_product_info_daily.calendar_date}
 
 - explore: daily_option_info
   joins:
