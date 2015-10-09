@@ -23,7 +23,11 @@
   - join: pages
     from: snowplow_pages_viewed
     sql_on: ${sessions.session_id} = ${pages.session_id}
-    relationship: one_to_many    
+    relationship: one_to_many
+#  - join: orders_test_do_not_use
+#    from: snowplow_transactions
+#    sql_on: ${orders_test_do_not_use.domain_userid} = ${sessions.domain_user_id} and ${orders_test_do_not_use.domain_sessionidx} = ${sessions.domain_session_index}
+#    relationship: one_to_many
     
 - explore: snowplow_transaction_attribution
   fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
