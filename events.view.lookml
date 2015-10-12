@@ -7,7 +7,7 @@
       event_id,
       event,
       convert_timezone('UTC', 'Europe/London', collector_tstamp) as collector_tstamp,
-      dvce_tstamp,
+      dvce_created_tstamp,
       page_title,
       page_urlscheme,
       page_urlhost,
@@ -214,4 +214,3 @@
   - measure: engagement_time_per_visitor
     type: string
     sql: floor(${approx_usage_per_visitor_in_minutes}) || ':' || right(cast('00' as varchar) || cast(((${approx_usage_per_visitor_in_minutes} - floor(${approx_usage_per_visitor_in_minutes})) * 60) as integer), 2)
-

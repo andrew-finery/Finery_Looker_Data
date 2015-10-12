@@ -6,14 +6,14 @@
                 domain_sessionidx,
                 page_urlhost, 
                 page_urlpath,
-                dvce_tstamp 
+                dvce_created_tstamp 
                 FROM (
                 SELECT
                 domain_userid,
                 domain_sessionidx,
-                FIRST_VALUE(page_urlhost) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlhost,
-                FIRST_VALUE(page_urlpath) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlpath,
-                FIRST_VALUE(dvce_tstamp) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS dvce_tstamp
+                FIRST_VALUE(page_urlhost) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_created_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlhost,
+                FIRST_VALUE(page_urlpath) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_created_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS page_urlpath,
+                FIRST_VALUE(dvce_created_tstamp) OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_created_tstamp, event_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS dvce_created_tstamp
                 FROM atomic.events
                 WHERE app_id = 'production') AS a
                 GROUP BY 1,2,3,4,5

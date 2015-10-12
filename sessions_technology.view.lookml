@@ -57,7 +57,7 @@
           dvce_screenwidth,
           dvce_screenheight,
           RANK() OVER (PARTITION BY domain_userid, domain_sessionidx 
-            ORDER BY dvce_tstamp, br_name, br_family, br_version, br_type, br_renderengine, br_lang, br_features_director, br_features_flash, 
+            ORDER BY dvce_created_tstamp, br_name, br_family, br_version, br_type, br_renderengine, br_lang, br_features_director, br_features_flash, 
             br_features_gears, br_features_java, br_features_pdf, br_features_quicktime, br_features_realplayer, br_features_silverlight,
             br_features_windowsmedia, br_cookies, os_name, os_family, os_manufacturer, os_timezone, dvce_type, dvce_ismobile, dvce_screenwidth,
             dvce_screenheight) AS "rank"

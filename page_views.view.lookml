@@ -7,7 +7,7 @@
                     a.page_urlhost,
                     a.page_urlpath,
                     a.page_url,
-                    a.dvce_tstamp,
+                    a.dvce_created_tstamp,
           
                     case when (a.page_urlpath like '%clothing%') then 2
                          when (a.page_urlpath like '%products%') then 3
@@ -67,7 +67,7 @@
                     atm.page_urlhost,
                     atm.page_urlpath,
                     atm.page_url,
-                    atm.dvce_tstamp
+                    atm.dvce_created_tstamp
                     
                     from atomic.events atm
                     
@@ -104,7 +104,7 @@
                     atm.page_urlhost,
                     atm.page_urlpath,
                     atm.page_url,
-                    max(atm.dvce_tstamp)
+                    max(atm.dvce_created_tstamp)
                     
                     from atomic.events atm
                     
@@ -137,7 +137,7 @@
                     
                     on a.domain_userid = c.domain_userid
                     and a.domain_sessionidx = c.domain_sessionidx
-                    and a.dvce_tstamp = c.dvce_tstamp
+                    and a.dvce_created_tstamp = c.dvce_created_tstamp
                     and a.page_urlhost = c.page_urlhost --join on url to get rid of any instances of different urls being sent out at exactly the same time for within a session
                     and a.page_urlpath = c.page_urlpath
                     
@@ -172,7 +172,7 @@
   - dimension_group: page_viewed_at
     type: time
     timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
-    sql: ${TABLE}.dvce_tstamp
+    sql: ${TABLE}.dvce_created_tstamp
     
   
   # OS fields #  

@@ -51,8 +51,8 @@
           (SELECT *
           FROM (
           SELECT
-          domain_userid, domain_sessionidx, mkt_source, mkt_medium, mkt_campaign, mkt_term, mkt_content, refr_source, refr_medium, refr_term, refr_urlhost, refr_urlpath, dvce_tstamp,
-          RANK() OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_tstamp, mkt_source, mkt_medium, mkt_campaign, mkt_term, refr_source, refr_medium, refr_term, refr_urlhost, refr_urlpath) AS "rank",
+          domain_userid, domain_sessionidx, mkt_source, mkt_medium, mkt_campaign, mkt_term, mkt_content, refr_source, refr_medium, refr_term, refr_urlhost, refr_urlpath, dvce_created_tstamp,
+          RANK() OVER (PARTITION BY domain_userid, domain_sessionidx ORDER BY dvce_created_tstamp, mkt_source, mkt_medium, mkt_campaign, mkt_term, refr_source, refr_medium, refr_term, refr_urlhost, refr_urlpath) AS "rank",
           min(collector_tstamp) as session_start_time
           FROM atomic.events
           WHERE (refr_medium is null or refr_medium != 'internal') -- Not an internal referer

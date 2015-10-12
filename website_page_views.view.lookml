@@ -28,7 +28,7 @@
                    page_urlport,
                    page_urlquery,
                    page_urlfragment,
-                   ROW_NUMBER() OVER (PARTITION BY domain_userid || domain_sessionidx ORDER BY collector_tstamp ASC,dvce_tstamp ASC) AS event_index
+                   ROW_NUMBER() OVER (PARTITION BY domain_userid || domain_sessionidx ORDER BY collector_tstamp ASC,dvce_created_tstamp ASC) AS event_index
             FROM step_2
           ),
           step_4 AS
