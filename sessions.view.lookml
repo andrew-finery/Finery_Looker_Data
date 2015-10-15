@@ -392,9 +392,8 @@
     label: Acquisition Channel
     sql_case:
       Facebook - Paid Marketing: (${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.refr_source_ga = 'Facebook')  and ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
-      SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483' or ${TABLE}.mkt_campaign_ga like '%Brand%'
-      SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing' or mkt_medium_ga = 'cpc'
-      SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
+      SEM Non-Brand: (${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing') and not (${TABLE}.mkt_campaign_ga = '313295483' or ${TABLE}.mkt_campaign_ga like '%Brand%' or ${TABLE}.mkt_campaign_ga is null)
+      SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com' or mkt_medium_ga = 'cpc'
       CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
       Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram' or ${TABLE}.mkt_source_ga = 'fb'
@@ -791,7 +790,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_3
     label: Conversion Funnel 3 - Product Page Visits
@@ -809,7 +807,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_4
     label: Conversion Funnel 4 - Add to Cart Visits
@@ -826,7 +823,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_5
     type: number
@@ -841,7 +837,6 @@
           THEN ${session_id}
           ELSE NULL
           END)  
-    hidden: true
     
   - measure: conversion_funnel_6
     label: Conversion Funnel 6 - Checkout - Registration Visits
@@ -855,7 +850,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_7
     label: Conversion Funnel 7 - Checkout - Enter Address Visits
@@ -868,7 +862,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_8
     label: Conversion Funnel 8 - Checkout - Delivery Method Visits
@@ -881,7 +874,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
   
   - measure: conversion_funnel_9
     label: Conversion Funnel 9 - Checkout - Payment Visits
@@ -894,7 +886,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: conversion_funnel_10
     label: Conversion Funnel 10 - Order Completed Visits
@@ -906,7 +897,6 @@
           THEN ${session_id}
           ELSE NULL
           END)
-    hidden: true
     
   - measure: 1_conversion_funnel_all_sessions
     label: Conversion Funnel 1 (All Sessions)
