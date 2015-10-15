@@ -393,7 +393,7 @@
     sql_case:
       Facebook - Paid Marketing: (${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.refr_source_ga = 'Facebook')  and ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
       SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483' or ${TABLE}.mkt_campaign_ga like '%Brand%'
-      SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing'
+      SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing' or mkt_medium_ga = 'cpc'
       SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
       CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
