@@ -74,6 +74,8 @@
         t.br_features_silverlight,
         t.br_features_windowsmedia,
         t.br_cookies,
+        t.br_viewwidth,
+        t.br_viewheight,
         t.os_name,
         t.os_family,
         t.os_manufacturer,
@@ -576,6 +578,12 @@
   - dimension: browser_supports_cookies
     sql: ${TABLE}.br_cookies
     hidden: true
+
+  - dimension: browser_width
+    sql: ${TABLE}.br_viewwidth
+
+  - dimension: browser_height
+    sql: ${TABLE}.br_viewheight
 
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
