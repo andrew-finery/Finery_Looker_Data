@@ -69,18 +69,6 @@
     sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
   - join: sessions
     sql_on: sessions.domain_userid = atomic_events.domain_userid and sessions.domain_sessionidx = atomic_events.domain_sessionidx
-  - join: product_impressions
-    sql_on: product_impressions.root_id = atomic_events.event_id
-  - join: product_clicked
-    sql_on: product_clicked.root_id = atomic_events.event_id
-  - join: product_quick_views
-    sql_on: product_quick_views.root_id = atomic_events.event_id   
-  - join: product_in_cart
-    sql_on: product_in_cart.root_id = atomic_events.event_id
-  - join: product_in_transaction
-    sql_on: product_in_transaction.root_id = atomic_events.event_id
-  - join: product_in_checkout
-    sql_on: product_in_checkout.root_id = atomic_events.event_id
   - join: mailchimp_campaigns_1
     from: mailchimp_campaigns
     sql_on: atomic_events.se_label = mailchimp_campaigns_1.email_id
