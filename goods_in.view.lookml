@@ -20,7 +20,8 @@
               or rcpt_ref_num in ('c', 'RETURNSTOCK', '(ECOM) FIN 8 JUN A')
               or left(rcpt_ref_num, 3) = 'POP')
           AND not (rcpt_ref_num = '' and receieved_qty in (1,0))
-
+          AND not (left(rcpt_ref_num, 2) = 'IR' and len(rcpt_ref_num) = 9)
+          
      sql_trigger_value: SELECT count(*) from finery.goods_in
      distkey: ean
      sortkeys: [confirm_date, ean]
