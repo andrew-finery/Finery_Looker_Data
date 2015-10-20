@@ -21,15 +21,15 @@
           
                   (select ses.blended_user_id, ses.session_index, trans.order_id
                   from ${transactions.SQL_TABLE_NAME} trans
-                  left join ${sessions.SQL_TABLE_NAME} ses
+                  left join website_data.sessions ses
                   on trans.domain_userid = ses.domain_userid and trans.domain_sessionidx = ses.domain_sessionidx) transaction_sessions
           
-          left join ${sessions.SQL_TABLE_NAME} sessions
+          left join website_data.sessions sessions
           on transaction_sessions.blended_user_id = sessions.blended_user_id
           
           where transaction_sessions.session_index >= sessions.session_index
 
-    sql_trigger_value: SELECT COUNT(*) FROM ${sessions.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT COUNT(*) FROM website_data.sessions
     distkey: domain_userid
     sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
 

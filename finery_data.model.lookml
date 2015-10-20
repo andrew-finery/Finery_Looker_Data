@@ -24,10 +24,26 @@
     from: snowplow_pages_viewed
     sql_on: ${sessions.session_id} = ${pages.session_id}
     relationship: one_to_many
-#  - join: orders_test_do_not_use
-#    from: snowplow_transactions
-#    sql_on: ${orders_test_do_not_use.domain_userid} = ${sessions.domain_user_id} and ${orders_test_do_not_use.domain_sessionidx} = ${sessions.domain_session_index}
-#    relationship: one_to_many
+  - join: orders
+    from: website_all_orders
+    sql_on: ${orders.domain_userid} = ${sessions.domain_user_id} and ${orders.domain_sessionidx} = ${sessions.domain_session_index}
+    relationship: one_to_many
+  - join: order_items
+    from: website_order_items
+    sql_on: ${order_items.domain_userid} = ${sessions.domain_user_id} and ${order_items.domain_sessionidx} = ${sessions.domain_session_index} and ${orders.order_id} = ${order_items.order_id}
+    relationship: one_to_many
+
+- explore: website_products
+  from: website_product_stats
+  joins:
+  - join: visits
+    from: sessions
+    sql_on: ${website_products.domain_userid} = ${visits.domain_user_id} and ${website_products.domain_sessionidx} = ${visits.domain_session_index}    
+    relationship: many_to_one
+  - join: product_info
+    from: spree_products
+    sql_on: ${website_products.id} = ${product_info.product_id} 
+    relationship: many_to_one
     
 - explore: snowplow_transaction_attribution
   fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
