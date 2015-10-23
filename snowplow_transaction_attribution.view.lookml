@@ -1,38 +1,5 @@
 - view: snowplow_transaction_attribution
-  derived_table:
-    sql: |
-          select
-          transaction_sessions.order_id,
-          sessions.domain_userid,
-          sessions.domain_sessionidx,
-          sessions.session_start_ts,
-          
-          case
-          when sessions.session_index = 1 and transaction_sessions.session_index = 1 then 10000.0000        --full attribution to a first session conversion
-          when sessions.session_index in (1,2) and transaction_sessions.session_index = 2 then 5000.0000    -- 50/50 attribution to a second session conversion
-          when sessions.session_index = 1 then 4000.0000                                                    -- 40% first-click attribution
-          when sessions.session_index = transaction_sessions.session_index then 4000.0000                   -- 40% last-click attribution                                
-          else cast(2000.0000 / (transaction_sessions.session_index - 2) as decimal(10,4))                  -- 20% attribution spread over assists
-          end
-          as attribution_percentage
-          
-          
-          from
-          
-                  (select ses.blended_user_id, ses.session_index, trans.order_id
-                  from ${transactions.SQL_TABLE_NAME} trans
-                  left join website_data.sessions ses
-                  on trans.domain_userid = ses.domain_userid and trans.domain_sessionidx = ses.domain_sessionidx) transaction_sessions
-          
-          left join website_data.sessions sessions
-          on transaction_sessions.blended_user_id = sessions.blended_user_id
-          
-          where transaction_sessions.session_index >= sessions.session_index
-
-    sql_trigger_value: SELECT COUNT(*) FROM website_data.sessions
-    distkey: domain_userid
-    sortkeys: [domain_userid, domain_sessionidx, session_start_ts]
-
+  sql_table_name: website_data.order_attribution
   fields:
   
     ###################################################################################################################################

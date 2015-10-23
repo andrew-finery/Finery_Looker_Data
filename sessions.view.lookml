@@ -646,7 +646,7 @@
                 OR ${pages.page_type} = 'Checkout - Registration Page'
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.event_id} is not null
+                OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -663,7 +663,7 @@
                 OR ${pages.page_type} = 'Checkout - Registration Page'
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.event_id} is not null
+                OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -679,7 +679,7 @@
                 OR ${pages.page_type} = 'Checkout - Registration Page'
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.event_id} is not null
+                OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -693,7 +693,7 @@
           CASE
           WHEN (${pages.page_type} = 'Cart Page'
                 OR ${pages.page_type} = 'Checkout - Registration Page'
-                OR ${transactions.event_id} is not null
+                OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -706,7 +706,7 @@
           COUNT(DISTINCT
           CASE
           WHEN (${pages.page_type} = 'Checkout - Registration Page'
-                OR ${transactions.event_id} is not null
+                OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -718,7 +718,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.event_id} is not null
+          WHEN (${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -730,7 +730,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.event_id} is not null
+          WHEN (${transactions.order_id} is not null
                 OR ${checkout_progress} > 1)
           THEN ${session_id}
           ELSE NULL
@@ -742,7 +742,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.event_id} is not null
+          WHEN (${transactions.order_id} is not null
                 OR ${checkout_progress} > 2)
           THEN ${session_id}
           ELSE NULL
@@ -754,7 +754,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.event_id} is not null)
+          WHEN (${transactions.order_id} is not null)
           THEN ${session_id}
           ELSE NULL
           END)

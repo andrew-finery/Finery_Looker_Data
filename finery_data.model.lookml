@@ -13,20 +13,13 @@
   - join: transactions
     sql_on: ${transactions.domain_userid} = ${sessions.domain_user_id} and ${transactions.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
-  - join: spree_exchange_rates
-    sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
-    relationship: many_to_one
   - join: session_start_calendar
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     relationship: many_to_one
   - join: pages
-    from: snowplow_pages_viewed
+    from: website_page_views
     sql_on: ${sessions.session_id} = ${pages.session_id}
-    relationship: one_to_many
-  - join: orders
-    from: website_all_orders
-    sql_on: ${orders.domain_userid} = ${sessions.domain_user_id} and ${orders.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
   - join: order_items
     from: website_order_items
@@ -37,6 +30,7 @@
   from: website_product_stats
   joins:
   - join: visits
+    fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
     from: sessions
     sql_on: ${website_products.domain_userid} = ${visits.domain_user_id} and ${website_products.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
@@ -50,8 +44,6 @@
   joins:
   - join: transactions
     sql_on: ${snowplow_transaction_attribution.order_id} = ${transactions.order_id}
-  - join: spree_exchange_rates
-    sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}  
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
     
@@ -69,8 +61,6 @@
 - explore: atomic_events
   fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
   joins:
-  - join: identity_stitching
-    sql_on: identity_stitching.domain_userid = atomic_events.domain_userid
   - join: transactions
     sql_on: transactions.event_id = atomic_events.event_id
   - join: page_contexts
@@ -81,8 +71,6 @@
     sql_on: register_success.root_id = atomic_events.event_id
   - join: newsletter_subscriptions
     sql_on: newsletter_subscriptions.root_id = atomic_events.event_id
-  - join: spree_exchange_rates
-    sql_on: spree_exchange_rates.currency = transactions.currency_code and spree_exchange_rates.calendar_date = date(transactions.collector_tstamp)
   - join: sessions
     sql_on: sessions.domain_userid = atomic_events.domain_userid and sessions.domain_sessionidx = atomic_events.domain_sessionidx
   - join: mailchimp_campaigns_1
