@@ -640,7 +640,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (pages.page_type = 'Category Page'
+          WHEN (${pages.page_type} = 'Category Page'
                 OR ${pages.page_type} = 'Product Page'
                 OR ${pages.page_type} = 'Cart Page'
                 OR ${pages.page_type} = 'Checkout - Registration Page'

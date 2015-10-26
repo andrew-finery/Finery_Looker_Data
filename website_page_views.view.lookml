@@ -8,8 +8,8 @@
   - dimension: domain_userid
     sql: ${TABLE}.domain_userid
 
-  - dimension: session_id
-    sql: ${TABLE}.session_id
+  - dimension: domain_sessionidx
+    sql: ${TABLE}.domain_sessionidx
 
   - dimension: page_view_index
     type: number

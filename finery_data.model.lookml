@@ -19,7 +19,7 @@
     relationship: many_to_one
   - join: pages
     from: website_page_views
-    sql_on: ${sessions.session_id} = ${pages.session_id}
+    sql_on: ${pages.domain_userid} = ${sessions.domain_user_id} and ${pages.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
   - join: order_items
     from: website_order_items
