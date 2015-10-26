@@ -62,9 +62,12 @@
       Product Page: ${page_urlpath} like '%/products/%'
       Chapters Page: ${page_urlpath} = '/chapters'
       Editorial: ${page_urlpath} like '%/chapters/%'
-      Cart: ${page_urlpath} = '/cart'
-      Checkout: ${page_urlpath} = '/checkout'
-      Order Complete: ${page_urlpath} like '/orders/%'
+      Cart Page: ${page_urlpath} like '%/cart%'
+      Checkout - Registration Page: ${page_urlpath} like '%/checkout/registration%'
+      Checkout - Address: ${page_urlpath} like '%/checkout/address%'
+      Checkout - Delivery: ${page_urlpath} like '%/checkout/delivery%'
+      Checkout - Payment: ${page_urlpath} like '%/checkout/payment%'
+      Order Complete: ${page_urlpath} like '%/orders/R%'
       else: Other
 
   - dimension: previous_page_type
@@ -110,11 +113,11 @@
 
   - measure: count_distinct_page_views
     type: count_distinct
-    sql: ${session_id} || ${page_urlpath}
+    sql: ${domain_userid} || ${domain_sessionidx} || ${page_urlpath}
 
   - measure: count_sessions
     type: count_distinct
-    sql: ${session_id}
+    sql: ${domain_userid} || ${domain_sessionidx}
     
   - measure: count_exits
     type: count
