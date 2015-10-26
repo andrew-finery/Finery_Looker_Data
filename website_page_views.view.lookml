@@ -1,5 +1,5 @@
 - view: website_page_views
-  sql_table_name: website_data.page_views
+  sql_table_name: website_data.session_page_views
 
   fields:
 

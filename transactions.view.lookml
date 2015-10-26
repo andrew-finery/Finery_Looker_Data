@@ -91,7 +91,7 @@
     sql: ${TABLE}.blended_email
     filters:
       reason_to_strip_out: NULL
-
+      
   - measure: gross_revenue_ex_discount_ex_vat
     label: Gross Revenue ex. Discount, VAT Total
     type: sum
