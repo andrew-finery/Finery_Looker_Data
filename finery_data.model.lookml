@@ -28,9 +28,9 @@
 
 - explore: website_products
   from: website_product_stats
+  fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
   joins:
   - join: visits
-    fields: [ALL_FIELDS*, -sessions.payment_funnel_2, -sessions.payment_funnel_3, -sessions.payment_funnel_4, -sessions.payment_funnel_5, -sessions.payment_funnel_6]
     from: sessions
     sql_on: ${website_products.domain_userid} = ${visits.domain_user_id} and ${website_products.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
