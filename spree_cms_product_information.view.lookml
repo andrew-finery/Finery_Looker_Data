@@ -20,7 +20,6 @@
           products.product_group_id,
           product_groups.name as product_group_name,
           product_groups.sku as product_group_parent_sku,
-          products.reward_style_category,
           products.google_product_category,
           products.season,
           product_quotes.content as quote,
@@ -180,10 +179,6 @@
     label: Product Group Parent SKU
     sql: ${TABLE}.product_group_parent_sku
 
-  - dimension: reward_style_category
-    label: Reward Style Category
-    sql: ${TABLE}.reward_style_category
-    
   - dimension: google_product_category
     label: Google Product Category
     sql: ${TABLE}.google_product_category
