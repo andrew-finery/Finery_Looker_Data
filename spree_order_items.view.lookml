@@ -497,6 +497,24 @@
     sql: ${avg_retail_markdown} + ${avg_voucher_discount}
     value_format: '#0.00%'
 
+  - measure: total_retail_markdown
+    type: number
+    decimals: 2
+    sql: ${sum_pre_retail_markdown_item_revenue_in_gbp} - ${sum_gross_item_revenue_in_gbp}
+    value_format: '#0.00'
+    
+  - measure: total_voucher_discount
+    type: number
+    decimals: 2
+    sql: ${sum_gross_item_revenue_in_gbp} - ${sum_gross_item_revenue_ex_voucher_discount_gbp}  
+    value_format: '#0.00'
+    
+  - measure: total_discount
+    type: number
+    decimals: 2
+    sql: ${total_retail_markdown} + ${total_voucher_discount}
+    value_format: '#0.00'
+    
     ####################################################################################    
   ################################################# TW, LW, L4W, MTD, STD #######################################################################################################################
 ####################################################################################
