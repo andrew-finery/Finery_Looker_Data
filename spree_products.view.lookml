@@ -26,8 +26,8 @@
           parent_sku,
           max(category) as department,
           max(sub_season_code) as sub_season_code,
-          case when max(category) in ('Jewellery', 'Accessories') then 'Non-Clothing' else 'Clothing' end as product_area
-          from finery.brightpearl_export_new group by 1) brightpearl_info
+          case when max(category) in ('Jewellery', 'Accessories', 'Shoes') then 'Non-Clothing' else 'Clothing' end as product_area
+          from finery.brightpearl_export group by 1) brightpearl_info
           on product_groups.sku = brightpearl_info.parent_sku
           
           left join
