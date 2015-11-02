@@ -45,10 +45,10 @@
       Jewellery: ${TABLE}.category = 'Jewellery'
       Knitwear: ${TABLE}.category = 'Knitwear'
       Evening Dresses: ${TABLE}.category = 'Evening Dresses'
-      Outerwear & Blazers: ${TABLE}.category = 'Outerwear and Blazers'
+      Outerwear and Blazers: ${TABLE}.category = 'Outerwear & Blazers'
       Shoes: ${TABLE}.category = 'Shoes'
       Skirts: ${TABLE}.category = 'Skirts'
-      Trousers & Shorts: ${TABLE}.category = 'Trousers and Shorts'
+      Trousers and Shorts: ${TABLE}.category = 'Trousers & Shorts'
       Woven Tops: ${TABLE}.category = 'Woven Tops'
       else: 'Other'
     html: |
@@ -59,7 +59,7 @@
     label: Product Area
     sql_case:
       #Clothing: ${TABLE}.category in ('Woven Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Occasion Dresses', 'Skirts', 'Jumpsuits', 'Jersey Day Dresses')
-      Clothing: ${TABLE}.category in ('Day Dresses', 'Trousers and Shorts', 'Woven Tops', 'Outerwear and Blazers', 'Knitwear', 'Jersey Tops', 'Evening Dresses', 'Skirts')
+      Clothing: ${TABLE}.category in ('Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Evening Dresses', 'Skirts')
       Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
