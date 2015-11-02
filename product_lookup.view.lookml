@@ -58,7 +58,8 @@
   - dimension: product_area
     label: Product Area
     sql_case:
-      Clothing: ${TABLE}.category in ('Woven Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Occasion Dresses', 'Skirts', 'Jumpsuits', 'Jersey Day Dresses')
+      #Clothing: ${TABLE}.category in ('Woven Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Occasion Dresses', 'Skirts', 'Jumpsuits', 'Jersey Day Dresses')
+      Clothing: ${TABLE}.category in ('Day Dresses', 'Trousers and Shorts', 'Woven Tops', 'Outerwear and Blazers', 'Knitwear', 'Jersey Tops', 'Evening Dresses', 'Skirts')
       Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
