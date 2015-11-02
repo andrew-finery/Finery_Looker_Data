@@ -45,10 +45,10 @@
       Jewellery: ${TABLE}.category = 'Jewellery'
       Knitwear: ${TABLE}.category = 'Knitwear'
       Evening Dresses: ${TABLE}.category = 'Evening Dresses'
-      Outerwear & Blazers: ${TABLE}.category = 'Outerwear & Blazers'
+      Outerwear & Blazers: ${TABLE}.category = 'Outerwear and Blazers'
       Shoes: ${TABLE}.category = 'Shoes'
       Skirts: ${TABLE}.category = 'Skirts'
-      Trousers & Shorts: ${TABLE}.category = 'Trousers & Shorts'
+      Trousers & Shorts: ${TABLE}.category = 'Trousers and Shorts'
       Woven Tops: ${TABLE}.category = 'Woven Tops'
       else: 'Other'
     html: |
