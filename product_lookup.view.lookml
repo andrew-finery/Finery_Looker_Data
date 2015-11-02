@@ -1,7 +1,7 @@
 - view: product_lookup
   derived_table:
    sql: |
-        select * from finery.brightpearl_export bp
+        select * from finery.brightpearl_export_new bp
         left join (select ean as ean2, current_price, coalesce(pre_sale_price, max_price) as original_price from ${online_products.SQL_TABLE_NAME}) prices
         on bp.ean = prices.ean2
 
@@ -16,50 +16,48 @@
     sql: ${TABLE}.allocated
     hidden: true
 
+  - dimension: category
+    label: Department
+    sql_case:
+      Accessories: ${TABLE}.category = 'Accessories'
+      Jersey Day Dresses: ${TABLE}.category = 'Jersey Day Dresses'
+      Jersey Tops: ${TABLE}.category = 'Jersey Tops'
+      Jewellery: ${TABLE}.category = 'Jewellery'
+      Jumpsuits: ${TABLE}.category = 'Jumpsuits'
+      Knitwear: ${TABLE}.category = 'Knitwear'
+      Occasion Dresses: ${TABLE}.category = 'Occasion Dresses'
+      Outerwear & Blazers: ${TABLE}.category = 'Outerwear & Blazers'
+      Shoes: ${TABLE}.category = 'Shoes'
+      Skirts: ${TABLE}.category = 'Skirts'
+      Trousers & Shorts: ${TABLE}.category = 'Trousers & Shorts'
+      Woven Day Dresses: ${TABLE}.category = 'Woven Day Dresses'
+      Woven Tops: ${TABLE}.category = 'Woven Tops'
+      else: 'Other'
+
   #- dimension: category
   #  label: Department
   #  sql_case:
   #    Accessories: ${TABLE}.category = 'Accessories'
-  #    Jersey Day Dresses: ${TABLE}.category = 'Jersey Day Dresses'
+  #    Day Dresses: ${TABLE}.category = 'Day Dresses'
   #    Jersey Tops: ${TABLE}.category = 'Jersey Tops'
   #    Jewellery: ${TABLE}.category = 'Jewellery'
-  #    Jumpsuits: ${TABLE}.category = 'Jumpsuits'
   #    Knitwear: ${TABLE}.category = 'Knitwear'
-  #    Occasion Dresses: ${TABLE}.category = 'Occasion Dresses'
-  #    Outerwear & Blazers: ${TABLE}.category = 'Outerwear & Blazers'
+  #    Evening Dresses: ${TABLE}.category = 'Evening Dresses'
+  #    Outerwear and Blazers: ${TABLE}.category = 'Outerwear & Blazers'
   #    Shoes: ${TABLE}.category = 'Shoes'
   #    Skirts: ${TABLE}.category = 'Skirts'
-  #    Trousers & Shorts: ${TABLE}.category = 'Trousers & Shorts'
-  #    Woven Day Dresses: ${TABLE}.category = 'Woven Day Dresses'
+  #    Trousers and Shorts: ${TABLE}.category = 'Trousers & Shorts'
   #    Woven Tops: ${TABLE}.category = 'Woven Tops'
   #    else: 'Other'
   #  html: |
   #      <a href="https://finerylondon.looker.com/explore/finery_data/daily_sales?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&query=fqvpV63&filter_config=%7B%22product_lookup.category%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:5%7D%5D%7D&f%5Bproduct_lookup.category%5D={{value}}&run=1">{{value}}</a>
 
-  - dimension: category
-    label: Department
-    sql_case:
-      Accessories: ${TABLE}.category = 'Accessories'
-      Day Dresses: ${TABLE}.category = 'Day Dresses'
-      Jersey Tops: ${TABLE}.category = 'Jersey Tops'
-      Jewellery: ${TABLE}.category = 'Jewellery'
-      Knitwear: ${TABLE}.category = 'Knitwear'
-      Evening Dresses: ${TABLE}.category = 'Evening Dresses'
-      Outerwear and Blazers: ${TABLE}.category = 'Outerwear & Blazers'
-      Shoes: ${TABLE}.category = 'Shoes'
-      Skirts: ${TABLE}.category = 'Skirts'
-      Trousers and Shorts: ${TABLE}.category = 'Trousers & Shorts'
-      Woven Tops: ${TABLE}.category = 'Woven Tops'
-      else: 'Other'
-    html: |
-        <a href="https://finerylondon.looker.com/explore/finery_data/daily_sales?show=data,fields&vis=%7B%22type%22:%22looker_column%22%7D&query=fqvpV63&filter_config=%7B%22product_lookup.category%22:%5B%7B%22type%22:%22is%22,%22values%22:%5B%7B%22constant%22:%22{{value}}%22%7D,%7B%7D%5D,%22id%22:5%7D%5D%7D&f%5Bproduct_lookup.category%5D={{value}}&run=1">{{value}}</a>
-
   
   - dimension: product_area
     label: Product Area
     sql_case:
-      #Clothing: ${TABLE}.category in ('Woven Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Occasion Dresses', 'Skirts', 'Jumpsuits', 'Jersey Day Dresses')
-      Clothing: ${TABLE}.category in ('Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Evening Dresses', 'Skirts')
+      Clothing: ${TABLE}.category in ('Woven Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Occasion Dresses', 'Skirts', 'Jumpsuits', 'Jersey Day Dresses')
+      #Clothing: ${TABLE}.category in ('Day Dresses', 'Trousers & Shorts', 'Woven Tops', 'Outerwear & Blazers', 'Knitwear', 'Jersey Tops', 'Evening Dresses', 'Skirts')
       Non-Clothing: ${TABLE}.category in ('Accessories', 'Shoes', 'Jewellery')
       else: 'Other'
 
