@@ -15,7 +15,7 @@
             spree_variants.price,                                              
             spree_variants.on_sale_flag
             from
-            ${daily_sales.SQL_TABLE_NAME} daily_sales
+            sales.daily_variant_sales daily_sales
             left join
                   (select
                   date(variants.spree_timestamp) - 1 as calendar_date,
@@ -50,7 +50,7 @@
             and daily_sales.calendar_date = spree_variants.calendar_date
 
 
-    sql_trigger_value: select sum(closing_stock + items_sold) from ${daily_sales.SQL_TABLE_NAME}
+    sql_trigger_value: select count(*) from sales.daily_variant_sales
     distkey: ean
     sortkeys: [ean, calendar_date]
 

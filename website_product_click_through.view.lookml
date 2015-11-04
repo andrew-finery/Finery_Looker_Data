@@ -1,5 +1,5 @@
 - view: website_product_click_through
-  sql_table_name: website_data.session_product_click_through
+  sql_table_name: web.product_click_through
   fields:
 
   - dimension: id

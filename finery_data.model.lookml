@@ -63,8 +63,6 @@
   joins:
   - join: transactions
     sql_on: transactions.event_id = atomic_events.event_id
-  - join: page_contexts
-    sql_on: page_contexts.root_id = atomic_events.event_id
   - join: email_subscriptions
     sql_on: email_subscriptions.root_id = atomic_events.event_id
   - join: register_success

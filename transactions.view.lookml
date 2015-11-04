@@ -1,5 +1,6 @@
 - view: transactions
-  sql_table_name: website_data.all_orders
+  derived_table:
+    sql: select * from web.orders where domain_userid is not null and domain_sessionidx is not null
   fields:
 
     ###########################################################################################################################################################

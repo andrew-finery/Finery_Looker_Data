@@ -1,5 +1,5 @@
 - view: snowplow_transaction_attribution
-  sql_table_name: website_data.order_attribution
+  sql_table_name: web.order_attribution
   fields:
   
     ###################################################################################################################################

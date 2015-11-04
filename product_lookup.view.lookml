@@ -2,10 +2,10 @@
   derived_table:
    sql: |
         select * from finery.brightpearl_export_new bp
-        left join (select ean as ean2, current_price, coalesce(pre_sale_price, max_price) as original_price from ${online_products.SQL_TABLE_NAME}) prices
+        left join (select ean as ean2, current_price, coalesce(pre_sale_price, max_price) as original_price from web.product_info) prices
         on bp.ean = prices.ean2
 
-   sql_trigger_value: SELECT count(*) from ${online_products.SQL_TABLE_NAME}
+   sql_trigger_value: SELECT count(*) from web.product_info
    distkey: ean
    sortkeys: [ean]
      

@@ -1,5 +1,7 @@
 - view: website_order_items
-  sql_table_name: website_data.order_items
+  derived_table:
+    sql: select * from web.order_items where domain_userid is not null and domain_sessionidx is not null
+  
   fields:
 
   - dimension: adjustment_total

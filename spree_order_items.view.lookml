@@ -1,60 +1,6 @@
 - view: spree_order_items
   derived_table:
-    sql: |
-      --
-      select 
-        a.spree_timestamp,
-        a.completed_at as order_tstamp,
-        b.order_id as order_id,
-        a.customer_id as customer_id,
-        a.order_code as order_code,
-        c.sku,
-        b.price,
-        b.currency,
-        b.quantity,
-        d.max_selling_price,
-        d.max_selling_price/a.exchange_rate as max_selling_price_gbp,
-        (d.max_selling_price - b.price) as discount,
-        coalesce(e.items_returned, '0') as items_returned,
-        case when e.return_reason like 'Other%' then 'Other' else e.return_reason end as return_reason,
-        e.return_tstamp,
-        a.exchange_rate,
-        a.tax_rate,
-        a.item_total as order_total,
-        a.adjustment_total,
-        pre_sale_prices.pre_sale_price,
-        case when pre_sale_prices.pre_sale_price is null then 0
-             when b.price < pre_sale_prices.pre_sale_price then 1
-             else 0 end as product_on_sale_flag
-        
-        from
-
-        ${spree_orders.SQL_TABLE_NAME} a
-        inner join
-        (select * from daily_snapshot.spree_line_items where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_line_items)) b
-        on a.order_id = b.order_id
-        left join 
-        (select id, sku from (select * from daily_snapshot.spree_variants where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_variants)) group by 1,2) c
-        on b.variant_id = c.id
-        left join
-        (select variant_id, currency, max(amount) as max_selling_price from daily_snapshot.spree_prices group by 1,2) d
-        on b.variant_id = d.variant_id
-        and d.currency = a.currency
-        left join
-        (select order_id, sku, min(created_at) as return_tstamp, count(*) as items_returned, max(name) as return_reason from ${spree_returns.SQL_TABLE_NAME} group by 1,2) e
-        on a.order_id = e.order_id
-        and c.sku = e.sku
-        left join
-        (select variant_id, currency, max(amount) as pre_sale_price from daily_snapshot.spree_pre_sale_prices where spree_timestamp = (select max(spree_timestamp) from daily_snapshot.spree_pre_sale_prices) and deleted_at is null and amount > 0 group by 1,2) pre_sale_prices
-        on pre_sale_prices.variant_id = b.variant_id
-        and a.currency = pre_sale_prices.currency
-        
-        where a.state not in ('canceled')
-
-        
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_orders.SQL_TABLE_NAME}
-    distkey: order_id
-    sortkeys: [order_id, order_tstamp]
+    sql: select * from sales.order_items where reason_to_strip_out is null
 
   fields:
 
@@ -85,6 +31,10 @@
     
   - dimension: currency
     sql: ${TABLE}.currency
+    hidden: true
+
+  - dimension: tax_rate
+    sql: ${TABLE}.tax_rate
     hidden: true
     
   - dimension: exchange_rate
@@ -217,7 +167,7 @@
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
     type: number
     decimals: 2
-    sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) * (1/(1+${spree_orders.tax_rate}))) end
+    sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) / (1+${tax_rate})) end
     value_format: '#,##0.00'
 
   # Margin Dimensions
@@ -370,7 +320,7 @@
   - measure: sum_return_item_value_gbp_ex_vat
     type: sum
     decimals: 2
-    sql: ${price} * ${items_returned} * (1/(1+${spree_orders.tax_rate})) / ${exchange_rate}
+    sql: ${price} * ${items_returned} / (1+${tax_rate}) / ${exchange_rate}
     value_format: '#,##0.00'
     hidden: true
     
@@ -415,13 +365,13 @@
   
   - measure: sum_gross_item_revenue_in_gbp_ex_vat
     type: sum
-    sql: (${price} * ${quantity} * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
+    sql: (${price} * ${quantity} / (1+${tax_rate})) / ${exchange_rate}
     decimals: 2
     value_format: '#,##0.00'
     
   - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
-    sql: (${price} * (${quantity} - ${items_returned}) * (1/(1+${spree_orders.tax_rate}))) / ${exchange_rate}
+    sql: (${price} * (${quantity} - ${items_returned}) / (1+${tax_rate})) / ${exchange_rate}
     decimals: 2
     value_format: '#,##0.00'
 

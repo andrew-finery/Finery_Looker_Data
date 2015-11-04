@@ -1,5 +1,5 @@
 - view: website_product_stats
-  sql_table_name: website_data.session_product_stats
+  sql_table_name: web.product_stats
   fields:
 
   - dimension: id

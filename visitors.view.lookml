@@ -1,5 +1,5 @@
 - view: visitors
-  sql_table_name: website_data.visitors
+  sql_table_name:  web.visitors
   fields:
   
   # DIMENSIONS # 
