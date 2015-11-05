@@ -62,6 +62,10 @@
      sql: coalesce(${TABLE}.category_clicks, '0')
      hidden: true
 
+   - dimension: product_quick_views
+     sql: coalesce(${TABLE}.quick_views, '0')
+     hidden: true
+
     #################################################################################################################################################
   ######################################################## MEASURES ###############################################################################
 #################################################################################################################################################
@@ -141,6 +145,11 @@
      type: sum
      label: Clicks
      sql: ${product_clicks}
+
+   - measure: sum_product_quick_views
+     type: sum
+     label: Quick Views
+     sql: ${product_quick_views}
 
    - measure: click_through_rate
      type: number
