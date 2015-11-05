@@ -46,6 +46,7 @@
     y_axis_tick_density: default
     y_axis_tick_density_custom: 6
     y_axis_labels: [Orders, Visits]
+    y_axis_combined: false
     x_axis_gridlines: false
     show_x_axis_label: true
     show_x_axis_ticks: true
