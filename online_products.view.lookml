@@ -80,7 +80,7 @@
      
      - dimension: on_sale_flag
        label: Currently on Sale Flag
-       sql: case when ${pre_sale_price} is not null then 'On Sale' else 'Full Price' end
+       sql: case when ${pre_sale_price} is not null and ${pre_sale_price} > ${current_price_gbp} then 'On Sale' else 'Full Price' end
 
      - dimension_group: on_sale
        label: On Sale

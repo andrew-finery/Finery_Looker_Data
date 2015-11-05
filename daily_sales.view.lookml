@@ -48,7 +48,15 @@
   
   - dimension: product_on_sale_flag
     label: On Sale Flag
-    sql: case when ${online_products.on_sale_date} <= ${calendar_date_date} then 'On Sale' else 'Full Price' end
+    sql: |
+          case
+          when
+          ${online_products.on_sale_date} <= ${calendar_date_date}
+          and
+          ${online_products.pre_sale_price} > ${online_products.current_price_gbp}
+          then 'On Sale'
+          else 'Full Price'
+          end
     hidden: true
     
   - dimension: price
