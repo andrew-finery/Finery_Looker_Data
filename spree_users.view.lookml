@@ -1,94 +1,5 @@
 - view: spree_users
-  derived_table:
-    sql: |
-       SELECT 
-              --
-              a.spree_timestamp,
-              a.id AS user_id,
-              a.email AS email_address,
-              convert_timezone('UTC', 'Europe/London', a.created_at) as created_at,
-              a.first_name,
-              a.last_name,
-              a.newsletter_opt_in,
-              users_yesterday.newsletter_opt_in AS newsletter_opt_in_yest,
-              a.sign_in_count,
-              convert_timezone('UTC', 'Europe/London', a.last_sign_in_at) as last_sign_in_at,
-              a.birth_date,
-              c.credit_amount AS signup_credit,
-              c.currency AS signup_credit_currency,
-              c.credit_amount_gbp AS signup_credit_gbp,
-              COALESCE(b.total_credit_granted_gbp,'0') AS total_credit_granted_gbp,
-              COALESCE(b.total_credit_used_gbp,'0') AS total_credit_used_gbp,
-              COALESCE(b.current_credit_gbp,'0') AS current_credit_gbp,
-              COALESCE(d.referrals_sent,'0') AS referrals_sent,
-              e.code AS invite_code_used,
-              e.invitation_id AS invitation_id,
-              e.sent_by_id AS invitation_sent_by_user_id,
-              roles.name AS role
-       FROM (SELECT *
-             FROM daily_snapshot.spree_users
-             WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_users)) a
-         LEFT JOIN (SELECT aaa.user_id,
-                           SUM(aaa.amount*bbb.rate) AS total_credit_granted_gbp,
-                           SUM(aaa.amount_used*bbb.rate) AS total_credit_used_gbp,
-                           SUM(aaa.amount*bbb.rate) - SUM(aaa.amount_used*bbb.rate) AS current_credit_gbp
-                    FROM (SELECT *
-                          FROM daily_snapshot.spree_store_credits
-                          WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                                   FROM daily_snapshot.spree_store_credits)) aaa
-                      LEFT JOIN ${spree_exchange_rates.SQL_TABLE_NAME} bbb
-                             ON DATE (aaa.created_at) = bbb.calendar_date
-                            AND aaa.currency = bbb.currency
-                    GROUP BY 1) b ON a.id = b.user_id
-         LEFT JOIN (SELECT aaa.email,
-                           aaa.credit_amount,
-                           aaa.currency,
-                           aaa.credit_amount*bbb.exchange_rate AS credit_amount_gbp
-                    FROM (SELECT *
-                          FROM daily_snapshot.spree_user_signup_awards
-                          WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                                   FROM daily_snapshot.spree_user_signup_awards)
-                          AND   created_at IS NOT NULL) aaa
-                      LEFT JOIN lookup.exchange_rates bbb
-                             ON DATE (aaa.created_at) = bbb. "date"
-                            AND aaa.currency = bbb.currency) c ON lower (a.email) = lower (c.email)
-         LEFT JOIN (SELECT sent_by_id AS user_id,
-                           COUNT(*) AS referrals_sent
-                    FROM daily_snapshot.spree_invitations
-                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                             FROM daily_snapshot.spree_invitations)
-                    AND   sent_by_id IS NOT NULL
-                    GROUP BY 1) d ON a.id = d.user_id
-         LEFT JOIN (SELECT invitations_users.user_id,
-                           invitations.id AS invitation_id,
-                           invitations.code,
-                           invitations.sent_by_id
-                    FROM (SELECT user_id,
-                                 invitation_id
-                          FROM daily_snapshot.spree_invitations_users
-                           WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                                   FROM daily_snapshot.spree_invitations_users)) invitations_users
-                      LEFT JOIN (SELECT *
-                                 FROM daily_snapshot.spree_invitations
-                                 WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                                          FROM daily_snapshot.spree_invitations)) invitations ON invitations_users.invitation_id = invitations.id) e ON e.user_id = a.id
-         LEFT JOIN (SELECT user_id, max(role_id) as role_id
-                    FROM daily_snapshot.spree_roles_users
-                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp)
-                                             FROM daily_snapshot.spree_roles_users) group by 1) roles_users ON a.id = roles_users.user_id
-         LEFT JOIN (SELECT *
-                    FROM daily_snapshot.spree_roles
-                    WHERE spree_timestamp = (SELECT MAX(spree_timestamp) FROM daily_snapshot.spree_roles)) roles ON roles_users.role_id = roles.id
-         LEFT JOIN (SELECT id,
-                           MAX(newsletter_opt_in) AS newsletter_opt_in
-                    FROM daily_snapshot.spree_users
-                    WHERE DATE (spree_timestamp) = CURRENT_DATE- 1
-                    GROUP BY 1) users_yesterday ON users_yesterday.id = a.id
-
-    sql_trigger_value: SELECT MAX(spree_timestamp) FROM ${spree_exchange_rates.SQL_TABLE_NAME}
-    distkey: user_id
-    sortkeys: [user_id]
-
+  sql_table_name: sales.users
 
   fields:
 
@@ -127,11 +38,6 @@
     sql: ${TABLE}.newsletter_opt_in = 1
     hidden: true
 
-  - dimension: newsletter_opt_in_yesterday
-    type: yesno
-    sql: ${TABLE}.newsletter_opt_in_yest = 1
-    hidden: true
-    
   - dimension: sign_in_count
     sql: ${TABLE}.sign_in_count
     hidden: true
@@ -153,10 +59,6 @@
     type: time
     timeframes: [time, date, hour, week, month]
     sql: ${TABLE}.last_sign_in_at
-    hidden: true
-
-  - dimension: signup_credit_currency
-    sql: ${TABLE}.signup_credit_currency
     hidden: true
 
 ##############################################################################################################################################################################
@@ -181,16 +83,6 @@
     type: sum
     sql: ${TABLE}.referrals_sent
 
-  - measure: sum_signup_credit_granted
-    type: sum
-    sql: ${TABLE}.signup_credit
-    value_format: '#,##0.00'
-  
-  - measure: sum_signup_credit_granted_gbp
-    type: sum
-    sql: ${TABLE}.signup_credit_gbp
-    value_format: '#,##0.00'
-  
   - measure: sum_total_credit_granted_gbp
     type: sum
     sql: ${TABLE}.total_credit_granted_gbp

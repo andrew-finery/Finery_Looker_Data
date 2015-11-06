@@ -8,12 +8,12 @@
         first_value(orders.order_id) over(partition by lower(coalesce(users.email_address, orders.email)) order by completed_at asc rows between unbounded preceding and unbounded following) as first_order_id,
         last_value(orders.completed_at) over(partition by lower(coalesce(users.email_address, orders.email)) order by completed_at asc rows between unbounded preceding and unbounded following) as last_order_time,
         last_value(orders.order_id) over(partition by lower(coalesce(users.email_address, orders.email)) order by completed_at asc rows between unbounded preceding and unbounded following) as last_order_id
-        from ${spree_orders.SQL_TABLE_NAME} orders
-        left join ${spree_users.SQL_TABLE_NAME} users on orders.customer_id = users.user_id
+        from (select * from sales.orders where reason_to_strip_out is null) orders
+        left join sales.users users on orders.customer_id = users.user_id
         where orders.state <> 'canceled')
         group by 1,2,3,4,5
 
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_orders.SQL_TABLE_NAME}
+    sql_trigger_value: SELECT count(*) from sales.users
     distkey: email
     sortkeys: [email]
 

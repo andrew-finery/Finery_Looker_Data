@@ -15,7 +15,7 @@
                                                 FROM daily_snapshot.spree_promotions)) promotions ON orders.promotion_id = promotions.id
 
     
-    sql_trigger_value: SELECT max(spree_timestamp) FROM ${spree_tax_rates.SQL_TABLE_NAME}
+    sql_trigger_value: select count(*) from daily_snapshot.spree_zones
     distkey: order_id
     sortkeys: [order_id]
 
