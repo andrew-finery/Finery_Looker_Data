@@ -137,6 +137,35 @@
           or ${checkout_progress} > 0
           or ${transactions.order_id} is not null
           or ${session_duration_seconds} > 239
+
+  - dimension: engagement_goal_1
+    label: Engagement Goal 1 (>6 Pages)
+    type: yesno
+    sql: ${distinct_pages_viewed} > 6
+
+  - dimension: engagement_goal_2
+    label: Engagement Goal 2 (Create Account)
+    type: yesno
+    sql: ${accounts_created} > 0
+          
+  - dimension: engagement_goal_3
+    label: Engagement Goal 3 (NL Signup)
+    type: yesno
+    sql: ${newsletter_signups} > 0
+
+
+  - dimension: engagement_goal_4
+    label: Engagement Goal 4 (>4 mins)
+    type: yesno
+    sql: ${session_duration_seconds} > 239
+
+  - dimension: engagement_goal_5
+    label: Engagement Goal 5 (Add to Cart)
+    type: yesno
+    sql: |
+          ${cart_events} > 0
+          or ${checkout_progress} > 0
+          or ${transactions.order_id} is not null
  
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
@@ -589,6 +618,13 @@
     type: sum
     sql: ${newsletter_signups}
 
+  - measure: nl_signup_rate
+    label: Newsletter Signup Rate
+    type: number
+    decimals: 2
+    sql: ${sum_newsletter_signups}/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+    
   - measure: sum_products_added_to_cart
     label: Products Added to Cart Total
     type: sum
