@@ -1,30 +1,5 @@
 - view: goods_in
-  derived_table:
-     sql: |
-          SELECT confirm_date,
-                 style AS parent_sku,
-                 ean,
-                 receieved_qty AS received_quantity,
-                 rcpt_ref_num,
-                 CASE
-                   WHEN rcpt_ref_num LIKE '%(W)%' THEN 'Wholesale'
-                   WHEN rcpt_ref_num LIKE '%(WH)%' THEN 'Wholesale'
-                   ELSE 'Ecom' end as stock_type,         
-          TRIM('UN' FROM expected_qty) AS expected_quantity
-          FROM finery.goods_in
-          WHERE confirm_date IS NOT NULL
-          AND not((left(rcpt_ref_num, 1) in ('h','H','R')
-              and TRIM('UN' FROM expected_qty) in (0, 1, 2)
-              and len(rcpt_ref_num) in (10,11,12,13)
-              and receieved_qty in (0,1,2,3))
-              or rcpt_ref_num in ('c', 'RETURNSTOCK', '(ECOM) FIN 8 JUN A')
-              or left(rcpt_ref_num, 3) = 'POP')
-          AND not (rcpt_ref_num = '' and receieved_qty in (1,0))
-          AND not (left(rcpt_ref_num, 2) = 'IR' and len(rcpt_ref_num) = 9)
-          
-     sql_trigger_value: SELECT count(*) from finery.goods_in
-     distkey: ean
-     sortkeys: [confirm_date, ean]
+  sql_table_name: sales.goods_in
 
   fields:
 

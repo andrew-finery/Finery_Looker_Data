@@ -65,8 +65,6 @@
     sql_on: transactions.event_id = atomic_events.event_id
   - join: email_subscriptions
     sql_on: email_subscriptions.root_id = atomic_events.event_id
-  - join: register_success
-    sql_on: register_success.root_id = atomic_events.event_id
   - join: newsletter_subscriptions
     sql_on: newsletter_subscriptions.root_id = atomic_events.event_id
   - join: sessions
@@ -100,8 +98,6 @@
     sql_on: spree_customers.email = spree_orders.blended_email
   - join: all_referrals
     sql_on: spree_orders.blended_email = all_referrals.email
-  - join: spree_orders_promotions
-    sql_on: spree_orders.order_id = spree_orders_promotions.order_id
 
 - explore: spree_order_items
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
@@ -147,20 +143,6 @@
   - join: mandrill_message_clicked
     sql_on: ${mandrill_message_sent.email_id} = ${mandrill_message_clicked.email_id}
     
-#- explore: spree_returns
-#  fields: [ALL_FIELDS*, -online_products.option]
-#  joins:
-#  - join: product_lookup
-#    sql_on: spree_returns.sku = product_lookup.ean
-#  - join: online_products
-#    sql_on: spree_returns.sku = online_products.ean
-#  - join: spree_orders
-#    sql_on: ${spree_orders.order_id} = ${spree_returns.order_id}
-#    relationship: many_to_one
-#  - join: spree_addresses
-#    sql_on: ${spree_orders.ship_address_id} = ${spree_addresses.address_id}
-#    relationship: many_to_one
-
 - explore: spree_refunds
   joins:
   - join: spree_orders
