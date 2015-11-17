@@ -147,19 +147,19 @@
   - join: mandrill_message_clicked
     sql_on: ${mandrill_message_sent.email_id} = ${mandrill_message_clicked.email_id}
     
-- explore: spree_returns
-  fields: [ALL_FIELDS*, -online_products.option]
-  joins:
-  - join: product_lookup
-    sql_on: spree_returns.sku = product_lookup.ean
-  - join: online_products
-    sql_on: spree_returns.sku = online_products.ean
-  - join: spree_orders
-    sql_on: ${spree_orders.order_id} = ${spree_returns.order_id}
-    relationship: many_to_one
-  - join: spree_addresses
-    sql_on: ${spree_orders.ship_address_id} = ${spree_addresses.address_id}
-    relationship: many_to_one
+#- explore: spree_returns
+#  fields: [ALL_FIELDS*, -online_products.option]
+#  joins:
+#  - join: product_lookup
+#    sql_on: spree_returns.sku = product_lookup.ean
+#  - join: online_products
+#    sql_on: spree_returns.sku = online_products.ean
+#  - join: spree_orders
+#    sql_on: ${spree_orders.order_id} = ${spree_returns.order_id}
+#    relationship: many_to_one
+#  - join: spree_addresses
+#    sql_on: ${spree_orders.ship_address_id} = ${spree_addresses.address_id}
+#    relationship: many_to_one
 
 - explore: spree_refunds
   joins:
@@ -179,14 +179,6 @@
     sql_on: goods_in.confirm_date = calendar_weeks.calendar_date
   - join: online_products
     sql_on: goods_in.ean = online_products.ean
-
-- explore: goods_commitment
-  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
-  joins:
-  - join: product_lookup
-    sql_on: goods_commitment.ean = product_lookup.ean
-  - join: online_products
-    sql_on: goods_commitment.ean = online_products.ean
 
 - explore: all_newsletter_subscribers
   joins:
@@ -237,9 +229,5 @@
     sql_on: ${spree_exchange_rates.currency} = ${transactions.currency_code} and ${spree_exchange_rates.date} = ${transactions.trans_time_date}
 
 - explore: spree_cms_product_information
-
-- explore: looker_table_updates
-
-- explore: spree_variant_info_daily
 
 - explore: website_page_views
