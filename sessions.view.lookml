@@ -467,6 +467,41 @@
   - dimension: browser_height
     sql: ${TABLE}.br_viewheight
 
+  - dimension: homepage_view_flag
+    sql: ${TABLE}.homepage_view_flag
+    hidden: true
+  - dimension: category_page_view_flag
+    sql: ${TABLE}.category_page_view_flag
+    hidden: true
+  - dimension: products_page_view_flag
+    sql: ${TABLE}.products_page_view_flag
+    hidden: true
+  - dimension: chapters_page_flag
+    sql: ${TABLE}.chapters_page_flag
+    hidden: true
+  - dimension: editorial_page_flag
+    sql: ${TABLE}.editorial_page_flag
+    hidden: true
+  - dimension: cart_page_view_flag
+    sql: ${TABLE}.cart_page_view_flag
+    hidden: true
+  - dimension: checkout_reg_page_view_flag
+    sql: ${TABLE}.checkout_reg_page_view_flag
+    hidden: true
+  - dimension: checkout_ad_page_view_flag
+    sql: ${TABLE}.checkout_ad_page_view_flag
+    hidden: true
+  - dimension: checkout_del_page_flag
+    sql: ${TABLE}.checkout_del_page_flag
+    hidden: true
+  - dimension: checkout_payment_page_view_flag
+    sql: ${TABLE}.checkout_payment_page_view_flag
+    hidden: true
+  - dimension: checkout_order_page_view_flag
+    sql: ${TABLE}.checkout_order_page_view_flag
+    hidden: true
+
+
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
 ##########################################################################################################################################################
@@ -676,10 +711,10 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${pages.page_type} = 'Category Page'
-                OR ${pages.page_type} = 'Product Page'
-                OR ${pages.page_type} = 'Cart Page'
-                OR ${pages.page_type} = 'Checkout - Registration Page'
+          WHEN (${category_page_view_flag} = 1
+                OR ${products_page_view_flag} = 1
+                OR ${cart_page_view_flag} = 1
+                OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
                 OR ${transactions.order_id} is not null
@@ -694,9 +729,9 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${pages.page_type} = 'Product Page'
-                OR ${pages.page_type} = 'Cart Page'
-                OR ${pages.page_type} = 'Checkout - Registration Page'
+          WHEN (${products_page_view_flag} = 1
+                OR ${cart_page_view_flag} = 1
+                OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
                 OR ${transactions.order_id} is not null
@@ -711,8 +746,8 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${pages.page_type} = 'Cart Page'
-                OR ${pages.page_type} = 'Checkout - Registration Page'
+          WHEN (${cart_page_view_flag} = 1
+                OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
                 OR ${transactions.order_id} is not null
@@ -727,13 +762,13 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${pages.page_type} = 'Cart Page'
-                OR ${pages.page_type} = 'Checkout - Registration Page'
+          WHEN (${cart_page_view_flag} = 1
+                OR ${checkout_reg_page_view_flag} = 1
                 OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
-          END)  
+          END)   
     
   - measure: conversion_funnel_6
     label: Conversion Funnel 6 - Checkout - Registration Visits
@@ -741,7 +776,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${pages.page_type} = 'Checkout - Registration Page'
+          WHEN (${checkout_reg_page_view_flag} = 1
                 OR ${transactions.order_id} is not null
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
@@ -865,4 +900,3 @@
     sql: ${conversion_funnel_10}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
 
-    

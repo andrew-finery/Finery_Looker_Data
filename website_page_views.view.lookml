@@ -62,7 +62,7 @@
       Product Page: ${page_urlpath} like '%/products/%'
       Chapters Page: ${page_urlpath} = '/chapters'
       Editorial: ${page_urlpath} like '%/chapters/%'
-      Cart Page: ${page_urlpath} like '%/cart%'
+      Cart Page: ${page_urlpath} like '/cart%'
       Checkout - Registration Page: ${page_urlpath} like '%/checkout/registration%'
       Checkout - Address: ${page_urlpath} like '%/checkout/address%'
       Checkout - Delivery: ${page_urlpath} like '%/checkout/delivery%'
