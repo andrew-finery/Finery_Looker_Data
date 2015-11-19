@@ -111,12 +111,12 @@
     model: finery_data
     explore: sessions
     dimensions: [sessions.start_date]
-    measures: [transactions.gross_revenue_ex_discount_ex_vat]
+    measures: [sessions.gross_revenue_ex_discount_ex_vat]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${transactions.gross_revenue_ex_discount_ex_vat} - offset(${transactions.gross_revenue_ex_discount_ex_vat},1))/offset(${transactions.gross_revenue_ex_discount_ex_vat},1),2),"%")
+        concat(round(100 * (${sessions.gross_revenue_ex_discount_ex_vat} - offset(${sessions.gross_revenue_ex_discount_ex_vat},1))/offset(${sessions.gross_revenue_ex_discount_ex_vat},1),2),"%")
     filters:
       sessions.start_date: 15 days ago, 8 days ago, 1 day ago
     sorts: [sessions.start_date desc]

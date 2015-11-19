@@ -124,6 +124,25 @@
     type: int
     sql: ${TABLE}.product_views
     hidden: true
+
+  - dimension: orders
+    type: int
+    sql: ${TABLE}.orders
+  
+  - dimension: gross_revenue_ex_discount
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_revenue_ex_discount
+    
+  - dimension: gross_revenue_ex_discount_ex_vat
+    type: number
+    decimals: 2
+    sql: ${TABLE}.gross_revenue_ex_discount_ex_vat
+  
+  - dimension: shipping_revenue
+    type: number
+    decimals: 2
+    sql: ${TABLE}.shipping_revenue
     
   - dimension: engaged_session
     label: Engaged Visit
@@ -135,7 +154,7 @@
           or ${products_added_to_cart} > 0
           or ${cart_events} > 0
           or ${checkout_progress} > 0
-          or ${transactions.order_id} is not null
+          or ${orders} > 0
           or ${session_duration_seconds} > 239
 
   - dimension: engagement_goal_1
@@ -165,7 +184,7 @@
     sql: |
           ${cart_events} > 0
           or ${checkout_progress} > 0
-          or ${transactions.order_id} is not null
+          or ${orders} > 0
  
   # New vs returning visitor #
   - dimension: new_vs_returning_visitor
@@ -571,14 +590,14 @@
     label: Conversion Rate
     type: number
     decimals: 4
-    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    sql: ${sum_orders}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
 
   - measure: conversion_rate_short_name
     label: Conv. Rate
     type: number
     decimals: 4
-    sql: ${transactions.count_transactions}/NULLIF(${count},0)::REAL
+    sql: ${sum_orders}/NULLIF(${count},0)::REAL
     value_format: '0.00%'
     hidden: true
     
@@ -586,7 +605,7 @@
     label: Revenue Per Visit
     type: number
     decimals: 2
-    sql: ${transactions.gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
+    sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
     value_format: '#0.00'
     
   - measure: sessions_from_new_visitors_count
@@ -699,6 +718,32 @@
     label: Product Views Total
     type: sum
     sql: ${product_views}
+
+
+
+  - measure: sum_orders
+    type: sum
+    sql: ${orders}
+  
+  - measure: sum_gross_revenue_ex_discount
+    type: sum
+    decimals: 2
+    sql: ${gross_revenue_ex_discount}
+    
+  - measure: sum_gross_revenue_ex_discount_ex_vat
+    type: sum
+    decimals: 2
+    sql: ${gross_revenue_ex_discount_ex_vat}
+  
+  - measure: sum_shipping_revenue
+    type: sum
+    decimals: 2
+    sql: ${shipping_revenue}
+
+  - measure: average_basket_size
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_orders},0)::REAL
     
 #################################################################################################################
 ########################################### Conversion Funnel Measures ##########################################
@@ -717,7 +762,7 @@
                 OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.order_id} is not null
+                OR ${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -734,7 +779,7 @@
                 OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.order_id} is not null
+                OR ${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -750,7 +795,7 @@
                 OR ${checkout_reg_page_view_flag} = 1
                 OR ${cart_events} > 0
                 OR ${products_added_to_cart} > 0
-                OR ${transactions.order_id} is not null
+                OR ${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -764,7 +809,7 @@
           CASE
           WHEN (${cart_page_view_flag} = 1
                 OR ${checkout_reg_page_view_flag} = 1
-                OR ${transactions.order_id} is not null
+                OR ${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -777,7 +822,7 @@
           COUNT(DISTINCT
           CASE
           WHEN (${checkout_reg_page_view_flag} = 1
-                OR ${transactions.order_id} is not null
+                OR ${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -789,7 +834,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.order_id} is not null
+          WHEN (${orders} > 0
                 OR ${checkout_progress} > 0)
           THEN ${session_id}
           ELSE NULL
@@ -801,7 +846,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.order_id} is not null
+          WHEN (${orders} > 0
                 OR ${checkout_progress} > 1)
           THEN ${session_id}
           ELSE NULL
@@ -813,7 +858,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.order_id} is not null
+          WHEN (${orders} > 0
                 OR ${checkout_progress} > 2)
           THEN ${session_id}
           ELSE NULL
@@ -825,7 +870,7 @@
     sql: |
           COUNT(DISTINCT
           CASE
-          WHEN (${transactions.order_id} is not null)
+          WHEN (${orders} > 0)
           THEN ${session_id}
           ELSE NULL
           END)

@@ -67,7 +67,7 @@
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [online_products.online_department]
+    dimensions: [product_lookup.category]
     measures: [spree_order_items.total_items_sold, spree_order_items.total_items_returned,
       spree_order_items.return_rate]
     filters:
@@ -85,12 +85,10 @@
     title: Returns by Reason
     type: looker_pie
     model: finery_data
-    explore: spree_returns
-    dimensions: [spree_returns.return_reason]
-    measures: [spree_returns.items_returned]
-    filters:
-      spree_returns.reimbursement_status: '"reimbursed"'
-    sorts: [spree_returns.items_returned desc]
+    explore: spree_order_items
+    dimensions: [spree_order_items.return_reason]
+    measures: [spree_order_items.total_items_returned]
+    sorts: [spree_order_items.items_returned desc]
     limit: 500
     height: 4
     width: 6
@@ -102,7 +100,7 @@
     type: looker_column
     model: finery_data
     explore: spree_order_items
-    dimensions: [spree_order_items.return_reason, online_products.online_department]
+    dimensions: [spree_order_items.return_reason, product_lookup.category]
     pivots: [spree_order_items.return_reason]
     measures: [spree_order_items.total_items_returned]
     limit: 500
@@ -120,12 +118,12 @@
     top: 8
     left: 6
 
-  - name: return_rate_by_day
-    title: Return Rate by Day
+  - name: return_rate_by_week
+    title: Return Rate by Week
     type: looker_line
     model: finery_data
     explore: spree_order_items
-    dimensions: [spree_orders.completed_date]
+    dimensions: [spree_orders.completed_week]
     measures: [spree_order_items.return_rate]
     filters:
       spree_orders.completed_week: before 1 weeks ago

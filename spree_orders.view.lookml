@@ -125,11 +125,107 @@
     type: yesno
     sql: ${tracking_number} <> 'a'
 
+  - dimension_group: latest_event_time
+    label: Latest Event
+    type: time
+    timeframes: [time, date]
+    sql: ${TABLE}.latest_event_time
+       
+  - dimension: latest_delivery_event
+    label: Latest Event Description
+    sql: ${TABLE}.current_status
+
+# delivery tracking event times
+
+  - dimension_group: first_attempt_time
+    label: First Delivery Attempt
+    type: time
+    timeframes: [time, date]
+    sql: ${TABLE}.first_attempt_time
+    hidden: true
+    
+  - dimension_group: delivery_confirmed_time
+    type: time
+    timeframes: [time, date]
+    sql: ${TABLE}.delivery_confirmed_time
+    hidden: true
+    
+  - dimension_group: return_confirmed_time
+    type: time
+    timeframes: [time, date]
+    sql: ${TABLE}.return_confirmed_time
+    hidden: true
+    
+  - dimension: hub_received_date
+    type: date
+    sql: ${TABLE}.hub_received_date
+    hidden: true
+    
+  - dimension: misrouted_date
+    type: date
+    sql: ${TABLE}.misrouted_date
+    hidden: true
+    
+  - dimension: missort_date
+    type: date
+    sql: ${TABLE}.missort_date    
+    hidden: true
+    
+  - dimension: depot_received_date
+    type: date
+    sql: ${TABLE}.depot_received_date    
+    hidden: true
+    
+  - dimension: missing_pre_advice_date
+    type: date
+    sql: ${TABLE}.missing_pre_advice_date    
+    hidden: true
+    
+  - dimension: more_info_required_date
+    type: date
+    sql: ${TABLE}.more_info_required_date      
+    hidden: true
+    
+  - dimension: out_for_delivery_date
+    type: date
+    sql: ${TABLE}.out_for_delivery_date      
+    hidden: true
+    
+  - dimension: courier_received_date
+    type: date
+    sql: ${TABLE}.courier_received_date        
+    hidden: true
+    
+  - dimension: carried_forward_date
+    type: date
+    sql: ${TABLE}.carried_forward_date 
+    hidden: true
+    
+  - dimension: not_delivered_date
+    type: date
+    sql: date(${TABLE}.not_delivered_tstamp)
+    hidden: true
+    
+  - dimension: refused_date
+    type: date
+    sql: date(${TABLE}.refused_tstamp)
+    hidden: true
+    
+  - dimension: returned_to_sender_date
+    type: date
+    sql: date(${TABLE}.returned_to_sender_tstamp)
+    hidden: true
+    
+  - dimension: delay_date
+    type: date
+    sql: date(${TABLE}.delay_tstamp)    
+    hidden: true    
+
   - dimension: delivered_flag
     label: Delivered Flag
     type: yesno
     sql: |
-        ${hermes_delivery_tracking.delivery_confirmed_time_time} is not null
+        ${delivery_confirmed_time_time} is not null
         or ${TABLE}.tracking_number in
         ('7817394680536081',
         '3910172680538186',
@@ -159,54 +255,54 @@
         
         when ${delivery_company} = 'DHL' then 'DHL Delivery'
         
-        when ${hermes_delivery_tracking.latest_event_time_date} is null and ${tracking_number} = 'a' then 'No Tracking Info - Warehouse'
+        when ${latest_event_time_date} is null and ${tracking_number} = 'a' then 'No Tracking Info - Warehouse'
         
-        when (${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date) and ${hermes_delivery_tracking.delivery_confirmed_time_time} is null then 'Parcel to be Delivered'
+        when (${expected_delivery_date} >= current_date or ${expected_delivery_date_hermes} >= current_date) and ${delivery_confirmed_time_time} is null then 'Parcel to be Delivered'
         
-        when ${hermes_delivery_tracking.latest_event_time_date} is null then 'No Tracking Info - Hermes'
+        when ${latest_event_time_date} is null then 'No Tracking Info - Hermes'
         
-        when ${hermes_delivery_tracking.delivery_confirmed_time_time} is null and ${hermes_delivery_tracking.return_confirmed_time_time} is null and ${expected_delivery_date} < current_date - 14 then 'Parcel Lost by Hermes'
+        when ${delivery_confirmed_time_time} is null and ${return_confirmed_time_time} is null and ${expected_delivery_date} < current_date - 14 then 'Parcel Lost by Hermes'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} is null then 'Parcel Currently Late - Not Delivered'
+        when ${first_attempt_time_date} is null then 'Parcel Currently Late - Not Delivered'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.misrouted_date} is not null then 'Misrouted to Incorrect Depot'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${misrouted_date} is not null then 'Misrouted to Incorrect Depot'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.missort_date} is not null then 'Missort to Incorrect Courier'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${missort_date} is not null then 'Missort to Incorrect Courier'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.more_info_required_date} is not null then 'More Info Required'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${more_info_required_date} is not null then 'More Info Required'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.carried_forward_date} is not null then 'Carried Forward'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${carried_forward_date} is not null then 'Carried Forward'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.delay_date} is not null then 'Hermes Delay'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${delay_date} is not null then 'Hermes Delay'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.hub_received_date} > ${completed_date} + 1 then 'Late to Hub'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${hub_received_date} > ${completed_date} + 1 then 'Late to Hub'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.depot_received_date} > ${completed_date} + 2 then 'Late to Depot'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${depot_received_date} > ${completed_date} + 2 then 'Late to Depot'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.out_for_delivery_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.out_for_delivery_date} > ${expected_delivery_date} then 'Delay at Depot'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${out_for_delivery_date} > ${expected_delivery_date_hermes} and ${out_for_delivery_date} > ${expected_delivery_date} then 'Delay at Depot'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.courier_received_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.courier_received_date} > ${expected_delivery_date} then 'Delay in Courier Receiving Package'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${courier_received_date} > ${expected_delivery_date_hermes} and ${courier_received_date} > ${expected_delivery_date} then 'Delay in Courier Receiving Package'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
-        and ${hermes_delivery_tracking.delay_date} is not null then 'Missing Pre-Advice'
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
+        and ${delay_date} is not null then 'Missing Pre-Advice'
         
-        when ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date_hermes} and ${hermes_delivery_tracking.first_attempt_time_date} > ${expected_delivery_date} and ${hermes_delivery_tracking.first_attempt_time_date} is not null
+        when ${first_attempt_time_date} > ${expected_delivery_date_hermes} and ${first_attempt_time_date} > ${expected_delivery_date} and ${first_attempt_time_date} is not null
         then 'Late - Other Reason'
         
         else 'Delivered On Time' end
 
   - dimension: returned_flag
     type: yesno
-    sql: ${hermes_delivery_tracking.return_confirmed_time_time} is not null  
+    sql: ${return_confirmed_time_time} is not null  
     
   - dimension: expected_delivery_date_hermes
     type: date
@@ -320,10 +416,6 @@
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate}))) / ${exchange_rate}
-
-  - dimension: london_flag
-    label: London Flag
-    sql: ${spree_addresses.london_flag}
 
   - dimension: primary_promotion
     label: Promotion

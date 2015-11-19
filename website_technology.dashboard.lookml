@@ -777,7 +777,7 @@
     explore: sessions
     dimensions: [sessions.start_date, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.avg_basket_size]
+    measures: [sessions.average_basket_size]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
@@ -802,7 +802,7 @@
     explore: sessions
     dimensions: [sessions.start_week, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.avg_basket_size]
+    measures: [sessions.average_basket_size]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
@@ -827,7 +827,7 @@
     explore: sessions
     dimensions: [sessions.start_date, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.avg_basket_size]
+    measures: [sessions.average_basket_size]
     filters:
       sessions.device_type: -Other/Unknown
       sessions.start_date: 31 days ago for 30 days

@@ -188,7 +188,7 @@
 
   - dimension_group: return_time
     type: time
-    timeframes: [date]
+    timeframes: [date, week, month]
     sql: ${TABLE}.return_tstamp
   
   - dimension: days_to_process_return
