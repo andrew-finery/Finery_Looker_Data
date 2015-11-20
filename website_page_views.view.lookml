@@ -19,6 +19,7 @@
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.page_entry_tstamp
+    hidden: true
 
   - dimension_group: page_exit_tstamp
     type: time
