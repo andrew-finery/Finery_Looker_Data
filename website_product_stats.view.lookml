@@ -8,7 +8,7 @@
 
   - dimension: clicks
     type: number
-    sql: ${TABLE}.clicks
+    sql: ${TABLE}.category_clicks
 
   - dimension: domain_sessionidx
     type: number
@@ -19,7 +19,7 @@
 
   - dimension: impressions
     type: number
-    sql: ${TABLE}.impressions
+    sql: ${TABLE}.category_impressions
 
   - dimension: product_views
     type: number
