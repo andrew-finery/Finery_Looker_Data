@@ -1,31 +1,48 @@
-- view: mandrill_message_sent
-  sql_table_name: atomic.com_mandrill_message_sent_1
+- view: mandrill_email_summary
+  sql_table_name: mandrill_data.email_summary
   fields:
-
-  - dimension: event_id
-    sql: ${TABLE}.root_id
-    hidden: true
 
   - dimension_group: email_sent
     type: time
     timeframes: [time, date, week, month]
-    sql: ${TABLE}.root_tstamp
+    sql: ${TABLE}.message_sent_timestamp
 
   - dimension: email_id
-    sql: ${TABLE}."msg._id"
+    sql: ${TABLE}.message_id
 
   - dimension: email_sent_to
-    sql: ${TABLE}."msg.email"
+    sql: ${TABLE}.email_recipient
 
   - dimension: email_sent_from
-    sql: ${TABLE}."msg.sender"
-
-  - dimension: email_state
-    sql: ${TABLE}."msg.state"
+    sql: ${TABLE}.email_sender
 
   - dimension: email_subject
-    sql: ${TABLE}."msg.subject"
-  
+    sql: ${TABLE}.email_subject
+
+  - dimension: opens
+    sql: ${TABLE}.opens
+    
+  - dimension: clicks
+    sql: ${TABLE}.clicks
+    
+  - dimension: bounces
+    sql: ${TABLE}.bounces
+    
+  - dimension: soft_bounces
+    sql: ${TABLE}.soft_bounces
+    
+  - dimension: delays
+    sql: ${TABLE}.delays
+    
+  - dimension: rejections
+    sql: ${TABLE}.rejections
+    
+  - dimension: unsubscribes
+    sql: ${TABLE}.unsubscribes
+    
+  - dimension: marked_as_spam
+    sql: ${TABLE}.marked_as_spam
+
   - dimension: email_group
     sql_case:
       Registration: ${email_subject} in ('Welcome to Finery!','Thanks for joining us!')
@@ -44,21 +61,35 @@
       Cancelled Order: ${email_subject} like 'Your order has been cancelled - %'
       else: Other
 
+### measures
+
   - measure: count_messages_sent
     type: count_distinct
     sql: ${email_id}
-    
+
+  - measure: count_messages_opened
+    type: count_distinct
+    sql: ${email_id}
+    filters:
+      opens: ">0"
+
+  - measure: count_messages_clicked
+    type: count_distinct
+    sql: ${email_id}
+    filters:
+      clicks: ">0"
+      
   - measure: open_rate
     type: number
-    sql: ${mandrill_message_opened.count_unique_opens}/NULLIF(${count_messages_sent},0)::REAL
+    sql: ${count_messages_opened}/NULLIF(${count_messages_sent},0)::REAL
     value_format: '#0.00%'
 
   - measure: click_rate
     type: number
-    sql: ${mandrill_message_clicked.count_unique_clicks}/NULLIF(${count_messages_sent},0)::REAL
+    sql: ${count_messages_clicked}/NULLIF(${count_messages_sent},0)::REAL
     value_format: '#0.00%'
 
   - measure: click_through_open_rate
     type: number
-    sql: ${mandrill_message_clicked.count_unique_clicks}/NULLIF(${mandrill_message_opened.count_unique_opens},0)::REAL
+    sql: ${count_messages_clicked}/NULLIF(${count_messages_opened},0)::REAL
     value_format: '#0.00%'

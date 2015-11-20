@@ -157,14 +157,7 @@
     sql_on: ${daily_sales.calendar_date_date} = ${variant_info_daily.calendar_date} and ${daily_sales.sku} = ${variant_info_daily.ean}
     relationship: one_to_one
     
-- explore: mandrill_message_sent
-  joins:
-  - join: mandrill_message_opened
-    sql_on: ${mandrill_message_sent.email_id} = ${mandrill_message_opened.email_id}  
-    relationship: one_to_many
-  - join: mandrill_message_clicked
-    sql_on: ${mandrill_message_sent.email_id} = ${mandrill_message_clicked.email_id}
-    relationship: one_to_many
+- explore: mandrill_email_summary
     
 - explore: spree_refunds
   joins:

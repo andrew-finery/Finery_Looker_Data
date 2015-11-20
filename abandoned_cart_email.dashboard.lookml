@@ -9,12 +9,12 @@
     title: Emails Sent - Last 30 Days
     type: single_value
     model: finery_data
-    explore: mandrill_message_sent
-    measures: [mandrill_message_sent.count_messages_sent]
+    explore: mandrill_email_summary
+    measures: [mandrill_email_summary.count_messages_sent]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
-    sorts: [mandrill_message_sent.count_messages_sent desc]
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
+    sorts: [mandrill_email_summary.count_messages_sent desc]
     limit: 500
     column_limit: ''
     show_null_labels: false
@@ -42,11 +42,11 @@
     title: Open Rate - Last 30 Days
     type: single_value
     model: finery_data
-    explore: mandrill_message_sent
-    measures: [mandrill_message_sent.open_rate]
+    explore: mandrill_email_summary
+    measures: [mandrill_email_summary.open_rate]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
     limit: 500
     column_limit: ''
     show_null_labels: false
@@ -75,12 +75,12 @@
     title: Click Rate - Last 30 Days
     type: single_value
     model: finery_data
-    explore: mandrill_message_sent
-    measures: [mandrill_message_sent.click_rate]
+    explore: mandrill_email_summary
+    measures: [mandrill_email_summary.click_rate]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
-    sorts: [mandrill_message_sent.click_rate desc]
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
+    sorts: [mandrill_email_summary.click_rate desc]
     limit: 500
     column_limit: ''
     show_null_labels: false
@@ -211,13 +211,13 @@
     title: Emails Sent - Last 30 Days
     type: looker_line
     model: finery_data
-    explore: mandrill_message_sent
-    dimensions: [mandrill_message_sent.email_sent_date]
-    measures: [mandrill_message_sent.count_messages_sent]
+    explore: mandrill_email_summary
+    dimensions: [mandrill_email_summary.email_sent_date]
+    measures: [mandrill_email_summary.count_messages_sent]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
-    sorts: [mandrill_message_sent.email_sent_date]
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
+    sorts: [mandrill_email_summary.email_sent_date]
     limit: 500
     column_limit: ''
     stacking: ''
@@ -242,13 +242,13 @@
     title: Open Rate - Last 30 Days
     type: looker_line
     model: finery_data
-    explore: mandrill_message_sent
-    dimensions: [mandrill_message_sent.email_sent_date]
-    measures: [mandrill_message_sent.open_rate]
+    explore: mandrill_email_summary
+    dimensions: [mandrill_email_summary.email_sent_date]
+    measures: [mandrill_email_summary.open_rate]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
-    sorts: [mandrill_message_sent.email_sent_date]
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
+    sorts: [mandrill_email_summary.email_sent_date]
     limit: 500
     column_limit: ''
     stacking: ''
@@ -274,13 +274,13 @@
     title: Click Rate - Last 30 Days
     type: looker_line
     model: finery_data
-    explore: mandrill_message_sent
-    dimensions: [mandrill_message_sent.email_sent_date]
-    measures: [mandrill_message_sent.click_rate]
+    explore: mandrill_email_summary
+    dimensions: [mandrill_email_summary.email_sent_date]
+    measures: [mandrill_email_summary.click_rate]
     filters:
-      mandrill_message_sent.email_group: Abandoned Cart
-      mandrill_message_sent.email_sent_date: 30 days ago for 30 days
-    sorts: [mandrill_message_sent.email_sent_date]
+      mandrill_email_summary.email_group: Abandoned Cart
+      mandrill_email_summary.email_sent_date: 30 days ago for 30 days
+    sorts: [mandrill_email_summary.email_sent_date]
     limit: 500
     column_limit: ''
     stacking: ''
