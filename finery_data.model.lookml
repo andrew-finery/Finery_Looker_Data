@@ -233,3 +233,8 @@
 - explore: spree_cms_product_information
 
 - explore: website_page_views
+  joins:
+  - join: visits
+    from: sessions
+    sql_on: ${website_page_views.domain_userid} = ${visits.domain_user_id} and ${website_page_views.domain_sessionidx} = ${visits.domain_session_index}    
+    relationship: many_to_one
