@@ -238,6 +238,7 @@
   - measure: gross_margin_percent
     label: Gross Margin %
     type: number
+    decimals: 4
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount} - ${sum_cost_gbp})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount},0)::REAL
     value_format: '##.00%'
 
