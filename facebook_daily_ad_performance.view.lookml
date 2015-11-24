@@ -19,6 +19,12 @@
 
   - dimension: behaviors
     sql: ${TABLE}.behaviors
+    
+  - dimension_group: calendar
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.calendar_date  
 
   - dimension: bid_billing_event
     sql: ${TABLE}.bid_billing_event
