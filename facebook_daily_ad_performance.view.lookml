@@ -24,7 +24,7 @@
     type: time
     timeframes: [date, week, month]
     convert_tz: false
-    sql: ${TABLE}.calendar_date  
+    sql: ${TABLE}.date  
 
   - dimension: bid_billing_event
     sql: ${TABLE}.bid_billing_event
@@ -161,9 +161,6 @@
 
   - dimension: custom_audiences
     sql: ${TABLE}.custom_audiences
-
-  - dimension: date
-    sql: ${TABLE}.date
 
   - dimension: excluded_custom_audiences
     sql: ${TABLE}.excluded_custom_audiences
