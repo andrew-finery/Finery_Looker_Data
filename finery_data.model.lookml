@@ -47,7 +47,7 @@
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
     relationship: many_to_one
     
-- explore: facebook_daily_performance
+- explore: facebook_daily_ad_performance
 
 #- explore: spree_users
 #  joins:
