@@ -9,6 +9,9 @@
   - dimension: blended_user_id
     sql: ${TABLE}.blended_user_id
 
+  - dimension: email_address
+    sql: case when ${TABLE}.blended_user_id like '%@%' then ${TABLE}.blended_user_id else null end
+
   - dimension_group: first_touch
     label: First Touch
     type: time
@@ -28,20 +31,7 @@
     type: tier
     tiers: [1,5,10,25,50,100,1000,10000,100000]
     sql: ${TABLE}.number_of_events
-    
-  - dimension: bounce
-    type: yesno
-    sql: ${TABLE}.number_of_events = 1
-    
-  - dimension: distinct_pages_viewed
-    type: int
-    sql: ${TABLE}.distinct_pages_viewed
-    
-  - dimension: distinct_pages_viewed_tiered
-    type: tier
-    tiers: [1,2,5,10,25,50,100,1000]
-    sql: ${distinct_pages_viewed}
-    
+
   - dimension: number_of_sessions
     type: int
     sql: ${TABLE}.number_of_sessions
@@ -67,15 +57,16 @@
   - dimension: acquisition_channel
     label: First Touch Acquisition Channel
     sql_case:
-      Facebook - Paid Marketing: ${TABLE}.mkt_source_ga = 'facebook' and ${TABLE}.mkt_medium_ga = 'paid'
-      SEM Brand: ${TABLE}.mkt_campaign_ga = '313295483'
-      SEM Non-Brand: ${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com'
+      Facebook - Paid Marketing: (${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.refr_source_ga = 'Facebook')  and ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
+      SEM Non-Brand: (${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing') and not (${TABLE}.mkt_campaign_ga in ('313295483','390136763','330829240','271429360','451879332','271994683','382391172','311393283','249190494','262208533') or ${TABLE}.mkt_campaign_ga like '%Brand%' or ${TABLE}.mkt_campaign_ga is null)
+      SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com' or mkt_medium_ga = 'cpc'
       CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
-      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email'
-      Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook'
+      Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
+      Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram' or ${TABLE}.mkt_source_ga = 'fb'
       Search: ${TABLE}.refr_medium_ga = 'search'
-      Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate'
+      Affiliates: ${TABLE}.refr_urlhost_ga = 'www.shareasale.com' or ${TABLE}.mkt_medium_ga = 'affiliate' or ${TABLE}.refr_urlhost_ga = 'www.polyvore.com'
       Referrals: ${TABLE}.refr_medium_ga = 'unknown'
+      Facebook - Paid Marketing: ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
       
@@ -107,22 +98,11 @@
       
   # Measures #
       
-  - measure: count
+  - measure: count_visitors
     type: count_distinct
     sql: ${blended_user_id}
     
-  - measure: bounced_visitor_count
-    type: count_distinct
-    sql: ${blended_user_id}
-    filter:
-      bounce: yes
-    
-  - measure: bounce_rate
-    type: number
-    decimals: 2
-    sql: ${bounced_visitor_count}/NULLIF(${count},0)::REAL
-    
-  - measure: events_count
+  - measure: sum_events
     type: sum
     sql: ${TABLE}.number_of_events
     
@@ -131,7 +111,7 @@
     decimals: 2
     sql: ${events_count}/NULLIF(${count},0)::REAL
     
-  - measure: sessions_count
+  - measure: count_sessions
     type: sum
     sql: ${TABLE}.number_of_sessions
     

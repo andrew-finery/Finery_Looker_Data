@@ -970,7 +970,7 @@
     value_format: '#,##0.00'
     
   - measure: avg_store_credit_used_gbp_ex_vat
-    label: AAvg Store Credit Used ex. VAT
+    label: Avg Store Credit Used ex. VAT
     type: number
     decimals: 2
     sql: ${sum_store_credit_used_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL

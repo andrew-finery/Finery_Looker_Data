@@ -49,14 +49,7 @@
     
 - explore: facebook_daily_ad_performance
 
-#- explore: spree_users
-#  joins:
-#  - join: spree_orders
-#    sql_on: spree_orders.customer_id = spree_users.user_id
-#    relationship: one_to_many
-#  - join: spree_addresses
-#    sql_on: spree_orders.ship_address_id = spree_addresses.address_id
-#    relationship: one_to_many
+- explore: spree_customers
 
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
