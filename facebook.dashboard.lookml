@@ -7,8 +7,6 @@
 
   elements:
 
-  - name: foo
-
 - name: Impressions
   title: Impressions /Day
   type: looker_line
