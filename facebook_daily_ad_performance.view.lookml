@@ -285,9 +285,9 @@
     sql: ${sum_amount_spent}/ NULLIF(${sum_clicks},0) ::REAL
     value_format: '#,##0.00'
     
-  - measure: cost_per_impression
+  - measure: cost_per_1000impressions
     type: number
-    sql: 1000 * ${sum_amount_spent}/ NULLIF(${sum_impressions},0) ::REAL
+    sql: ${sum_amount_spent}*1000/ NULLIF(${sum_impressions},0) ::REAL
     value_format: '#,##0.00'
     
   - measure: cost_per_order
