@@ -21,10 +21,6 @@
     from: website_page_views
     sql_on: ${pages.domain_userid} = ${sessions.domain_user_id} and ${pages.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
-  - join: order_items
-    from: website_order_items
-    sql_on: ${order_items.domain_userid} = ${sessions.domain_user_id} and ${order_items.domain_sessionidx} = ${sessions.domain_session_index} and ${orders.order_id} = ${order_items.order_id}
-    relationship: one_to_many
 
 - explore: website_products
   from: website_product_stats

@@ -161,7 +161,7 @@
     sql: ${sum_orders}/NULLIF(${count_customers},0)::REAL
     value_format: '#0.00'    
 
-  - dimension: sum_discounted_orders
+  - measure: sum_discounted_orders
     type: sum
     sql: ${orders_with_discount}
 

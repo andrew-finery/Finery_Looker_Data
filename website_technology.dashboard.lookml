@@ -795,7 +795,7 @@
     height: 14
     width: 22
 
-  - name: avg_basket_size_yesterday_v_last_week
+  - name: avg_basket_last_week_v_week_before
     title: Average Basket Size Last Week vs Week Before
     type: table
     model: finery_data
