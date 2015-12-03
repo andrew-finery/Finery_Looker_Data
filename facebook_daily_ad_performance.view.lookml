@@ -44,6 +44,16 @@
   - dimension: campaign_name
     sql: ${TABLE}.campaign_name
 
+  - dimension: campaign_type
+    sql: |
+          case
+          when ${campaign_name} like '%DPA%' then 'DPA'
+          when ${campaign_name} like '%Brand%' then 'Brand'
+          when ${campaign_name} like '%brand%' then 'Brand'
+          when ${campaign_name} like '%BRAND%' then 'Brand'
+          when ${campaign_name} like '%DR%' then 'DR'
+          else 'Other' end
+          
   - dimension: campaign_start_date
     sql: ${TABLE}.campaign_start_date
 
