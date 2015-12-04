@@ -21,7 +21,10 @@
     from: website_page_views
     sql_on: ${pages.domain_userid} = ${sessions.domain_user_id} and ${pages.domain_sessionidx} = ${sessions.domain_session_index}
     relationship: one_to_many
-
+  - join: email_campaigns
+    from: mc_campaigns
+    sql_on: ${email_campaigns.id} = ${sessions.campaign_name}
+  
 - explore: website_products
   from: website_product_stats
   joins:
