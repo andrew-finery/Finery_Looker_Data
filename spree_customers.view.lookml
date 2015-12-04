@@ -59,7 +59,7 @@
     
   - dimension: items_purchased
     type: number
-    sql: ${TABLE}.total_items_purchased
+    sql: ${TABLE}.total_items_purchsed
 
   - dimension: items_returned
     type: number
@@ -171,17 +171,17 @@
     value_format: '#0.00'   
 
 # items info
-  - measure: sum_items_purchased
+  - measure: total_items_purchased
     type: sum
     sql: ${items_purchased}
 
-  - measure: sum_items_returned
+  - measure: total_items_returned
     type: sum
     sql: ${items_returned}
     
   - measure: return_rate
     type: number
-    sql: ${items_returned}/NULLIF(${sum_items_purchased},0)::REAL
+    sql: ${total_items_returned}/NULLIF(${total_items_purchased},0)::REAL
     value_format: '#0.00%'
     
 #revenue info

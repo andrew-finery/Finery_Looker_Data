@@ -46,6 +46,13 @@
 - explore: facebook_daily_ad_performance
 
 - explore: spree_customers
+  joins:
+  - join: all_newsletter_subscribers
+    sql_on: all_newsletter_subscribers.email = spree_customers.email
+    relationship: one_to_one
+  - join: visitors
+    sql_on: spree_customers.email = ${visitors.email_address}
+    relationship: one_to_one
 
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
@@ -175,11 +182,17 @@
   - join: spree_customers
     sql_on: all_newsletter_subscribers.email = spree_customers.email
     relationship: one_to_one
+  - join: visitors
+    sql_on: all_newsletter_subscribers.email = ${visitors.email_address}
+    relationship: one_to_one
     
 - explore: all_referrals
   joins:
   - join: spree_customers
     sql_on: all_referrals.email = spree_customers.email
+    relationship: one_to_one
+  - join: visitors
+    sql_on: all_referrals.email = ${visitors.email_address}
     relationship: one_to_one
 
 - explore: snowplow_product_click_through_daily
