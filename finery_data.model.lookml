@@ -17,13 +17,10 @@
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     relationship: many_to_one
-  - join: pages
-    from: website_page_views
-    sql_on: ${pages.domain_userid} = ${sessions.domain_user_id} and ${pages.domain_sessionidx} = ${sessions.domain_session_index}
-    relationship: one_to_many
   - join: email_campaigns
     from: mc_campaigns
     sql_on: ${email_campaigns.id} = ${sessions.campaign_name}
+    relationship: many_to_one
   
 - explore: website_products
   from: website_product_stats
@@ -178,9 +175,6 @@
   - join: spree_customers
     sql_on: all_newsletter_subscribers.email = spree_customers.email
     relationship: one_to_one
-  - join: spree_orders
-    sql_on: spree_orders.email = all_newsletter_subscribers.email
-    relationship: one_to_many
     
 - explore: all_referrals
   joins:

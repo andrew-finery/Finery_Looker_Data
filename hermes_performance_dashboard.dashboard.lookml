@@ -89,7 +89,7 @@
     top: 0
     left: 8
 
-  - name: add_a_unique_name_618
+  - name: next_day_deliv_on_time_perc
     title: Next Day Delivery - On Time Percentage
     type: looker_line
     model: finery_data
@@ -130,7 +130,7 @@
     top: 4
     left: 0
 
-  - name: add_a_unique_name_618
+  - name: 48h_deliv_on_time_perc
     title: 48 Hour Delivery - On Time Percentage
     type: looker_line
     model: finery_data
@@ -171,7 +171,7 @@
     top: 4
     left: 5
   
-  - name: add_a_unique_name_618
+  - name: sunday_on_time_perc
     title: Sunday - On Time Percentage
     type: looker_line
     model: finery_data

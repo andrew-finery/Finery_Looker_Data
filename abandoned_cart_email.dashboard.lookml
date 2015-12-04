@@ -1,6 +1,6 @@
 - dashboard: abandoned_cart_email
   title: Abandoned Cart Email
-  layout: tile
+  layout: static
   tile_size: 100
 
   elements:
@@ -18,7 +18,7 @@
     limit: 500
     column_limit: ''
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 10
@@ -37,6 +37,10 @@
     interpolation: linear
     legend_position: center
     y_axis_combined: true
+    top: 0
+    left: 0
+    height: 2
+    width: 2
 
   - name: abaondon_cart_open_rate_30_day
     title: Open Rate - Last 30 Days
@@ -50,7 +54,7 @@
     limit: 500
     column_limit: ''
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 10
@@ -70,7 +74,11 @@
     colors: [orange]
     legend_position: center
     y_axis_combined: true
-
+    top: 0
+    left: 2
+    height: 2
+    width: 2
+    
   - name: abaondon_cart_click_rate_30_day
     title: Click Rate - Last 30 Days
     type: single_value
@@ -84,7 +92,7 @@
     limit: 500
     column_limit: ''
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 10
@@ -104,8 +112,12 @@
     colors: [orange]
     legend_position: center
     y_axis_combined: true
-
-  - name: web_visits_last_30_days
+    top: 0
+    left: 4
+    height: 2
+    width: 2
+    
+  - name: abandon_cart_web_visits_last_30_days
     title: Web Visits - Last 30 Days
     type: single_value
     model: finery_data
@@ -119,7 +131,7 @@
     column_limit: ''
     ordering: none
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -138,8 +150,12 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-
-  - name: orders_last_30_days
+    top: 0
+    left: 6
+    height: 2
+    width: 2
+    
+  - name: abandon_cart_orders_last_30_days
     title: Orders - Last 30 Days
     type: single_value
     model: finery_data
@@ -153,7 +169,7 @@
     column_limit: ''
     ordering: none
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -172,8 +188,12 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-
-  - name: cr_30_days
+    top: 0
+    left: 8
+    height: 2
+    width: 2
+    
+  - name: abandon_cart_cr_30_days
     title: Conversion Rate - Last 30 Days
     type: single_value
     model: finery_data
@@ -187,7 +207,7 @@
     column_limit: ''
     ordering: none
     show_null_labels: false
-    font_size: medium
+    font_size: small
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -206,8 +226,12 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-
-  - name: email_sent
+    top: 0
+    left: 10
+    height: 2
+    width: 2
+    
+  - name: abandon_cart_email_sent
     title: Emails Sent - Last 30 Days
     type: looker_line
     model: finery_data
@@ -237,8 +261,12 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-
-  - name: open_rate
+    top: 2
+    left: 0
+    height: 4
+    width: 6
+    
+  - name: abandon_cart_open_rate
     title: Open Rate - Last 30 Days
     type: looker_line
     model: finery_data
@@ -269,8 +297,12 @@
     point_style: none
     interpolation: linear
     colors: [orange]
+    top: 2
+    left: 6
+    height: 4
+    width: 6
 
-  - name: click_rate
+  - name: abandon_cart_click_rate
     title: Click Rate - Last 30 Days
     type: looker_line
     model: finery_data
@@ -301,8 +333,12 @@
     point_style: none
     interpolation: linear
     colors: [purple]
-
-  - name: visits_to_site
+    top: 6
+    left: 0
+    height: 4
+    width: 6
+    
+  - name: abandon_cart_visits_to_site
     title: Visits to Site - Last 30 Days
     type: looker_line
     model: finery_data
@@ -335,8 +371,12 @@
     interpolation: linear
     ordering: none
     show_null_labels: false
-
-  - name: orders_last_30_days
+    top: 6
+    left: 6
+    height: 4
+    width: 6
+    
+  - name: abandon_cart_orders
     title: Orders - Last 30 Days
     type: looker_column
     model: finery_data
@@ -369,4 +409,7 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-
+    top: 10
+    left: 0
+    height: 4
+    width: 6
