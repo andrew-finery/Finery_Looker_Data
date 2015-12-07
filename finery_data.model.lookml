@@ -18,7 +18,7 @@
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     relationship: many_to_one
   - join: email_campaigns
-    from: mc_campaigns
+    from: mc_campaigns_tests
     sql_on: ${email_campaigns.id} = ${sessions.campaign_name}
     relationship: many_to_one
   
