@@ -1,5 +1,5 @@
-- dashboard: customer_monthly_cohort_dashboard
-  title: Customer Monthly Cohort Dashboard
+- dashboard: customer_cohorts
+  title: Monthly Customer Cohort Dashboard
   layout: static
   tile_size: 100
 

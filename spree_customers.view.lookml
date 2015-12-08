@@ -22,6 +22,10 @@
   - dimension: first_order_promotion
     sql: ${TABLE}.first_order_promotion
 
+  - dimension: is_discounted_first_order
+    type: yesno
+    sql: ${first_order_promotion} is not null
+
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
 
@@ -53,7 +57,7 @@
     type: number
     sql: ${TABLE}.orders_with_discount
 
-  - dimension: all_orders_with_discount
+  - dimension: has_all_orders_discounted
     type: yesno
     sql: ${orders_with_discount} = ${number_of_orders}
     
