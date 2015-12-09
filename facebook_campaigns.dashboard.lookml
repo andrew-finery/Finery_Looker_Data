@@ -129,6 +129,47 @@
     height: 4
     width: 12
 
+  - name: creative_performance
+    title: Creative Performance
+    type: table
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.campaign_name, facebook_daily_ad_performance.creative_name]
+    measures: [facebook_daily_ad_performance.total_spend, facebook_daily_ad_performance.total_impressions,
+      facebook_daily_ad_performance.cost_per_mille, facebook_daily_ad_performance.total_website_clicks,
+      facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.click_through_rate,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.cpa_product_detail_page,
+      facebook_daily_ad_performance.total_action_add_to_cart, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale, facebook_daily_ad_performance.cpa_sale]
+    listen:
+     date: facebook_daily_ad_performance.calendar_date
+     campaign: facebook_daily_ad_performance.campaign_name
+    sorts: [facebook_daily_ad_performance.campaign_name desc, facebook_daily_ad_performance.adset_name desc]
+    limit: 500
+    total: true
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    ordering: none
+    show_null_labels: false
+    show_row_numbers: false
+    top: 13
+    left: 0
+    height: 4
+    width: 12
+
   - name: total_spend_for_campaign
     title: Total Spend
     type: looker_line
@@ -155,7 +196,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 13
+    top: 17
     left: 0
     height: 4
     width: 4
@@ -186,7 +227,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 13
+    top: 17
     left: 4
     height: 4
     width: 4
@@ -217,7 +258,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 13
+    top: 17
     left: 8
     height: 4
     width: 4
@@ -248,7 +289,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 17
+    top: 21
     left: 0
     height: 4
     width: 4
@@ -279,7 +320,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 17
+    top: 21
     left: 4
     height: 4
     width: 4
@@ -310,7 +351,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 17
+    top: 21
     left: 8
     height: 4
     width: 4
@@ -341,7 +382,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 21
+    top: 25
     left: 0
     height: 4
     width: 6
@@ -373,7 +414,7 @@
     point_style: none
     interpolation: monotone
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
-    top: 21
+    top: 25
     left: 6
     height: 4
     width: 6
@@ -404,7 +445,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 25
+    top: 29
     left: 0
     height: 4
     width: 6
@@ -436,7 +477,7 @@
     point_style: none
     interpolation: monotone
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
-    top: 25
+    top: 29
     left: 6
     height: 4
     width: 6
@@ -467,7 +508,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 29
+    top: 33
     left: 0
     height: 4
     width: 6
@@ -499,7 +540,7 @@
     point_style: none
     interpolation: monotone
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
-    top: 29
+    top: 33
     left: 6
     height: 4
 
@@ -537,7 +578,7 @@
     ordering: none
     show_null_labels: false
     show_row_numbers: false
-    top: 33
+    top: 37
     left: 0
     height: 5
     width: 6
@@ -575,8 +616,85 @@
     ordering: none
     show_null_labels: false
     show_row_numbers: false
-    top: 33
+    top: 37
     left: 6
     height: 5
     width: 6
 
+  - name: web_data_creative_performance
+    title: Web Data - Creatives
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.campaign_name, sessions.campaign_term]
+    measures: [sessions.count, sessions.engagement_rate, sessions.sum_orders, sessions.conversion_rate]
+    listen:
+     date: session_start_calendar.calendar_date_date
+     campaign: sessions.campaign_name
+    filters:
+      sessions.acquisition_channel: Facebook - Paid Marketing
+      sessions.direct_session_flag: 'No'
+      sessions.count: '>5'
+    sorts: [sessions.count desc]
+    limit: 500
+    show_view_names: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    ordering: none
+    show_null_labels: false
+    show_row_numbers: false
+    top: 42
+    left: 0
+    height: 5
+    width: 6
+
+  - name: web_data_landiong_page_performance
+    title: Web Data - Landing Pages
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [sessions.campaign_name, sessions.landing_page_path]
+    measures: [sessions.count, sessions.engagement_rate, sessions.sum_orders, sessions.conversion_rate]
+    listen:
+     date: session_start_calendar.calendar_date_date
+     campaign: sessions.campaign_name
+    filters:
+      sessions.acquisition_channel: Facebook - Paid Marketing
+      sessions.direct_session_flag: 'No'
+      sessions.count: '>5'
+    sorts: [sessions.count desc]
+    limit: 500
+    show_view_names: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    ordering: none
+    show_null_labels: false
+    show_row_numbers: false
+    top: 42
+    left: 6
+    height: 5
+    width: 6
