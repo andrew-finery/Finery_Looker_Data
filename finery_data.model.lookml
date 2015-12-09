@@ -237,3 +237,14 @@
     from: sessions
     sql_on: ${website_page_views.domain_userid} = ${visits.domain_user_id} and ${website_page_views.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
+    
+- explore: mc_newsletter_subscribers
+  label:  'Mailchimp Newsletter Subscribers'
+  description: 'All Newsletter subscribers and their activity'
+  joins:
+  - join: member_activity
+    from: mc_campaign_member_activity
+    sql_on: ${mc_newsletter_subscribers.email_address} = ${member_activity.email_address}
+    relationship: one_to_many
+    
+    
