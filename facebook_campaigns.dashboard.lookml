@@ -555,7 +555,6 @@
     filters:
       sessions.acquisition_channel: Facebook - Paid Marketing
       sessions.direct_session_flag: 'No'
-      sessions.count: '>10'
     sorts: [sessions.count desc]
     limit: 500
     show_view_names: false
