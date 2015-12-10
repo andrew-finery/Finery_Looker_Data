@@ -17,11 +17,16 @@
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     relationship: many_to_one
-  - join: email_campaigns
+  - join: email_campaign_tests
     from: mc_campaigns_tests
-    sql_on: ${email_campaigns.id} = ${sessions.campaign_name}
+    sql_on: ${email_campaign_tests.test_id} = ${sessions.campaign_name}
     relationship: many_to_one
-  
+  - join: email_campaigns
+    from: mc_campaigns
+    sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
+    relationship: many_to_one
+
+
 - explore: website_products
   from: website_product_stats
   joins:
@@ -252,5 +257,7 @@
     from: mc_campaign_member_activity
     sql_on: ${mc_newsletter_subscribers.email_address} = ${member_activity.email_address}
     relationship: one_to_many
-    
+
+- explore: mc_campaigns
+  label:  'Mailchimp Campaigns'
     
