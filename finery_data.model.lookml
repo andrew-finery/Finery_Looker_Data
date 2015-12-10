@@ -227,8 +227,14 @@
   - join: mailchimp_cleaned_email
     sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
     relationship: one_to_many
-- explore: visitors
 
+- explore: visitors
+  joins:
+  - join: customers
+    from: spree_customers
+    sql_on: ${customers.email} = ${visitors.email_address}
+    relationship: one_to_one
+    
 - explore: spree_cms_product_information
 
 - explore: website_page_views

@@ -22,8 +22,8 @@
     explore: facebook_daily_ad_performance
     dimensions: [facebook_daily_ad_performance.campaign_name]
     measures: [facebook_daily_ad_performance.cpa_sale]
-    filters:
-      facebook_daily_ad_performance.calendar_date: 7 days ago for 7 days
+    listen:
+         date: facebook_daily_ad_performance.calendar_date
     sorts: [facebook_daily_ad_performance.cpa_sale desc]
     limit: 500
     colors: ['#a6cee3']
@@ -413,7 +413,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
+    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Average {{mean}}'}]
     top: 25
     left: 6
     height: 4
@@ -476,7 +476,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
+    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Average {{mean}}'}]
     top: 29
     left: 6
     height: 4
@@ -539,7 +539,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Averageg {{mean}}'}]
+    reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min, margin_top: deviation, margin_value: mean, margin_bottom: deviation, color: Red, label: 'Average {{mean}}'}]
     top: 33
     left: 6
     height: 4

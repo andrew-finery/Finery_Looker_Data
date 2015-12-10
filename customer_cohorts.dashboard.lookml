@@ -35,6 +35,7 @@
     x_axis_gridlines: false
     y_axis_gridlines: false
     show_x_axis_label: false
+    label_value_format: 0.0, "k"
     top: 0
     left: 0
     height: 3
