@@ -257,6 +257,14 @@
     from: mc_campaign_member_activity
     sql_on: ${mc_newsletter_subscribers.email_address} = ${member_activity.email_address}
     relationship: one_to_many
+  - join: email_campaign_tests
+    from: mc_campaigns_tests
+    sql_on: ${email_campaign_tests.test_id} = ${member_activity.campaign_id}
+    relationship: many_to_one
+  - join: email_campaigns
+    from: mc_campaigns
+    sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
+    relationship: many_to_one
 
 - explore: mc_campaigns
   label:  'Mailchimp Campaigns'
