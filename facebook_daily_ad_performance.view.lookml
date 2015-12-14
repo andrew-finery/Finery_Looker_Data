@@ -59,7 +59,7 @@
     sql: ${TABLE}.connections
     hidden: true
 
-  - dimension: conversions
+  - dimension: campaign_reporting_goal
     type: int
     sql: ${TABLE}.conversions
     hidden: true
@@ -78,39 +78,39 @@
     sql: ${TABLE}.conversions_mentions
     hidden: true
     
-  - dimension: conversions_offsite_6019249047149
+  - dimension: conversions_visits
     sql: ${TABLE}.conversions_offsite_6019249047149
     hidden: true
     
-  - dimension: conversions_offsite_6020814566949
+  - dimension: conversions_orders
     sql: ${TABLE}.conversions_offsite_6020814566949
     hidden: true
     
-  - dimension: conversions_offsite_6020814633549
+  - dimension: conversions_category_page
     sql: ${TABLE}.conversions_offsite_6020814633549
     hidden: true
     
-  - dimension: conversions_offsite_6020814677949
+  - dimension: conversions_product_page
     sql: ${TABLE}.conversions_offsite_6020814677949
     hidden: true
     
-  - dimension: conversions_offsite_6020814706949
+  - dimension: conversions_add_to_cart_page
     sql: ${TABLE}.conversions_offsite_6020814706949
     hidden: true
     
-  - dimension: conversions_offsite_6020814710549
+  - dimension: conversions_address_page
     sql: ${TABLE}.conversions_offsite_6020814710549
     hidden: true
     
-  - dimension: conversions_offsite_6020814716949
+  - dimension: conversions_delivery_page
     sql: ${TABLE}.conversions_offsite_6020814716949
     hidden: true
     
-  - dimension: conversions_offsite_6020814720149
+  - dimension: conversions_payment_page
     sql: ${TABLE}.conversions_offsite_6020814720149
     hidden: true
     
-  - dimension: conversions_offsite_6031974989949
+  - dimension: conversions_engagement
     sql: ${TABLE}.conversions_offsite_6031974989949
     hidden: true
     
@@ -251,7 +251,7 @@
   - measure: sum_orders
     label: Orders
     type: sum
-    sql: ${conversions}
+    sql: ${conversions_orders}
 
   - measure: sum_revenue
     label: Revenue

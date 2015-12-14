@@ -231,3 +231,5 @@
     from: sessions
     sql_on: ${website_page_views.domain_userid} = ${visits.domain_user_id} and ${website_page_views.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
+    
+- explore: scripts_bi_server
