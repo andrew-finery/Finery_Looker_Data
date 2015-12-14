@@ -131,7 +131,7 @@
 
 ################################ Line 3: MTD ##################################################################
 
-  - name: add_a_unique_name_402
+  - name: revenue_last_month
     title: Revenue - Last Month
     type: single_value
     model: finery_data
@@ -148,7 +148,7 @@
     top: 4
     left: 0
     
-  - name: add_a_unique_name_878
+  - name: revenue_mtd
     title: Revenue - Month-to-Date
     type: single_value
     model: finery_data
@@ -166,7 +166,7 @@
     top: 4
     left: 3
     
-  - name: add_a_unique_name_202
+  - name: revenue_this_month_vs_last_month
     title: Revenue by Day This Month vs Last Month
     type: looker_line
     model: finery_data
@@ -202,7 +202,7 @@
     
 ################################ Line 4 ##################################################################
 
-  - name: add_a_unique_name_971
+  - name: orders_tw_v_lw
     title: Orders by Day of Week - This Week vs Last Week
     type: looker_line
     model: finery_data
@@ -240,8 +240,7 @@
     height: 3
     top: 7
     left: 0
-
-  - name: add_a_unique_name_760
+  - name: orders_by_day
     title: Orders by Day
     type: table
     model: finery_data
@@ -262,7 +261,7 @@
 
 ##################################################### Line 5 ####################################################################
 
-  - name: add_a_unique_name_815
+  - name: revenue_by_dow_tw_vs_lw
     title: Revenue by Day of Week - This Week vs Last Week
     type: looker_line
     model: finery_data
@@ -301,7 +300,7 @@
     top: 10
     left: 0
 
-  - name: add_a_unique_name_518
+  - name: revenue_by_day
     title: Gross Revenue by Day
     type: table
     model: finery_data
@@ -322,7 +321,7 @@
     
 ################################################## Line 6 #################################################################
 
-  - name: add_a_unique_name_71
+  - name: avg_discount
     title: Average Discount
     type: looker_area
     model: finery_data
@@ -358,7 +357,7 @@
     top: 13
     left: 0
 
-  - name: add_a_unique_name_324
+  - name: avg_basket_size
     title: Average Basket Size
     type: looker_line
     model: finery_data
@@ -401,7 +400,7 @@
 
 ################################################## Line 7+8 #################################################################
 
-  - name: add_a_unique_name_609
+  - name: avg_items_in_basket
     title: Average Items in Basket
     type: looker_line
     model: finery_data
@@ -439,13 +438,13 @@
     top: 16
     left: 6
 
-  - name: add_a_unique_name_25
+  - name: sales_perc_by_dept
     title: Sales Percentages by Department
     type: looker_column
     model: finery_data
     explore: spree_order_items
-    dimensions: [spree_orders.completed_date, online_products.online_department]
-    pivots: [online_products.online_department]
+    dimensions: [spree_orders.completed_date, product_lookup.category]
+    pivots: [product_lookup.category]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     listen:
      date: spree_orders.completed_date
@@ -478,7 +477,7 @@
     top: 16
     left: 0
 
-  - name: add_a_unique_name_445
+  - name: basket_size_distrn
     title: Basket Size Distribution
     type: looker_area
     model: finery_data
@@ -519,7 +518,7 @@
 
 ################################################## Line 9 #################################################################
 
-  - name: add_a_unique_name_589
+  - name: order_distrn_weekend
     title: Order Distribution Throughout the Day - Weekend
     type: looker_area
     model: finery_data
@@ -560,7 +559,7 @@
     top: 22
     left: 6
 
-  - name: add_a_unique_name_589
+  - name: order_distrn_weekday
     title: Order Distribution Throughout the Day - Weekday
     type: looker_area
     model: finery_data

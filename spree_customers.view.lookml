@@ -22,6 +22,10 @@
   - dimension: first_order_promotion
     sql: ${TABLE}.first_order_promotion
 
+  - dimension: is_discounted_first_order
+    type: yesno
+    sql: ${first_order_promotion} is not null
+
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
 
@@ -53,13 +57,13 @@
     type: number
     sql: ${TABLE}.orders_with_discount
 
-  - dimension: all_orders_with_discount
+  - dimension: has_all_orders_discounted
     type: yesno
     sql: ${orders_with_discount} = ${number_of_orders}
     
   - dimension: items_purchased
     type: number
-    sql: ${TABLE}.total_items_purchased
+    sql: ${TABLE}.total_items_purchsed
 
   - dimension: items_returned
     type: number
@@ -161,7 +165,7 @@
     sql: ${sum_orders}/NULLIF(${count_customers},0)::REAL
     value_format: '#0.00'    
 
-  - dimension: sum_discounted_orders
+  - measure: sum_discounted_orders
     type: sum
     sql: ${orders_with_discount}
 
@@ -171,17 +175,17 @@
     value_format: '#0.00'   
 
 # items info
-  - measure: sum_items_purchased
+  - measure: total_items_purchased
     type: sum
     sql: ${items_purchased}
 
-  - measure: sum_items_returned
+  - measure: total_items_returned
     type: sum
     sql: ${items_returned}
     
   - measure: return_rate
     type: number
-    sql: ${items_returned}/NULLIF(${sum_items_purchased},0)::REAL
+    sql: ${total_items_returned}/NULLIF(${total_items_purchased},0)::REAL
     value_format: '#0.00%'
     
 #revenue info

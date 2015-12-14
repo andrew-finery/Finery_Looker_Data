@@ -17,14 +17,15 @@
     from: calendar_weeks
     sql_on: ${session_start_calendar.calendar_date_date} = ${sessions.start_date}
     relationship: many_to_one
-  - join: pages
-    from: website_page_views
-    sql_on: ${pages.domain_userid} = ${sessions.domain_user_id} and ${pages.domain_sessionidx} = ${sessions.domain_session_index}
-    relationship: one_to_many
-  - join: order_items
-    from: website_order_items
-    sql_on: ${order_items.domain_userid} = ${sessions.domain_user_id} and ${order_items.domain_sessionidx} = ${sessions.domain_session_index} and ${orders.order_id} = ${order_items.order_id}
-    relationship: one_to_many
+  - join: email_campaign_tests
+    from: mc_campaigns_tests
+    sql_on: ${email_campaign_tests.test_id} = ${sessions.campaign_name}
+    relationship: many_to_one
+  - join: email_campaigns
+    from: mc_campaigns
+    sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
+    relationship: many_to_one
+
 
 - explore: website_products
   from: website_product_stats
@@ -50,6 +51,13 @@
 - explore: facebook_daily_ad_performance
 
 - explore: spree_customers
+  joins:
+  - join: all_newsletter_subscribers
+    sql_on: all_newsletter_subscribers.email = spree_customers.email
+    relationship: one_to_one
+  - join: visitors
+    sql_on: spree_customers.email = ${visitors.email_address}
+    relationship: one_to_one
 
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
@@ -179,14 +187,17 @@
   - join: spree_customers
     sql_on: all_newsletter_subscribers.email = spree_customers.email
     relationship: one_to_one
-  - join: spree_orders
-    sql_on: spree_orders.email = all_newsletter_subscribers.email
-    relationship: one_to_many
+  - join: visitors
+    sql_on: all_newsletter_subscribers.email = ${visitors.email_address}
+    relationship: one_to_one
     
 - explore: all_referrals
   joins:
   - join: spree_customers
     sql_on: all_referrals.email = spree_customers.email
+    relationship: one_to_one
+  - join: visitors
+    sql_on: all_referrals.email = ${visitors.email_address}
     relationship: one_to_one
 
 - explore: snowplow_product_click_through_daily
@@ -221,8 +232,14 @@
   - join: mailchimp_cleaned_email
     sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
     relationship: one_to_many
-- explore: visitors
 
+- explore: visitors
+  joins:
+  - join: customers
+    from: spree_customers
+    sql_on: ${customers.email} = ${visitors.email_address}
+    relationship: one_to_one
+    
 - explore: spree_cms_product_information
 
 - explore: website_page_views
@@ -232,4 +249,25 @@
     sql_on: ${website_page_views.domain_userid} = ${visits.domain_user_id} and ${website_page_views.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
     
+
 - explore: scripts_bi_server
+
+- explore: mc_newsletter_subscribers
+  label:  'Mailchimp Newsletter Subscribers'
+  description: 'All Newsletter subscribers and their activity'
+  joins:
+  - join: member_activity
+    from: mc_campaign_member_activity
+    sql_on: ${mc_newsletter_subscribers.email_address} = ${member_activity.email_address}
+    relationship: one_to_many
+  - join: email_campaign_tests
+    from: mc_campaigns_tests
+    sql_on: ${email_campaign_tests.test_id} = ${member_activity.campaign_id}
+    relationship: many_to_one
+  - join: email_campaigns
+    from: mc_campaigns
+    sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
+    relationship: many_to_one
+
+- explore: mc_campaigns
+  label:  'Mailchimp Campaigns'

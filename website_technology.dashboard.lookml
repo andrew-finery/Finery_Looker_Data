@@ -193,7 +193,7 @@
     height: 14
     width: 22
 
-  - name: orders_yesterday_v_last_week
+  - name: orders_last_week_vs_week_before
     title: Orders Last Week vs Week Before
     type: table
     model: finery_data
@@ -254,8 +254,8 @@
 
 ## CONVERSION RATE
 
-  - name: orders_yesterday_v_last_week
-    title: Orders Yesterday vs Last Week
+  - name: cr_yesterday_v_last_week
+    title: Conversion Rate Yesterday vs Last Week
     type: table
     model: finery_data
     explore: sessions
@@ -279,8 +279,8 @@
     height: 14
     width: 22
 
-  - name: orders_yesterday_v_last_week
-    title: Orders Last Week vs Week Before
+  - name: cr_last_week_vs_week_before
+    title: Conversion Rate Last Week vs Week Before
     type: table
     model: finery_data
     explore: sessions
@@ -304,8 +304,8 @@
     height: 14
     width: 22
 
-  - name: orders_last_30_days
-    title: Orders by Device - Last 30 Days
+  - name: cr_last_30_days_by_device
+    title: Conversion Rate by Device - Last 30 Days
     type: looker_line
     model: finery_data
     explore: sessions
@@ -365,7 +365,7 @@
     height: 14
     width: 22
 
-  - name: conversion_rate_short_name_yesterday_v_last_week
+  - name: conversion_rate_short_name_last_week_vs_week_before
     title: Conversion Rate Last Week vs Week Before
     type: table
     model: finery_data
@@ -451,7 +451,7 @@
     height: 14
     width: 22
 
-  - name: engagement_rate_short_name_yesterday_v_last_week
+  - name: engagement_rate_short_name_last_week_vs_week_before
     title: Engagement Rate Last Week vs Week Before
     type: table
     model: finery_data
@@ -537,7 +537,7 @@
     height: 14
     width: 22
 
-  - name: new_visitor_percentage_yesterday_v_last_week
+  - name: new_visitor_percentage_last_week_vs_week_before
     title: New Visit % Last Week vs Week Before
     type: table
     model: finery_data
@@ -623,7 +623,7 @@
     height: 14
     width: 22
 
-  - name: sum_newsletter_signups_yesterday_v_last_week
+  - name: sum_newsletter_signups_last_week_vs_week_before
     title: Newsletter Subscriptions Last Week vs Week Before
     type: table
     model: finery_data
@@ -709,7 +709,7 @@
     height: 14
     width: 22
 
-  - name: sum_referrals_sent_yesterday_v_last_week
+  - name: sum_referrals_sent_last_week_vs_week_before
     title: Referrals Last Week vs Week Before
     type: table
     model: finery_data
@@ -795,7 +795,7 @@
     height: 14
     width: 22
 
-  - name: avg_basket_size_yesterday_v_last_week
+  - name: avg_basket_last_week_v_week_before
     title: Average Basket Size Last Week vs Week Before
     type: table
     model: finery_data

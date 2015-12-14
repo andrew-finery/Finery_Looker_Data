@@ -21,27 +21,35 @@
 
   - dimension: opens
     sql: ${TABLE}.opens
+    type: int
     
   - dimension: clicks
     sql: ${TABLE}.clicks
+    type: int
     
   - dimension: bounces
     sql: ${TABLE}.bounces
+    type: int
     
   - dimension: soft_bounces
     sql: ${TABLE}.soft_bounces
+    type: int
     
   - dimension: delays
     sql: ${TABLE}.delays
+    type: int
     
   - dimension: rejections
     sql: ${TABLE}.rejections
+    type: int
     
   - dimension: unsubscribes
     sql: ${TABLE}.unsubscribes
+    type: int
     
   - dimension: marked_as_spam
     sql: ${TABLE}.marked_as_spam
+    type: int
 
   - dimension: email_group
     sql_case:
@@ -71,13 +79,13 @@
     type: count_distinct
     sql: ${email_id}
     filters:
-      opens: ">0"
+      opens: '>0'
 
   - measure: count_messages_clicked
     type: count_distinct
     sql: ${email_id}
     filters:
-      clicks: ">0"
+      clicks: '>0'
       
   - measure: open_rate
     type: number

@@ -30,16 +30,16 @@
   - dimension: events_during_lifetime_tiered
     type: tier
     tiers: [1,5,10,25,50,100,1000,10000,100000]
-    sql: ${TABLE}.number_of_events
+    sql: ${events_during_lifetime}
 
-  - dimension: number_of_sessions
+  - dimension: number_of_visits
     type: int
     sql: ${TABLE}.number_of_sessions
     
-  - dimension: number_of_sessions_tiered
+  - dimension: number_of_visits_tiered
     type: tier
     tiers: [1,2,5,10,25,50,100,1000]
-    sql: ${number_of_sessions}
+    sql: ${number_of_visits}
 
   # Landing page dimensions #
   
@@ -98,27 +98,27 @@
       
   # Measures #
       
-  - measure: count_visitors
+  - measure: total_visitors
     type: count_distinct
     sql: ${blended_user_id}
     
-  - measure: sum_events
+  - measure: total_events
     type: sum
-    sql: ${TABLE}.number_of_events
+    sql: ${events_during_lifetime}
     
   - measure: events_per_visitor
     type: number
     decimals: 2
-    sql: ${events_count}/NULLIF(${count},0)::REAL
+    sql: ${total_events}/NULLIF(${total_visitors},0)::REAL
     
-  - measure: count_sessions
+  - measure: total_visits
     type: sum
-    sql: ${TABLE}.number_of_sessions
+    sql: ${number_of_visits}
     
   - measure: sessions_per_visitor
     type: number
     decimals: 2
-    sql: ${sessions_count}/NULLIF(${count},0)::REAL
+    sql: ${total_visits}/NULLIF(${total_visitors},0)::REAL
     
 
     

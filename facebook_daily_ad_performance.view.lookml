@@ -44,11 +44,26 @@
   - dimension: campaign_name
     sql: ${TABLE}.campaign_name
 
+  - dimension: campaign_type
+    sql: |
+          case
+          when ${campaign_name} like '%DPA%' then 'DPA'
+          when ${campaign_name} like '%Brand%' then 'Brand'
+          when ${campaign_name} like '%brand%' then 'Brand'
+          when ${campaign_name} like '%BRAND%' then 'Brand'
+          when ${campaign_name} like '%DR%' then 'DR'
+          else 'Other' end
+          
   - dimension: campaign_start_date
     sql: ${TABLE}.campaign_start_date
 
   - dimension: cities
     sql: ${TABLE}.cities
+
+  - dimension: impressions
+    type: int 
+    sql: ${TABLE}.impressions
+    hidden: true
 
   - dimension: clicks
     type: int
@@ -77,42 +92,46 @@
     type: int
     sql: ${TABLE}.conversions_mentions
     hidden: true
-    
-  - dimension: conversions_visits
+
+# Converion Pixels
+
+  - dimension: action_visit
     sql: ${TABLE}.conversions_offsite_6019249047149
     hidden: true
     
-  - dimension: conversions_orders
+  - dimension: action_sale
     sql: ${TABLE}.conversions_offsite_6020814566949
     hidden: true
     
-  - dimension: conversions_category_page
+  - dimension: action_category_page
     sql: ${TABLE}.conversions_offsite_6020814633549
     hidden: true
-    
-  - dimension: conversions_product_page
+
+  - dimension: action_product_detail_page
     sql: ${TABLE}.conversions_offsite_6020814677949
     hidden: true
     
-  - dimension: conversions_add_to_cart_page
+  - dimension: action_add_to_cart
     sql: ${TABLE}.conversions_offsite_6020814706949
     hidden: true
     
-  - dimension: conversions_address_page
+  - dimension: action_address
     sql: ${TABLE}.conversions_offsite_6020814710549
     hidden: true
-    
-  - dimension: conversions_delivery_page
+
+  - dimension: action_delivery
     sql: ${TABLE}.conversions_offsite_6020814716949
     hidden: true
-    
-  - dimension: conversions_payment_page
+
+  - dimension: action_payment
     sql: ${TABLE}.conversions_offsite_6020814720149
     hidden: true
     
-  - dimension: conversions_engagement
+  - dimension: action_engagement
     sql: ${TABLE}.conversions_offsite_6031974989949
     hidden: true
+
+# Other Conversions
     
   - dimension: conversions_page_engagement
     type: int
@@ -174,10 +193,7 @@
   - dimension: genders
     sql: ${TABLE}.genders
 
-  - dimension: impressions
-    type: int 
-    sql: ${TABLE}.impressions
-    hidden: true
+
     
   - dimension: interests
     sql: ${TABLE}.interests
@@ -238,20 +254,13 @@
   ###################################### MEASURES ####################################################
 ######################################################################################################
 
-  - measure: sum_impressions
-    label: Impressions
+  - measure: total_impressions
     type: sum
     sql: ${impressions}
 
-  - measure: sum_clicks
-    label: Clicks
+  - measure: total_clicks
     type: sum
     sql: ${clicks}
-
-  - measure: sum_orders
-    label: Orders
-    type: sum
-    sql: ${conversions_orders}
 
   - measure: sum_revenue
     label: Revenue
@@ -260,50 +269,122 @@
     value_format: '#,##0.00'
     hidden: true
 
-  - measure: sum_amount_spent
-    label: Total Spend
+  - measure: total_spend
     type: sum
     decimals: 2
     sql: ${spent}
     value_format: '#,##0.00'
 
-  - measure: roi
-    label: Return on Investment
-    type: number
-    sql: (${sum_revenue} - ${sum_amount_spent})/ NULLIF(${sum_amount_spent},0) ::REAL    
-    value_format: '0.00%'
-    hidden: true
+  - measure: total_website_clicks
+    type: sum
+    sql: ${conversions_website_clicks}
 
   - measure: click_through_rate
-    label: Click-Through Rate
+    label: CTR
     type: number
-    sql: ${sum_clicks}/ NULLIF(${sum_impressions},0) ::REAL
+    sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL
     value_format: '0.00%'
     
   - measure: cost_per_click
+    label: CPC
     type: number
-    sql: ${sum_amount_spent}/ NULLIF(${sum_clicks},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_clicks},0) ::REAL
     value_format: '#,##0.00'
-    
-  - measure: cost_per_1000impressions
-    type: number
-    sql: ${sum_amount_spent}*1000/ NULLIF(${sum_impressions},0) ::REAL
-    value_format: '#,##0.00'
-    
-  - measure: cost_per_order
-    type: number
-    sql: ${sum_amount_spent}/ NULLIF(${sum_orders},0) ::REAL
-    value_format: '#,##0.00'
-    
-    
 
-  # ----- Sets of fields for drilling ------
-  sets:
-    detail:
-    - creative_meta_page_name
-    - campaign_name
-    - adset_name
-    - ad_name
-    - account_name
-    - name
+  - measure: cost_per_website_click
+    label: CPWC
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_website_clicks},0) ::REAL
+    value_format: '#,##0.00'    
 
+  - measure: cost_per_mille
+    label: CPM
+    type: number
+    sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
+    value_format: '#,##0.00'
+
+
+# Sum Actions
+
+  - measure: total_action_visit
+    type: sum
+    sql: ${action_visit}
+
+  - measure: total_action_sale
+    type: sum
+    sql: ${action_sale}
+
+  - measure: total_action_category_page
+    type: sum
+    sql: ${action_category_page}
+
+  - measure: total_action_product_detail_page
+    type: sum
+    sql: ${action_product_detail_page}
+
+  - measure: total_action_add_to_cart
+    type: sum
+    sql: ${action_add_to_cart}
+
+  - measure: total_action_address
+    type: sum
+    sql: ${action_address}
+
+  - measure: total_action_delivery
+    type: sum
+    sql: ${action_delivery}
+
+  - measure: total_action_payment
+    type: sum
+    sql: ${action_payment}
+
+  - measure: total_action_engagement
+    type: sum
+    sql: ${action_engagement}
+
+# CPA's
+
+  - measure: cpa_visit
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_visit},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: cpa_sale
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_sale},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: cpa_category_page
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_category_page},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: cpa_product_detail_page
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_product_detail_page},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: cpa_add_to_cart
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_add_to_cart},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: cpa_action_address
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_address},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: cpa_action_delivery
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_delivery},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: cpa_action_payment
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_payment},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: cpa_action_engagement
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_action_engagement},0) ::REAL
+    value_format: '#,##0.00'
