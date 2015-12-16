@@ -681,7 +681,7 @@
     width: 5
     
   - name: new_customers_using_discount_percentage_by_weekday
-    title: New Customers Using DVoucher by Weekday
+    title: New Customers Using Voucher by Weekday
     type: looker_line
     model: finery_data
     explore: spree_orders
@@ -781,7 +781,7 @@
     filters:
       spree_orders.completed_date: 1 week ago for 2 weeks
       spree_orders.completed_time: before today
-    sorts: [spree_order_items.revenue_per_day 0,
+    sorts: [spree_order_items.revenue_per_day desc 0,
       calendar_weeks.year_week_number desc]
     limit: 500
     column_limit: ''
