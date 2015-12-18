@@ -24,7 +24,7 @@
     
   - dimension: option_name
     label: Option
-    sql: ${style_name} || ' ' || ${colour}
+    sql: case when ${colour} is null then ${style_name} else ${style_name} || ' ' || ${colour} end
     
   - dimension: current_price
     label: Current Price
