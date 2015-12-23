@@ -276,7 +276,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 10
+    top: 11
     left: 0
     height: 4
     width: 6
@@ -309,7 +309,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 10
+    top: 11
     left: 6
     height: 4
     width: 6
@@ -342,7 +342,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 14
+    top: 15
     left: 0
     height: 4
     width: 6
@@ -375,7 +375,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 14
+    top: 15
     left: 6
     height: 4
     width: 6
@@ -408,7 +408,7 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 18
+    top: 19
     left: 0
     height: 4
     width: 6
@@ -441,6 +441,6 @@
     x_axis_scale: auto
     point_style: none
     interpolation: monotone
-    top: 18
+    top: 19
     left: 6
     height: 4
