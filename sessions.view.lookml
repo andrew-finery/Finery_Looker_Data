@@ -520,6 +520,12 @@
     sql: ${TABLE}.checkout_order_page_view_flag
     hidden: true
 
+##
+  - dimension: sale_modal_viewed_flag
+    sql: ${TABLE}.sale_modal_viewed_flag
+    
+  - dimension: sale_modal_success_flag
+    sql: ${TABLE}.sale_modal_success_flag
 
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
@@ -679,6 +685,26 @@
     sql: ${sum_newsletter_signups}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
     
+  - measure: sale_modal_views_total
+    type: sum
+    sql: ${sale_modal_viewed_flag}
+    
+  - dimension: sale_modal_successes_total
+    type: sum
+    sql: ${sale_modal_success_flag}
+
+  - measure: sale_modal_success_rate
+    type: number
+    decimals: 2
+    sql: ${sale_modal_successes_total}/NULLIF(${sale_modal_views_total},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: sale_modal_bounce_rate
+    type: number
+    decimals: 2
+    sql: (${sale_modal_views_total} - ${sale_modal_successes_total})/NULLIF(${sale_modal_views_total},0)::REAL
+    value_format: '#0.00%'
+    
   - measure: sum_products_added_to_cart
     label: Products Added to Cart Total
     type: sum
@@ -718,8 +744,6 @@
     label: Product Views Total
     type: sum
     sql: ${product_views}
-
-
 
   - measure: sum_orders
     type: sum
