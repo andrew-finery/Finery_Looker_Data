@@ -527,6 +527,7 @@
           case when ${TABLE}.sale_modal_viewed_flag = 1 and ${TABLE}.sale_modal_success_flag = 0 then 0
                when ${TABLE}.sale_modal_viewed_flag = 1 and ${TABLE}.sale_modal_success_flag = 1 then 1
                else cast(${TABLE}.sale_page_view_flag_2 as smallint) end
+    hidden: true
 
 
   - dimension: has_viewed_sale_page
