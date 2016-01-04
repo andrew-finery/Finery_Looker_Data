@@ -520,12 +520,26 @@
     sql: ${TABLE}.checkout_order_page_view_flag
     hidden: true
 
-##
-  - dimension: sale_modal_viewed_flag
-    sql: ${TABLE}.sale_modal_viewed_flag
+## Sale
+
+  - dimension: sale_page_view_flag
+    sql: |
+          case when ${TABLE}.sale_modal_viewed_flag = 1 and ${TABLE}.sale_modal_success_flag = 0 then 0
+               when ${TABLE}.sale_modal_viewed_flag = 1 and ${TABLE}.sale_modal_success_flag = 1 then 1
+               else cast(${TABLE}.sale_page_view_flag_2 as smallint) end
+
+
+  - dimension: has_viewed_sale_page
+    type: yesno
+    sql: ${sale_page_view_flag} = 1
+
+  - dimension: has_viewed_sale_modal
+    type: yesno
+    sql: ${TABLE}.sale_modal_viewed_flag = 1
     
-  - dimension: sale_modal_success_flag
-    sql: ${TABLE}.sale_modal_success_flag
+  - dimension: has_passed_sale_modal
+    type: yesno
+    sql: ${TABLE}.sale_modal_success_flag = 1
 
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
