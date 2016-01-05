@@ -182,14 +182,14 @@
     sql_on: goods_in.ean = online_products.ean
     relationship: many_to_one
 
-- explore: all_newsletter_subscribers
-  joins:
-  - join: spree_customers
-    sql_on: all_newsletter_subscribers.email = spree_customers.email
-    relationship: one_to_one
-  - join: visitors
-    sql_on: all_newsletter_subscribers.email = ${visitors.email_address}
-    relationship: one_to_one
+#- explore: all_newsletter_subscribers
+#  joins:
+#  - join: spree_customers
+#    sql_on: all_newsletter_subscribers.email = spree_customers.email
+#    relationship: one_to_one
+#  - join: visitors
+#    sql_on: all_newsletter_subscribers.email = ${visitors.email_address}
+#    relationship: one_to_one
     
 - explore: all_referrals
   joins:
@@ -215,23 +215,23 @@
     sql_on: ${daily_option_info.product_id} = ${spree_products.product_id}
     relationship: many_to_one
     
-- explore: mailchimp_subscribe
-  joins:
-  - join: mailchimp_unsubscribe
-    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_unsubscribe.email} and ${mailchimp_subscribe.list} = ${mailchimp_unsubscribe.list}
-    relationship: one_to_one
-  - join: mailchimp_cleaned_email
-    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_cleaned_email.email} and ${mailchimp_subscribe.list} = ${mailchimp_cleaned_email.list}
-    relationship: one_to_one
+#- explore: mailchimp_subscribe
+#  joins:
+#  - join: mailchimp_unsubscribe
+#    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_unsubscribe.email} and ${mailchimp_subscribe.list} = ${mailchimp_unsubscribe.list}
+#    relationship: one_to_one
+#  - join: mailchimp_cleaned_email
+#    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_cleaned_email.email} and ${mailchimp_subscribe.list} = ${mailchimp_cleaned_email.list}
+#    relationship: one_to_one
 
-- explore: mailchimp_campaigns
-  joins:
-  - join: mailchimp_unsubscribe
-    sql_on: ${mailchimp_unsubscribe.unsubscribe_campaign_id} = ${mailchimp_campaigns.campaign_id}
-    relationship: one_to_many
-  - join: mailchimp_cleaned_email
-    sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
-    relationship: one_to_many
+#- explore: mailchimp_campaigns
+#  joins:
+#  - join: mailchimp_unsubscribe
+#    sql_on: ${mailchimp_unsubscribe.unsubscribe_campaign_id} = ${mailchimp_campaigns.campaign_id}
+#    relationship: one_to_many
+#  - join: mailchimp_cleaned_email
+#    sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
+#    relationship: one_to_many
 
 - explore: visitors
   joins:
