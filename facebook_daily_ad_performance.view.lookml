@@ -178,6 +178,16 @@
   - dimension: creative_type
     sql: ${TABLE}.creative_type
 
+  - dimension: creative_group
+    sql: |
+          case
+          when ${creative_name} like '%Image _A%' then 'Image A (Image)'
+          when ${creative_name} like '%Image_A%' then 'Image A (Image)'
+          when ${creative_name} like '%Image _B%' then 'Image B (Graphic)'
+          when ${creative_name} like '%Image_B%' then 'Image B (Graphic)'
+          when ${creative_name} like '%Multi%' then 'Multi-Product'
+          else ${creative_name} end
+
   - dimension: custom_audiences
     sql: ${TABLE}.custom_audiences
 

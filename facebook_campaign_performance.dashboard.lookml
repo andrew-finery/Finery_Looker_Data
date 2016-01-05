@@ -1,4 +1,4 @@
-- dashboard: facebook_campaigns
+- dashboard: facebook_campaign_performance
   title: Facebook Campaign Performance
   layout: static
   tile_size: 100
