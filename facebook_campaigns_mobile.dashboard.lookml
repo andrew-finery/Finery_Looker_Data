@@ -14,7 +14,7 @@
     model: finery_data
     explore: facebook_daily_ad_performance
     field: facebook_daily_ad_performance.campaign_name
-    default_value: 'Brand Traffic Gen_Interest Audiences_NFM,Buyers DR - Email Lookalikes_NFM,DR_Custom Audiences_NFM'
+    default_value: 'Brand - Mobile,Lookalikes - Mobile,Custom Audience - Mobile'
     
   elements:
 

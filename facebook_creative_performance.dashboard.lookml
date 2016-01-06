@@ -67,7 +67,7 @@
     listen:
      date: facebook_daily_ad_performance.calendar_date
     filters:
-      facebook_daily_ad_performance.campaign_name: 'Buyers DR - Email Lookalikes_NFD - RHS,DR_Custom Audiences_NFD - RHS,Brand Traffic Gen_Interest Audiences_NFD - RHS'
+      facebook_daily_ad_performance.campaign_name: 'Lookalikes - Desktop,Custom Audience - Desktop,Brand - Desktop'
 
     sorts: [facebook_daily_ad_performance.total_spend desc]
     limit: 500
@@ -110,7 +110,7 @@
     listen:
      date: facebook_daily_ad_performance.calendar_date
     filters:
-      facebook_daily_ad_performance.campaign_name: 'Brand Traffic Gen_Interest Audiences_NFM,Buyers DR - Email Lookalikes_NFM,DR_Custom Audiences_NFM'
+      facebook_daily_ad_performance.campaign_name: 'Lookalikes - Mobile,Custom Audience - Mobile,Brand - Mobile'
     sorts: [facebook_daily_ad_performance.total_spend desc]
     limit: 500
     total: true
@@ -138,7 +138,7 @@
     width: 12
 
   - name: creative_performance_dr
-    title: Creative Performance - DR Campaigns
+    title: Creative Performance - Custom Audiences and Lookalike Campaigns
     type: table
     model: finery_data
     explore: facebook_daily_ad_performance
@@ -152,7 +152,7 @@
     listen:
      date: facebook_daily_ad_performance.calendar_date
     filters:
-      facebook_daily_ad_performance.campaign_name: 'Buyers DR - Email Lookalikes_NFM,DR_Custom Audiences_NFM,Buyers DR - Email Lookalikes_NFD - RHS,DR_Custom Audiences_NFD - RHS'
+      facebook_daily_ad_performance.campaign_name: 'Lookalikes - Desktop,Custom Audience - Desktop,Lookalikes - Mobile,Custom Audience - Mobile'
     sorts: [facebook_daily_ad_performance.total_spend desc]
     limit: 500
     total: true
@@ -194,7 +194,7 @@
     listen:
      date: facebook_daily_ad_performance.calendar_date
     filters:
-      facebook_daily_ad_performance.campaign_name: 'Brand Traffic Gen_Interest Audiences_NFM,Brand Traffic Gen_Interest Audiences_NFD - RHS'
+      facebook_daily_ad_performance.campaign_name: 'Brand - Mobile,Brand - Desktop'
     sorts: [facebook_daily_ad_performance.total_spend desc]
     limit: 500
     total: true

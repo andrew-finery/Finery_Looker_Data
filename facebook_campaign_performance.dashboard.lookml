@@ -11,7 +11,7 @@
   - name: campaign
     title: "Select campaign"
     type: string_filter
-    default_value: 'Brand Traffic Gen_Interest Audiences_NFM'
+    default_value: 'Brand - Mobile'
 
   elements:
 

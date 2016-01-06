@@ -35,8 +35,6 @@
   - dimension: bid_type
     sql: ${TABLE}.bid_type
 
-  - dimension: call_to_action
-    sql: ${TABLE}.call_to_action
 
   - dimension: campaign
     sql: ${TABLE}.campaign
@@ -165,9 +163,6 @@
     
   - dimension: countries
     sql: ${TABLE}.countries
-    
-  - dimension: creative_name
-    sql: ${TABLE}.creative
 
   - dimension: page_name
     sql: ${TABLE}.creative_meta_page_name
@@ -226,18 +221,31 @@
     sql: ${TABLE}.name
     hidden: true
 
+##    
+  - dimension: creative_name
+    label: Creative - Name
+    sql: ${TABLE}.creative
+
   - dimension: picture
+    label: Creative - Picture
     sql: ${TABLE}.picture
-    
+    html: |
+          <img src="{{value}}" height="130" width="130"/>
+
+  - dimension: call_to_action
+    label: Creative - Call to Action Text
+    sql: ${TABLE}.call_to_action
+
+  - dimension: post_type
+    label: Creative - Post Type
+    sql: ${TABLE}.post_type
+##
 
   - dimension: placement
     sql: ${TABLE}.placement
 
   - dimension: post_id
     sql: ${TABLE}.post_id
-
-  - dimension: post_type
-    sql: ${TABLE}.post_type
 
   - dimension: reach
     sql: ${TABLE}.reach
@@ -253,10 +261,11 @@
     hidden: true
 
   - dimension: title
+    label: Creative - Title
     sql: ${TABLE}.title
-    hidden: true
 
   - dimension: url
+    label: Creative - Landing Page URL
     sql: ${TABLE}.url
 
 

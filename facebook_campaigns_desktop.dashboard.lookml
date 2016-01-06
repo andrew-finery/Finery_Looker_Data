@@ -14,7 +14,7 @@
     model: finery_data
     explore: facebook_daily_ad_performance
     field: facebook_daily_ad_performance.campaign_name
-    default_value: 'Buyers DR - Email Lookalikes_NFD - RHS,DR_Custom Audiences_NFD - RHS,Brand Traffic Gen_Interest Audiences_NFD - RHS'
+    default_value: 'Lookalikes - Desktop,Custom Audience - Desktop,Brand - Desktop'
     
   elements:
 
