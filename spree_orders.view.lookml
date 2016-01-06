@@ -62,6 +62,10 @@
     type: yesno
     sql: ${TABLE}.adjustment_total <> 0
 
+  - dimension: gift_card_only_orders
+    type: yesno
+    sql: ${TABLE}.total_gift_card_items = ${TABLE}.item_count
+
   - dimension: latest_order_flag
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id
