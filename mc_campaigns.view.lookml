@@ -39,7 +39,7 @@
 
   - dimension_group: email_sent_at
     type: time
-    timeframes: [time, date, week, month, year]
+    timeframes: [time, date, time_of_day, day_of_week, week, month, year]
     sql: ${TABLE}.email_send_time
 
   - dimension: content_type
@@ -95,6 +95,12 @@
     decimals: 4
     sql: ${subscriber_clicks}/NULLIF(${emails_sent},0)::REAL
     value_format: '#0.00%'
+
+  - dimension: campaign_click_through_rate
+    type: number
+    decimals: 4
+    sql: ${subscriber_clicks}/NULLIF(${unique_opens},0)::REAL
+    value_format: '#0.00%'
     
 ### Measures
   
@@ -128,6 +134,12 @@
     type: number
     decimals: 4
     sql: ${total_subscriber_clicks}/NULLIF(${total_emails_sent},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: click_through_rate
+    type: number
+    decimals: 4
+    sql: ${total_subscriber_clicks}/NULLIF(${total_unique_opens},0)::REAL
     value_format: '#0.00%'
     
   - measure: unique_campaigns_count
