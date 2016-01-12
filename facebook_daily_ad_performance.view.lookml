@@ -72,7 +72,7 @@
     sql: ${TABLE}.connections
     hidden: true
 
-  - dimension: campaign_reporting_goal
+  - dimension: goal_conversions
     type: int
     sql: ${TABLE}.conversions
     hidden: true
@@ -322,6 +322,10 @@
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
     value_format: '#,##0.00'
 
+  - measure: offsite_conversions_to_impressions
+    type: number
+    sql: ${total_goal_conversions}/ NULLIF(${total_impressions},0) ::REAL
+    value_format: '#0.000%'
 
 # Sum Actions
 
@@ -360,6 +364,10 @@
   - measure: total_action_engagement
     type: sum
     sql: ${action_engagement}
+
+  - measure: total_goal_conversions
+    type: sum
+    sql: ${goal_conversions}
 
 # CPA's
 
