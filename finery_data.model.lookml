@@ -93,6 +93,8 @@
 #    from: calendar_weeks
 #    sql_on: ${event_calendar.calendar_date_date} = ${atomic_events.event_time_date}
 #    relationship: many_to_one
+
+- explore: spree_users
     
 - explore: spree_orders
   joins:
