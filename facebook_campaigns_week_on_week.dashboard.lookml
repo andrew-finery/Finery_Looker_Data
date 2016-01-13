@@ -7,6 +7,8 @@
 
   elements:
   
+  
+  #11111111111111111111111111111111111111***************************************************************************************************************************************************
   - name: add_a_unique_name_1452623003542
     title: Desktop Brand-Spend
     layout: static
@@ -238,7 +240,7 @@
     width: 6
     
     
-    #***************************************************************************************************************************************************
+    #22222222222222222222222222222222222***************************************************************************************************************************************************
     
   - name: desktop_lookalikes_spend
     title: Desktop Lookalikes-Spend
@@ -470,25 +472,58 @@
     height: 3
     width: 6
     
-    #*************************************************************************************************************************
-
-
-
-
-
-
-
-  - name: mobie_desktop_impressions
-    title: Brand Mobile Imp
+    #33333333333333333333333333333333333333333333*************************************************************************************************************************
+    
+  - name: desktop_ca_spend
+    title: Desktop CA-Spend
     layout: static
     type: looker_column
     model: finery_data
     explore: facebook_daily_ad_performance
     dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
     measures: [facebook_daily_ad_performance.total_spend]
     filters:
       facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 6
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: desktop_ca_imp
+    title: Desktop CA-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_impressions]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
     sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
     limit: 500
     column_limit: 50
@@ -498,31 +533,225 @@
     show_value_labels: true
     label_density: 25
     font_size: 15px
-    legend_position: center
-    hide_legend: false
+    hide_legend: true
     x_axis_gridlines: false
     show_view_names: false
     y_axis_combined: true
     show_y_axis_labels: true
     show_y_axis_ticks: false
     y_axis_tick_density: default
-    show_x_axis_label: true
-    show_x_axis_ticks: true
+    show_x_axis_label: false
+    show_x_axis_ticks: false
     x_axis_scale: auto
     show_null_labels: false
     show_dropoff: false
-    top: 9
-    left: 0
+    top: 6
+    left: 2
     height: 3
     width: 2
+
     
-  - name: mobile_desktop_spend
-    title: Untitled Visualization
+  - name: desktop_ca_cpm
+    title: Desktop CA-CPM
     layout: static
     type: looker_column
     model: finery_data
     explore: facebook_daily_ad_performance
     dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.cost_per_mille]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 6
+    left: 4
+    height: 3
+    width: 2
+    
+  - name: desktop_ca_ctr
+    title: Desktop CA-CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 6
+    left: 6
+    height: 3
+    width: 2
+    
+  
+  - name: desktop_ca_actions
+    title: Desktop CA-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 6
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: desktop_ca_cpa
+    title: Desktop CA-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 6
+    left: 14
+    height: 3
+    width: 6
+    
+    #44444444444444444444444444444444444444444444444444444444444444*************************************************************************************************************************
+
+  - name: mobile_brand_spend
+    title: Mobile Brand-Spend
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_spend]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 10
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: mobile_brand_imp
+    title: Mobile Brand-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
     measures: [facebook_daily_ad_performance.total_impressions]
     filters:
       facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
@@ -543,24 +772,25 @@
     show_y_axis_labels: true
     show_y_axis_ticks: false
     y_axis_tick_density: default
-    show_x_axis_label: true
-    show_x_axis_ticks: true
+    show_x_axis_label: false
+    show_x_axis_ticks: false
     x_axis_scale: auto
     show_null_labels: false
     show_dropoff: false
-    top: 9
+    top: 10
     left: 2
     height: 3
     width: 2
 
     
-  - name: mobile_desktop_CPM
-    title: Untitled Visualization
+  - name: mobile_brand_cpm
+    title: Mobile Brand-CPM
     layout: static
     type: looker_column
     model: finery_data
     explore: facebook_daily_ad_performance
     dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
     measures: [facebook_daily_ad_performance.cost_per_mille]
     filters:
       facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
@@ -581,20 +811,828 @@
     show_y_axis_labels: true
     show_y_axis_ticks: false
     y_axis_tick_density: default
-    show_x_axis_label: true
-    show_x_axis_ticks: true
+    show_x_axis_label: false
+    show_x_axis_ticks: false
     x_axis_scale: auto
     show_null_labels: false
     show_dropoff: false
-    top: 9
+    top: 10
     left: 4
     height: 3
     width: 2
- 
+    
+  - name: mobile_brand_ctr
+    title: Mobile Brand CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 10
+    left: 6
+    height: 3
+    width: 2
+    
+  
+  - name: mobile_brand_actions
+    title: Mobile Brand-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 10
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: mobile_brand_cpa
+    title: Mobile Brand-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 10
+    left: 14
+    height: 3
+    width: 6
+    
+    #55555555555555555555555555555555555555555555555555555555555555*************************************************************************************************************************
+    
+  - name: mobile_lookalikes_spend
+    title: Mobile Lookalikes-Spend
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_spend]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 13
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: mobile_lookalikes_imp
+    title: Mobile Lookalikes-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_impressions]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 13
+    left: 2
+    height: 3
+    width: 2
 
+    
+  - name: mobile_lookalikes_cpm
+    title: Mobile Lookalikes-CPM
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.cost_per_mille]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 13
+    left: 4
+    height: 3
+    width: 2
+    
+  - name: mobile_lookalikes_ctr
+    title: Mobile Lookalikes CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 13
+    left: 6
+    height: 3
+    width: 2
+    
   
+  - name: mobile_lookalikes_actions
+    title: Mobile Lookalikes-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 13
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: mobile_lookalikes_cpa
+    title: Mobile Lookalikes-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 13
+    left: 14
+    height: 3
+    width: 6
+    
+    #66666666666666666666666666666666666666666666666****************************************************************************************************
   
+  - name: mobile_ca_spend
+    title: Mobile CA-Spend
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_spend]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 16
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: mobile_ca_imp
+    title: Mobile CA-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_impressions]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 16
+    left: 2
+    height: 3
+    width: 2
+
+    
+  - name: mobile_ca_cpm
+    title: Mobile CA-CPM
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.cost_per_mille]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 16
+    left: 4
+    height: 3
+    width: 2
+    
+  - name: mobile_ca_ctr
+    title: Mobile CA CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 16
+    left: 6
+    height: 3
+    width: 2
+    
   
+  - name: mobile_ca_actions
+    title: Mobile CA-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 16
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: mobile_ca_cpa
+    title: Mobile CA-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 16
+    left: 14
+    height: 3
+    width: 6
+
+#777777777777777777777777777777777******************************************************************************************************************************
+
+  - name: dpa_spend
+    title: DPA-Spend
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_spend]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 20
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: dpa_imp
+    title: DPA-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_impressions]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 20
+    left: 2
+    height: 3
+    width: 2
+
+    
+  - name: dpa_cpm
+    title: DPA-CPM
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.cost_per_mille]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 20
+    left: 4
+    height: 3
+    width: 2
+    
+  - name: dpa_ctr
+    title: DPA-CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 20
+    left: 6
+    height: 3
+    width: 2
+    
+  
+  - name: dpa_actions
+    title: DPA-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 20
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: dpa_cpa
+    title: DPA-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 20
+    left: 14
+    height: 3
+    width: 6
+    
+    #888888888888888888888888888888*******************************************************************************************************
   
   
   
@@ -618,7 +1656,7 @@
     limit: 500
     column_limit: 40
     total: true
-    top: 11
+    top: 50
     left: 0
     height: 5
     width: 14
@@ -642,7 +1680,7 @@
     limit: 500
     column_limit: 40
     total: true
-    top: 16
+    top: 50
     left: 0
     height: 5
     width: 14  
