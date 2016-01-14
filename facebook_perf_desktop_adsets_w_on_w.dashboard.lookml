@@ -1,5 +1,5 @@
 - dashboard: facebook_desktop_adsets_week_on_week
-  title: Facebook Desktop Adsets Week on Week
+  title: Facebook Perf Desktop Adsets WonW
   layout: static
   tile_size: 100
 

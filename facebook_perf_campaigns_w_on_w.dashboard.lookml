@@ -1,5 +1,5 @@
 - dashboard: facebook_campaigns_week_on_week
-  title: Facebook Campaigns Week on Week
+  title: Facebook Perf Campaigns WonW
   layout: static
   tile_size: 100
 
