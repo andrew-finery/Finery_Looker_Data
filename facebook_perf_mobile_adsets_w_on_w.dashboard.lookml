@@ -4922,3 +4922,241 @@
     left: 14
     height: 3
     width: 6
+    
+    #ad4.1**********************************************************************************************************************************
+    
+  - name: desktop_dpa_allvisitors_viewed_NFD_spend
+    title: Desktop DPA All Visitors Viewed NFD-Spend
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_spend]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+    '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 69
+    left: 0
+    height: 3
+    width: 2
+    
+  - name: desktop_dpa_allvisitors_viewed_NFD_imp
+    title: Desktop DPA All Visitors Viewed NFD-IMP
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.total_impressions]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 69
+    left: 2
+    height: 3
+    width: 2
+
+    
+  - name: desktop_dpa_allvisitors_viewed_NFD_cpm
+    title: Desktop DPA All Visitors Viewed NFD-CPM
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.cost_per_mille]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 15px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 69
+    left: 4
+    height: 3
+    width: 2
+    
+  - name: desktop_dpa_allvisitors_viewed_NFD_ctr
+    title: Desktop DPA All Visitors Viewed NFD-CTR
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    pivots: [facebook_daily_ad_performance.calendar_week]
+    measures: [facebook_daily_ad_performance.click_through_rate]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 69
+    left: 6
+    height: 3
+    width: 2
+    
+  
+  - name: desktop_dpa_allvisitors_viewed_NFD_actions
+    title: Desktop DPA All Visitors Viewed NFD-Actions
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
+      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
+      facebook_daily_ad_performance.total_action_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: true
+    top: 69
+    left: 8
+    height: 3
+    width: 6
+    
+  - name: desktop_dpa_allvisitors_viewed_NFD_cpa
+    title: Desktop DPA All Visitors Viewed NFD-CPA
+    layout: static
+    type: looker_column
+    model: finery_data
+    explore: facebook_daily_ad_performance
+    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
+      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
+      facebook_daily_ad_performance.cpa_sale]
+    filters:
+      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance.campaign_name: '"DPA"'
+      facebook_daily_ad_performance.adset_name: '"All Visitors Viewed - NFD"'
+    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
+      '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
+    show_value_labels: true
+    label_density: 25
+    font_size: 16px
+    hide_legend: true
+    x_axis_gridlines: false
+    show_view_names: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: false
+    x_axis_scale: auto
+    show_null_labels: false
+    show_dropoff: false
+    top: 69
+    left: 14
+    height: 3
+    width: 6
