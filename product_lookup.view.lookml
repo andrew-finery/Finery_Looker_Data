@@ -150,7 +150,7 @@
       Rise Designs: ${factory} in ('Rise Designs')
       New Fashion: ${factory} in ('New Fashion')
       J G Belts: ${factory} in ('J G Belts')
-      else: 'Unknown'
+      else: ${facory}
 
   - dimension: freight_cost_gbp
     sql: ${TABLE}.freight_cost_gbp
