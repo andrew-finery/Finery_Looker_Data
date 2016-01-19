@@ -1,5 +1,5 @@
-- dashboard: facebook_campaigns_week_on_week
-  title: Facebook Perf Campaigns WonW
+- dashboard: facebook_campaigns_w_on_w_1day
+  title: Facebook Perf Campaigns WonW 1day
   layout: static
   tile_size: 100
 
@@ -14,14 +14,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -52,14 +52,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -91,14 +91,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -128,14 +128,14 @@
     title: Desktop Brand CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -166,15 +166,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -205,15 +205,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -247,14 +247,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -285,14 +285,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -324,14 +324,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -361,14 +361,14 @@
     title: Desktop Lookalikes-CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -399,15 +399,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -438,15 +438,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -479,14 +479,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -517,14 +517,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -556,14 +556,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -593,14 +593,14 @@
     title: Desktop CA-CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -631,15 +631,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -670,15 +670,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Desktop"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Desktop"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -711,14 +711,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -749,14 +749,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -788,14 +788,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -825,14 +825,14 @@
     title: Mobile Brand CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -863,15 +863,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -902,15 +902,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Brand - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Brand - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -943,14 +943,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -981,14 +981,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1020,14 +1020,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1057,14 +1057,14 @@
     title: Mobile Lookalikes CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1095,15 +1095,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1134,15 +1134,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Lookalikes - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Lookalikes - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1175,14 +1175,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1213,14 +1213,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1252,14 +1252,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1289,14 +1289,14 @@
     title: Mobile CA CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1327,15 +1327,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1366,15 +1366,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"Custom Audience - Mobile"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"Custom Audience - Mobile"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1407,14 +1407,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1445,14 +1445,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1484,14 +1484,14 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1521,14 +1521,14 @@
     title: DPA-CTR
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    pivots: [facebook_daily_ad_performance.calendar_week]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    pivots: [facebook_daily_ad_performance_1day.calendar_week]
+    measures: [facebook_daily_ad_performance_1day.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.click_through_rate]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.click_through_rate]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1559,15 +1559,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1598,15 +1598,15 @@
     layout: static
     type: looker_column
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.cost_per_website_click, facebook_daily_ad_performance.cpa_visit,
-      facebook_daily_ad_performance.cpa_product_detail_page, facebook_daily_ad_performance.cpa_add_to_cart,
-      facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.cost_per_website_click, facebook_daily_ad_performance_1day.cpa_visit,
+      facebook_daily_ad_performance_1day.cpa_product_detail_page, facebook_daily_ad_performance_1day.cpa_add_to_cart,
+      facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_week: 2 weeks ago for 2 weeks
-      facebook_daily_ad_performance.campaign_name: '"DPA"'
-    sorts: [facebook_daily_ad_performance.calendar_week, facebook_daily_ad_performance.campaign_name]
+      facebook_daily_ad_performance_1day.calendar_week: 2 weeks ago for 2 weeks
+      facebook_daily_ad_performance_1day.campaign_name: '"DPA"'
+    sorts: [facebook_daily_ad_performance_1day.calendar_week, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
     stacking: ''
@@ -1641,18 +1641,18 @@
     title: This Week
     type: table
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_spend, facebook_daily_ad_performance.total_impressions,
-      facebook_daily_ad_performance.click_through_rate, facebook_daily_ad_performance.cost_per_mille,
-      facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale, facebook_daily_ad_performance.cost_per_website_click,
-      facebook_daily_ad_performance.cpa_visit, facebook_daily_ad_performance.cpa_product_detail_page,
-      facebook_daily_ad_performance.cpa_add_to_cart, facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_spend, facebook_daily_ad_performance_1day.total_impressions,
+      facebook_daily_ad_performance_1day.click_through_rate, facebook_daily_ad_performance_1day.cost_per_mille,
+      facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale, facebook_daily_ad_performance_1day.cost_per_website_click,
+      facebook_daily_ad_performance_1day.cpa_visit, facebook_daily_ad_performance_1day.cpa_product_detail_page,
+      facebook_daily_ad_performance_1day.cpa_add_to_cart, facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_date: 1 week ago for 1 week
-    sorts: [facebook_daily_ad_performance.total_spend desc]
+      facebook_daily_ad_performance_1day.calendar_date: 1 week ago for 1 week
+    sorts: [facebook_daily_ad_performance_1day.total_spend desc]
     limit: 500
     column_limit: 40
     total: true
@@ -1665,18 +1665,18 @@
     title: Previous Week
     type: table
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.campaign_name]
-    measures: [facebook_daily_ad_performance.total_spend, facebook_daily_ad_performance.total_impressions,
-      facebook_daily_ad_performance.click_through_rate, facebook_daily_ad_performance.cost_per_mille,
-      facebook_daily_ad_performance.total_website_clicks, facebook_daily_ad_performance.total_action_visit,
-      facebook_daily_ad_performance.total_action_product_detail_page, facebook_daily_ad_performance.total_action_add_to_cart,
-      facebook_daily_ad_performance.total_action_sale, facebook_daily_ad_performance.cost_per_website_click,
-      facebook_daily_ad_performance.cpa_visit, facebook_daily_ad_performance.cpa_product_detail_page,
-      facebook_daily_ad_performance.cpa_add_to_cart, facebook_daily_ad_performance.cpa_sale]
+    explore: facebook_daily_ad_performance_1day
+    dimensions: [facebook_daily_ad_performance_1day.campaign_name]
+    measures: [facebook_daily_ad_performance_1day.total_spend, facebook_daily_ad_performance_1day.total_impressions,
+      facebook_daily_ad_performance_1day.click_through_rate, facebook_daily_ad_performance_1day.cost_per_mille,
+      facebook_daily_ad_performance_1day.total_website_clicks, facebook_daily_ad_performance_1day.total_action_visit,
+      facebook_daily_ad_performance_1day.total_action_product_detail_page, facebook_daily_ad_performance_1day.total_action_add_to_cart,
+      facebook_daily_ad_performance_1day.total_action_sale, facebook_daily_ad_performance_1day.cost_per_website_click,
+      facebook_daily_ad_performance_1day.cpa_visit, facebook_daily_ad_performance_1day.cpa_product_detail_page,
+      facebook_daily_ad_performance_1day.cpa_add_to_cart, facebook_daily_ad_performance_1day.cpa_sale]
     filters:
-      facebook_daily_ad_performance.calendar_date: 2 weeks ago for 1 week
-    sorts: [facebook_daily_ad_performance.total_spend desc]
+      facebook_daily_ad_performance_1day.calendar_date: 2 weeks ago for 1 week
+    sorts: [facebook_daily_ad_performance_1day.total_spend desc]
     limit: 500
     column_limit: 40
     total: true
@@ -1684,5 +1684,4 @@
     left: 0
     height: 5
     width: 14  
-    
     

@@ -50,6 +50,8 @@
     
 - explore: facebook_daily_ad_performance
 
+- explore: facebook_daily_ad_performance_1day
+
 - explore: spree_customers
   joins:
   - join: all_newsletter_subscribers
