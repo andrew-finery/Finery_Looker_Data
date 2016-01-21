@@ -108,49 +108,50 @@
   
   - dimension: supplier
     label: Supplier
-    sql_case:
-      Alvex LTD: ${factory} in ('Alvex', 'Alvex Ltd')
-      Anglo Union: ${factory} in ('Anglo Union')
-      Apparels Connection: ${factory} in ('Apparels Connection')
-      Appriva Tekstil: ${factory} in ('APPRIVA TEKSTIL')
-      Blue Clothing: ${factory} in ('SC Rojin Textile SRL - Blue Clothing','SC Rojin Textile SRL - Blue Clothing ','Micheal.com','SC Rojin Textile SRL')
-      Fashion Enter Ltd: ${factory} in ('Fashion Enter')
-      For You Fashion: ${factory} in ('For You Fashions','For You Fashion')
-      Gemini: ${factory} in ('Gemini Clothing')
-      India Fashion: ${factory} in ('India Fashion','India Fashions')
-      Indigo: ${factory} in ('Indigo')
-      Legend Creations: ${factory} in ('Legend Creations')
-      Loaded: ${factory} in ('Loaded')
-      Luna and Smith Ltd: ${factory} in ('ZST')
-      Lara Fashions: ${factory} in ('Lara Fashions')
-      Neo Concept: ${factory} in ('Dongguan Neo-Oct Knitwear Co., Ltd')
-      PC Clothing: ${factory} in ('Zen','Solda','Affinity','Ecomoda','Eccomoda','Violetta','Elegance','Ekemoda','PC Clothing')
-      Signature: ${factory} in ('Mode Tekstil','Signature')
-      Stiletto: ${factory} in ('Stiletto')
-      Starpro: ${factory} in ('Starpro Ltd')
-      Stanca Aurelia: ${factory} in ('Stanca Aurelia')
-      Twisted Sister Ltd: ${factory} in ('cn fty','Deqing Perrie Garments Co., Ltd','Twisted Sister Ltd','Twisted Sister')
-      ZD - Bati Triko: ${factory} in ('Nesan')
-      ZD - Karahan Tekstil : ${factory} in ('Bati', 'KARAHAN TEKSTIL')
-      Camilton: ${factory} in ('Camilton','Camilton ')
-      Feetcare: ${factory} in ('Feetcare','Feetcare ltd')
-      Heitor: ${factory} in ('Heitor')
-      Humat Spain S.L: ${factory} in ('Humat Spain S.L')
-      Michael.com: ${factory} in ('Michael.com')
-      R.D.Traders PVT LTD: ${factory} in ('R.D.Traders PVT LTD')
-      Vision East : ${factory} in ('Vision East')
-      Rhythm London Ltd: ${factory} in ('Rhythm London Ltd')
-      Gold Point: ${factory} in ('Gold Point') 
-      DNC Jewelry : ${factory} in ('DNC Jewelry', 'DNC Jewelry ')
-      Kc Paul Qingdao Co. Ltd : ${factory} in ('KC')
-      H.Gaventa: ${factory} in ('H.Gaventa','H.Gaventa ltd')
-      Zhangjiagang Asisancharm Garment Co Ltd: ${factory} in ('Zhangjiagang Asisancharm Garment Co Ltd')
-      Gold Point: ${factory} in ('Gold Point')
-      Ardy: ${factory} in ('Ardy')
-      Rise Designs: ${factory} in ('Rise Designs')
-      New Fashion: ${factory} in ('New Fashion')
-      J G Belts: ${factory} in ('J G Belts')
-      else: ${factory}
+    sql: |
+          case
+          when ${factory} in  ('Alvex', 'Alvex Ltd')  then  'Alvex LTD'
+          when ${factory} in  ('Anglo Union') then  'Anglo Union'
+          when ${factory} in  ('Apparels Connection') then  'Apparels Connection'
+          when ${factory} in  ('APPRIVA TEKSTIL') then  'Appriva Tekstil'
+          when ${factory} in  ('SC Rojin Textile SRL - Blue Clothing','SC Rojin Textile SRL - Blue Clothing ','Micheal.com','SC Rojin Textile SRL') then  'Blue Clothing'
+          when ${factory} in  ('Fashion Enter') then  'Fashion Enter Ltd'
+          when ${factory} in  ('For You Fashions','For You Fashion')  then  'For You Fashion'
+          when ${factory} in  ('Gemini Clothing') then  'Gemini'
+          when ${factory} in  ('India Fashion','India Fashions')  then  'India Fashion'
+          when ${factory} in  ('Indigo')  then  'Indigo'
+          when ${factory} in  ('Legend Creations')  then  'Legend Creations'
+          when ${factory} in  ('Loaded')  then  'Loaded'
+          when ${factory} in  ('ZST') then  'Luna and Smith Ltd'
+          when ${factory} in  ('Lara Fashions') then  'Lara Fashions'
+          when ${factory} in  ('Dongguan Neo-Oct Knitwear Co., Ltd')  then  'Neo Concept'
+          when ${factory} in  ('Zen','Solda','Affinity','Ecomoda','Eccomoda','Violetta','Elegance','Ekemoda','PC Clothing') then  'PC Clothing'
+          when ${factory} in  ('Mode Tekstil','Signature')  then  'Signature'
+          when ${factory} in  ('Stiletto')  then  'Stiletto'
+          when ${factory} in  ('Starpro Ltd') then  'Starpro'
+          when ${factory} in  ('Stanca Aurelia')  then  'Stanca Aurelia'
+          when ${factory} in  ('cn fty','Deqing Perrie Garments Co., Ltd','Twisted Sister Ltd','Twisted Sister')  then  'Twisted Sister Ltd'
+          when ${factory} in  ('Nesan') then  'ZD - Bati Triko'
+          when ${factory} in  ('Bati', 'KARAHAN TEKSTIL') then  'ZD - Karahan Tekstil '
+          when ${factory} in  ('Camilton','Camilton ')  then  'Camilton'
+          when ${factory} in  ('Feetcare','Feetcare ltd') then  'Feetcare'
+          when ${factory} in  ('Heitor')  then  'Heitor'
+          when ${factory} in  ('Humat Spain S.L') then  'Humat Spain S.L'
+          when ${factory} in  ('Michael.com') then  'Michael.com'
+          when ${factory} in  ('R.D.Traders PVT LTD') then  'R.D.Traders PVT LTD'
+          when ${factory} in  ('Vision East') then  'Vision East '
+          when ${factory} in  ('Rhythm London Ltd') then  'Rhythm London Ltd'
+          when ${factory} in  ('Gold Point')  then  'Gold Point'
+          when ${factory} in  ('DNC Jewelry', 'DNC Jewelry ') then  'DNC Jewelry '
+          when ${factory} in  ('KC')  then  'Kc Paul Qingdao Co. Ltd '
+          when ${factory} in  ('H.Gaventa','H.Gaventa ltd') then  'H.Gaventa'
+          when ${factory} in  ('Zhangjiagang Asisancharm Garment Co Ltd') then  'Zhangjiagang Asisancharm Garment Co Ltd'
+          when ${factory} in  ('Gold Point')  then  'Gold Point'
+          when ${factory} in  ('Ardy')  then  'Ardy'
+          when ${factory} in  ('Rise Designs')  then  'Rise Designs'
+          when ${factory} in  ('New Fashion') then  'New Fashion'
+          when ${factory} in  ('J G Belts') then  'J G Belts'
+          else ${factory} end
 
   - dimension: freight_cost_gbp
     sql: ${TABLE}.freight_cost_gbp
