@@ -1,5 +1,5 @@
 - view: redshift_load_errors
-  sql_table_name: pg_catalog.stl_load_errors
+  sql_table_name: bi_data.redshift_load_errors
   fields:
 
   - dimension: column_length
