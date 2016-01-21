@@ -54,9 +54,9 @@
 
 - explore: spree_customers
   joins:
-  - join: all_newsletter_subscribers
-    sql_on: all_newsletter_subscribers.email = spree_customers.email
-    relationship: one_to_one
+#  - join: all_newsletter_subscribers
+#    sql_on: all_newsletter_subscribers.email = spree_customers.email
+#    relationship: one_to_one
   - join: visitors
     sql_on: spree_customers.email = ${visitors.email_address}
     relationship: one_to_one
@@ -275,3 +275,6 @@
 
 - explore: mc_campaigns
   label:  'Mailchimp Campaigns'
+
+- explore: redshift_load_errors
+- explore: redshift_snowplow_loads
