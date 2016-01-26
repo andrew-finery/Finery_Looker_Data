@@ -254,27 +254,43 @@
     relationship: many_to_one
     
 
-- explore: scripts_bi_server
 
 - explore: mc_newsletter_subscribers
   label:  'Mailchimp Newsletter Subscribers'
-  description: 'All Newsletter subscribers and their activity'
+  description: 'Finery newsletter subscriber information'
   joins:
-  - join: member_activity
-    from: mc_campaign_member_activity
-    sql_on: ${mc_newsletter_subscribers.email_address} = ${member_activity.email_address}
-    relationship: one_to_many
+  - join: customer_info
+    from: spree_customers
+    sql_on: ${mc_newsletter_subscribers.email_address} = ${customer_info.email}
+    relationship: one_to_one
+  - join: web_visitor_info
+    from: visitors
+    sql_on: ${mc_newsletter_subscribers.email_address} = ${web_visitor_info.email_address}
+    relationship: one_to_one
+
+- explore: mc_campaign_member_activity
+  label:  'Mailchimp Newsletter Subscriber Activity'
+  description: 'Finery newsletter subscriber activity'
+  joins:
+  - join: newsletter_subscribers
+    from: mc_newsletter_subscribers
+    type: inner
+    sql_on: ${newsletter_subscribers.email_address} = ${mc_campaign_member_activity.email_address}
+    relationship: many_to_one
   - join: email_campaign_tests
     from: mc_campaigns_tests
-    sql_on: ${email_campaign_tests.test_id} = ${member_activity.campaign_id}
+    sql_on: ${email_campaign_tests.test_id} = ${mc_campaign_member_activity.campaign_id}
     relationship: many_to_one
   - join: email_campaigns
     from: mc_campaigns
-    sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
+    sql_on: ${email_campaigns.campaign_id} = ${mc_campaign_member_activity.campaign_id}
     relationship: many_to_one
 
 - explore: mc_campaigns
   label:  'Mailchimp Campaigns'
+  description: 'Finery Mailchimp account campaign information'
 
+
+- explore: scripts_bi_server
 - explore: redshift_load_errors
 - explore: redshift_snowplow_loads
