@@ -11,7 +11,7 @@
   - name: campaign
     title: "Select campaign"
     type: string_filter
-    default_value: 'Brand - Desktop''Brand - Mobile'
+    default_value: 'Brand - Desktop'
 
   elements:
   
