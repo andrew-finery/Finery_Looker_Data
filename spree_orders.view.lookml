@@ -13,7 +13,6 @@
     primary_key: true
     type: int
     sql: ${TABLE}.order_id
-    hidden: true
 
   - dimension_group: completed
     label: Order
