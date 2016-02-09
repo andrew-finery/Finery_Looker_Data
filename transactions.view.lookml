@@ -36,6 +36,9 @@
   
   - dimension: order_id
     sql: ${TABLE}.order_id
+
+  - dimension: order_code
+    sql: ${TABLE}.order_code
   
   - dimension: revenue_inc_vat
     sql: ${TABLE}.order_total
