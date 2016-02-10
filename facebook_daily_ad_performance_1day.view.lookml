@@ -91,43 +91,43 @@
     sql: ${TABLE}.conversions_mentions
     hidden: true
 
-# Converion Pixels
+# Conversion Facebook Pixels
 
-  - dimension: action_visit
-    sql: ${TABLE}.conversions_offsite_6019249047149
+  - dimension: action_complete_registration
+    sql: ${TABLE}.std_event_complete_regist
     hidden: true
     
   - dimension: action_sale
-    sql: ${TABLE}.conversions_offsite_6020814566949
+    sql: ${TABLE}.std_event_purchase
     hidden: true
     
-  - dimension: action_category_page
-    sql: ${TABLE}.conversions_offsite_6020814633549
+  - dimension: action_lead
+    sql: ${TABLE}.std_event_lead
     hidden: true
 
-  - dimension: action_product_detail_page
-    sql: ${TABLE}.conversions_offsite_6020814677949
+  - dimension: action_view_content
+    sql: ${TABLE}.std_event_view_content
     hidden: true
     
   - dimension: action_add_to_cart
-    sql: ${TABLE}.conversions_offsite_6020814706949
+    sql: ${TABLE}.std_event_add_to_cart
     hidden: true
     
-  - dimension: action_address
-    sql: ${TABLE}.conversions_offsite_6020814710549
+  - dimension: action_initate_checkout
+    sql: ${TABLE}.std_event_initiate_checkout
     hidden: true
 
-  - dimension: action_delivery
-    sql: ${TABLE}.conversions_offsite_6020814716949
-    hidden: true
+  #- dimension: action_delivery
+  #  sql: ${TABLE}.conversions_offsite_6020814716949
+  #  hidden: true
 
-  - dimension: action_payment
-    sql: ${TABLE}.conversions_offsite_6020814720149
-    hidden: true
+  #- dimension: action_payment
+  #  sql: ${TABLE}.conversions_offsite_6020814720149
+  #  hidden: true
     
-  - dimension: action_engagement
-    sql: ${TABLE}.conversions_offsite_6031974989949
-    hidden: true
+  #- dimension: action_engagement
+  #  sql: ${TABLE}.conversions_offsite_6031974989949
+  #  hidden: true
 
 # Other Conversions
     
@@ -329,41 +329,41 @@
 
 # Sum Actions
 
-  - measure: total_action_visit
+  - measure: total_action_complete_registration
     type: sum
-    sql: ${action_visit}
+    sql: ${action_complete_registration}
 
   - measure: total_action_sale
     type: sum
     sql: ${action_sale}
 
-  - measure: total_action_category_page
+  - measure: total_action_lead
     type: sum
-    sql: ${action_category_page}
+    sql: ${action_lead}
 
-  - measure: total_action_product_detail_page
+  - measure: total_action_view_content
     type: sum
-    sql: ${action_product_detail_page}
+    sql: ${action_view_content}
 
   - measure: total_action_add_to_cart
     type: sum
     sql: ${action_add_to_cart}
 
-  - measure: total_action_address
+  - measure: total_action_initate_checkout
     type: sum
-    sql: ${action_address}
+    sql: ${action_initate_checkout}
 
-  - measure: total_action_delivery
-    type: sum
-    sql: ${action_delivery}
+  #- measure: total_action_delivery
+  #  type: sum
+  #  sql: ${action_delivery}
 
-  - measure: total_action_payment
-    type: sum
-    sql: ${action_payment}
+  #- measure: total_action_payment
+  #  type: sum
+  #  sql: ${action_payment}
 
-  - measure: total_action_engagement
-    type: sum
-    sql: ${action_engagement}
+  #- measure: total_action_engagement
+  #  type: sum
+  #  sql: ${action_engagement}
 
   - measure: total_goal_conversions
     type: sum
@@ -371,9 +371,9 @@
 
 # CPA's
 
-  - measure: cpa_visit
+  - measure: cpa_complete_registration
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_visit},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_complete_registration},0) ::REAL
     value_format: '#,##0.00'
 
   - measure: cpa_sale
@@ -381,14 +381,14 @@
     sql: ${total_spend}/ NULLIF(${total_action_sale},0) ::REAL
     value_format: '#,##0.00'
 
-  - measure: cpa_category_page
+  - measure: cpa_lead
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_category_page},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_lead},0) ::REAL
     value_format: '#,##0.00'
 
-  - measure: cpa_product_detail_page
+  - measure: cpa_product_view_content
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_product_detail_page},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_view_content},0) ::REAL
     value_format: '#,##0.00'
     
   - measure: cpa_add_to_cart
@@ -396,22 +396,22 @@
     sql: ${total_spend}/ NULLIF(${total_action_add_to_cart},0) ::REAL
     value_format: '#,##0.00'
     
-  - measure: cpa_action_address
+  - measure: cpa_initiate_checkout
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_address},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_initate_checkout},0) ::REAL
     value_format: '#,##0.00'
     
-  - measure: cpa_action_delivery
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_delivery},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_delivery
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_delivery},0) ::REAL
+  #  value_format: '#,##0.00'
 
-  - measure: cpa_action_payment
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_payment},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_payment
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_payment},0) ::REAL
+  #  value_format: '#,##0.00'
     
-  - measure: cpa_action_engagement
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_engagement},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_engagement
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_engagement},0) ::REAL
+  #  value_format: '#,##0.00'
