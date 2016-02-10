@@ -109,7 +109,8 @@
     label: Units Sold Mix
     type: percent_of_total
     sql: ${sum_items_sold}
-
+    value_format: '#0.00'
+    
   - measure: sum_items_returned
     label: Units Returned
     type: sum
