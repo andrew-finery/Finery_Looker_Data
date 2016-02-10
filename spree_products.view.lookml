@@ -75,19 +75,24 @@
       27.5% - 37.5%: ${current_price}/${max_price} > 0.625
       37.5% and over: (${current_price}/${max_price}) > 0 and (${current_price}/${max_price}) <= 0.625
       else: '0% - 7.5%'
-      
-      
-      
+
   - dimension: dpa_image
     label: DPA Product Image
     type: string
     sql: ${TABLE}.option_image
     html: |
-          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
+          <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="130"/>
           
-  - dimension: number_images_dpa
-    label: Number of images DPA
+  - dimension: number_of_dpa_feed_images
+    label: Number of DPA Images
     sql: ${TABLE}.number_images
+    
+  - dimension: product_shown_on_site
+    type: yesno
+    sql: |
+          ${TABLE}.deleted_at is null
+          and ${TABLE}.is_live = true
+          and date(${TABLE}.available_on) <= current_date 
   
   
   
