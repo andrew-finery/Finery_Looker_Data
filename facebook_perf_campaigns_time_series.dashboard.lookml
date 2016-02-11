@@ -105,7 +105,7 @@
     listen:
      date: facebook_daily_ad_performance_1day.calendar_date
      campaign: facebook_daily_ad_performance_1day.campaign_name
-    measures: [facebook_daily_ad_performance_1day.cpa_product_detail_page]
+    measures: [facebook_daily_ad_performance_1day.cpa_product_view_content]
     sorts: [facebook_daily_ad_performance_1day.calendar_date desc, facebook_daily_ad_performance_1day.campaign_name]
     limit: 500
     column_limit: 50
