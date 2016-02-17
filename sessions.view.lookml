@@ -37,7 +37,7 @@
   - dimension_group: start
     label: Visit Start
     type: time
-    timeframes: [time, hour, date, hour_of_day, day_of_week, week, month]
+    timeframes: [time, hour, date, hour_of_day, day_of_week, week, month, year]
     sql: ${TABLE}.session_start_ts
 
   - dimension: start
