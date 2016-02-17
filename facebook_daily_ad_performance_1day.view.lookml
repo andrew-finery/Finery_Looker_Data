@@ -2,6 +2,11 @@
   sql_table_name: facebook_data.daily_ad_performance_1day
   fields:
 
+  - dimension: facebook_pixel_in_use
+    sql: |
+          case when ${TABLE}.date >= '2016-02-08' then 'New - Facebook Pixel'
+          else 'Old - Conversion Pixel'end
+
   - dimension: account_name
     sql: ${TABLE}.account_name
 
@@ -98,7 +103,9 @@
     hidden: true
     
   - dimension: action_sale
-    sql: ${TABLE}.std_event_purchase
+    sql: |
+          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_purchase
+          else ${TABLE}.conversions_offsite_6020814566949 end
     hidden: true
     
   - dimension: action_lead
@@ -106,11 +113,16 @@
     hidden: true
 
   - dimension: action_view_content
-    sql: ${TABLE}.std_event_view_content
+    sql: |
+          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_view_content
+          else ${TABLE}.conversions_offsite_6020814677949 end
     hidden: true
     
   - dimension: action_add_to_cart
     sql: ${TABLE}.std_event_add_to_cart
+    sql: |
+          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_add_to_cart
+          else ${TABLE}.conversions_offsite_6020814706949 end
     hidden: true
     
   - dimension: action_initate_checkout
