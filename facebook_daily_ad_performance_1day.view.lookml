@@ -25,6 +25,10 @@
   - dimension: behaviors
     sql: ${TABLE}.behaviors
     
+  - dimension: date
+    sql: ${TABLE}.date
+    hidden: true
+    
   - dimension_group: calendar
     type: time
     timeframes: [date, week, month]

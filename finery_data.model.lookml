@@ -51,6 +51,10 @@
 - explore: facebook_daily_ad_performance
 
 - explore: facebook_daily_ad_performance_1day
+  joins:
+  - join: facebook_daily_ad_reach
+    sql_on: ${facebook_daily_ad_performance_1day.date} = ${facebook_daily_ad_reach.date} and ${facebook_daily_ad_performance_1day.adset} = ${facebook_daily_ad_reach.add_id}
+    relationship: one_to_one
 
 - explore: spree_customers
   joins:
