@@ -31,7 +31,7 @@
     
   - dimension_group: calendar
     type: time
-    timeframes: [date, week, month]
+    timeframes: [date, week, month, day_of_week_index]
     convert_tz: false
     sql: ${TABLE}.date  
 

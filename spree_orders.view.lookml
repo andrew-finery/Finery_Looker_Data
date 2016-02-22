@@ -313,8 +313,8 @@
         case
         when ${shipped_at_date} is null then null -- if there is no 'shipped at date', hermes did not recieve teh parcel therefore we can't assign a date we expect the to deliver it by
         --- 48 HOUR DELIVERY CASES
-        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_day_of_week_index} in (0,1,2,3) then ${shipped_at_date} + 2                                       -- 48h Orders Shipped Mon-Thu arrive 2 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${shipped_at_day_of_week_index} in (4,5,6) then ${shipped_at_date} + 3                                         -- 48h Order  Shipped Fri-Sun arrive 3 days later
+        when ${delivery_type} = 'Standard Delivery' and ${shipped_at_day_of_week_index} in (0,1,2,3) then ${shipped_at_date} + 2                                       -- 48h Orders Shipped Mon-Thu arrive 2 days later
+        when ${delivery_type} = 'Standard Delivery' and ${shipped_at_day_of_week_index} in (4,5,6) then ${shipped_at_date} + 3                                         -- 48h Order  Shipped Fri-Sun arrive 3 days later
         --- NEXT DAY DELIVERY CASES
         when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_day_of_week_index} in (0,1,2,3,4) then ${shipped_at_date} + 1                                    -- 24h Orders Shipped Mon-Fri arrive 1 day later
         when ${delivery_type} = 'Next Day Delivery' and ${shipped_at_day_of_week_index} in (5,6) then ${shipped_at_date} + 2                                          -- 24h Order  Shipped Sat-Sun arrive 2 days later
@@ -336,15 +336,15 @@
     sql: |
         case
         --- 48 HOUR DELIVERY CASES
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 3                                                  -- 48h Orders on Sunday delivered on Wednesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2       -- 48h Orders Mon-Wed before 4 delivered 2 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 3      -- 48h Orders Mon-Wed after 4 delivered 3 days later
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2                   -- 48h Order on Thursday before 4 delivered on Saturday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Thursday after 4 delivered Monday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} < '16:00' then ${completed_date} + 3                   -- 48h Orders on Friday before 4 delivered Monday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Friday after 4 delivered Tuesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} < '17:00' then ${completed_date} + 3                   -- 48h Orders on Saturday before 5 delivered Tuesday
-        when ${delivery_type} = '48 Hour Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} >= '17:00' then ${completed_date} + 4                  -- 48h Orders on Saturday after 5 delivered Wednesday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 3                                                  -- 48h Orders on Sunday delivered on Wednesday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2       -- 48h Orders Mon-Wed before 4 delivered 2 days later
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} between 0 and 2 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 3      -- 48h Orders Mon-Wed after 4 delivered 3 days later
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} < '16:00' then ${completed_date} + 2                   -- 48h Order on Thursday before 4 delivered on Saturday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 3 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Thursday after 4 delivered Monday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} < '16:00' then ${completed_date} + 3                   -- 48h Orders on Friday before 4 delivered Monday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 4 and ${completed_time_of_day} >= '16:00' then ${completed_date} + 4                  -- 48h Orders on Friday after 4 delivered Tuesday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} < '17:00' then ${completed_date} + 3                   -- 48h Orders on Saturday before 5 delivered Tuesday
+        when ${delivery_type} = 'Standard Delivery' and ${completed_day_of_week_index} = 5 and ${completed_time_of_day} >= '17:00' then ${completed_date} + 4                  -- 48h Orders on Saturday after 5 delivered Wednesday
         --- NEXT DAY DELIVERY CASES
         when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} = 6 then ${completed_date} + 2                                                 -- 24h Orders on Sunday delivered on Tuesday
         when ${delivery_type} = 'Next Day Delivery' and ${completed_day_of_week_index} between 0 and 3 and ${completed_time_of_day} < '16:00' then ${completed_date} + 1      -- 24h Orders Mon-Thu before 4 delivered the next day

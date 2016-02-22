@@ -27,7 +27,7 @@
      date: spree_orders.completed_date
     filters:
       spree_orders.completed_time: before this week
-      spree_orders.delivery_type: '"48 Hour Delivery","Next Day Delivery","Sunday Delivery"'
+      spree_orders.delivery_type: '"Standard Delivery","Next Day Delivery","Sunday Delivery"'
     sorts: [spree_orders.completed_week]
     limit: 500
     show_view_names: true
@@ -64,7 +64,7 @@
      date: spree_orders.completed_date
     filters:
       spree_orders.completed_time: before this week
-      spree_orders.delivery_type: '"48 Hour Delivery","Next Day Delivery","Sunday Delivery"'
+      spree_orders.delivery_type: '"Standard Delivery","Next Day Delivery","Sunday Delivery"'
     sorts: [spree_orders.completed_week]
     limit: 500
     show_view_names: true
@@ -131,7 +131,7 @@
     left: 0
 
   - name: 48h_deliv_on_time_perc
-    title: 48 Hour Delivery - On Time Percentage
+    title: Standard Delivery - On Time Percentage
     type: looker_line
     model: finery_data
     explore: spree_orders
@@ -141,7 +141,7 @@
      date: spree_orders.completed_date
     filters:
       spree_orders.completed_time: before this week
-      spree_orders.delivery_type: '"48 Hour Delivery"'
+      spree_orders.delivery_type: '"Standard Delivery"'
     sorts: [spree_orders.completed_week desc]
     limit: 500
     total: false
@@ -233,7 +233,7 @@
     left: 0
 
   - name: 48h_deliv_late_reasons
-    title: 48 Hour Delivery - Late Delivery Reasons
+    title: Standard Delivery - Late Delivery Reasons
     type: looker_pie
     model: finery_data
     explore: spree_orders
@@ -242,7 +242,7 @@
     listen:
      date2: spree_orders.completed_date
     filters:
-      spree_orders.delivery_type: '"48 Hour Delivery"'
+      spree_orders.delivery_type: '"Standard Delivery"'
       spree_orders.count_hermes_late_orders: '>0'
     sorts: [spree_orders.count_hermes_late_orders desc]
     limit: 500
@@ -314,7 +314,7 @@
 #    left: 0
 
 #  - name: add_a_unique_name_734
-#    title: 48 Hour Delivery - Late Delivery Reasons Table
+#    title: Standard Delivery - Late Delivery Reasons Table
 #    type: table
 #    model: finery_data
 #    explore: spree_orders
@@ -323,7 +323,7 @@
 #    listen:
 #      date2: spree_orders.completed_date
 #    filters:
-#      spree_orders.delivery_type: '"48 Hour Delivery"'
+#      spree_orders.delivery_type: '"Standard Delivery"'
 #      spree_orders.late_delivery_reason: '"Delay at Depot", "Late to Hub", "Carried Forward", "Late - Other Reason", "Late to Depot", "Delay in Courier Receeving Package"'
 #    sorts: [spree_orders.count_hermes_late_orders desc]
 #    limit: 500
