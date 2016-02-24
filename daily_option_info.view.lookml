@@ -176,12 +176,12 @@
      sql: ${product_id}
      filters:
       product_impressions: '>50'
-  
-   - measure: revenue_per_impression
+
+   - measure: revenue_per_1k_impressions
      type: number
-     sql: ${sum_gross_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_product_impressions},0)::REAL
-     value_format: '"£"#,##0.00'
-  
+     sql: 1000*${sum_gross_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_product_impressions},0)::REAL
+     value_format: '"£"#,##0'
+     
 #################################### REPORTING MEASURES ###################################
 
    - measure: impressions_tw
