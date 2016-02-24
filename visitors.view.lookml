@@ -59,7 +59,7 @@
     sql_case:
       Facebook - Paid Marketing: (${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.refr_source_ga = 'Facebook')  and ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
       SEM Non-Brand: (${TABLE}.mkt_source_ga = 'GoogleSearch' or ${TABLE}.mkt_source_ga = 'GoogleContent' or ${TABLE}.mkt_source_ga = 'bing') and not (${TABLE}.mkt_campaign_ga in ('313295483','390136763','330829240','271429360','451879332','271994683','382391172','311393283','249190494','262208533') or ${TABLE}.mkt_campaign_ga like '%Brand%' or ${TABLE}.mkt_campaign_ga is null)
-      SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com' or mkt_medium_ga = 'cpc'
+      SEM Brand: ${TABLE}.refr_urlhost_ga = 'www.googleadservices.com' or ${TABLE}.mkt_medium_ga = 'cpc'
       CRM: ${TABLE}.mkt_source_ga = 'crm' or ${TABLE}.mkt_medium_ga = 'crm' or ${TABLE}.mkt_source_ga = 'newsletter'
       Email: ${TABLE}.mkt_medium_ga = 'email' or ${TABLE}.refr_medium_ga = 'email' 
       Social: ${TABLE}.refr_medium_ga = 'social' or ${TABLE}.mkt_source_ga = 'facebook' or ${TABLE}.mkt_source_ga = 'instagram' or ${TABLE}.mkt_source_ga = 'fb'
@@ -69,6 +69,13 @@
       Facebook - Paid Marketing: ${TABLE}.mkt_medium_ga in ('paid', 'unpaid', 'Paid')
       Other Marketing Source: ${TABLE}.mkt_source_ga is not null or ${TABLE}.mkt_medium_ga is not null or ${TABLE}.mkt_campaign_ga is not null
       else: Direct
+
+  - dimension: traffic_source
+    label: First Touch CRM/Brand/Paid
+    sql_case:
+      CRM: ${acquisition_channel} = 'CRM'
+      Paid: ${acquisition_channel} in ('SEM Non-Brand', 'Affiliates', 'Facebook - Paid Marketing')
+      else: Brand
       
   - dimension: referer_source
     sql: ${TABLE}.refr_source_ga
