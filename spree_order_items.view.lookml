@@ -13,7 +13,7 @@
 
   - dimension_group: order_time
     type: time
-    timeframes: [time, date, hour_of_day, week, month]
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     sql: ${TABLE}.order_tstamp
     hidden: true
 
