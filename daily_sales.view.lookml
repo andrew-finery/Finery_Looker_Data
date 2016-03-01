@@ -10,7 +10,7 @@
   - dimension_group: calendar_date
     label: Calendar
     type: time
-    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     convert_tz: false
     sql: ${TABLE}.calendar_date
 
