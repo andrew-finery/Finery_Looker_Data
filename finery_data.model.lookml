@@ -65,6 +65,23 @@
     sql_on: spree_customers.email = ${visitors.email_address}
     relationship: one_to_one
 
+- explore: fb_daily_ad_performance
+  label: 'Facebook Perfomance'
+  joins:
+  - join: 1_day_click_through
+    from: fb_daily_ad_perf_1day_click
+    sql_on: ${fb_daily_ad_performance.calendar_date} = ${1_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${1_day_click_through.ad}
+    relationship: one_to_one
+  - join: 7_day_click_through
+    from: fb_daily_ad_perf_7day_click
+    sql_on: ${fb_daily_ad_performance.calendar_date} = ${7_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${7_day_click_through.ad}
+    relationship: one_to_one
+  - join: 28_day_click_through
+    from: fb_daily_ad_perf_28day_click
+    sql_on: ${fb_daily_ad_performance.calendar_date} = ${28_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${28_day_click_through.ad}
+    relationship: one_to_one
+
+
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
 #  joins:

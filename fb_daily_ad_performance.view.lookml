@@ -11,15 +11,19 @@
     sql: ${TABLE}.account_name
 
   - dimension: ad
+    label: Ad ID
     sql: ${TABLE}.ad
 
   - dimension: ad_name
+    label: Ad
     sql: ${TABLE}.ad_name
 
   - dimension: adset
+    label: Adset ID
     sql: ${TABLE}.adset
 
   - dimension: adset_name
+    label: Adset
     sql: ${TABLE}.adset_name
 
   - dimension: behaviors
@@ -27,7 +31,7 @@
     
   - dimension_group: calendar
     type: time
-    timeframes: [dtime, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
+    timeframes: [date, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     convert_tz: false
     sql: ${TABLE}.date  
 
@@ -40,23 +44,12 @@
   - dimension: bid_type
     sql: ${TABLE}.bid_type
 
-
   - dimension: campaign
     sql: ${TABLE}.campaign
 
   - dimension: campaign_name
     sql: ${TABLE}.campaign_name
 
-  - dimension: campaign_type
-    sql: |
-          case
-          when ${campaign_name} like '%DPA%' then 'DPA'
-          when ${campaign_name} like '%Brand%' then 'Brand'
-          when ${campaign_name} like '%brand%' then 'Brand'
-          when ${campaign_name} like '%BRAND%' then 'Brand'
-          when ${campaign_name} like '%DR%' then 'DR'
-          else 'Other' end
-          
   - dimension: campaign_start_date
     sql: ${TABLE}.campaign_start_date
 
@@ -97,9 +90,6 @@
 
   - dimension: facebook_objective
     sql: ${TABLE}.facebook_objective
-
-  - dimension: frequency
-    sql: ${TABLE}.frequency
 
   - dimension: genders
     sql: ${TABLE}.genders
@@ -150,10 +140,6 @@
 
   - dimension: post_id
     sql: ${TABLE}.post_id
-
-  - dimension: reach
-    sql: ${TABLE}.reach
-    hidden: true
 
   - dimension: spent
     type: int
