@@ -17,7 +17,7 @@
   - dimension: colour_group
     label: Colour Group
     sql: ${TABLE}.colour_group
-    
+
   - dimension: style_name
     label: Style
     sql: ${TABLE}.style_name
@@ -25,9 +25,16 @@
   - dimension: option_name
     label: Option
     sql: case when ${colour} is null then ${style_name} else ${style_name} || ' ' || ${colour} end
+
+  - dimension: first_sales_date
+    label: First Sales Date
+    type: date
+    sql: ${TABLE}.first_sales_date
     
   - dimension: current_price
     label: Current Price
+    type: number
+    decimals: 0
     sql: ${TABLE}.current_price
     
   - dimension: max_price
@@ -82,6 +89,9 @@
     sql: ${TABLE}.option_image
     html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="130"/>
+  
+  - dimension: facebook_image_location
+    sql: ${TABLE}.facebook_image_location
           
   - dimension: number_of_dpa_feed_images
     label: Number of DPA Images
@@ -92,9 +102,36 @@
     sql: |
           ${TABLE}.deleted_at is null
           and ${TABLE}.is_live = true
-          and date(${TABLE}.available_on) <= current_date 
+          and date(${TABLE}.available_on) <= current_date
   
+  - dimension: sizes_online
+    sql: ${TABLE}.variants_in_spree
+
+  - dimension: sizes_in_stock
+    sql: ${TABLE}.variants_in_stock
+    
+  - dimension: units_in_stock
+    sql: ${TABLE}.total_units_in_stock
   
+  - dimension: items_sold_b4_28_days_ago
+    sql: ${TABLE}.items_sold_b4_28_days_ago
+
+  - dimension: items_returned_b4_28_days_ago
+    sql: ${TABLE}.items_returned_b4_28_days_ago
   
+  - dimension: size_availability
+    type: number
+    sql: ${sizes_in_stock}/nullif(${sizes_online},0)::REAL
+    value_format: '0%'
+    
+  - dimension: return_rate
+    type: number
+    sql: |
+          case
+          when ${items_sold_b4_28_days_ago} < 10 then null
+          else ${items_returned_b4_28_days_ago}/nullif(${items_sold_b4_28_days_ago},0)::REAL
+          end
+    value_format: '0%'
+    
       
       
