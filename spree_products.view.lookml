@@ -26,6 +26,10 @@
     label: Option
     sql: case when ${colour} is null then ${style_name} else ${style_name} || ' ' || ${colour} end
 
+  - dimension: is_coming_soon
+    label: Is Coming Soon?
+    sql: ${TABLE}.is_coming_soon
+
   - dimension: first_sales_date
     label: First Sales Date
     type: date
