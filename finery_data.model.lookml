@@ -50,6 +50,8 @@
     
 - explore: facebook_daily_ad_performance
 
+- explore: fb_automated_ads_creatives
+
 - explore: facebook_daily_ad_performance_1day
   joins:
   - join: facebook_daily_ad_reach
