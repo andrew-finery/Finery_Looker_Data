@@ -66,6 +66,11 @@
     sql: ${TABLE}.clicks
     hidden: true
 
+  - dimension: conversions_website_clicks
+    type: int
+    sql: ${TABLE}.conversions_website_clicks
+    hidden: true
+
   - dimension: connections
     sql: ${TABLE}.connections
     hidden: true

@@ -170,7 +170,7 @@
     
   - dimension: conversions_website_clicks
     type: int
-    sql: ${TABLE}.conversions_website_clicks
+    sql: coalesce(${TABLE}.conversions_website_clicks,0)
     hidden: true
     
   - dimension: countries
