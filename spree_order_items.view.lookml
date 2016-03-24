@@ -299,7 +299,28 @@
     sql: coalesce(${items_returned}, 0)
     filters:
       return_reason: It's faulty/in a poor condition
-  
+
+  - measure: total_items_returned_ordered_more_than_1_size
+    label: Items Returned - Ordered > 1 Size
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: I ordered more than one size
+      
+  - measure: total_items_returned_arrived_late
+    label: Items Returned - It Arrived Too Late
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: It arrived too late
+
+  - measure: total_items_returned_wrong_item_or_size
+    label: Items Returned - Received Wrong Item/Size
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: I received the wrong item or size
+      
   - measure: items_sold_after_returns
     type: sum
     sql: ${quantity} - ${items_returned}
