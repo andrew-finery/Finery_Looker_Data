@@ -11,10 +11,10 @@
     type: single_value
     model: finery_data
     explore: mc_newsletter_subscribers
-    measures: [mc_newsletter_subscribers.unique_emails_total]
+    measures: [mc_newsletter_subscribers.unique_email_addresses]
     filters:
       mc_newsletter_subscribers.status: '"subscribed"'
-    sorts: [mc_newsletter_subscribers.unique_emails_total desc]
+    sorts: [mc_newsletter_subscribers.unique_email_addresses desc]
     limit: 500
     column_limit: 50
     font_size: fit
@@ -32,11 +32,11 @@
     explore: mc_newsletter_subscribers
     dimensions: [mc_newsletter_subscribers.member_subscribed_time_month, mc_newsletter_subscribers.status]
     pivots: [mc_newsletter_subscribers.status]
-    measures: [mc_newsletter_subscribers.unique_emails_total]
+    measures: [mc_newsletter_subscribers.unique_email_addresses]
     dynamic_fields:
     - table_calculation: running_total
       label: Running Total
-      expression: running_total(${mc_newsletter_subscribers.unique_emails_total})
+      expression: running_total(${mc_newsletter_subscribers.unique_email_addresses})
     filters:
       mc_newsletter_subscribers.status: '"subscribed"'
     sorts: [mc_newsletter_subscribers.member_subscribed_time_month, mc_newsletter_subscribers.status]

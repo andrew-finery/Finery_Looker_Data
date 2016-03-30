@@ -701,12 +701,16 @@
     value_format: '#0.00%'
     
   - measure: sale_modal_views_total
-    type: sum
-    sql: ${sale_modal_viewed_flag}
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      has_viewed_sale_modal: Yes
     
-  - dimension: sale_modal_successes_total
-    type: sum
-    sql: ${sale_modal_success_flag}
+  - measure: sale_modal_successes_total
+    type: count_distinct
+    sql: ${session_id}
+    filters:
+      has_passed_sale_modal: Yes
 
   - measure: sale_modal_success_rate
     type: number

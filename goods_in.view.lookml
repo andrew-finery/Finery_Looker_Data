@@ -7,6 +7,10 @@
   ######################################################################  DIMENSIONS  ##############################################################################################
 ##################################################################################################################################################################################
 
+  - dimension: ean
+    sql: ${TABLE}.ean
+    hidden: true
+
   - dimension: confirm_date
     label: Goods Received Date
     type: date
@@ -46,13 +50,13 @@
     label: Received Value @ Cost
     type: sum
     decimals: 2
-    sql: ${received_quantity} * ${product_lookup.total_landed_cost_gbp}
+    sql: ${received_quantity} * ${variant_info.total_landed_cost_gbp}
     value_format: '#,##0.00'
     
   - measure: received_value_retail
     label: Received Value @ Retail
     type: sum
     decimals: 2
-    sql: ${received_quantity} * ${product_lookup.max_selling_price}
+    sql: ${received_quantity} * ${option_info.max_price}
     value_format: '#,##0.00'
   

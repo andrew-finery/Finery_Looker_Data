@@ -1,5 +1,5 @@
 - view: daily_sales
-  sql_table_name: sales.daily_variant_sales
+  sql_table_name: sales.daily_variant_info
 
   fields:
 
@@ -21,65 +21,47 @@
     
   - dimension: sku
     label: Ean
-    sql: ${TABLE}.sku
+    sql: ${TABLE}.ean
     
   - dimension: count_on_hand
-    sql: ${TABLE}.closing_stock
+#    type: number
+    sql: coalesce(${TABLE}.closing_stock, 0)
     hidden: true
   
   - dimension: items_sold
     sql: ${TABLE}.items_sold
     hidden: true
 
-  - dimension: after_first_option_sales_date_flag
-    label: After First Option Sales Date (Yes/No)
-    type: yesno
-    sql: ${TABLE}.calendar_date >= ${TABLE}.first_option_sales_date
-      
-  - dimension: full_option_availability_flag
-    label: Full Size Availability (Yes/No)
-    type: yesno
-    sql: ${TABLE}.full_option_availability_flag = 1
+##
+#  - dimension: after_first_option_sales_date_flag
+#    label: After First Option Sales Date (Yes/No)
+#    type: yesno
+#    sql: ${TABLE}.calendar_date >= ${TABLE}.first_option_sales_date
 
-  - dimension: option_low_in_stock_flag
-    label: Option Low Stock (Yes/No)
-    type: yesno
-    sql: ${TABLE}.option_low_in_stock_flag = 1
-  
-  - dimension: product_on_sale_flag
-    label: On Sale Flag
-    sql: |
-          case
-          when
-          ${online_products.on_sale_date} <= ${calendar_date_date}
-          and
-          ${online_products.pre_sale_price} > ${online_products.current_price_gbp}
-          then 'On Sale'
-          else 'Full Price'
-          end
-    hidden: true
-    
+      
   - dimension: price
     type: number
     decimals: 2
-    sql: coalesce(${variant_info_daily.price}, ${product_lookup.retail_price})
+    sql: coalesce(${option_info_daily.price}, ${option_info.current_price_gbp})
+
 
   - dimension: original_price
     type: number
     decimals: 2
     sql: |
           case
-          when ${variant_info_daily.pre_sale_price} is null then ${price}
-          when ${price} >= ${variant_info_daily.pre_sale_price} then ${price}
-          else coalesce(${variant_info_daily.pre_sale_price}, ${product_lookup.retail_price}) end
+          when ${option_info_daily.pre_sale_price} is null then ${price}
+          when ${price} >= ${option_info_daily.pre_sale_price} then ${price}
+          else coalesce(${option_info_daily.pre_sale_price}, ${option_info.current_price_gbp}) end
     value_format: '#,##0.00'
+
 
   - dimension: retail_markdown
     type: number
     decimals: 2
     sql: case when ${original_price} = 0 then 0 else (${original_price} - ${price}) / ${original_price} end
     value_format: '#0.00%'
-  
+
   - dimension: retail_markdown_tier
     sql_case:
       0%: ${retail_markdown} = 0
@@ -226,14 +208,14 @@
     label: Gross Cost of Goods Sold
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     value_format: '#,##0.00'
 
   - measure: sum_net_cost_gbp
     label: Net Cost of Goods Sold
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns
     value_format: '#,##0.00'
 
   - measure: gross_margin_percent
@@ -286,14 +268,14 @@
     label: Closing Stock Value @ Cost
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0)
     value_format: '#,##0.00'
     
   - measure: closing_stock_value_cost_yesterday
     label:  Closing Stock Value @ Cost - Yesterday
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 1 day ago for 1 day
     value_format: '#,##0.00'
@@ -302,7 +284,7 @@
     label: Closing Stock Value @ Cost - Last Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
@@ -312,7 +294,7 @@
     label: Closing Stock Value @ Cost - 2 Weeks Ago
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
@@ -322,7 +304,7 @@
     label: Closing Stock Value @ Cost - End of Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*coalesce(${product_lookup.total_landed_cost_gbp}, 0)
+    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0)
     filters:
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'
@@ -333,14 +315,14 @@
     label: Closing Stock Value @ Retail
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*${price}
+    sql: CASE WHEN ${count_on_hand} = 0 THEN 0 ELSE (${count_on_hand} * ${price}) END
     value_format: '#,##0.00'
     
   - measure: closing_stock_value_retail_yesterday
     label: Closing Stock Value @ Retail - Yesterday
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*${price}
+    sql: ${TABLE}.closing_stock * ${price}
     filters:
       calendar_date_date: 1 day ago for 1 day
     value_format: '#,##0.00'
@@ -355,7 +337,7 @@
     label: Closing Stock Value @ Retail - Last Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*${price}
+    sql: ${TABLE}.closing_stock * ${price}
     filters:
       calendar_date_date: last week
       calendar_date_day_of_week_index: 6
@@ -365,7 +347,7 @@
     label: Closing Stock Value @ Retail - 2 Weeks Ago
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*${price}
+    sql: ${TABLE}.closing_stock * ${price}
     filters:
       calendar_date_date: 2 weeks ago
       calendar_date_day_of_week_index: 6
@@ -375,7 +357,7 @@
     label: Closing Stock Value @ Retail - End of Week
     type: sum
     decimals: 2
-    sql: ${TABLE}.closing_stock*${price}
+    sql: ${TABLE}.closing_stock * ${price}
     filters:
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'
@@ -432,7 +414,7 @@
   - measure: skus_in_stock_last_week
     label: Sizes in Stock - Last Week
     type: count_distinct
-    sql: ${TABLE}.sku
+    sql: ${sku}
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: last week
@@ -441,7 +423,7 @@
   - measure: skus_in_stock_week_before
     label: Sizes in Stock - 2 Weeks Ago
     type: count_distinct
-    sql: ${TABLE}.sku
+    sql: ${sku}
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: last week
@@ -450,7 +432,7 @@
   - measure: skus_in_stock_yesterday
     label: Sizes in Stock - Yesterday
     type: count_distinct
-    sql: ${TABLE}.sku
+    sql: ${sku}
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: yesterday
@@ -671,7 +653,7 @@
   - measure: cost_tw
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     filters:
       calendar_date_date: last week
     hidden: true
@@ -679,7 +661,7 @@
   - measure: cost_lw
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     filters:
       calendar_date_date: 2 weeks ago for 1 week
     hidden: true
@@ -687,7 +669,7 @@
   - measure: cost_l4w
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     filters:
       calendar_date_date: 5 weeks ago for 4 weeks
     hidden: true
@@ -695,7 +677,7 @@
   - measure: cost_mtd
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     filters:
       calendar_date_date: this month
     hidden: true
@@ -703,7 +685,7 @@
   - measure: cost_std
     type: sum
     decimals: 2
-    sql: coalesce(${product_lookup.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold
     filters:
       calendar_date_date: after 2015/02/01
     hidden: true
@@ -751,4 +733,9 @@
     filters:
       calendar_date_date: before 2 weeks ago
     hidden: true
-    
+  
+  - measure: variants_online
+    type: count_distinct
+    sql: ${sku}
+    filters:
+      option_info.online_flag: Yes

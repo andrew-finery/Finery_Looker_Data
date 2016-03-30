@@ -443,8 +443,8 @@
     type: looker_column
     model: finery_data
     explore: spree_order_items
-    dimensions: [spree_orders.completed_date, product_lookup.category]
-    pivots: [product_lookup.category]
+    dimensions: [spree_orders.completed_date, option_info.category]
+    pivots: [option_info.category]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     listen:
      date: spree_orders.completed_date

@@ -34,9 +34,9 @@
     from: sessions
     sql_on: ${website_products.domain_userid} = ${visits.domain_user_id} and ${website_products.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
-  - join: product_info
-    from: spree_products
-    sql_on: ${website_products.id} = ${product_info.product_id} 
+  - join: option_info
+    from: product_info_options
+    sql_on: ${website_products.id} = ${option_info.product_id} 
     relationship: many_to_one
     
 - explore: snowplow_transaction_attribution
@@ -158,33 +158,39 @@
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
     relationship: many_to_one
-  - join: online_products
-    sql_on: spree_order_items.sku  = online_products.ean
-    relationship: many_to_one
-  - join: product_lookup
-    sql_on: spree_order_items.sku = product_lookup.ean
-    relationship: many_to_one
   - join: calendar_weeks
     sql_on: date(spree_order_items.order_tstamp) = calendar_weeks.calendar_date
     relationship: many_to_one
+  - join: variant_info
+    from: product_info_variants
+    sql_on: ${spree_order_items.sku} = ${variant_info.ean}
+    relationship: many_to_one
+  - join: option_info
+    from: product_info_options
+    sql_on: ${variant_info.option_id} = ${option_info.option_id}
+    relationship: many_to_one
 
 - explore: daily_sales
-  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
+  always_join: [variant_info, option_info, option_info_daily]
+  fields: [ALL_FIELDS*, -product_info_options.option_for_returns_report]
   joins:
-  - join: product_lookup
-    sql_on: daily_sales.sku = product_lookup.ean
-    relationship: many_to_one
-  - join: online_products
-    sql_on: daily_sales.sku = online_products.ean
-    relationship: many_to_one
   - join: calendar_weeks
     sql_on: ${daily_sales.calendar_date_date} = ${calendar_weeks.calendar_date_date}
     relationship: many_to_one
-  - join: variant_info_daily
-    from: spree_variant_info_daily
-    sql_on: ${daily_sales.calendar_date_date} = ${variant_info_daily.calendar_date} and ${daily_sales.sku} = ${variant_info_daily.ean}
-    relationship: one_to_one
-    
+  - join: variant_info
+    from: product_info_variants
+    sql_on: ${daily_sales.sku} = ${variant_info.ean}
+    relationship: many_to_one
+  - join: option_info
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id}
+    relationship: many_to_one
+  - join: option_info_daily
+    from: product_info_option_daily
+    sql_on: ${daily_sales.calendar_date_date} = ${option_info_daily.calendar_date_date} and ${variant_info.option_id} = ${option_info_daily.option_id}
+    relationship: many_to_one
+
+
 - explore: mandrill_email_summary
     
 - explore: spree_refunds
@@ -199,25 +205,19 @@
 - explore: goods_in
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
   joins:
-  - join: product_lookup
-    sql_on: goods_in.ean = product_lookup.ean
-    relationship: many_to_one
   - join: calendar_weeks
     sql_on: goods_in.confirm_date = calendar_weeks.calendar_date
     relationship: many_to_one
-  - join: online_products
-    sql_on: goods_in.ean = online_products.ean
+  - join: variant_info
+    from: product_info_variants
+    sql_on: ${goods_in.ean} = ${variant_info.ean}
+    relationship: many_to_one
+  - join: option_info
+    from: product_info_options
+    sql_on: ${variant_info.option_id} = ${option_info.option_id}
     relationship: many_to_one
 
-#- explore: all_newsletter_subscribers
-#  joins:
-#  - join: spree_customers
-#    sql_on: all_newsletter_subscribers.email = spree_customers.email
-#    relationship: one_to_one
-#  - join: visitors
-#    sql_on: all_newsletter_subscribers.email = ${visitors.email_address}
-#    relationship: one_to_one
-    
+
 - explore: all_referrals
   joins:
   - join: spree_customers
@@ -229,37 +229,25 @@
 
 - explore: snowplow_product_click_through_daily
   joins:
-  - join: spree_products
-    sql_on: ${snowplow_product_click_through_daily.product_id} = ${spree_products.product_id}
-    relationship: many_to_one
-  - join: spree_product_info_daily
-    sql_on: ${snowplow_product_click_through_daily.product_id} = ${spree_product_info_daily.product_id} and ${snowplow_product_click_through_daily.impression_date_date} = ${spree_product_info_daily.calendar_date}
+  - join: option_info_daily
+    from: product_info_option_daily
+    sql_on: ${snowplow_product_click_through_daily.product_id} = ${option_info_daily.product_id} and ${snowplow_product_click_through_daily.impression_date_date} = ${option_info_daily.calendar_date_date}
     relationship: one_to_one
-
-- explore: daily_option_info
-  joins:
-  - join: spree_products
-    sql_on: ${daily_option_info.product_id} = ${spree_products.product_id}
+  - join: option_info
+    from: product_info_options
+    sql_on: ${option_info.product_id} = ${snowplow_product_click_through_daily.product_id}
     relationship: many_to_one
+
+- explore: product_info_option_daily
+  label:  'Daily Option Stats'
+  joins:
+  - join: option_info
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${product_info_option_daily.option_id}
+    relationship: many_to_one
+
+
     
-#- explore: mailchimp_subscribe
-#  joins:
-#  - join: mailchimp_unsubscribe
-#    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_unsubscribe.email} and ${mailchimp_subscribe.list} = ${mailchimp_unsubscribe.list}
-#    relationship: one_to_one
-#  - join: mailchimp_cleaned_email
-#    sql_on: ${mailchimp_subscribe.email} = ${mailchimp_cleaned_email.email} and ${mailchimp_subscribe.list} = ${mailchimp_cleaned_email.list}
-#    relationship: one_to_one
-
-#- explore: mailchimp_campaigns
-#  joins:
-#  - join: mailchimp_unsubscribe
-#    sql_on: ${mailchimp_unsubscribe.unsubscribe_campaign_id} = ${mailchimp_campaigns.campaign_id}
-#    relationship: one_to_many
-#  - join: mailchimp_cleaned_email
-#    sql_on: ${mailchimp_cleaned_email.cleaned_campaign_id} = ${mailchimp_campaigns.campaign_id}
-#    relationship: one_to_many
-
 - explore: visitors
   joins:
   - join: customers
@@ -315,5 +303,7 @@
 
 
 - explore: scripts_bi_server
+
 - explore: redshift_load_errors
+
 - explore: redshift_snowplow_loads

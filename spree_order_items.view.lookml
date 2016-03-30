@@ -127,7 +127,7 @@
   - dimension: landed_cost_per_unit_gbp
     type: number
     decimals: 2
-    sql: ${product_lookup.total_landed_cost_gbp}
+    sql: ${variant_info.total_landed_cost_gbp}
     value_format: '#,##0.00'
   
   - dimension: discount_level_tier
@@ -412,7 +412,7 @@
   
   - measure: sum_gross_landed_cost_gbp
     type: sum
-    sql: ${product_lookup.total_landed_cost_gbp} * ${quantity}
+    sql: ${variant_info.total_landed_cost_gbp} * ${quantity}
     decimals: 2
     value_format: '#,##0.00'
 
@@ -432,7 +432,7 @@
   
   - measure: sum_net_landed_cost_gbp
     type: sum
-    sql: ${product_lookup.total_landed_cost_gbp} * (${quantity} - ${items_returned})
+    sql: ${variant_info.total_landed_cost_gbp} * (${quantity} - ${items_returned})
     decimals: 2
     value_format: '#,##0.00'
 
@@ -539,7 +539,7 @@
   - measure: pc1_profit_tw
     type: sum
     decimals: 2
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
     value_format: '#,##0.00'
     filters:
       order_time_date: last week
@@ -547,7 +547,7 @@
   - measure: pc1_profit_lw
     type: sum
     decimals: 2
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
     value_format: '#,##0.00'
     filters:
       order_time_date: 2 weeks ago
@@ -555,7 +555,7 @@
   - measure: pc1_profit_l4w
     type: sum
     decimals: 2
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
     value_format: '#,##0.00'
     filters:
       order_time_date: 5 weeks ago for 4 weeks
@@ -563,7 +563,7 @@
   - measure: pc1_profit_mtd
     type: sum
     decimals: 2
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
     value_format: '#,##0.00'
     filters:
       order_time_date: this month
@@ -572,7 +572,7 @@
   - measure: pc1_profit_std
     type: sum
     decimals: 2
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${product_lookup.total_landed_cost_gbp} * ${quantity})
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
     value_format: '#,##0.00'
     filters:
       order_time_date: after 2015/02/01

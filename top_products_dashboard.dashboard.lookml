@@ -10,12 +10,12 @@
     title: Top Products - Yesterday
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.dpa_image, spree_products.option_name]
-    measures: [daily_option_info.sum_gross_revenue_gbp_ex_vat_ex_discount, daily_option_info.sum_items_sold, daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.dpa_image, option_info.option]
+    measures: [product_info_option_daily.sum_gross_revenue_gbp_ex_vat_ex_discount, product_info_option_daily.sum_items_sold, product_info_option_daily.sum_closing_stock_yesterday]
     filters:
-      daily_option_info.calendar_date_date: yesterday
-    sorts: [daily_option_info.sum_gross_revenue_gbp_ex_vat_ex_discount desc]
+      product_info_option_daily.calendar_date_date: yesterday
+    sorts: [product_info_option_daily.sum_gross_revenue_gbp_ex_vat_ex_discount desc]
     limit: 15
     show_view_names: false
     stacking: ''
@@ -44,12 +44,12 @@
     title: Top Products - Last 7 Days
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.dpa_image, spree_products.option_name]
-    measures: [daily_option_info.sum_gross_revenue_gbp_ex_vat_ex_discount, daily_option_info.sum_items_sold, daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.dpa_image, option_info.option]
+    measures: [product_info_option_daily.sum_gross_revenue_gbp_ex_vat_ex_discount, product_info_option_daily.sum_items_sold, product_info_option_daily.sum_closing_stock_yesterday]
     filters:
-      daily_option_info.calendar_date_date: 7 days ago for 7 days
-    sorts: [daily_option_info.sum_gross_revenue_gbp_ex_vat_ex_discount desc]
+      product_info_option_daily.calendar_date_date: 7 days ago for 7 days
+    sorts: [product_info_option_daily.sum_gross_revenue_gbp_ex_vat_ex_discount desc]
     limit: 15
     show_view_names: false
     stacking: ''

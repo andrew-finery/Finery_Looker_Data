@@ -742,7 +742,7 @@
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.year_week_number, product_lookup.category]
+    dimensions: [calendar_weeks.year_week_number, option_info.category]
     pivots: [calendar_weeks.year_week_number]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     dynamic_fields:
@@ -766,7 +766,7 @@
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [calendar_weeks.year_week_number, online_products.size]
+    dimensions: [calendar_weeks.year_week_number, variant_info.size]
     pivots: [calendar_weeks.year_week_number]
     measures: [spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp]
     dynamic_fields:
@@ -774,7 +774,7 @@
       label: Week on Week
       expression: concat(round(100 * (${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp} - pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1))/pivot_offset(${spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp},1),2),"%")
     filters:
-      online_products.size: '"6","8","10","14","16","18","12"'
+      variant_info.size: '"6","8","10","14","16","18","12"'
       spree_orders.completed_date: 2 weeks ago for 2 weeks
     sorts: [calendar_weeks.year_week_number desc, spree_order_items.sum_gross_item_revenue_ex_discount_ex_vat_gbp desc 0]
     limit: 500

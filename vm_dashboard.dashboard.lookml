@@ -15,17 +15,17 @@
     title: Product Impressions
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.sum_product_impressions, daily_option_info.revenue_per_1k_impressions,
-      daily_option_info.sum_items_sold, daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.sum_product_impressions, product_info_option_daily.revenue_per_1k_impressions,
+      product_info_option_daily.sum_items_sold, product_info_option_daily.sum_closing_stock_yesterday]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      spree_products.on_sale_flag: '"Full Price"'
-      daily_option_info.sum_product_clicks: '>0'
-      daily_option_info.sum_product_impressions: '>200'
-    sorts: [daily_option_info.revenue_per_impression desc, daily_option_info.sum_product_impressions desc]
+      option_info.on_sale_flag: '"Full Price"'
+      product_info_option_daily.sum_product_clicks: '>0'
+      product_info_option_daily.sum_product_impressions: '>200'
+    sorts: [product_info_option_daily.revenue_per_impression desc, product_info_option_daily.sum_product_impressions desc]
     limit: 5000
     show_view_names: false
     stacking: ''
@@ -41,17 +41,17 @@
     title: Revenue per Impression Plot
     type: looker_scatter
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.revenue_per_1k_impressions, daily_option_info.sum_product_impressions]
-    hidden_fields: [spree_products.option_name]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.revenue_per_1k_impressions, product_info_option_daily.sum_product_impressions]
+    hidden_fields: [option_info.option]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      spree_products.on_sale_flag: '"Full Price"'
-      daily_option_info.sum_product_clicks: '>0'
-      daily_option_info.sum_product_impressions: '>200'
-    sorts: [daily_option_info.revenue_per_impression desc, daily_option_info.sum_product_impressions desc]
+      option_info.on_sale_flag: '"Full Price"'
+      product_info_option_daily.sum_product_clicks: '>0'
+      product_info_option_daily.sum_product_impressions: '>200'
+    sorts: [product_info_option_daily.revenue_per_impression desc, product_info_option_daily.sum_product_impressions desc]
     limit: 5000
     stacking: ''
     colors: ['#294987', '#5a1038', '#ff947c', '#1f6b62', '#764173', '#910303', '#b2947c',
@@ -86,18 +86,18 @@
     title: Zero Selling Options
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.sum_product_impressions, daily_option_info.revenue_per_1k_impressions,
-      daily_option_info.sum_items_sold, daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.sum_product_impressions, product_info_option_daily.revenue_per_1k_impressions,
+      product_info_option_daily.sum_items_sold, product_info_option_daily.sum_closing_stock_yesterday]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      spree_products.on_sale_flag: '"Full Price"'
-      daily_option_info.sum_items_sold: '0'
-      daily_option_info.sum_product_clicks: '>0'
-      daily_option_info.sum_product_impressions: '>200'
-    sorts: [daily_option_info.revenue_per_impression desc, daily_option_info.sum_product_impressions desc]
+      option_info.on_sale_flag: '"Full Price"'
+      product_info_option_daily.sum_items_sold: '0'
+      product_info_option_daily.sum_product_clicks: '>0'
+      product_info_option_daily.sum_product_impressions: '>200'
+    sorts: [product_info_option_daily.revenue_per_impression desc, product_info_option_daily.sum_product_impressions desc]
     limit: 5000
     show_view_names: false
     stacking: ''
@@ -135,15 +135,15 @@
     title: Product Views
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.sum_product_page_views, daily_option_info.sum_items_sold,
-      daily_option_info.conversion_rate, daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.sum_product_page_views, product_info_option_daily.sum_items_sold,
+      product_info_option_daily.conversion_rate, product_info_option_daily.sum_closing_stock_yesterday]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      daily_option_info.sum_product_page_views: '>2'
-    sorts: [daily_option_info.sum_product_page_views desc]
+      product_info_option_daily.sum_product_page_views: '>2'
+    sorts: [product_info_option_daily.sum_product_page_views desc]
     limit: 500
     show_view_names: false
     ordering: none
@@ -156,15 +156,15 @@
     title: Product Conversion Rate Plot - Yesterday
     type: looker_scatter
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.conversion_rate, daily_option_info.sum_product_page_views]
-    hidden_fields: [spree_products.option_name]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.conversion_rate, product_info_option_daily.sum_product_page_views]
+    hidden_fields: [option_info.option]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      daily_option_info.sum_product_page_views: '>2'
-    sorts: [daily_option_info.sum_product_page_views desc]
+      product_info_option_daily.sum_product_page_views: '>2'
+    sorts: [product_info_option_daily.sum_product_page_views desc]
     limit: 500
     stacking: ''
     colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
@@ -196,16 +196,16 @@
     title: Zero Selling Options - Product View Info
     type: table
     model: finery_data
-    explore: daily_option_info
-    dimensions: [spree_products.option_name]
-    measures: [daily_option_info.sum_product_page_views, daily_option_info.sum_items_sold,
-      daily_option_info.sum_closing_stock_yesterday]
+    explore: product_info_option_daily
+    dimensions: [option_info.option]
+    measures: [product_info_option_daily.sum_product_page_views, product_info_option_daily.sum_items_sold,
+      product_info_option_daily.sum_closing_stock_yesterday]
     listen:
-     date: daily_option_info.calendar_date_date
+     date: product_info_option_daily.calendar_date_date
     filters:
-      daily_option_info.sum_items_sold: '0'
-      daily_option_info.sum_product_page_views: '>2'
-    sorts: [daily_option_info.sum_product_page_views desc]
+      product_info_option_daily.sum_items_sold: '0'
+      product_info_option_daily.sum_product_page_views: '>2'
+    sorts: [product_info_option_daily.sum_product_page_views desc]
     limit: 500
     show_view_names: false
     ordering: none

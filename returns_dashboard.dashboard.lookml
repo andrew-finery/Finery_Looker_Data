@@ -9,7 +9,7 @@
     title: "Select Department"
     type: field_filter
     explore: spree_order_items
-    field: online_products.online_department
+    field: option_info.category
     default_value: null
 
   elements:
@@ -47,13 +47,13 @@
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [online_products.style]
-    measures: [online_products.image, spree_order_items.total_items_sold, spree_order_items.total_items_returned,
+    dimensions: [option_info.style]
+    measures: [option_info.image, spree_order_items.total_items_sold, spree_order_items.total_items_returned,
       spree_order_items.return_rate]
     filters:
       spree_order_items.return_rate: NOT NULL
     listen:
-     select_department: online_products.online_department
+     select_department: option_info.category
     sorts: [spree_order_items.return_rate desc]
     limit: 5
     show_view_names: false
@@ -67,7 +67,7 @@
     type: table
     model: finery_data
     explore: spree_order_items
-    dimensions: [product_lookup.category]
+    dimensions: [option_info.category]
     measures: [spree_order_items.total_items_sold, spree_order_items.total_items_returned,
       spree_order_items.return_rate]
     filters:
@@ -100,7 +100,7 @@
     type: looker_column
     model: finery_data
     explore: spree_order_items
-    dimensions: [spree_order_items.return_reason, product_lookup.category]
+    dimensions: [spree_order_items.return_reason, option_info.category]
     pivots: [spree_order_items.return_reason]
     measures: [spree_order_items.total_items_returned]
     limit: 500

@@ -1,4 +1,4 @@
-- view: daily_option_info
+- view: product_info_option_daily
   sql_table_name: sales.daily_option_stats
 
   fields:
@@ -16,9 +16,17 @@
    - dimension: product_id
      sql: ${TABLE}.product_id
      hidden: true
-
+     
+   - dimension: option_id
+     sql: ${TABLE}.option_id
+     hidden: true
+     
    - dimension: closing_stock
      sql: ${TABLE}.closing_stock
+     hidden: true
+
+   - dimension: opening_stock
+     sql: ${TABLE}.opening_stock
      hidden: true
      
    - dimension: items_sold
@@ -65,6 +73,72 @@
    - dimension: product_quick_views
      sql: coalesce(${TABLE}.quick_views, '0')
      hidden: true
+
+   - dimension: is_live
+     sql: ${TABLE}.is_live
+     hidden: true
+
+   - dimension: is_coming_soon
+     sql: ${TABLE}.is_coming_soon
+     hidden: true
+
+   - dimension: display_rule
+     sql: ${TABLE}.display_rule
+     hidden: true
+
+   - dimension: available_on
+     sql: ${TABLE}.available_on
+     hidden: true
+
+   - dimension: pre_sale_price
+     label: Was Price
+     sql: ${TABLE}.pre_sale_price
+
+   - dimension: price
+     label: Price
+     type: number
+     sql: ${TABLE}.price
+
+   - dimension: on_sale_flag
+     sql: ${TABLE}.on_sale_flag
+
+   - dimension: on_site_flag
+     sql: |
+          case
+          when ${items_sold} > 0 then 'Yes'
+          when ${is_live} is null then 'No'
+          when ${is_live} = false then 'No'
+          when date(${available_on}) > ${calendar_date_date} then 'No'
+          when (${closing_stock} = 0 and ${opening_stock} = 0) then 'No'
+          else 'Yes' end
+
+   - dimension: variants_in_spree
+     sql: ${TABLE}.variants_in_spree
+     hidden: true
+
+   - dimension: variants_in_stock
+     sql: ${TABLE}.variants_in_stock
+     hidden: true
+     
+   - dimension: variants_in_spree_and_in_stock
+     sql: ${TABLE}.variants_in_spree_and_in_stock
+     hidden: true
+  
+   - dimension: full_option_availability_flag
+     type: yesno
+     sql: ${variants_in_spree} = ${variants_in_spree_and_in_stock} and ${variants_in_spree_and_in_stock} > 0
+   
+   - dimension: size_availability
+     type: number
+     decimals: 4
+     sql: ${variants_in_spree_and_in_stock}/NULLIF(${variants_in_spree},0)::REAL
+   
+   - dimension: low_stock_flag
+     type: yesno
+     sql: ${size_availability} < 0.6
+      
+    
+     
 
     #################################################################################################################################################
   ######################################################## MEASURES ###############################################################################
