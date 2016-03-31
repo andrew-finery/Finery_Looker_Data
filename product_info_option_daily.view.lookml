@@ -62,7 +62,8 @@
      hidden: true
      
    - dimension: product_impressions
-     type: int
+     type: number
+     decimals: 0
      sql: coalesce(${TABLE}.category_impressions, '0')
      hidden: true
      
@@ -100,7 +101,11 @@
      sql: ${TABLE}.price
 
    - dimension: on_sale_flag
-     sql: ${TABLE}.on_sale_flag
+     type: yesno
+     sql: |
+          ${pre_sale_price} is not null
+          and ${pre_sale_price} != 0
+          and ${pre_sale_price} > ${price}
 
    - dimension: on_site_flag
      sql: |
