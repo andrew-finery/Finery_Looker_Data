@@ -123,7 +123,6 @@
   - dimension: product_views
     type: int
     sql: ${TABLE}.product_views
-    hidden: true
 
   - dimension: orders
     type: int
@@ -764,6 +763,11 @@
     type: sum
     sql: ${product_views}
 
+  - measure: product_views_per_visit
+    type: number
+    decimals: 2
+    sql: ${sum_product_views}/NULLIF(${count},0)::REAL
+    value_format: '#0.00'
   - measure: sum_orders
     type: sum
     sql: ${orders}
