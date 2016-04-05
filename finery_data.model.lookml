@@ -294,7 +294,7 @@
     relationship: many_to_one
   - join: email_campaigns
     from: mc_campaigns
-    sql_on: ${email_campaigns.campaign_id} = ${mc_campaign_member_activity.campaign_id}
+    sql_on: ${email_campaign_tests.campaign_id} = ${email_campaigns.campaign_id}
     relationship: many_to_one
 
 - explore: mc_campaigns
