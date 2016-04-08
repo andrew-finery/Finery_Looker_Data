@@ -26,11 +26,10 @@
        sql: ${TABLE}.option_id
        
      - dimension: option
-       label: Option
        sql: ${TABLE}.style_name || ' - ' ||  ${TABLE}.colour
 
      - dimension: bp_option
-       label: Option
+       label: BP Option
        sql: ${TABLE}.bp_name || ' - ' ||  ${TABLE}.bp_colour
 
      - dimension: option_for_returns_report
