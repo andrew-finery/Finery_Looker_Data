@@ -415,10 +415,10 @@
     hidden: true
     
   - dimension: gross_reveune_ex_discount_ex_vat_ex_shipping_gbp_tier
-    label: Basket Size Tier
+    label: Basket Size Tier ex. Shipping
     type: tier
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
-    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate}))) / ${exchange_rate}
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
 
   - dimension: primary_promotion
     label: Promotion
@@ -483,10 +483,16 @@
       state: -canceled
   
   - measure: orders_perc_of_total
-    label: Orders %
+    label: Orders % Column
     type: percent_of_total
     sql: ${count_orders}
     direction: column
+
+  - measure: orders_perc_of_total_row
+    label: Orders % Row
+    type: percent_of_total
+    sql: ${count_orders}
+    direction: row
 
   - measure: orders_running_total
     label: Orders Running Total
@@ -742,6 +748,15 @@
     filters:
       state: -canceled
 
+  - measure: sum_gross_revenue_ex_discount_and_shipping_in_gbp
+    label: Gross Revenue ex. Voucher, Shipping
+    type: sum
+    sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate}
+    decimals: 2
+    value_format: '#,##0.00'
+    filters:
+      state: -canceled
+
   - measure: sum_gross_revenue_ex_discount_ex_vat
     type: sum
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total 
@@ -922,6 +937,22 @@
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL
     value_format: '#,##0.00'
+
+  - measure: avg_gross_revenue_ex_discount_and_shipping_in_gbp
+    label: Avg Basket Size ex. Voucher, Shipping
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#,##0.00'
+
+  - measure: avg_shipping_in_gbp
+    label: Shipping Revenue per Order
+    type: number
+    decimals: 2
+    sql: ${sum_shipping_total_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#,##0.00'
+
+
     
   - measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp
     label: Avg Basket Size ex. Voucher, Store Credit
