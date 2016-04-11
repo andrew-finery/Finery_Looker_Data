@@ -262,6 +262,7 @@
     
      - dimension: size_availability
        type: number
+       decimals: 2
        sql: ${sizes_in_stock}/nullif(${sizes_online},0)::REAL
        value_format: '0%'
       
