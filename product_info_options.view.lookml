@@ -24,7 +24,10 @@
 
      - dimension: option_id
        sql: ${TABLE}.option_id
-       
+
+     - dimension: slug
+       sql: ${TABLE}.slug
+
      - dimension: option
        sql: ${TABLE}.style_name || ' - ' ||  ${TABLE}.colour
 
