@@ -53,26 +53,22 @@
      - dimension: current_price_gbp
        label: Current Price
        type: number
-       decimals: 2
        sql: ${TABLE}.retail_price_gbp
-       value_format: '##0.00'
+       value_format: '##0'
 
      - dimension: first_price
        label: Maximum Price
        type: number
-       decimals: 2
        sql: ${TABLE}.highest_retail_price_gbp
 
      - dimension: pre_sale_price
        label: Pre-Sale Price
        type: number
-       decimals: 2
        sql: ${TABLE}.pre_sale_price
       
      - dimension: max_price
        label: Original Price
        type: number
-       decimals: 2
        sql: coalesce(${pre_sale_price}, ${first_price})
      
      - dimension: on_sale_flag
