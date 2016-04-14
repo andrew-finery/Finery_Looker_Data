@@ -60,9 +60,10 @@
 
 - explore: spree_customers
   joins:
-#  - join: all_newsletter_subscribers
-#    sql_on: all_newsletter_subscribers.email = spree_customers.email
-#    relationship: one_to_one
+  - join: newsletter_subscribers
+    from: mc_newsletter_subscribers
+    sql_on: lower(${newsletter_subscribers.email_address}) = lower(spree_customers.email)
+    relationship: many_to_one
   - join: visitors
     sql_on: spree_customers.email = ${visitors.email_address}
     relationship: one_to_one
