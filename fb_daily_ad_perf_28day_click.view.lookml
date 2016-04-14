@@ -248,3 +248,8 @@
     type: number
     sql: ${total_spend}/ NULLIF(${total_action_initate_checkout},0) ::REAL
     value_format: '#,##0.00'
+    
+  - measure: conversion_rate
+    type: number
+    sql: ${total_action_sale}/ NULLIF(${total_website_clicks},0) ::REAL
+    value_format: '#,##0.00%'
