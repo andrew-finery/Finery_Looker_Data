@@ -1,5 +1,5 @@
 - view: mc_campaign_member_activity
-  sql_table_name: scratchpad.mc_member_activity_temp
+  sql_table_name: marketing_data.mc_member_activity
   fields:
 
 

@@ -286,7 +286,7 @@
   - join: newsletter_subscribers
     from: mc_newsletter_subscribers
     type: inner
-    sql_on: ${newsletter_subscribers.email_address} = ${mc_campaign_member_activity.email_address}
+    sql_on: lower(${newsletter_subscribers.email_address}) = lower(${mc_campaign_member_activity.email_address})
     relationship: many_to_one
   - join: email_campaign_tests
     from: mc_campaigns_tests
