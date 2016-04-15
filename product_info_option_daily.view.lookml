@@ -131,7 +131,7 @@
   
    - dimension: full_option_availability_flag
      type: yesno
-     sql: ${variants_in_spree} = ${variants_in_spree_and_in_stock} and ${variants_in_spree_and_in_stock} > 0
+     sql: ${TABLE}.full_size_availability_flag = 'yes'
    
    - dimension: size_availability
      type: number
