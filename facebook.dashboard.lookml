@@ -11,12 +11,12 @@
     title: Spend
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.total_spend]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.total_spend]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -45,12 +45,12 @@
     title: Impressions
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.total_impressions]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.total_impressions]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -79,12 +79,12 @@
     title: Clicks
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.total_clicks]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.total_clicks]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -113,12 +113,12 @@
     title: Cost per 1000 Impressions
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.cost_per_mille]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.cost_per_mille]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -150,12 +150,12 @@
     title: Cost per Click
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.cost_per_click]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.cost_per_click]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -187,12 +187,12 @@
     title: Click Through Rate
     type: looker_area
     model: finery_data
-    explore: facebook_daily_ad_performance
-    dimensions: [facebook_daily_ad_performance.calendar_date]
-    measures: [facebook_daily_ad_performance.click_through_rate]
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_date]
+    measures: [fb_daily_ad_performance.click_through_rate]
     filters:
-      facebook_daily_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance.calendar_date desc]
+      fb_daily_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [fb_daily_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -220,41 +220,68 @@
     top: 4
     left: 4
     
-  - name: add_a_unique_name_1455192498588
-    title: Total Purchase Conversions (1day window)
+  - name: fb_visits_and_orders_last_30_days
+    title: FB Visits and Orders Last 30 Days
     type: looker_line
     model: finery_data
-    explore: facebook_daily_ad_performance_1day
-    dimensions: [facebook_daily_ad_performance_1day.calendar_date]
-    measures: [facebook_daily_ad_performance_1day.total_action_sale]
+    explore: sessions
+    dimensions: [session_start_calendar.calendar_date_date]
+    measures: [sessions.sum_orders, sessions.count]
     filters:
-      facebook_daily_ad_performance_1day.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_daily_ad_performance_1day.calendar_date desc]
+      session_start_calendar.calendar_date_date: 30 days ago for 30 days
+      sessions.acquisition_channel: Facebook - Paid Marketing
+    sorts: [session_start_calendar.calendar_date_date]
     limit: 500
-    column_limit: 50
     stacking: ''
     colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
       '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
     show_value_labels: false
     label_density: 25
     legend_position: center
-    x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
-    y_axis_combined: true
+    series_colors:
+      sessions.count: lightblue
+      sessions.sum_orders: darkgreen
+    series_types:
+      sessions.count: column
+      sessions.sum_orders: line
+    y_axis_combined: false
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
     show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    show_null_points: true
+    show_x_axis_ticks: false
+    x_axis_scale: ordinal
+    y_axis_orientation: [left, right]
+    show_null_points: false
     point_style: none
-    interpolation: linear
+    interpolation: monotone
     width: 6
     height: 4
     top: 7
-    left: 3
+    left: 0
+    
+  - name: FB_Tracker 
+    title: FB_Tracker
+    type: table
+    model: finery_data
+    explore: fb_daily_ad_performance
+    dimensions: [fb_daily_ad_performance.calendar_week]
+    measures: [fb_daily_ad_performance.total_spend, 1_day_click_through.total_action_sale,
+      1_day_click_through.cpa_sale, 7_day_click_through.total_action_sale, 7_day_click_through.cpa_sale,
+      28_day_click_through.total_action_sale, 28_day_click_through.cpa_sale]
+    filters:
+      fb_daily_ad_performance.facebook_pixel_in_use: New - Facebook Pixel
+    sorts: [fb_daily_ad_performance.calendar_week]
+    limit: 500
+    show_view_names: true
+    table_theme: editable
+    width: 6
+    height: 4
+    top: 7
+    left: 6
+
 
 
 
