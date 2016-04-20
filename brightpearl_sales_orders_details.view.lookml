@@ -68,10 +68,11 @@
     type: string
     sql: ${TABLE}.size
     
-    
-    
-    
   
+  - measure: total_quantity
+    type: sum
+    sql: ${quantity}
+    
   - measure: total_quantity
     type: sum
     sql: ${quantity}

@@ -90,6 +90,7 @@
   - join: brightpearl_sales_orders_details
     from: brightpearl_sales_orders_details
     sql_on: ${brightpearl_sales_orders_info.id} = ${brightpearl_sales_orders_details.order_id}
+    relationship: one_to_many
   - join: brightpearl_products
     from: brightpearl_products
     sql_on: ${brightpearl_sales_orders_details.product_sku} = ${brightpearl_products.sku}

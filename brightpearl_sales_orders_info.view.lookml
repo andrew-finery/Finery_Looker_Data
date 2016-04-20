@@ -238,6 +238,14 @@
   - dimension: placed_on
     type: string
     sql: ${TABLE}.placed_on
+    hidden: True
+    
+  - dimension_group: calendar
+    label: "Placed On"
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: cast(${TABLE}.placed_on as date) 
 
   - dimension: price_list_id
     type: number
