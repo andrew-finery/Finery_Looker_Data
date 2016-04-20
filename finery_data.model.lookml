@@ -83,6 +83,14 @@
     from: fb_daily_ad_perf_28day_click
     sql_on: ${fb_daily_ad_performance.calendar_date} = ${28_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${28_day_click_through.ad}
     relationship: one_to_one
+    
+- explore: sales_orders_details
+  label: 'Brightpearl Sales Orders'
+  joins:
+  - join: brightpearl_products
+    from: brightpearl_products
+    sql_on: ${sales_orders_details.product_sku} = ${brightpearl_products.sku}
+    relationship: one_to_one
 
 
 #- explore: atomic_events

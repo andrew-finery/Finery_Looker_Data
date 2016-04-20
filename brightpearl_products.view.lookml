@@ -1,4 +1,4 @@
-- view: products
+- view: brightpearl_products
   sql_table_name: brightpearl.products
   fields:
 
