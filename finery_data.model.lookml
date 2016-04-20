@@ -91,6 +91,10 @@
     from: brightpearl_products
     sql_on: ${sales_orders_details.product_sku} = ${brightpearl_products.sku}
     relationship: one_to_one
+  - join: cml_warehouse_stock_yesterday
+    from: cml_warehouse_stock_yesterday
+    sql_on: ${brightpearl_products.barcode} = ${cml_warehouse_stock_yesterday.barcode}
+    relationship: one_to_one
 
 
 #- explore: atomic_events

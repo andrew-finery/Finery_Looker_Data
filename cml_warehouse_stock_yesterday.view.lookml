@@ -1,4 +1,4 @@
-- view: warehouse_stock_yesterday
+- view: cml_warehouse_stock_yesterday
   sql_table_name: cml.warehouse_stock_yesterday
   fields:
 
@@ -22,7 +22,7 @@
     type: string
     sql: ${TABLE}.invt_lev3
 
-  - dimension: invt_lev4
+  - dimension: barcode
     type: string
     sql: ${TABLE}.invt_lev4
 
@@ -37,12 +37,15 @@
   - dimension: on_hand_qty
     type: number
     sql: ${TABLE}.on_hand_qty
+    hidden: true
 
   - dimension: on_ord_qty
     type: number
     sql: ${TABLE}.on_ord_qty
+    hidden: true
 
-  - measure: count
-    type: count
-    drill_fields: []
+  - measure: total_on_hand_qty
+    type: sum
+    sql: ${on_hand_qty}
+    
 
