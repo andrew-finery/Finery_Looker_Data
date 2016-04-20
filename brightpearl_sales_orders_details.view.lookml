@@ -1,4 +1,4 @@
-- view: sales_orders_details
+- view: brightpearl_sales_orders_details
   sql_table_name: brightpearl.sales_orders_details
   fields:
 
