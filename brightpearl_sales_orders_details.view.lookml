@@ -38,18 +38,23 @@
   - dimension: row_value_row_net_value
     type: number
     sql: ${TABLE}.row_value_row_net_value
+    hidden: True
 
   - dimension: row_value_row_tax_currency
     type: string
     sql: ${TABLE}.row_value_row_tax_currency
+    
 
   - dimension: row_value_row_tax_tvalue
     type: number
     sql: ${TABLE}.row_value_row_tax_tvalue
+    hidden: True
+    
 
   - dimension: row_value_tax_code
     type: string
     sql: ${TABLE}.row_value_tax_code
+    
 
   - dimension: row_value_tax_rate
     type: number
@@ -62,8 +67,26 @@
   - dimension: size
     type: string
     sql: ${TABLE}.size
+    
+    
+    
+    
+  
+  - measure: total_quantity
+    type: sum
+    sql: ${quantity}
+    
+  - measure: total_net_value
+    type: sum
+    decimals: 2
+    sql: ${row_value_row_net_value}
+    value_format: '#,##0.00'
+    
+  - measure: total_tax_value
+    type: sum
+    decimals: 2
+    sql: ${row_value_row_tax_tvalue}
+    value_format: '#,##0.00'
+    
 
-  - measure: count
-    type: count
-    drill_fields: [product_name, products.product_id, products.product_name, products.sales_channel_name]
 

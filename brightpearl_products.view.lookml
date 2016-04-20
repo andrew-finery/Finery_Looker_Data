@@ -63,7 +63,3 @@
     type: string
     sql: ${TABLE}.updated_on
 
-  - measure: count
-    type: count
-    drill_fields: [product_id, product_name, sales_channel_name, sales_orders_details.count]
-
