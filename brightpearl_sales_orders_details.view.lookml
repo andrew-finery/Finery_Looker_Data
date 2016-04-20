@@ -73,9 +73,6 @@
     type: sum
     sql: ${quantity}
     
-  - measure: total_quantity
-    type: sum
-    sql: ${quantity}
     
   - measure: total_net_value
     type: sum
