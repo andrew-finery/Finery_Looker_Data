@@ -393,19 +393,19 @@
   # ----- MEASURES ------
 
 
-  - measure: total_on_hand_qty_warehouse
+  - measure: total_on_hand_qty_FNWS
     type: sum
     sql: ${on_hand_qty_warehouse}
     
-  - measure: total_on_hand_qty_john_lewis
+  - measure: total_on_hand_qty_FNJL
     type: sum
     sql: ${on_hand_quantity_john_lewis}
     
-  - measure: total_on_hand_qty_Website
+  - measure: total_on_hand_qty_ECOM
     type: sum
     sql: ${on_hand_qty_website}
     
-  - measure: total_on_hand_qty
+  - measure: total_on_hand_qty_total
     type: sum
     sql: ${on_hand_qty}
 
