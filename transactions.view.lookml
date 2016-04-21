@@ -57,8 +57,13 @@
     sql: ${TABLE}.order_total - ${shipping} - ${TABLE}.included_tax_total
     
   - dimension: number_of_items
+    type: int
     sql: ${TABLE}.item_count
   
+  - dimension: items_returned
+    type: int
+    sql: ${TABLE}.items_returned
+
   - dimension: new_customer_flag
     type: yesno
     sql: ${TABLE}.order_sequence_number = 1
@@ -105,7 +110,21 @@
     value_format: '#,##0.00'
     filters:
       reason_to_strip_out: 'NULL'
-      
+
+  - measure: total_items_purchased
+    type: sum
+    sql: ${number_of_items}
+    
+  - measure: total_items_returned
+    type: sum
+    sql: ${items_returned}
+  
+  - measure: return_rate
+    type: number
+    decimals: 2
+    sql: ${total_items_returned}/NULLIF(${total_items_purchased},0)::REAL
+    value_format: '#0.00%'
+    
   - measure: avg_basket_size
     label: Average Basket Size
     type: number
