@@ -107,7 +107,7 @@
     label: Return Rate
     type: number
     decimals: 4
-    sql: ${sum_items_sold}/NULLIF(${sum_items_returned},0)::REAL
+    sql: ${sum_items_returned}/NULLIF(${sum_items_sold},0)::REAL
     value_format: '#0.00%'
     
   - measure: first_sale_date
