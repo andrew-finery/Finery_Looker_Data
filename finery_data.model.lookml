@@ -86,11 +86,15 @@
     
 - explore: brightpearl_sales_orders_final
   label: 'Brightpearl Sales Orders'
-#  joins:
-#  - join: brightpearl_sales_orders_info
-#    from: brightpearl_sales_orders_info
-#    sql_on: ${brightpearl_sales_orders_info.id} = ${brightpearl_sales_orders_details.order_id}
-#    relationship: many_to_one
+  joins:
+  - join: product_info_variants
+    from: product_info_variants
+    sql_on: ${brightpearl_sales_orders_final.ean} = ${product_info_variants.ean}
+    relationship: many_to_one
+  - join: product_info_options
+    from: product_info_options
+    sql_on: ${product_info_variants.option_id} = ${product_info_options.option_id}
+    relationship: many_to_one
   
 
 

@@ -6,7 +6,6 @@
     primary_key: true
     type: number
     sql: ${TABLE}.id
-    hidden: True
 
   - dimension: assignment_channel_id
     type: number
@@ -88,17 +87,9 @@
     type: number
     sql: ${TABLE}.created_by_id
 
-  - dimension_group: calendar1
-    label: "Created On"
-    type: time
-    timeframes: [date, week, month]
-    convert_tz: false
-    sql: ${TABLE}.created_on
-    
   - dimension: created_on
     type: string
     sql: ${TABLE}.created_on
-    hidden: True
 
   - dimension: currency_accounting_currency_code
     type: string
@@ -220,6 +211,10 @@
     type: string
     sql: ${TABLE}.delivery_telephone
 
+  - dimension: ean
+    type: string
+    sql: ${TABLE}.ean
+
   - dimension: invoice_due_date
     type: string
     sql: ${TABLE}.invoice_due_date
@@ -232,14 +227,6 @@
     type: string
     sql: ${TABLE}.invoice_tax_date
 
-  - dimension: invt_lev4
-    type: string
-    sql: ${TABLE}.invt_lev4
-
-  - dimension: jl_on_hand_qty
-    type: number
-    sql: ${TABLE}.jl_on_hand_qty
-
   - dimension: nominal_code
     type: number
     sql: ${TABLE}.nominal_code
@@ -247,6 +234,18 @@
   - dimension: on_hand_qty
     type: number
     sql: ${TABLE}.on_hand_qty
+
+  - dimension: on_hand_qty_website
+    type: number
+    sql: ${TABLE}.on_hand_qty_website
+
+  - dimension: on_hand_qty_ws
+    type: number
+    sql: ${TABLE}.on_hand_qty_ws
+
+  - dimension: on_hand_quantity_jl
+    type: number
+    sql: ${TABLE}.on_hand_quantity_jl
 
   - dimension: order_id
     type: number
@@ -268,17 +267,9 @@
     type: number
     sql: ${TABLE}.orders_tatus_id
 
-  - dimension_group: calendar2
-    label: "Placed On"
-    type: time
-    timeframes: [date, week, month]
-    convert_tz: false
-    sql: ${TABLE}.placed_on
-    
   - dimension: placed_on
     type: string
     sql: ${TABLE}.placed_on
-    hidden: True
 
   - dimension: price_list_id
     type: number
@@ -373,41 +364,37 @@
     type: number
     sql: ${TABLE}.total_value_total
 
-  - dimension: website_on_hand_qty
-    type: number
-    sql: ${TABLE}.website_on_hand_qty
+  - measure: count
+    type: count
+    drill_fields: detail*
 
-  - dimension: ws_on_hand_qty
-    type: number
-    sql: ${TABLE}.ws_on_hand_qty
-    
- ######################################################################################################
-  ###################################### MEASURES ####################################################
-######################################################################################################
+
+  # ----- Sets of fields for drilling ------
+
 
   - measure: total_on_hand_qty_WS
-    type: count
-    sql: ${ws_on_hand_qty}
+    type: sum
+    sql: ${on_hand_qty_ws}
     
   - measure: total_on_hand_qty_JL
-    type: count
-    sql: ${jl_on_hand_qty}
+    type: sum
+    sql: ${on_hand_quantity_jl}
     
   - measure: total_on_hand_qty_Website
-    type: count
-    sql: ${website_on_hand_qty}
+    type: sum
+    sql: ${on_hand_qty_website}
     
   - measure: total_on_hand_qty
-    type: count
+    type: sum
     sql: ${on_hand_qty}
 
   - measure: total_row_net_value
-    type: count
+    type: sum
     sql: ${row_value_row_net_value}
+    value_format: '#,##0.00'
 
   - measure: total_row_tax_value
-    type: count
+    type: sum
     sql: ${row_value_row_tax_tvalue}
-
-
+    value_format: '#,##0.00'
 
