@@ -6,6 +6,7 @@
     primary_key: true
     type: number
     sql: ${TABLE}.id
+    hidden: True
 
   - dimension: assignment_channel_id
     type: number
@@ -86,10 +87,18 @@
   - dimension: created_by_id
     type: number
     sql: ${TABLE}.created_by_id
+    
+  - dimension_group: calendar2
+    label: "Created On"
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.created_on 
 
   - dimension: created_on
     type: string
     sql: ${TABLE}.created_on
+    hidden: True
 
   - dimension: currency_accounting_currency_code
     type: string
@@ -234,18 +243,22 @@
   - dimension: on_hand_qty
     type: number
     sql: ${TABLE}.on_hand_qty
+    hidden: True
 
   - dimension: on_hand_qty_website
     type: number
     sql: ${TABLE}.on_hand_qty_website
+    hidden: True
 
-  - dimension: on_hand_qty_ws
+  - dimension: on_hand_qty_warehouse
     type: number
     sql: ${TABLE}.on_hand_qty_ws
+    hidden: True
 
-  - dimension: on_hand_quantity_jl
+  - dimension: on_hand_quantity_john_lewis
     type: number
     sql: ${TABLE}.on_hand_quantity_jl
+    hidden: True
 
   - dimension: order_id
     type: number
@@ -267,9 +280,17 @@
     type: number
     sql: ${TABLE}.orders_tatus_id
 
+  - dimension_group: calendar
+    label: "Placed On"
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.placed_on  
+
   - dimension: placed_on
     type: string
     sql: ${TABLE}.placed_on
+    hidden: True
 
   - dimension: price_list_id
     type: number
@@ -369,7 +390,7 @@
     drill_fields: detail*
 
 
-  # ----- Sets of fields for drilling ------
+  # ----- MEASURES ------
 
 
   - measure: total_on_hand_qty_WS
