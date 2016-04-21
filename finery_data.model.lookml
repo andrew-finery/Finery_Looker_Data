@@ -84,21 +84,14 @@
     sql_on: ${fb_daily_ad_performance.calendar_date} = ${28_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${28_day_click_through.ad}
     relationship: one_to_one
     
-- explore: brightpearl_sales_orders_details
-  label: 'Brightpearl Orders'
-  joins:
-  - join: brightpearl_sales_orders_info
-    from: brightpearl_sales_orders_info
-    sql_on: ${brightpearl_sales_orders_info.id} = ${brightpearl_sales_orders_details.order_id}
-    relationship: many_to_one
-  - join: brightpearl_products
-    from: brightpearl_products
-    sql_on: ${brightpearl_sales_orders_details.product_sku} = ${brightpearl_products.sku}
-    relationship: many_to_one
-  - join: cml_warehouse_stock_yesterday
-    from: cml_warehouse_stock_yesterday
-    sql_on: ${brightpearl_products.barcode} = ${cml_warehouse_stock_yesterday.barcode}
-    relationship: one_to_one
+- explore: brightpearl_sales_orders_final
+  label: 'Brightpearl Sales Orders'
+#  joins:
+#  - join: brightpearl_sales_orders_info
+#    from: brightpearl_sales_orders_info
+#    sql_on: ${brightpearl_sales_orders_info.id} = ${brightpearl_sales_orders_details.order_id}
+#    relationship: many_to_one
+  
 
 
 #- explore: atomic_events

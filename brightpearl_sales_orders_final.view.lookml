@@ -1,11 +1,12 @@
-- view: brightpearl_sales_orders_info
-  sql_table_name: brightpearl.sales_orders_info
+- view: brightpearl_sales_orders_final
+  sql_table_name: brightpearl.sales_orders_final
   fields:
 
   - dimension: id
     primary_key: true
     type: number
     sql: ${TABLE}.id
+    hidden: True
 
   - dimension: assignment_channel_id
     type: number
@@ -87,9 +88,17 @@
     type: number
     sql: ${TABLE}.created_by_id
 
+  - dimension_group: calendar1
+    label: "Created On"
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.created_on
+    
   - dimension: created_on
     type: string
     sql: ${TABLE}.created_on
+    hidden: True
 
   - dimension: currency_accounting_currency_code
     type: string
@@ -223,6 +232,30 @@
     type: string
     sql: ${TABLE}.invoice_tax_date
 
+  - dimension: invt_lev4
+    type: string
+    sql: ${TABLE}.invt_lev4
+
+  - dimension: jl_on_hand_qty
+    type: number
+    sql: ${TABLE}.jl_on_hand_qty
+
+  - dimension: nominal_code
+    type: number
+    sql: ${TABLE}.nominal_code
+
+  - dimension: on_hand_qty
+    type: number
+    sql: ${TABLE}.on_hand_qty
+
+  - dimension: order_id
+    type: number
+    sql: ${TABLE}.order_id
+
+  - dimension: order_row_sequence
+    type: number
+    sql: ${TABLE}.order_row_sequence
+
   - dimension: order_status_name
     type: string
     sql: ${TABLE}.order_status_name
@@ -235,17 +268,17 @@
     type: number
     sql: ${TABLE}.orders_tatus_id
 
-  - dimension: placed_on
-    type: string
-    sql: ${TABLE}.placed_on
-    hidden: True
-    
-  - dimension_group: calendar
+  - dimension_group: calendar2
     label: "Placed On"
     type: time
     timeframes: [date, week, month]
     convert_tz: false
-    sql: cast(${TABLE}.placed_on as date) 
+    sql: ${TABLE}.placed_on
+    
+  - dimension: placed_on
+    type: string
+    sql: ${TABLE}.placed_on
+    hidden: True
 
   - dimension: price_list_id
     type: number
@@ -255,6 +288,51 @@
     type: string
     sql: ${TABLE}.price_mode_code
 
+  - dimension: product_id
+    type: number
+    # hidden: true
+    sql: ${TABLE}.product_id
+
+  - dimension: product_name
+    type: string
+    sql: ${TABLE}.product_name
+
+  - dimension: product_sku
+    type: string
+    sql: ${TABLE}.product_sku
+
+  - dimension: quantity
+    type: number
+    sql: ${TABLE}.quantity
+
+  - dimension: row_value_row_net_currency
+    type: string
+    sql: ${TABLE}.row_value_row_net_currency
+
+  - dimension: row_value_row_net_value
+    type: number
+    sql: ${TABLE}.row_value_row_net_value
+
+  - dimension: row_value_row_tax_currency
+    type: string
+    sql: ${TABLE}.row_value_row_tax_currency
+
+  - dimension: row_value_row_tax_tvalue
+    type: number
+    sql: ${TABLE}.row_value_row_tax_tvalue
+
+  - dimension: row_value_tax_code
+    type: string
+    sql: ${TABLE}.row_value_tax_code
+
+  - dimension: row_value_tax_rate
+    type: number
+    sql: ${TABLE}.row_value_tax_rate
+
+  - dimension: rowcost
+    type: number
+    sql: ${TABLE}.rowcost
+
   - dimension: shipping_method_id
     type: number
     sql: ${TABLE}.shipping_method_id
@@ -262,6 +340,10 @@
   - dimension: shipping_status_code
     type: string
     sql: ${TABLE}.shipping_status_code
+
+  - dimension: size
+    type: string
+    sql: ${TABLE}.size
 
   - dimension: stock_status_code
     type: string
@@ -291,8 +373,41 @@
     type: number
     sql: ${TABLE}.total_value_total
 
+  - dimension: website_on_hand_qty
+    type: number
+    sql: ${TABLE}.website_on_hand_qty
 
+  - dimension: ws_on_hand_qty
+    type: number
+    sql: ${TABLE}.ws_on_hand_qty
+    
+ ######################################################################################################
+  ###################################### MEASURES ####################################################
+######################################################################################################
 
-  # ----- Sets of fields for drilling ------
+  - measure: total_on_hand_qty_WS
+    type: count
+    sql: ${ws_on_hand_qty}
+    
+  - measure: total_on_hand_qty_JL
+    type: count
+    sql: ${jl_on_hand_qty}
+    
+  - measure: total_on_hand_qty_Website
+    type: count
+    sql: ${website_on_hand_qty}
+    
+  - measure: total_on_hand_qty
+    type: count
+    sql: ${on_hand_qty}
+
+  - measure: total_row_net_value
+    type: count
+    sql: ${row_value_row_net_value}
+
+  - measure: total_row_tax_value
+    type: count
+    sql: ${row_value_row_tax_tvalue}
+
 
 
