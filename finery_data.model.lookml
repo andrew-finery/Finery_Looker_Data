@@ -95,8 +95,16 @@
     from: product_info_options
     sql_on: ${product_info_variants.option_id} = ${product_info_options.option_id}
     relationship: many_to_one
-  
 
+- explore: transactions
+  label: 'Website Orders'
+  joins:
+  - join: website_visits
+    from: sessions
+    sql_on: ${transactions.domain_userid} = ${website_visits.domain_user_id} and ${transactions.domain_sessionidx} = ${website_visits.domain_session_index}
+  - join: website_visitors
+    from: visitors
+    sql_on: ${website_visits.blended_user_id} = ${website_visitors.blended_user_id}
 
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
