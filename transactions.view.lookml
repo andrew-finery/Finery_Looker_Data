@@ -44,6 +44,10 @@
   - dimension: revenue_inc_vat
     sql: ${TABLE}.order_total
     hidden: true
+
+  - dimension: shipping_address_id
+    sql: ${TABLE}.ship_address_id
+    hidden: true
      
   - dimension: shipping
     sql: ${TABLE}.shipment_total

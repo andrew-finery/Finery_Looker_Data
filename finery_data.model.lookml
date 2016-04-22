@@ -102,10 +102,16 @@
   - join: website_visits
     from: sessions
     sql_on: ${transactions.domain_userid} = ${website_visits.domain_user_id} and ${transactions.domain_sessionidx} = ${website_visits.domain_session_index}
+    relationship: many_to_one
   - join: website_visitors
     from: visitors
     sql_on: ${website_visits.blended_user_id} = ${website_visitors.blended_user_id}
-
+    relationship: many_to_one
+  - join: order_address_info
+    from: spree_addresses
+    sql_on: ${transactions.shipping_address_id} = ${order_address_info.address_id}
+    relationship: many_to_one
+    
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
 #  joins:
