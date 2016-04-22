@@ -87,7 +87,7 @@
   - dimension_group: member_cleaned_time
     type: time
     timeframes: [time, date, week, month]
-    sql: ${TABLE}.cleaned_time
+    sql: ${TABLE}.clean_time
     
     
   # Measures
