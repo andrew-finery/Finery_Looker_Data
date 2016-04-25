@@ -124,6 +124,11 @@
     type: int
     sql: ${TABLE}.product_views
 
+  - dimension: products_purchased
+    type: int
+    sql: ${TABLE}.products_purchased
+    hidden: true
+
   - dimension: orders
     type: int
     sql: ${TABLE}.orders
@@ -758,11 +763,23 @@
     type: sum
     sql: ${product_views}
 
+  - measure: sum_products_purchased
+    label: Products Purchased Total
+    type: sum
+    sql: ${products_purchased}
+
   - measure: product_views_per_visit
     type: number
     decimals: 2
     sql: ${sum_product_views}/NULLIF(${count},0)::REAL
     value_format: '#0.00'
+
+  - measure: product_conversion_rate
+    type: number
+    decimals: 2
+    sql: ${sum_products_purchased}/NULLIF(${sum_product_views},0)::REAL
+    value_format: '#0.00%'
+    
   - measure: sum_orders
     type: sum
     sql: ${orders}
