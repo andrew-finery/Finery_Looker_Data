@@ -170,6 +170,39 @@
     sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) / (1+${tax_rate})) end
     value_format: '#,##0.00'
 
+####
+  - dimension: net_item_revenue
+    type: number
+    decimals: 2
+    sql: ${TABLE}.price * (${TABLE}.quantity - ${TABLE}.items_returned)
+    value_format: '#,##0.00'
+    hidden: true
+
+  - dimension: net_item_revenue_pre_retail_markdown_gbp
+    type: number
+    sql: ${pre_retail_markdown_price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
+    value_format: '#,##0.00' 
+    
+  - dimension: net_item_revenue_in_gbp
+    type: number
+    decimals: 2
+    sql: ${price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
+    value_format: '#,##0.00'
+
+  - dimension: net_item_revenue_ex_voucher_discount_gbp
+    type: number
+    decimals: 2
+    sql: case when ${TABLE}.order_total = 0 then 0 else ${net_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end
+    value_format: '#,##0.00'
+    
+  - dimension: net_item_revenue_ex_discount_ex_vat_gbp
+    type: number
+    decimals: 2
+    sql: case when ${TABLE}.order_total = 0 then 0 else (${net_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) / (1+${tax_rate})) end
+    value_format: '#,##0.00'
+####
+
+
   # Margin Dimensions
   - dimension: landed_cost_gbp
     type: number
@@ -396,6 +429,12 @@
     decimals: 2
     value_format: '#,##0.00'
 
+  - measure: sum_net_item_revenue_ex_discount_ex_vat_gbp
+    type: sum
+    sql: ${net_item_revenue_ex_discount_ex_vat_gbp}
+    decimals: 2
+    value_format: '#,##0.00'
+
   - measure: count_days
     type: count_distinct
     sql: ${order_time_date}
@@ -419,13 +458,13 @@
   - measure: sum_gross_margin_gbp_ex_vat
     type: number
     decimals: 2
-    sql: ${sum_gross_item_revenue_in_gbp_ex_vat} - ${sum_gross_landed_cost_gbp}
+    sql: ${sum_gross_item_revenue_ex_discount_ex_vat_gbp} - ${sum_gross_landed_cost_gbp}
     value_format: '#,##0.00' 
   
   - measure: gross_margin_percent_ex_vat
     type: number
     decimals: 4
-    sql: ${sum_gross_margin_gbp_ex_vat}/NULLIF(${sum_gross_item_revenue_in_gbp_ex_vat},0)::REAL
+    sql: ${sum_gross_margin_gbp_ex_vat}/NULLIF(${sum_gross_item_revenue_ex_discount_ex_vat_gbp},0)::REAL
     value_format: '#0.00%'
     
   ########################################################## NET Margin Measures ########################################################################################################
@@ -439,13 +478,13 @@
   - measure: sum_net_margin_gbp_ex_vat
     type: number
     decimals: 2
-    sql: ${sum_net_item_revenue_gbp_ex_vat} - ${sum_net_landed_cost_gbp}
+    sql: ${sum_net_item_revenue_ex_discount_ex_vat_gbp} - ${sum_net_landed_cost_gbp}
     value_format: '#,##0.00' 
   
   - measure: net_margin_percent_ex_vat
     type: number
     decimals: 4
-    sql: ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_gbp_ex_vat},0)::REAL
+    sql: ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_ex_discount_ex_vat_gbp},0)::REAL
     value_format: '#0.00%'
 
 ###################################################### DISCOUNT STUFF ##################################################
