@@ -25,6 +25,9 @@
     from: mc_campaigns
     sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
     relationship: many_to_one
+  - join: coming_soon_email_products
+    from: product_info_options
+    sql_on: ${coming_soon_email_products.parent_sku} = ${sessions.campaign_name}
 
 
 - explore: website_products
