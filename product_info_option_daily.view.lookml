@@ -75,6 +75,14 @@
      sql: coalesce(${TABLE}.quick_views, '0')
      hidden: true
 
+   - dimension: products_added_to_cart
+     sql: coalesce(${TABLE}.quantity_added_to_cart, '0')
+     hidden: true
+
+   - dimension: product_coming_soon_requests
+     sql: coalesce(${TABLE}.coming_soon_requests, '0')
+     hidden: true
+
    - dimension: is_live
      sql: ${TABLE}.is_live
      hidden: true
@@ -229,6 +237,14 @@
      type: sum
      label: Quick Views
      sql: ${product_quick_views}
+
+   - measure: add_to_carts
+     type: sum
+     sql: ${products_added_to_cart}
+
+   - measure: coming_soon_requests
+     type: sum
+     sql: ${product_coming_soon_requests}
 
    - measure: click_through_rate
      type: number
