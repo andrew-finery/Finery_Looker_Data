@@ -48,6 +48,30 @@
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.upload_date
+    
+  - dimension: price_usd
+    type: number
+    sql: ${TABLE}.price_usd
+  
+  - dimension: price_cad
+    type: number
+    sql: ${TABLE}.price_cad
+    
+  - dimension: price_aed
+    type: number
+    sql: ${TABLE}.price_aed
+    
+  - dimension: price_aud
+    type: number
+    sql: ${TABLE}.price_aud
+    
+  - dimension: price_sgd
+    type: number
+    sql: ${TABLE}.price_sgd
+    
+  - dimension: price_hkd
+    type: number
+    sql: ${TABLE}.price_hkd
 
   - measure: count
     type: count
