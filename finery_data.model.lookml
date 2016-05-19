@@ -303,11 +303,14 @@
   joins:
   - join: customer_info
     from: spree_customers
-    sql_on: ${mc_newsletter_subscribers.email_address} = ${customer_info.email}
+    sql_on: lower(${mc_newsletter_subscribers.email_address}) = lower(${customer_info.email})
     relationship: one_to_one
   - join: web_visitor_info
     from: visitors
-    sql_on: ${mc_newsletter_subscribers.email_address} = ${web_visitor_info.email_address}
+    sql_on: lower(${mc_newsletter_subscribers.email_address}) = lower(${web_visitor_info.email_address})
+    relationship: one_to_one
+  - join: spree_users
+    sql_on: lower(${mc_newsletter_subscribers.email_address}) = lower(${spree_users.email_address})
     relationship: one_to_one
 
 - explore: mc_campaign_member_activity
