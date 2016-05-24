@@ -335,7 +335,10 @@
   label:  'Mailchimp Campaigns'
   description: 'Finery Mailchimp account campaign information'
 
-
+- explore: webgains_orders
+  label:  'Webgains Orders'
+  description: 'Information on all orders tracked by Webgains'
+  
 - explore: scripts_bi_server
 
 - explore: redshift_load_errors
