@@ -20,6 +20,7 @@
 
   - dimension: commission
     type: number
+    decimals: 2
     sql: ${TABLE}.commission
 
   - dimension: currency
@@ -30,9 +31,10 @@
     type: string
     sql: ${TABLE}.customer_id
 
-  - dimension: date
-    type: string
-    sql: ${TABLE}.date
+  - dimension_group: order_placed
+    type: time
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
+    sql: cast(${TABLE}.date as datetime)
 
   - dimension: delayed_until_date
     type: string
@@ -50,8 +52,9 @@
     type: string
     sql: ${TABLE}.status
 
-  - dimension: revenue
+  - dimension: order_value
     type: number
+    decimals: 2
     sql: ${TABLE}.value
 
   - dimension: voucher_code
@@ -63,7 +66,9 @@
   - measure: sum_commission
     type: sum
     sql: ${commission}
+    value_format: '#0.00'
     
   - measure: sum_revenue
     type: sum
-    sql: ${revenue}
+    sql: ${order_value}
+    value_format: '#0.00'
