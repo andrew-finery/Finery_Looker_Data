@@ -348,7 +348,37 @@
   label:  'Webgains Orders'
   description: 'Information on all orders tracked by Webgains'
 
+- explore: spree_stripped_out_orders
+  label: 'Non-Reported Orders'
+  description: 'Information on all orders that are not reported on for revenue purposes'
+  joins:
+  - join: calendar_weeks
+    sql_on: ${spree_stripped_out_orders.completed_date} = calendar_weeks.calendar_date
+    relationship: many_to_one
 
+- explore: spree_stripped_out_order_items
+  fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
+  label: 'Non-Reported Order Items'
+  description: 'Information on all items in orders that are not reported on for revenue purposes'
+  always_join: [spree_stripped_out_orders]
+  joins:
+  - join: spree_stripped_out_orders
+    sql_on: ${spree_stripped_out_orders.order_id} = ${spree_stripped_out_order_items.order_id}
+    relationship: many_to_one
+  - join: spree_addresses
+    sql_on: spree_stripped_out_orders.ship_address_id = spree_addresses.address_id
+    relationship: many_to_one
+  - join: calendar_weeks
+    sql_on: ${spree_stripped_out_orders.completed_date} = calendar_weeks.calendar_date
+    relationship: many_to_one
+  - join: variant_info
+    from: product_info_variants
+    sql_on: ${spree_stripped_out_order_items.sku} = ${variant_info.ean}
+    relationship: many_to_one
+  - join: option_info
+    from: product_info_options
+    sql_on: ${variant_info.option_id} = ${option_info.option_id}
+    relationship: many_to_one
   
 - explore: scripts_bi_server
 
