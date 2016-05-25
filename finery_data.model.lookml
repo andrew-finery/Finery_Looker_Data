@@ -25,9 +25,9 @@
     from: mc_campaigns
     sql_on: ${email_campaigns.campaign_id} = ${email_campaign_tests.campaign_id}
     relationship: many_to_one
-  - join: coming_soon_email_products
-    from: product_info_options
-    sql_on: ${coming_soon_email_products.parent_sku} = ${sessions.campaign_name}
+  - join: coming_soon_emails
+    from: coming_soon_email_summary
+    sql_on: ${coming_soon_emails.sku} = ${sessions.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${sessions.campaign_term}
 
 
 - explore: website_products
@@ -335,9 +335,20 @@
   label:  'Mailchimp Campaigns'
   description: 'Finery Mailchimp account campaign information'
 
+- explore: coming_soon_email_lists
+  label: 'Coming Soon Email Lists'
+  description: 'Details of all people on coming soon lists who have not yet been notified'
+  joins:
+  - join: option_info
+    from: product_info_options
+    sql_on: ${option_info.product_id} = ${coming_soon_email_lists.product_id}
+    relationship: many_to_one  
+
 - explore: webgains_orders
   label:  'Webgains Orders'
   description: 'Information on all orders tracked by Webgains'
+
+
   
 - explore: scripts_bi_server
 

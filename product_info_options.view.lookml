@@ -29,7 +29,7 @@
        sql: ${TABLE}.slug
 
      - dimension: option
-       sql: ${TABLE}.style_name || ' - ' ||  ${TABLE}.colour
+       sql: ${TABLE}.style_name  || case when ${TABLE}.colour is null then ' ' else ' - ' ||  ${TABLE}.colour end
 
      - dimension: bp_option
        label: BP Option
