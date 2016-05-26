@@ -52,7 +52,7 @@
     dynamic_fields:
     - table_calculation: repurchase_rate_2
       label: Repurchase Rate 2
-      expression: offset(if(is_null(${spree_customers.count_customers})="Yes", null, running_total(${spree_orders.count_orders})/max(${spree_customers.count_customers}) - 1), max(diff_months(${calendar_weeks.calendar_date_month},${spree_customers.first_order_month})))
+      expression: offset(if(is_null(${spree_customers.count_customers}), null, running_total(${spree_orders.count_orders})/max(${spree_customers.count_customers}) - 1), max(diff_months(${calendar_weeks.calendar_date_month},${spree_customers.first_order_month})))
       value_format: '#0.00'
     - table_calculation: months_after_first_order
       label: Months After First Order
