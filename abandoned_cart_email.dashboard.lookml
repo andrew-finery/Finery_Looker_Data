@@ -1,5 +1,5 @@
-- dashboard: abandoned_cart_email
-  title: Abandoned Cart Email
+- dashboard: abandoned_cart_email_dashboard
+  title: Abandoned Cart Email Dashboard
   layout: static
   tile_size: 100
 
@@ -40,7 +40,7 @@
     top: 0
     left: 0
     height: 2
-    width: 2
+    width: 4
 
   - name: abaondon_cart_open_rate_30_day
     title: Open Rate - Last 30 Days
@@ -75,9 +75,9 @@
     legend_position: center
     y_axis_combined: true
     top: 0
-    left: 2
+    left: 4
     height: 2
-    width: 2
+    width: 4
     
   - name: abaondon_cart_click_rate_30_day
     title: Click Rate - Last 30 Days
@@ -113,9 +113,9 @@
     legend_position: center
     y_axis_combined: true
     top: 0
-    left: 4
+    left: 8
     height: 2
-    width: 2
+    width: 4
     
   - name: abandon_cart_web_visits_last_30_days
     title: Web Visits - Last 30 Days
@@ -125,7 +125,7 @@
     measures: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: abandon_cart
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
     sorts: [sessions.count desc]
     limit: 500
     column_limit: ''
@@ -150,10 +150,10 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-    top: 0
-    left: 6
+    top: 2
+    left: 0
     height: 2
-    width: 2
+    width: 4
     
   - name: abandon_cart_orders_last_30_days
     title: Orders - Last 30 Days
@@ -163,7 +163,7 @@
     measures: [transactions.count_transactions]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: abandon_cart
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
     sorts: [transactions.count_transactions desc]
     limit: 500
     column_limit: ''
@@ -188,10 +188,10 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-    top: 0
-    left: 8
+    top: 2
+    left: 4
     height: 2
-    width: 2
+    width: 4
     
   - name: abandon_cart_cr_30_days
     title: Conversion Rate - Last 30 Days
@@ -201,7 +201,7 @@
     measures: [sessions.conversion_rate]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: abandon_cart
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
     sorts: [sessions.conversion_rate desc]
     limit: 500
     column_limit: ''
@@ -226,10 +226,10 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-    top: 0
-    left: 10
+    top: 2
+    left: 8
     height: 2
-    width: 2
+    width: 4
     
   - name: abandon_cart_email_sent
     title: Emails Sent - Last 30 Days
@@ -261,7 +261,7 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-    top: 2
+    top: 5
     left: 0
     height: 4
     width: 6
@@ -297,7 +297,7 @@
     point_style: none
     interpolation: linear
     colors: [orange]
-    top: 2
+    top: 5
     left: 6
     height: 4
     width: 6
@@ -333,7 +333,7 @@
     point_style: none
     interpolation: linear
     colors: [purple]
-    top: 6
+    top: 9
     left: 0
     height: 4
     width: 6
@@ -347,8 +347,8 @@
     measures: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: '"abandon^_cart"'
-    sorts: [session_start_calendar.calendar_date_date desc]
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     column_limit: ''
     stacking: ''
@@ -371,7 +371,7 @@
     interpolation: linear
     ordering: none
     show_null_labels: false
-    top: 6
+    top: 9
     left: 6
     height: 4
     width: 6
@@ -385,7 +385,7 @@
     measures: [transactions.count_transactions]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: '"abandon^_cart"'
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     column_limit: ''
@@ -409,7 +409,44 @@
     show_null_points: true
     point_style: none
     interpolation: linear
-    top: 10
+    top: 13
     left: 0
+    height: 4
+    width: 6
+
+  - name: abandon_cart_revenue
+    title: Gross Revenue - Last 30 Days
+    type: looker_line
+    model: finery_data
+    explore: sessions
+    dimensions: [session_start_calendar.calendar_date_date]
+    measures: [sessions.sum_gross_revenue_ex_discount]
+    filters:
+      session_start_calendar.calendar_date_date: 30 days ago for 30 days
+      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+    sorts: [session_start_calendar.calendar_date_date desc]
+    limit: 500
+    stacking: ''
+    colors: ['#F16358']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    show_null_points: true
+    point_style: none
+    interpolation: linear
+    top: 13
+    left: 6
     height: 4
     width: 6
