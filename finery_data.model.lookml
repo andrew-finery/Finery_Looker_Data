@@ -54,6 +54,7 @@
 #- explore: facebook_daily_ad_performance
 
 - explore: fb_automated_ads_creatives
+- explore: fb_automated_ads_creatives_sale
 
 #- explore: facebook_daily_ad_performance_1day
 #  joins:
