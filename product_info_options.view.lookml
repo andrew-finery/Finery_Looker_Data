@@ -270,7 +270,7 @@
        sql: ${TABLE}.facebook_images
 
      - dimension: packshot_image
-       label: DPA Product Image
+       label: DPA Packshot Product Image
        type: string
        sql: ${TABLE}.packshot_image_location
        html: |
