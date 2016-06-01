@@ -60,6 +60,54 @@
     height: 2
     width: 3
 
+  - name: sub_season_return_rates
+    title: Return Rate by Sub-Season
+    type: looker_bar
+    model: finery_data
+    explore: spree_order_items
+    dimensions: [option_info.sub_season]
+    measures: [spree_order_items.return_rate]
+    filters:
+      calendar_weeks.calendar_date_date: before 28 days ago
+      option_info.sub_season: -EMPTY,-Unknown
+    sorts: [spree_order_items.return_rate desc]
+    limit: 30
+    stacking: ''
+    colors: ['#7FCDAE']
+    show_value_labels: true
+    label_density: 25
+    label_color: [purple]
+    font_size: 20px
+    legend_position: center
+    x_axis_gridlines: false
+    show_view_names: false
+    series_labels:
+      spree_order_items.items_returned: Total Items Returned
+      spree_order_items.total_items_returned_too_big: Too Big
+      spree_order_items.total_items_returned_too_small: Too Small
+      spree_order_items.total_items_returned_doesnt_suit: It Doesn't Suit Me
+      spree_order_items.total_items_returned_not_as_pictured: Not as Pictured
+      spree_order_items.total_items_returned_not_as_described: Not as Described
+      spree_order_items.total_items_returned_faulty: Faulty
+      option_info.dpa_image: Image
+      __FILE: finery_data/returns_dashboard_2.dashboard.lookml
+      __LINE_NUM: 86
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: false
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    label_value_format: '#%'
+    show_null_labels: false
+    top: 2
+    left: 10
+    height: 6
+    width: 3
+
   - name: season_category_return_rates
     title: SS16 Category Return Rates
     type: looker_bar
@@ -102,7 +150,7 @@
     y_axis_scale_mode: linear
     label_value_format: '#%'
     show_null_labels: false
-    top: 2
+    top: 8
     left: 10
     height: 6
     width: 3
@@ -150,7 +198,7 @@
     y_axis_scale_mode: linear
     label_value_format: '#%'
     show_null_labels: false
-    top: 8
+    top: 14
     left: 10
     height: 4
     width: 3
