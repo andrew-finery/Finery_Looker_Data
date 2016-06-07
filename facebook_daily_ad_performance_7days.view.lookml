@@ -2,13 +2,13 @@
   sql_table_name: facebook_data.daily_ad_performance_7days
   fields:
 
-  - dimension: facebook_pixel_in_use
-    sql: |
-          case when ${TABLE}.date >= '2016-02-08' then 'New - Facebook Pixel'
-          else 'Old - Conversion Pixel'end
+  #- dimension: facebook_pixel_in_use
+  #  sql: |
+  #        case when ${TABLE}.date >= '2016-02-08' then 'New - Facebook Pixel'
+  #        else 'Old - Conversion Pixel'end
           
-  - dimension: account_name
-    sql: ${TABLE}.account_name
+  #- dimension: account_name
+  #  sql: ${TABLE}.account_name
 
   - dimension: ad
     sql: ${TABLE}.ad
@@ -31,14 +31,14 @@
     convert_tz: false
     sql: ${TABLE}.date  
 
-  - dimension: bid_billing_event
-    sql: ${TABLE}.bid_billing_event
+  #- dimension: bid_billing_event
+  #  sql: ${TABLE}.bid_billing_event
 
-  - dimension: bid_optimization_goal
-    sql: ${TABLE}.bid_optimization_goal
+  #- dimension: bid_optimization_goal
+  #  sql: ${TABLE}.bid_optimization_goal
 
-  - dimension: bid_type
-    sql: ${TABLE}.bid_type
+  #- dimension: bid_type
+  #  sql: ${TABLE}.bid_type
 
 
   - dimension: campaign
@@ -57,8 +57,8 @@
           when ${campaign_name} like '%DR%' then 'DR'
           else 'Other' end
           
-  - dimension: campaign_start_date
-    sql: ${TABLE}.campaign_start_date
+ # - dimension: campaign_start_date
+ #   sql: ${TABLE}.campaign_start_date
 
   - dimension: cities
     sql: ${TABLE}.cities
@@ -73,18 +73,18 @@
     sql: ${TABLE}.clicks
     hidden: true
 
-  - dimension: connections
-    sql: ${TABLE}.connections
-    hidden: true
+  #- dimension: connections
+  #  sql: ${TABLE}.connections
+  #  hidden: true
 
-  - dimension: goal_conversions
-    type: int
-    sql: ${TABLE}.conversions
-    hidden: true
+  #- dimension: goal_conversions
+  #  type: int
+  #  sql: ${TABLE}.conversions
+  #  hidden: true
 
-  - dimension: conversions_account_0
-    sql: ${TABLE}.conversions_account_0
-    hidden: true
+  #- dimension: conversions_account_0
+  #  sql: ${TABLE}.conversions_account_0
+  #  hidden: true
 
   - dimension: conversions_comments
     type: int
@@ -99,13 +99,11 @@
 # Conversion Facebook Pixels
 
   - dimension: action_complete_registration
-    sql: ${TABLE}.std_event_complete_regist
+    sql: ${TABLE}.fb_pixel_complete_registration
     hidden: true
     
   - dimension: action_sale
-    sql: |
-          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_purchase
-          else ${TABLE}.conversions_offsite_6020814566949 end
+    sql: ${TABLE}.fb_pixel_purchase
     hidden: true
     
   - dimension: action_lead
@@ -113,20 +111,15 @@
     hidden: true
 
   - dimension: action_view_content
-    sql: |
-          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_view_content
-          else ${TABLE}.conversions_offsite_6020814677949 end
+    sql: ${TABLE}.fb_pixel_view_content
     hidden: true
     
   - dimension: action_add_to_cart
-    sql: ${TABLE}.std_event_add_to_cart
-    sql: |
-          case when ${TABLE}."date" >= '2016-02-08' then ${TABLE}.std_event_add_to_cart
-          else ${TABLE}.conversions_offsite_6020814706949 end
+    sql: ${TABLE}.fb_pixel_add_to_cart
     hidden: true
     
   - dimension: action_initate_checkout
-    sql: ${TABLE}.std_event_initiate_checkout
+    sql: ${TABLE}.fb_pixel_initiate_checkout
     hidden: true
 
   #- dimension: action_delivery
@@ -170,7 +163,7 @@
     
   - dimension: conversions_website_clicks
     type: int
-    sql: ${TABLE}.conversions_website_clicks
+    sql: coalesce(${TABLE}.conversions_website_clicks,0)
     hidden: true
     
   - dimension: countries
@@ -383,9 +376,9 @@
 
 # CPA's
 
-  - measure: cpa_visit
+  - measure: cpa_complete_registration
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_visit},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_complete_registration},0) ::REAL
     value_format: '#,##0.00'
 
   - measure: cpa_sale
@@ -393,14 +386,14 @@
     sql: ${total_spend}/ NULLIF(${total_action_sale},0) ::REAL
     value_format: '#,##0.00'
 
-  - measure: cpa_category_page
+  - measure: cpa_lead
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_category_page},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_lead},0) ::REAL
     value_format: '#,##0.00'
 
-  - measure: cpa_product_detail_page
+  - measure: cpa_product_view_content
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_product_detail_page},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_view_content},0) ::REAL
     value_format: '#,##0.00'
     
   - measure: cpa_add_to_cart
@@ -408,22 +401,22 @@
     sql: ${total_spend}/ NULLIF(${total_action_add_to_cart},0) ::REAL
     value_format: '#,##0.00'
     
-  - measure: cpa_action_address
+  - measure: cpa_initiate_checkout
     type: number
-    sql: ${total_spend}/ NULLIF(${total_action_address},0) ::REAL
+    sql: ${total_spend}/ NULLIF(${total_action_initate_checkout},0) ::REAL
     value_format: '#,##0.00'
     
-  - measure: cpa_action_delivery
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_delivery},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_delivery
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_delivery},0) ::REAL
+  #  value_format: '#,##0.00'
 
-  - measure: cpa_action_payment
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_payment},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_payment
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_payment},0) ::REAL
+  #  value_format: '#,##0.00'
     
-  - measure: cpa_action_engagement
-    type: number
-    sql: ${total_spend}/ NULLIF(${total_action_engagement},0) ::REAL
-    value_format: '#,##0.00'
+  #- measure: cpa_action_engagement
+  #  type: number
+  #  sql: ${total_spend}/ NULLIF(${total_action_engagement},0) ::REAL
+  #  value_format: '#,##0.00'
