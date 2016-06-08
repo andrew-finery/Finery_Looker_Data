@@ -6,7 +6,13 @@
     sql: |
           case when ${TABLE}.date >= '2016-02-08' then 'New - Facebook Pixel'
           else 'Old - Conversion Pixel'end
-          
+  
+  - dimension: funnel_segment
+    sql: |
+          case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition' 
+          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Retargeting_CA'
+          when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting_DPA' end
+  
   - dimension: account_name
     sql: ${TABLE}.account_name
 
