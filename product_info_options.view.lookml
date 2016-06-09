@@ -190,50 +190,7 @@
     
      - dimension: supplier
        label: Supplier
-       sql: |
-            case
-            when ${factory} in  ('Alvex', 'Alvex Ltd')  then  'Alvex LTD'
-            when ${factory} in  ('Anglo Union') then  'Anglo Union'
-            when ${factory} in  ('Apparels Connection') then  'Apparels Connection'
-            when ${factory} in  ('APPRIVA TEKSTIL') then  'Appriva Tekstil'
-            when ${factory} in  ('SC Rojin Textile SRL - Blue Clothing','SC Rojin Textile SRL - Blue Clothing ','Micheal.com','SC Rojin Textile SRL') then  'Blue Clothing'
-            when ${factory} in  ('Fashion Enter') then  'Fashion Enter Ltd'
-            when ${factory} in  ('For You Fashions','For You Fashion')  then  'For You Fashion'
-            when ${factory} in  ('Gemini Clothing') then  'Gemini'
-            when ${factory} in  ('India Fashion','India Fashions')  then  'India Fashion'
-            when ${factory} in  ('Indigo')  then  'Indigo'
-            when ${factory} in  ('Legend Creations')  then  'Legend Creations'
-            when ${factory} in  ('Loaded')  then  'Loaded'
-            when ${factory} in  ('ZST') then  'Luna and Smith Ltd'
-            when ${factory} in  ('Lara Fashions') then  'Lara Fashions'
-            when ${factory} in  ('Dongguan Neo-Oct Knitwear Co., Ltd')  then  'Neo Concept'
-            when ${factory} in  ('Zen','Solda','Affinity','Ecomoda','Eccomoda','Violetta','Elegance','Ekemoda','PC Clothing') then  'PC Clothing'
-            when ${factory} in  ('Mode Tekstil','Signature')  then  'Signature'
-            when ${factory} in  ('Stiletto')  then  'Stiletto'
-            when ${factory} in  ('Starpro Ltd') then  'Starpro'
-            when ${factory} in  ('Stanca Aurelia')  then  'Stanca Aurelia'
-            when ${factory} in  ('cn fty','Deqing Perrie Garments Co., Ltd','Twisted Sister Ltd','Twisted Sister')  then  'Twisted Sister Ltd'
-            when ${factory} in  ('Nesan') then  'ZD - Bati Triko'
-            when ${factory} in  ('Bati', 'KARAHAN TEKSTIL') then  'ZD - Karahan Tekstil '
-            when ${factory} in  ('Camilton','Camilton ')  then  'Camilton'
-            when ${factory} in  ('Feetcare','Feetcare ltd') then  'Feetcare'
-            when ${factory} in  ('Heitor')  then  'Heitor'
-            when ${factory} in  ('Humat Spain S.L') then  'Humat Spain S.L'
-            when ${factory} in  ('Michael.com') then  'Michael.com'
-            when ${factory} in  ('R.D.Traders PVT LTD') then  'R.D.Traders PVT LTD'
-            when ${factory} in  ('Vision East') then  'Vision East '
-            when ${factory} in  ('Rhythm London Ltd') then  'Rhythm London Ltd'
-            when ${factory} in  ('Gold Point')  then  'Gold Point'
-            when ${factory} in  ('DNC Jewelry', 'DNC Jewelry ') then  'DNC Jewelry '
-            when ${factory} in  ('KC')  then  'Kc Paul Qingdao Co. Ltd '
-            when ${factory} in  ('H.Gaventa','H.Gaventa ltd') then  'H.Gaventa'
-            when ${factory} in  ('Zhangjiagang Asisancharm Garment Co Ltd') then  'Zhangjiagang Asisancharm Garment Co Ltd'
-            when ${factory} in  ('Gold Point')  then  'Gold Point'
-            when ${factory} in  ('Ardy')  then  'Ardy'
-            when ${factory} in  ('Rise Designs')  then  'Rise Designs'
-            when ${factory} in  ('New Fashion') then  'New Fashion'
-            when ${factory} in  ('J G Belts') then  'J G Belts'
-            else ${factory} end
+       sql: ${factory}
   
      - dimension: selling_price_tiered
        label: Current Price Tier
