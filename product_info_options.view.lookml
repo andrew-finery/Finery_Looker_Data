@@ -164,7 +164,7 @@
           Jumpsuits: ${TABLE}.department = 'Jumpsuits'
           Knitwear: ${TABLE}.department = 'Knitwear'
           Occasion Dresses: ${TABLE}.department = 'Occasion Dresses'
-          Outerwear & Blazers: ${TABLE}.department = 'Outerwear & Blazers'
+          Outerwear & Blazers: ${TABLE}.department = 'Outerwear'
           Shoes: ${TABLE}.department = 'Shoes'
           Skirts: ${TABLE}.department = 'Skirts'
           Trousers & Shorts: ${TABLE}.department = 'Trousers & Shorts'
