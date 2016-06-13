@@ -170,6 +170,7 @@
           Trousers & Shorts: ${TABLE}.department = 'Trousers & Shorts'
           Woven Day Dresses: ${TABLE}.department = 'Woven Day Dresses'
           Woven Tops: ${TABLE}.department = 'Woven Tops'
+          Swimwear: ${TABLE}.department = 'Swimwear'
           else: 'Other'
   
      - dimension: product_area
