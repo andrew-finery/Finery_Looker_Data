@@ -74,7 +74,7 @@
 
   - dimension: conversions_website_clicks
     type: int
-    sql: ${TABLE}.conversions_website_clicks
+    sql: ${TABLE}.website_clicks
     hidden: true
 
   - dimension: connections
