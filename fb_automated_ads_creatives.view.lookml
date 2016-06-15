@@ -74,7 +74,7 @@
     sql: ${TABLE}.price_hkd
     
   - dimension: audience
-    type: number
+    type: string
     sql: ${TABLE}.audience
 
   - measure: count
