@@ -29,11 +29,11 @@
        sql: ${TABLE}.slug
 
      - dimension: option
-       sql: ${TABLE}.style_name  || case when ${TABLE}.colour is null then ' ' else ' - ' ||  ${TABLE}.colour end
+       sql: ${TABLE}.option_name
 
      - dimension: bp_option
        label: BP Option
-       sql: ${TABLE}.bp_name || ' - ' ||  ${TABLE}.bp_colour
+       sql: ${TABLE}.bp_option
 
      - dimension: option_for_returns_report
        label: Option
