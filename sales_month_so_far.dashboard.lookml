@@ -816,3 +816,39 @@
     left: 10
     height: 9
     width: 10
+    
+  - name: basket_size_distrn_items
+    title: Basket Size Distribution (Items) v Previous Month
+    type: looker_line
+    model: finery_data
+    explore: spree_orders
+    dimensions: [calendar_weeks.calendar_date_month, spree_orders.item_count_tier]
+    pivots: [calendar_weeks.calendar_date_month]
+    measures: [spree_orders.orders_perc_of_total]
+    filters:
+      calendar_weeks.calendar_date_date: 1 month ago for 2 months
+    sorts: [calendar_weeks.calendar_date_month desc, spree_orders.item_count_tier]
+    limit: 100
+    column_limit: ''
+    show_view_names: false
+    show_null_points: false
+    interpolation: monotone
+    show_value_labels: false
+    point_style: none
+    colors: [purple, skyblue]
+    x_axis_gridlines: true
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_labels: ["% of Orders"]
+    x_axis_datetime_label: '%a'
+    stacking: ''
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    x_axis_scale: auto
+    top: 50
+    left: 0
+    height: 10
+    width: 20

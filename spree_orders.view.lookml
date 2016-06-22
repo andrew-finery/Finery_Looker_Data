@@ -25,6 +25,16 @@
     type: int
     sql: ${TABLE}.item_count
 
+  - dimension: item_count_tier
+    label: Items in Order Tier
+    sql: |
+          case
+          when ${TABLE}.item_count = 1 then '1'
+          when ${TABLE}.item_count = 2 then '2'
+          when ${TABLE}.item_count = 3 then '3'
+          when ${TABLE}.item_count = 4 then '4'
+          else '5+' end
+
   - dimension: order_code
     label: Order Code
     sql: ${TABLE}.order_code
