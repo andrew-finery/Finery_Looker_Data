@@ -298,6 +298,18 @@
   - dimension: acquisition_channel
     label: Acquisition Channel
     sql: ${TABLE}.acquisition_channel
+
+  - dimension: crm_sub_channel
+    sql: |
+         case
+         when ${acquisition_channel} <> 'CRM' then null
+         when ${TABLE}.email_folder_name = 'Newsletters'
+              or (${TABLE}.email_test_id is not null and ${TABLE}.email_folder_name is null) then 'Newsletters'
+         when ${TABLE}.email_folder_name is not null then ${TABLE}.email_folder_name
+         when ${TABLE}.mkt_medium_ga = 'transactional' then 'Transactional'
+         when ${TABLE}.mkt_campaign_ga like 'om_%' then 'Ometria Campaign'
+         else 'Other'
+         end
   
   - dimension: traffic_source
     label: CRM/Brand/Paid
