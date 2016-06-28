@@ -58,38 +58,69 @@
        value_format: '##0'
 
      - dimension: current_price_usd
-       label: Price (USD)
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.retail_price_usd
        value_format: '##0'
       
      - dimension: current_price_cad
-       label: Price (CAD)
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.retail_price_cad
        value_format: '##0'
 
      - dimension: current_price_aed
-       label: Price (AED)
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.retail_price_aed
        value_format: '##0'
 
      - dimension: current_price_aud
-       label: Price (AUD)
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.retail_price_aud
        value_format: '##0'
 
      - dimension: current_price_hkd
-       label: Price (HKD)
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.retail_price_hkd
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_usd
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_usd
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_cad
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_cad
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_aed
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_aed
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_aud
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_aud
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_sgd
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_sgd
+       value_format: '##0'
+       
+     - dimension: pre_sale_price_hkd
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_hkd
        value_format: '##0'
 
      - dimension: first_price
