@@ -639,7 +639,13 @@
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
     value_format: '#0.00'
-    
+
+  - measure: revenue_per_1k_impressions
+    type: number
+    decimals: 2
+    sql: 1000* ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_product_impressions},0)::REAL
+    value_format: '#0.00'
+
   - measure: sessions_from_new_visitors_count
     label: New Visits Total
     type: count_distinct
