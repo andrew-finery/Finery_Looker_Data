@@ -149,6 +149,17 @@
   - dimension: placement
     sql: ${TABLE}.placement
 
+  - dimension: placement_device
+    sql: |
+         case
+         when ${placement} = 'mobilefeed' then 'Mobile'
+         when ${placement} = 'desktopfeed, rightcolumn' then 'Desktop'
+         when ${placement} = 'mobileexternal, mobilefeed' then 'Mobile'
+         when ${placement} = 'rightcolumn' then 'Desktop'
+         when ${placement} = 'desktopfeed' then 'Desktop'
+         when ${placement} = 'instagramstream' then 'Instagram'
+         else ${placement} end
+
   - dimension: post_id
     sql: ${TABLE}.post_id
 
