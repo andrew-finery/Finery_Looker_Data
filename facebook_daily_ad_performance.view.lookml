@@ -281,8 +281,8 @@
     sql: ${TABLE}.title
 
   - dimension: url
-    label: Creative - Landing Page URL
-    sql: ${TABLE}.url
+    label: Full url
+    sql: ${TABLE}.full_url
 
 
  ######################################################################################################
