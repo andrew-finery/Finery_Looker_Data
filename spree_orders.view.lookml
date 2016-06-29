@@ -1031,7 +1031,7 @@
 
   - measure: return_rate
     type: number
-    sql: ${items_returned}/NULLIF(${total_items},0)::REAL
+    sql: ${sum_items_returned}/NULLIF(${total_items},0)::REAL
     value_format: '#0.00%'
 
   - measure: sum_return_item_total
