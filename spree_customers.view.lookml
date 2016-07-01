@@ -49,6 +49,16 @@
     type: number
     sql: ${TABLE}.number_of_orders
 
+  - dimension: number_of_orders_tier
+    type: number
+    sql: |
+          case
+          when ${TABLE}.number_of_orders = 1 then '1'
+          when ${TABLE}.number_of_orders = 2 then '2'
+          when ${TABLE}.number_of_orders = 3 then '3'
+          when ${TABLE}.number_of_orders = 4 then '4'
+          else '5+' end
+
   - dimension: has_repurchased
     type: yesno
     sql: ${number_of_orders} != 1
