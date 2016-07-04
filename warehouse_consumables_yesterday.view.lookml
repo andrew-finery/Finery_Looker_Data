@@ -26,15 +26,15 @@
     type: string
     sql: ${TABLE}.item_des1
 
-  - dimension: on_hand
+  - measure: on_hand
     type: number
-    sql: ${TABLE}.on_hand
+    sql: sum(${TABLE}.on_hand)
 
-  - dimension: on_ord_qty
+  - measure: on_ord_qty
     type: number
-    sql: ${TABLE}.on_ord_qty
+    sql: sum(${TABLE}.on_ord_qty)
 
-  - dimension: on_rcpt_qty
+  - measure: on_rcpt_qty
     type: number
-    sql: ${TABLE}.on_rcpt_qty
+    sql: sum(${TABLE}.on_rcpt_qty)
 
