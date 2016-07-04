@@ -386,3 +386,5 @@
 - explore: redshift_load_errors
 
 - explore: redshift_snowplow_loads
+
+- explore: warehouse_consumables_yesterday
