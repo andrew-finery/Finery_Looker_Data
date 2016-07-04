@@ -388,3 +388,5 @@
 - explore: redshift_snowplow_loads
 
 - explore: warehouse_consumables_yesterday
+
+- explore: warehouse_stock_yesterday
