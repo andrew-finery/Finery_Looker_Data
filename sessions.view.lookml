@@ -119,7 +119,11 @@
     type: int
     sql: ${TABLE}.product_clicks
     hidden: true
-
+  
+  - dimension: is_existing_customer
+    type: yesno
+    sql: ${TABLE}.customer_at_start_of_visit_flag = 1
+  
   - dimension: product_views
     type: int
     sql: ${TABLE}.product_views
