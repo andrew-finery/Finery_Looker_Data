@@ -116,14 +116,7 @@
           and ${pre_sale_price} > ${price}
 
    - dimension: on_site_flag
-     sql: |
-          case
-          when ${items_sold} > 0 then 'Yes'
-          when ${is_live} is null then 'No'
-          when ${is_live} = false then 'No'
-          when date(${available_on}) > ${calendar_date_date} then 'No'
-          when (${closing_stock} = 0 and ${opening_stock} = 0) then 'No'
-          else 'Yes' end
+     sql: ${TABLE}.product_on_site_flag
 
    - dimension: variants_in_spree
      sql: ${TABLE}.variants_in_spree
@@ -263,14 +256,14 @@
    - measure: go_live_date
      type: string
      label: Go-Live Date
-     sql: min(case when ${product_impressions} < 50 then null else ${calendar_date_date} end)
+     sql: min(case when ${on_site_flag} = 'no' then null else ${calendar_date_date} end)
   
    - measure: options_online
      type: count_distinct
      label: Options Online
      sql: ${product_id}
      filters:
-      product_impressions: '>50'
+      on_site_flag: 'yes'
 
    - measure: revenue_per_1k_impressions
      type: number
@@ -302,11 +295,13 @@
      sql: ${product_id}
      filters:
       calendar_date_date: last week
-      product_impressions: '>50'
+      on_site_flag: 'yes'
+      #product_impressions: '>50'
       
    - measure: options_online_lw
      type: count_distinct
      sql: ${product_id}
      filters:
       calendar_date_date: 2 weeks ago for 1 week
-      product_impressions: '>50'
+      on_site_flag: 'yes'
+      #product_impressions: '>50'
