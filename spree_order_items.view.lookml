@@ -275,35 +275,35 @@
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's too small, It's too large
+      return_reason: It's too small, It's too large, Too large, Too small
 
   - measure: total_items_returned_too_big
     label: Items Returned - Too Big
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's too large
+      return_reason: It's too large, Too large
 
   - measure: total_items_returned_doesnt_suit
     label: Items Returned - Doesn't Suit Me
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It doesn't suit me
+      return_reason: It doesn't suit me, Not right for me - fabric, Not right for me - colour, Not right for me - other
 
   - measure: total_items_returned_too_small
     label: Items Returned - Too Small
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's too small
+      return_reason: It's too small, Too small
 
   - measure: total_items_returned_not_as_pictured_not_as_described
     label: Items Returned - Not as Pictured or Described
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's not as described, It's not as pictured
+      return_reason: It's not as described, It's not as pictured, Not as pictured - fabric, Not as pictured - colour, Not as pictured - length
 
   - measure: total_items_returned_not_as_described
     label: Items Returned - Not as Described
@@ -317,28 +317,29 @@
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's not as pictured
+      return_reason: It's not as pictured, Not as pictured - fabric, Not as pictured - colour, Not as pictured - length
+
 
   - measure: total_items_returned_other
     label: Items Returned - Other Please Specify
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: Other 
+      return_reason: Other, Other - please specify in writing
 
   - measure: total_items_returned_faulty
     label: Items Returned - Faulty
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: It's faulty/in a poor condition
+      return_reason: It's faulty/in a poor condition, Faulty/in a poor condition
 
   - measure: total_items_returned_ordered_more_than_1_size
     label: Items Returned - Ordered > 1 Size
     type: sum
     sql: coalesce(${items_returned}, 0)
     filters:
-      return_reason: I ordered more than one size
+      return_reason: I ordered more than one size, Ordered more than one
       
   - measure: total_items_returned_arrived_late
     label: Items Returned - It Arrived Too Late
@@ -353,6 +354,27 @@
     sql: coalesce(${items_returned}, 0)
     filters:
       return_reason: I received the wrong item or size
+
+  - measure: total_items_returned_too_long_or_short
+    label: Items Returned - Too Long/Short
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: Too long, Too short
+
+  - measure: total_items_returned_too_long
+    label: Items Returned - Too Long
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: Too long
+
+  - measure: total_items_returned_too_short
+    label: Items Returned - Too Short
+    type: sum
+    sql: coalesce(${items_returned}, 0)
+    filters:
+      return_reason: Too short
       
   - measure: items_sold_after_returns
     type: sum
