@@ -478,6 +478,11 @@
     value_format: '#,##0.00'
     hidden: true
 
+  - dimension: restocking_fee
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.restocking_fee/${exchange_rate}
+    value_format: '#,##0.00'
     
 #################################################################################################################################################################################
 ####################################################### MEASURES ################################################################################################################
@@ -610,6 +615,11 @@
     decimals: 4
     sql: ${new_customers_with_discount}/NULLIF(${count_new_customers},0)::REAL
     value_format: '#0.00%'
+   
+  - measure: sum_restocking_fee
+    type: sum
+    sql: ${restocking_fee}
+    value_format: '#,##0.00'
     
 ################################################# GROSS REVENUE MEASURES ##############################################################
 
