@@ -24,10 +24,6 @@
     sql: ${TABLE}.received_quantity
     hidden: true
   
-  - dimension: expected_quantity
-    sql: ${TABLE}.expected_quantity
-    hidden: true
-  
   - dimension: stock_type
     label: Stock Type (Ecom/Wholesale)
     sql: ${TABLE}.stock_type
@@ -40,11 +36,6 @@
     label: Received Quantity
     type: sum
     sql: ${received_quantity}
- 
-  - measure: sum_expected_quantity_quantity
-    label: Expected Quantity
-    type: sum
-    sql: ${expected_quantity}
   
   - measure: received_value_cost
     label: Received Value @ Cost
