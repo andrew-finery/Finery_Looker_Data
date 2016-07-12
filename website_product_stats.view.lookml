@@ -77,10 +77,6 @@
     type: sum
     decimals: 2
     sql: ${gross_revenue_ex_voucher_and_vat}
-    
-  - measure: count_visits
-    type: count_distinct
-    sql: ${domain_userid} || ${domain_sessionidx}
   
   - measure: product_conversion_rate
     type: number
@@ -93,18 +89,6 @@
     decimals: 4
     sql: ${sum_clicks}/NULLIF(${sum_impressions},0)::REAL
     value_format: '0.00%'
-  
-  - measure: product_views_per_visit
-    type: number
-    decimals: 2
-    sql: ${sum_product_views}/NULLIF(${count_visits},0)::REAL
-    value_format: '0.00'
-    
-  - measure: impressions_per_visit
-    type: number
-    decimals: 2
-    sql: ${sum_impressions}/NULLIF(${count_visits},0)::REAL
-    value_format: '0.00'
   
   - measure: revenue_per_1k_impressions
     type: number

@@ -114,7 +114,23 @@
           ${pre_sale_price} is not null
           and ${pre_sale_price} != 0
           and ${pre_sale_price} > ${price}
-
+   
+   - dimension: discount_level_tier
+     sql: |
+          case
+          when ${pre_sale_price} = 0 then '0%'
+          when ${pre_sale_price} is null then '0%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.085 then '0% - 8.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.185 then '08.5% - 18.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.285 then '18.5% - 28.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.385 then '28.5% - 38.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.485 then '38.5% - 48.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.585 then '48.5% - 58.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.685 then '58.5% - 68.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price < 0.785 then '68.5% - 78.5%'
+          when (${pre_sale_price} - ${price})/pre_sale_price >= 0.785 then '78.5% +'
+          else '0%' end
+   
    - dimension: on_site_flag
      sql: ${TABLE}.product_on_site_flag
 

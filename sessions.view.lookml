@@ -112,12 +112,7 @@
 
   - dimension: product_impressions
     type: int
-    sql: ${TABLE}.product_impressions
-    hidden: true
-
-  - dimension: product_clicks
-    type: int
-    sql: ${TABLE}.product_clicks
+    sql: ${TABLE}.category_impressions
     hidden: true
   
   - dimension: is_existing_customer
@@ -643,13 +638,7 @@
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
     value_format: '#0.00'
-
-  - measure: revenue_per_1k_impressions
-    type: number
-    decimals: 2
-    sql: 1000* ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_product_impressions},0)::REAL
-    value_format: '#0.00'
-
+    
   - measure: sessions_from_new_visitors_count
     label: New Visits Total
     type: count_distinct
@@ -774,11 +763,18 @@
     label: Product Impressions Total
     type: sum
     sql: ${product_impressions}
-    
-  - measure: sum_product_clicks
-    label: Product Clicks Total
-    type: sum
-    sql: ${product_clicks}
+
+  - measure: products_impressions_per_visit
+    type: number
+    decimals: 2
+    sql: ${sum_product_impressions}/NULLIF(${count},0)::REAL
+    value_format: '#0.00'    
+  
+  - measure: revenue_per_1k_impressions
+    type: number
+    decimals: 2
+    sql: 1000*${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_product_impressions},0)::REAL
+    value_format: '#0.00'
     
   - measure: sum_product_views
     label: Product Views Total
