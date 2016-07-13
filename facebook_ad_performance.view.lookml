@@ -92,6 +92,7 @@
 
   - dimension: business_name
     type: string
+    hidden: true
     sql: ${TABLE}.business_name
 
   - dimension: button_clicks
@@ -128,18 +129,22 @@
 
   - dimension: complete_registration_facebook_pixel
     type: string
+    hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel
 
   - dimension: complete_registration_facebook_pixel_1_day_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_1_day_after_clicking
 
   - dimension: complete_registration_facebook_pixel_28_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_28_days_after_clicking
 
   - dimension: complete_registration_facebook_pixel_7_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_7_days_after_clicking
 
   - dimension: ctr_all
@@ -156,18 +161,22 @@
 
   - dimension: event_responses
     type: string
+    hidden: true
     sql: ${TABLE}.event_responses
 
   - dimension: event_responses_1_day_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.event_responses_1_day_after_clicking
 
   - dimension: event_responses_28_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.event_responses_28_days_after_clicking
 
   - dimension: event_responses_7_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.event_responses_7_days_after_clicking
 
   - dimension: frequency
@@ -284,18 +293,22 @@
 
   - dimension: page_tab_views
     type: string
+    hidden: true
     sql: ${TABLE}.page_tab_views
 
   - dimension: page_tab_views_1_day_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.page_tab_views_1_day_after_clicking
 
   - dimension: page_tab_views_28_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.page_tab_views_28_days_after_clicking
 
   - dimension: page_tab_views_7_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.page_tab_views_7_days_after_clicking
 
   - dimension: positive_feedback
@@ -408,18 +421,22 @@
 
   - dimension: search_facebook_pixel
     type: string
+    hidden: true
     sql: ${TABLE}.search_facebook_pixel
 
   - dimension: search_facebook_pixel_1_day_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.search_facebook_pixel_1_day_after_clicking
 
   - dimension: search_facebook_pixel_28_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.search_facebook_pixel_28_days_after_clicking
 
   - dimension: search_facebook_pixel_7_days_after_clicking
     type: string
+    hidden: true
     sql: ${TABLE}.search_facebook_pixel_7_days_after_clicking
 
   - dimension: video_views
@@ -473,8 +490,4 @@
   - dimension: website_ctr
     type: string
     sql: ${TABLE}.website_ctr
-
-  - measure: count
-    type: count
-    drill_fields: [campaign_name, advert_set_name, advert_name, business_name]
 
