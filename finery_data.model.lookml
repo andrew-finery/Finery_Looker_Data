@@ -390,3 +390,11 @@
 - explore: warehouse_consumables_yesterday
 
 - explore: warehouse_stock_yesterday
+
+- explore: website_promo_block_click_through_daily
+  label: 'Promo Block Click-Through'
+  description: 'Promo block click-through information by day'
+  joins:
+  - join: spree_promo_block_info
+    sql_on: ${website_promo_block_click_through_daily.promo_block_id} = ${spree_promo_block_info.promo_block_id}
+    relationship: many_to_one  
