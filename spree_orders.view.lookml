@@ -449,7 +449,13 @@
   - dimension: items_returned
     sql:  ${TABLE}.items_returned
     hidden: true
-    
+
+  - dimension: returned_an_item_flag
+    sql: case when ${items_returned} > 0 then 'yes' else 'no' end
+
+  - dimension: all_items_returned_flag
+    sql: case when ${items_returned} = ${item_count} then 'yes' else 'no' end
+
   - dimension: return_item_total
     type: number
     decimals: 2
