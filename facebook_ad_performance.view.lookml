@@ -1,7 +1,36 @@
 - view: facebook_api_ad_performance
   sql_table_name: facebook_data.facebook_ad_performance
   fields:
+  
+  - dimension: audience_segment
+    sql: |
+          case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition'
+          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Retargeting Custom Audience'
+          when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting DPA'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Retargeting Customer Reactivation' end
+          
+  - dimension: acquisition_\_retention
+    sql: |
+          case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
+          when ${TABLE}.campaign_name like '%Retention%' then 'Customer Retention'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Customer Retention' end
+          
+  - dimension: country
+    sql: |
+          case when ${TABLE}.campaign_name like '%UK%' then 'UK'
+          when ${TABLE}.campaign_name like '%USA%' then 'US'
+          when ${TABLE}.campaign_name like '%Ireland%' then 'IE'
+          when ${TABLE}.campaign_name like '%AUS%' then 'AUS' end
+          
+          
+  - dimension: placement
+    sql: |
+          case when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%Desktop%' then 'Desktop'
+          when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
+          when ${TABLE}.advert_set_name like '%RHS%' then 'Righthandside' end
 
+         
+  
   #- dimension: add_payment_info_facebook_pixel
   #  type: string
   #  hidden: true
