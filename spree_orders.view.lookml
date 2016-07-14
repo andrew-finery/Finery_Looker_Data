@@ -63,7 +63,7 @@
     type: string
     sql: case when ${TABLE}.order_sequence_number in (1,2,3,4) then cast(${order_sequence_number} as varchar) else '5+' end
 
-  - dimension: first_order_flag
+  - dimension: new_customer_flag
     type: yesno
     sql: ${order_sequence_tier} = 1
 
@@ -489,6 +489,26 @@
     decimals: 2
     sql:  ${TABLE}.restocking_fee/${exchange_rate}
     value_format: '#,##0.00'
+
+  - dimension: vat_payable_gbp
+    type: number
+    decimals: 2
+    sql:  ((${item_total} - ${discount} - ${amount_refunded} + ${store_credit_refunded} - ${store_credit_used}) / ${exchange_rate}) * (${tax_rate}/(1+${tax_rate}))
+    value_format: '#0.00'
+
+  - dimension: gross_cogs_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.gross_cogs
+    value_format: '#,##0.00'
+    hidden: true
+
+  - dimension: net_cogs_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.net_cogs
+    value_format: '#,##0.00'
+    hidden: true
     
 #################################################################################################################################################################################
 ####################################################### MEASURES ################################################################################################################
@@ -625,6 +645,23 @@
   - measure: sum_restocking_fee
     type: sum
     sql: ${restocking_fee}
+    value_format: '#,##0.00'
+
+  - measure: sum_vat_payable_gbp
+    type: sum
+    sql: ${vat_payable_gbp}
+    value_format: '#,##0.00'
+
+  - measure: sum_gross_cogs_gbp
+    type: sum
+    decimals: 2
+    sql: ${gross_cogs_gbp}
+    value_format: '#,##0.00'
+
+  - measure: sum_net_cogs_gbp
+    type: sum
+    decimals: 2
+    sql: ${net_cogs_gbp}
     value_format: '#,##0.00'
     
 ################################################# GROSS REVENUE MEASURES ##############################################################
@@ -1121,7 +1158,13 @@
     value_format: '#,##0.00'
     filters:
       state: -canceled
-
+ 
+  - measure: sum_net_store_credit_used_gbp
+    label: Net Store Credit Used
+    type: number
+    sql: ${sum_store_credit_used_gbp} - ${sum_store_credit_refunded_gbp}
+    decimals: 2
+    value_format: '#,##0.00'    
 
 ############################################################## NET REVENUE MEASURES (POST RETURNS) #############################################################################################
   
@@ -1293,5 +1336,53 @@
     sql: 1 - ${more_info_required_orders}/nullif(${count_hermes_completed_orders},0)::REAL
     value_format: '#0.00%'
   
-  
- 
+############## UNIT ORDER ECONOMICS
+
+  - measure: gross_revenue_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00'
+    group_label: 'Unit Order Economics'
+
+  - measure: shipping_revenue_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_shipping_total_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00'    
+    group_label: 'Unit Order Economics'
+    
+  - measure: amount_refunded_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_amount_refunded_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00'
+    group_label: 'Unit Order Economics'
+    
+  - measure: net_store_credit_used_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_net_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00' 
+    group_label: 'Unit Order Economics'
+    
+  - measure: vat_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_vat_payable_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00' 
+    group_label: 'Unit Order Economics'
+    
+  - measure: net_cogs_per_order
+    type: number
+    decimals: 2
+    sql: ${sum_net_cogs_gbp}/NULLIF(${count_orders},0)::REAL
+    value_format: '#0.00' 
+    group_label: 'Unit Order Economics'
+    
+  - measure: net_profit_pre_ops_and_marketing
+    type: number
+    decimals: 2
+    sql: ${gross_revenue_per_order} - ${shipping_revenue_per_order} - ${amount_refunded_per_order} - ${net_store_credit_used_per_order} - ${vat_per_order} - ${net_cogs_per_order}
+    value_format: '#0.00'
+    group_label: 'Unit Order Economics'

@@ -116,7 +116,7 @@
     relationship: many_to_one
   - join: order_address_info
     from: spree_addresses
-    sql_on: ${transactions.shipping_address_id} = ${order_address_info.address_id}
+    sql_on: ${transactions.ship_address_id} = ${order_address_info.address_id}
     relationship: many_to_one
     
 #- explore: atomic_events
