@@ -1,7 +1,36 @@
 - view: facebook_api_ad_performance
   sql_table_name: facebook_data.facebook_ad_performance
   fields:
+  
+  - dimension: audience_segment
+    sql: |
+          case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition'
+          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Retargeting Custom Audience'
+          when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting DPA'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Retargeting Customer Reactivation' end
+          
+  - dimension: acquisition_\_retention
+    sql: |
+          case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
+          when ${TABLE}.campaign_name like '%Retention%' then 'Customer Retention'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Customer Retention' end
+          
+  - dimension: country
+    sql: |
+          case when ${TABLE}.campaign_name like '%UK%' then 'UK'
+          when ${TABLE}.campaign_name like '%USA%' then 'US'
+          when ${TABLE}.campaign_name like '%Ireland%' then 'IE'
+          when ${TABLE}.campaign_name like '%AUS%' then 'AUS' end
+          
+          
+  - dimension: placement
+    sql: |
+          case when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%Desktop%' then 'Desktop'
+          when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
+          when ${TABLE}.advert_set_name like '%RHS%' then 'Righthandside' end
 
+         
+  
   #- dimension: add_payment_info_facebook_pixel
   #  type: string
   #  hidden: true
@@ -418,11 +447,12 @@
     type: time
     timeframes: [date, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     convert_tz: false
-    sql: ${TABLE}.reporting_starts
+    sql: cast(${TABLE}.reporting_starts as date)
 
   - dimension: reporting_starts
     type: string
-    sql: ${TABLE}.reporting_starts
+    hidden: true
+    sql: cast(${TABLE}.reporting_starts as date)
 
   #- dimension: search_facebook_pixel
   #  type: string
@@ -667,7 +697,61 @@
   ###################################### 28 days window click ####################################################
 ######################################################################################################
     
-  
+  - measure: 28d_total_action_complete_registration
+    type: sum
+    sql: cast(coalesce(nullif(${complete_registration_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_purchase
+    type: sum
+    sql: cast(coalesce(nullif(${purchase_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_lead
+    type: sum
+    sql: cast(coalesce(nullif(${lead_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_view_content
+    type: sum
+    sql: cast(coalesce(nullif(${view_content_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_add_to_cart
+    type: sum
+    sql: cast(coalesce(nullif(${add_to_basket_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_initate_checkout
+    type: sum
+    sql: cast(coalesce(nullif(${initiate_checkout_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+# CPA's
+
+  - measure: 28d_cpa_complete_registration
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_complete_registration},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_purchase
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_purchase},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_lead
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_lead},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_product_view_content
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_view_content},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 28d_cpa_add_to_cart
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_add_to_cart},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 28d_cpa_initiate_checkout
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_initate_checkout},0) ::REAL
+    value_format: '#,##0.00'
   
   
   
