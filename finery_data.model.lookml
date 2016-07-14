@@ -54,6 +54,7 @@
 #- explore: facebook_daily_ad_performance
 
 - explore: facebook_api_ad_performance
+- explore: facebook_api_ad_performance_breakdown
 
 
 - explore: fb_automated_ads_creatives
