@@ -9,7 +9,7 @@
           when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting DPA'
           when ${TABLE}.campaign_name like '%Reactivation%' then 'Retargeting Customer Reactivation' end
           
-  - dimension: acquisition_\_retention
+  - dimension: buyers_vs_nonbuyers
     sql: |
           case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
           when ${TABLE}.campaign_name like '%Retention%' then 'Customer Retention'
