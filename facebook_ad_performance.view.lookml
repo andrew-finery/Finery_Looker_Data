@@ -418,11 +418,12 @@
     type: time
     timeframes: [date, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     convert_tz: false
-    sql: ${TABLE}.reporting_starts
+    sql: cast(${TABLE}.reporting_starts as date)
 
   - dimension: reporting_starts
     type: string
-    sql: ${TABLE}.reporting_starts
+    hidden: true
+    sql: cast(${TABLE}.reporting_starts as date)
 
   #- dimension: search_facebook_pixel
   #  type: string
@@ -667,7 +668,61 @@
   ###################################### 28 days window click ####################################################
 ######################################################################################################
     
-  
+  - measure: 28d_total_action_complete_registration
+    type: sum
+    sql: cast(coalesce(nullif(${complete_registration_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_purchase
+    type: sum
+    sql: cast(coalesce(nullif(${purchase_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_lead
+    type: sum
+    sql: cast(coalesce(nullif(${lead_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_view_content
+    type: sum
+    sql: cast(coalesce(nullif(${view_content_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_add_to_cart
+    type: sum
+    sql: cast(coalesce(nullif(${add_to_basket_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+  - measure: 28d_total_action_initate_checkout
+    type: sum
+    sql: cast(coalesce(nullif(${initiate_checkout_facebook_pixel_28_days_after_clicking}, ''),'0') as integer)
+
+# CPA's
+
+  - measure: 28d_cpa_complete_registration
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_complete_registration},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_purchase
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_purchase},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_lead
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_lead},0) ::REAL
+    value_format: '#,##0.00'
+
+  - measure: 28d_cpa_product_view_content
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_view_content},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 28d_cpa_add_to_cart
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_add_to_cart},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 28d_cpa_initiate_checkout
+    type: number
+    sql: ${total_spend}/ NULLIF(${28d_total_action_initate_checkout},0) ::REAL
+    value_format: '#,##0.00'
   
   
   
