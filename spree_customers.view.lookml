@@ -42,6 +42,17 @@
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
 
+  - dimension: first_order_gross_revenue
+    type: number
+    decimals: 2
+    sql: ${TABLE}.first_order_gross_revenue
+
+  - dimension: first_order_gross_revenue_tier
+    type: tier
+    sql: ${first_order_gross_revenue}
+    tiers: [0,25,50,75,100,150,200,300]
+    style: integer
+
 # Second Order Info  
   - dimension_group: second_order
     type: time
