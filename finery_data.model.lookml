@@ -335,6 +335,11 @@
     from: mc_campaigns
     sql_on: ${email_campaign_tests.campaign_id} = ${email_campaigns.campaign_id}
     relationship: many_to_one
+  - join: customer_info
+    from: spree_customers
+    sql_on: lower(${customer_info.email}) = lower(${mc_campaign_member_activity.email_address})
+    relationship: many_to_one
+
 
 - explore: mc_campaigns
   label:  'Mailchimp Campaigns'

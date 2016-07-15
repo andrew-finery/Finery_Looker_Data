@@ -26,6 +26,19 @@
     type: yesno
     sql: ${first_order_promotion} is not null
 
+  - dimension: first_order_store_credit
+    type: number
+    decimals: 2
+    sql: ${TABLE}.first_order_store_credit
+
+  - dimension: first_order_store_credit_flag
+    type: yesno
+    sql: ${first_order_store_credit} > 0
+
+  - dimension: first_order_promotion_or_store_credit_flag
+    type: yesno
+    sql: ${first_order_store_credit} > 0 or ${first_order_promotion} is not null
+    
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
 
@@ -45,12 +58,31 @@
     type: yesno
     sql: ${second_order_promotion} is not null
 
+  - dimension: second_order_store_credit
+    type: number
+    decimals: 2
+    sql: ${TABLE}.second_order_store_credit
+
+  - dimension: second_order_store_credit_flag
+    type: yesno
+    sql: ${second_order_store_credit} > 0
+
+  - dimension: second_order_promotion_or_store_credit_flag
+    type: yesno
+    sql: ${second_order_store_credit} > 0 or ${second_order_promotion} is not null
+
   - dimension: second_order_currency
     sql: ${TABLE}.second_order_currency
 
   - dimension: days_between_first_and_second_order
     type: int
     sql: ${second_order_date} - ${first_order_date}
+
+  - dimension: days_between_first_and_second_order_tier
+    type: tier
+    sql: ${days_between_first_and_second_order}
+    tiers: [0,30,60,90,120,150,180]
+    style: integer
 
 # Last Order Info
   - dimension_group: last_order
@@ -73,15 +105,11 @@
     sql: ${TABLE}.number_of_orders
 
   - dimension: number_of_orders_tier
-    type: number
-    sql: |
-          case
-          when ${TABLE}.number_of_orders = 1 then '1'
-          when ${TABLE}.number_of_orders = 2 then '2'
-          when ${TABLE}.number_of_orders = 3 then '3'
-          when ${TABLE}.number_of_orders = 4 then '4'
-          else '5+' end
-
+    type: tier
+    sql: ${number_of_orders}
+    tiers: [0,1,2,3,4,5]
+    style: integer
+    
   - dimension: has_repurchased
     type: yesno
     sql: ${number_of_orders} != 1
@@ -244,6 +272,10 @@
     type: number
     sql: ${sum_discounted_orders}/NULLIF(${sum_orders},0)::REAL
     value_format: '#0.00'   
+
+  - measure: average_days_between_first_and_second_order
+    type: average
+    sql: ${days_between_first_and_second_order}
 
 # items info
   - measure: total_items_purchased
