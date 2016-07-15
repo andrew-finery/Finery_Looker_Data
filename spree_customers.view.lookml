@@ -29,6 +29,29 @@
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
 
+# Second Order Info  
+  - dimension_group: second_order
+    type: time
+    timeframes: [time, date, week, week_of_year, month, year]
+    sql: ${TABLE}.second_order_time
+
+  - dimension_group: second_order_id
+    sql: ${TABLE}.second_order_id
+
+  - dimension: second_order_promotion
+    sql: ${TABLE}.second_order_promotion
+
+  - dimension: is_discounted_second_order
+    type: yesno
+    sql: ${second_order_promotion} is not null
+
+  - dimension: second_order_currency
+    sql: ${TABLE}.second_order_currency
+
+  - dimension: days_between_first_and_second_order
+    type: int
+    sql: ${second_order_date} - ${first_order_date}
+
 # Last Order Info
   - dimension_group: last_order
     type: time
@@ -138,6 +161,44 @@
     type: number
     decimals: 2
     sql: ${total_gross_revenue_ex_discount_ex_shipping} - ${total_refunded}
+
+  - dimension: total_gross_cogs_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_gross_cogs_gbp
+    hidden: true
+
+  - dimension: total_net_cogs_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_net_cogs_gbp
+    hidden: true
+
+  - dimension: total_gross_revenue_ex_discount_gbp
+    label: CLV (gross) inc. vat, shipping
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_gross_revenue_ex_discount_gbp
+
+  - dimension: total_net_store_credit_used_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_net_store_credit_used_gbp
+
+  - dimension: total_vat_gbp
+    type: number
+    decimals: 2
+    sql: ${TABLE}.total_vat_gbp
+
+  - dimension: net_profit_pre_ops_and_markeing
+    type: number
+    decimals: 2
+    sql: ${TABLE}.net_profit_pre_ops_and_markeing
+
+  - dimension: top_customer_flag
+    description: 'Definition of Top Customer: >£75 Lifetime Net Profit pre Ops/Marketing'
+    type: yesno
+    sql: ${TABLE}.top_customer_flag = 'Yes'
 
 ################################################################################################################    
   ############################################ Measures ##########################################################
@@ -257,6 +318,12 @@
     sql: ${sum_gross_revenue} - ${sum_amount_refunded}
     value_format: '#,##0.00'
 
+  - measure: sum_net_profit_pre_ops_and_markeing
+    type: sum
+    decimals: 2
+    sql: ${net_profit_pre_ops_and_markeing}
+    value_format: '#,##0.00'
+    
 # avg revenue info
   - measure: avg_basket_gross
     type: number
