@@ -119,6 +119,10 @@
     from: spree_addresses
     sql_on: ${transactions.ship_address_id} = ${order_address_info.address_id}
     relationship: many_to_one
+  - join: customer_info
+    from: spree_customers
+    sql_on: ${customer_info.email} = ${transactions.blended_email}
+    relationship: many_to_one
     
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
