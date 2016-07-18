@@ -214,52 +214,163 @@
     type: looker_column
     model: finery_data
     explore: sessions
-    dimensions: [sessions.start_month, session_start_calendar.calendar_date_day_of_month]
-    pivots: [session_start_calendar.calendar_date_day_of_month]
-    measures: [sessions.count_running_total]
-    dynamic_fields:
-    - table_calculation: calculation_2
-      label: Calculation 2
-      expression: if(${session_start_calendar.calendar_date_day_of_month} = (extract_days(now()) - 1), ${sessions.count_running_total}, null)
-    hidden_fields: [sessions.count_running_total]
+    dimensions: [session_start_calendar.calendar_date_month]
+    measures: [sessions.count]
     filters:
-      session_start_calendar.calendar_date_date: before today
-      session_start_calendar.calendar_date_week: 2 months
-    sorts: [sessions.start_month, session_start_calendar.calendar_date_day_of_month]
+      session_start_calendar.calendar_date_month: 2 months
+    sorts: [session_start_calendar.calendar_date_month desc]
     limit: 500
-    column_limit: 50
     stacking: ''
     colors: ['#62bad4', '#a9c574', '#929292', '#9fdee0', '#1f3e5a', '#90c8ae', '#92818d',
       '#c5c6a6', '#82c2ca', '#cee0a0', '#928fb4', '#9fc190']
     show_value_labels: true
     label_density: '25'
     label_color: [red]
-    font_size: 12px
-    hide_legend: true
+    font_size: 20px
+    legend_position: center
     x_axis_gridlines: false
     y_axis_gridlines: true
-    show_view_names: false
+    show_view_names: true
     limit_displayed_rows: false
     y_axis_combined: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_labels: [Visits]
     y_axis_tick_density: default
-    y_axis_value_format: '#, "k"'
+    y_axis_value_format: 0, "k"
     show_x_axis_label: true
     x_axis_label: Month
     show_x_axis_ticks: true
-    x_axis_datetime_tick_count: 1
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    label_value_format: '#, "k"'
-    label_rotation: 0
+    label_value_format: 0, "k"
     show_null_labels: false
-    show_dropoff: false
     height: 4
     width: 6
     top: 18
     left: 0
+
+  - name: orders_month_on_month_so_far
+    title: Orders - Month on Month (so far)
+    type: looker_column
+    model: finery_data
+    explore: spree_orders
+    dimensions: [calendar_weeks.calendar_date_month]
+    measures: [spree_orders.count_orders]
+    filters:
+      calendar_weeks.calendar_date_month: 2 months
+    sorts: [calendar_weeks.calendar_date_month desc]
+    limit: 500
+    stacking: ''
+    colors: ['#F16358', '#E0635E', '#D06464', '#BF656B', '#AF6671', '#9F6777', '#8E687E',
+      '#7E6984', '#6E6A8A', '#5D6B91', '#4D6C97', '#3D6D9E']
+    show_value_labels: true
+    label_density: 25
+    label_color: [red]
+    font_size: 20px
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_labels: [Orders]
+    y_axis_tick_density: default
+    y_axis_value_format: 0.0, "k"
+    show_x_axis_label: true
+    x_axis_label: Month
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    show_null_labels: false
+    height: 4
+    width: 6
+    top: 18
+    left: 6
+
+  - name: cr_month_on_month_so_far
+    title: Conversion Rate - Month on Month (so far)
+    type: looker_column
+    model: finery_data
+    explore: sessions
+    dimensions: [session_start_calendar.calendar_date_month]
+    measures: [sessions.conversion_rate]
+    filters:
+      session_start_calendar.calendar_date_month: 2 months
+    sorts: [session_start_calendar.calendar_date_month desc]
+    limit: 500
+    stacking: ''
+    colors: ['#8d4074', '#a15e8a', '#b57ba0', '#c899b7', '#dcb7cf', '#efd7e7', '#e0e9cc',
+      '#bcd0a6', '#97b780', '#749e5b', '#508637', '#286f0f']
+    show_value_labels: true
+    label_density: 25
+    label_color: [red]
+    font_size: 20px
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_labels: [Visits]
+    y_axis_tick_density: default
+    y_axis_value_format: 0.0%
+    show_x_axis_label: true
+    x_axis_label: Month
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    label_value_format: 0.0%
+    show_null_labels: false
+    height: 4
+    width: 6
+    top: 22
+    left: 0
+
+  - name: basket_size_month_on_month_so_far
+    title: Basket Size - Month on Month (so far)
+    type: looker_column
+    model: finery_data
+    explore: spree_orders
+    dimensions: [calendar_weeks.calendar_date_month]
+    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
+    filters:
+      calendar_weeks.calendar_date_month: 2 months
+    sorts: [calendar_weeks.calendar_date_month desc]
+    limit: 500
+    stacking: ''
+    colors: ['#7FCDAE', '#7ED09C', '#7DD389', '#85D67C', '#9AD97B', '#B1DB7A', '#CADF79',
+      '#E2DF78', '#E5C877', '#E7AF75', '#EB9474', '#EE7772']
+    show_value_labels: true
+    label_density: 25
+    label_color: [red]
+    font_size: 20px
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_labels: [Basket Size]
+    y_axis_tick_density: default
+    y_axis_value_format: '"£"#'
+    show_x_axis_label: true
+    x_axis_label: Month
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    label_value_format: '"£"0'
+    show_null_labels: false
+    height: 4
+    width: 6
+    top: 22
+    left: 6
     
 #### Slide 4
   - name: running_total_revenue_mom
