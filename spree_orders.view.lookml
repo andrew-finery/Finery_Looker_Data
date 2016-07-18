@@ -532,6 +532,46 @@
     sql:  ${TABLE}.net_cogs
     value_format: '#,##0.00'
     hidden: true
+ 
+  - dimension: retail_markdown_gbp
+    type: number
+    decimals: 2
+    sql:  ${TABLE}.retail_markdown_gbp
+    value_format: '#,##0.00'
+    hidden: true
+  
+  - dimension: gross_revenue_pre_retail_markdown
+    type: number
+    decimals: 2
+    sql: (${item_total}/${exchange_rate}) + ${retail_markdown_gbp}
+    
+  - dimension: total_discount_retail_md_voucher
+    type: number
+    decimals: 2
+    sql: ${retail_markdown_gbp} + (${discount}/${exchange_rate})
+    
+  - dimension: total_discount_retail_md_voucher_store_credit
+    type: number
+    decimals: 2
+    sql: ${retail_markdown_gbp} + ((${discount} + ${store_credit_used})/${exchange_rate})
+  
+  - dimension: order_contains_markdown
+    type: yesno
+    sql: ${total_discount_retail_md_voucher_store_credit} > 0
+
+  - dimension: retail_markdown_tier
+    type: tier
+    sql: ${retail_markdown_gbp}/NULLIF(${gross_revenue_pre_retail_markdown},0)::REAL
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8]
+    style: relational
+    value_format: '0%'
+    
+  - dimension: total_discount_tier
+    type: tier
+    sql: ${total_discount_retail_md_voucher_store_credit}/NULLIF(${gross_revenue_pre_retail_markdown},0)::REAL
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8]
+    style: relational
+    value_format: '0%'
     
 #################################################################################################################################################################################
 ####################################################### MEASURES ################################################################################################################
@@ -687,6 +727,14 @@
     sql: ${net_cogs_gbp}
     value_format: '#,##0.00'
     
+  - measure: sum_retail_markdown
+    type: sum
+    sql: ${retail_markdown_gbp}
+  
+  - measure: sum_total_discount_retail_md_voucher_store_credit
+    type: sum
+    sql: ${total_discount_retail_md_voucher_store_credit}
+      
 ################################################# GROSS REVENUE MEASURES ##############################################################
 
   - measure: sum_gross_revenue
