@@ -458,8 +458,21 @@
 ####################### Returns Dimensions ##########################################################################
 
   - dimension: items_returned
-    sql:  ${TABLE}.items_returned
-
+    type: int
+    sql:  cast(coalesce(${TABLE}.items_returned, '0') as integer)
+ 
+  - dimension: return_rate_order
+    label: Return Rate
+    type: number
+    sql: ${items_returned}/NULLIF(${item_count},0)::REAL
+    
+  - dimension: return_rate_tier
+    type: tier
+    sql: ${return_rate_order}
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+    style: relational
+    value_format: '0%'
+    
   - dimension: returned_an_item_flag
     sql: case when ${items_returned} > 0 then 'yes' else 'no' end
 
@@ -568,7 +581,7 @@
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
-      items_returned: -0, -NULL
+      items_returned: -0
  
   - measure: orders_with_discount
     label: Orders with Discount
