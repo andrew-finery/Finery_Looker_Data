@@ -430,6 +430,17 @@
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
 
+  - dimension: average_selling_price
+    type: number
+    sql: ((${item_total} -${discount} ) / ${exchange_rate})/${item_count}
+
+  - dimension: average_selling_price_tier
+    type: tier
+    tiers: [0,10,20,30,40,50,60,70,80,90,100]
+    sql: ${average_selling_price}
+    style: integer
+    value_format: '"£"#0'
+
   - dimension: primary_promotion
     label: Promotion
     sql: ${TABLE}.promotion
