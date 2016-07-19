@@ -414,4 +414,19 @@
   joins:
   - join: spree_promo_block_info
     sql_on: ${website_promo_block_click_through_daily.promo_block_id} = ${spree_promo_block_info.promo_block_id}
-    relationship: many_to_one  
+    relationship: many_to_one
+
+- explore: website_leads
+  joins:
+  - join: website_visitors
+    from: visitors
+    sql_on: lower(${website_leads.email_address}) = lower(${website_visitors.blended_user_id})
+    relationship: one_to_one
+  - join: customer_info
+    from: spree_customers
+    sql_on: lower(${customer_info.email}) = lower(${website_leads.email_address})
+    relationship: one_to_one
+  - join: newsletter_subscriber_info
+    from: mc_newsletter_subscribers
+    sql_on: lower(${newsletter_subscriber_info.email_address}) = lower(${website_leads.email_address})
+    relationship: many_to_one

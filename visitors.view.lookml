@@ -40,7 +40,11 @@
     type: tier
     tiers: [1,2,5,10,25,50,100,1000]
     sql: ${number_of_visits}
-
+  
+  - dimension: visits_after_first_purchase
+    type: int
+    sql: ${TABLE}.visits_after_first_purchase
+  
   # Landing page dimensions #
   
   - dimension: landing_page_url_host
@@ -121,6 +125,13 @@
     type: number
     decimals: 2
     sql: ${total_visits}/NULLIF(${total_visitors},0)::REAL
-    
+
+  - dimension: total_visits_after_first_purchase
+    type: sum
+    sql: ${visits_after_first_purchase}
+
+  - dimension: avg_after_first_purchase
+    type: average
+    sql: ${visits_after_first_purchase}
 
     
