@@ -272,3 +272,28 @@
     height: 4
     top: 4
     left: 4
+    
+  - name: add_a_unique_name_1468935771926
+    title: FB Tracket
+    type: table
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_week]
+    pivots: [facebook_api_ad_performance.audience_segment]
+    measures: [facebook_api_ad_performance.total_spend,
+      facebook_api_ad_performance.1d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase,
+      facebook_api_ad_performance.7d_cpa_purchase,
+      facebook_api_ad_performance.7d_total_action_purchase,
+      facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.28d_total_action_purchase]
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+    sorts: [facebook_api_ad_performance.calendar_week]
+    limit: 500
+    show_view_names: true
+    table_theme: editable
+    width: 12
+    height: 4
+    top: 8
+    left: 0
