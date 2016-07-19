@@ -5,11 +5,18 @@
 
 
   filters:
-  - name: country
-    title: "Country"
+  - name: facebook_country
+    title: "Facebook Country"
     type: field_filter
     explore: facebook_api_ad_performance
-    field: country
+    field: facebook_api_ad_performance.country
+    default_value:
+  
+  - name: sessions_country
+    title: "Sessions Country"
+    type: field_filter
+    explore: sessions
+    field: sessions.geography_country
     default_value:
 
   elements:
@@ -23,6 +30,8 @@
     measures: [facebook_api_ad_performance.total_spend]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -57,6 +66,8 @@
     measures: [facebook_api_ad_performance.total_impressions]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -91,6 +102,8 @@
     measures: [facebook_api_ad_performance.total_clicks]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -125,6 +138,8 @@
     measures: [facebook_api_ad_performance.cost_per_mille]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -162,6 +177,8 @@
     measures: [facebook_api_ad_performance.cost_per_click]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -199,6 +216,8 @@
     measures: [facebook_api_ad_performance.click_through_rate]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -237,6 +256,8 @@
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
       sessions.acquisition_channel: Facebook - Paid Marketing
+    listen: 
+      sessions_country: sessions.geography_country
     sorts: [session_start_calendar.calendar_date_date]
     limit: 500
     stacking: ''
@@ -279,6 +300,8 @@
       facebook_api_ad_performance.1d_cpa_purchase, facebook_api_ad_performance.7d_total_action_purchase,
       facebook_api_ad_performance.7d_cpa_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_week]
     limit: 500
     show_view_names: true
