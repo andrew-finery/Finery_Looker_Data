@@ -109,7 +109,10 @@
 
   - dimension: last_order_currency
     sql: ${TABLE}.last_order_currency
-
+  
+  - dimension: days_since_last_order
+    sql: current_date - ${last_order_date}
+  
 # General Info
   - dimension: number_of_orders
     type: number
