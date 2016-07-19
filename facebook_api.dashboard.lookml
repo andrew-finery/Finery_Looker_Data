@@ -3,7 +3,14 @@
   layout: static
   tile_size: 100
 
-#  filters:
+
+  filters:
+  - name: country
+    title: "Country"
+    type: field_filter
+    explore: facebook_api_ad_performance
+    field: country
+    default_value:
 
   elements:
   
