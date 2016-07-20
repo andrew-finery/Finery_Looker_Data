@@ -518,5 +518,83 @@
     height: 4
     top: 12
     left: 0
+    
+  - name: avg_relevance_score
+    title: Avg Relevance Score
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance_breakdown
+    dimensions: [facebook_api_ad_performance_breakdown.calendar_date]
+    pivots: [facebook_api_ad_performance_breakdown.placement_general]
+    measures: [facebook_api_ad_performance_breakdown.avg_relevance_score]
+    filters:
+      facebook_api_ad_performance_breakdown.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance_breakdown.avg_relevance_score desc]
+    limit: 500
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    y_axis_min: ['5']
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    width: 6
+    height: 4
+    top: 20
+    left: 0
+    
+  - name: avg_frequency
+    title: Avg Frequency
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance_breakdown
+    dimensions: [facebook_api_ad_performance_breakdown.calendar_date]
+    pivots: [facebook_api_ad_performance_breakdown.placement_general]
+    measures: [facebook_api_ad_performance_breakdown.avg_frequency]
+    filters:
+      facebook_api_ad_performance_breakdown.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance_breakdown.avg_frequency desc]
+    limit: 500
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    y_axis_min: ['1']
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    width: 6
+    height: 4
+    top: 20
+    left: 6
+    
+  
 
     
