@@ -581,11 +581,13 @@
   - measure: imp_times_relevance_score
     label: imp_times_rel
     type: number
+    hidden: true
     sql: sum(${impressions} * (case when relevance_score ='' then '0' else relevance_score end))
     
   - measure: total_imp_with_relevance_score
     label: total_imp_with_relevance_score
     type: number
+    hidden: true
     sql: sum(case when relevance_score ='' then '0' else ${impressions} end)
 
   - measure: avg_relevance_score

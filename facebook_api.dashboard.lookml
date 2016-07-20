@@ -290,15 +290,14 @@
     top: 7
     left: 0
     
-  - name: add_a_unique_name_1468935771926
-    title: Untitled Table
+  - name: fb_tracker
+    title: FB Tracker
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_total_action_purchase,
-      facebook_api_ad_performance.1d_cpa_purchase, facebook_api_ad_performance.7d_total_action_purchase,
-      facebook_api_ad_performance.7d_cpa_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.1d_cpa_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     listen: 
       facebook_country: facebook_api_ad_performance.country
@@ -310,6 +309,81 @@
     height: 4
     top: 7
     left: 6
+    
+  - name: avg_relevance_score
+    title: Avg Relevance Score
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.avg_relevance_score]
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance.avg_relevance_score desc]
+    limit: 500
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    y_axis_min: ['5']
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    width: 6
+    height: 4
+    top: 11
+    left: 0
+    
+  - name: avg_frequency
+    title: Avg Frequency
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.avg_frequency]
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance.avg_frequency desc]
+    limit: 500
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    y_axis_min: ['1']
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    width: 6
+    height: 4
+    top: 11
+    left: 6
+
 
 
 
