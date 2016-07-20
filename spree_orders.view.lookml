@@ -430,6 +430,11 @@
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
 
+  - dimension: basket_size_tier_50_gbp
+    type: tier
+    tiers: [50,100,150,200]
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
+
   - dimension: average_selling_price
     type: number
     sql: ((${item_total} -${discount} ) / ${exchange_rate})/${item_count}
@@ -441,6 +446,13 @@
     style: integer
     value_format: '"£"#0'
 
+  - dimension: average_selling_price_tier_20_gbp
+    type: tier
+    tiers: [20,40,60,80,100]
+    sql: ${average_selling_price}
+    style: integer
+    value_format: '"£"#0'
+    
   - dimension: primary_promotion
     label: Promotion
     sql: ${TABLE}.promotion

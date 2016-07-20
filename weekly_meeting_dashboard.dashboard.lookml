@@ -1,5 +1,5 @@
-- dashboard: weekly_kpi_dashboard_2
-  title: Weekly Kpi Dashboard 2
+- dashboard: weekly_meeting_dashboard
+  title: Weekly Meeting Dashboard
   layout: static
   tile_size: 100
 
@@ -218,6 +218,7 @@
     measures: [sessions.count]
     filters:
       session_start_calendar.calendar_date_month: 2 months
+    filter_expression: ${session_start_calendar.calendar_date_day_of_month} < extract_days(now())
     sorts: [session_start_calendar.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -259,6 +260,7 @@
     measures: [spree_orders.count_orders]
     filters:
       calendar_weeks.calendar_date_month: 2 months
+    filter_expression: ${spree_orders.completed_day_of_month} < extract_days(now())
     sorts: [calendar_weeks.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -299,6 +301,7 @@
     measures: [sessions.conversion_rate]
     filters:
       session_start_calendar.calendar_date_month: 2 months
+    filter_expression: ${session_start_calendar.calendar_date_day_of_month} < extract_days(now())
     sorts: [session_start_calendar.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -340,6 +343,7 @@
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       calendar_weeks.calendar_date_month: 2 months
+    filter_expression: ${spree_orders.completed_day_of_month} < extract_days(now())
     sorts: [calendar_weeks.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -380,7 +384,14 @@
     explore: spree_orders
     dimensions: [calendar_weeks.calendar_date_month, spree_orders.completed_day_of_month]
     pivots: [calendar_weeks.calendar_date_month]
-    measures: [spree_orders.revenue_running_total]
+    measures: [spree_orders.sum_gross_revenue_ex_discount_in_gbp]
+    dynamic_fields:
+    - table_calculation: calculation_3
+      label: Calculation 3
+      expression: if(is_null(${spree_orders.sum_gross_revenue_ex_discount_in_gbp}), null, running_total(${spree_orders.sum_gross_revenue_ex_discount_in_gbp}))
+      value_format_name: gbp_0
+    hidden_fields: [spree_orders.sum_gross_revenue_ex_discount_in_gbp, calculation_2,
+      calculation_1]
     filters:
       calendar_weeks.calendar_date_date: 1 month ago for 2 months
       spree_orders.completed_date: before 0 days ago

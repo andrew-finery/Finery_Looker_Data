@@ -22,6 +22,26 @@
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.last_touch
+  
+  - dimension: days_since_last_visit
+    type: int
+    sql: ${last_touch_date} - ${first_touch_date}
+  
+  - dimension: has_visited_in_last_90_days
+    type: yesno
+    sql: ${days_since_last_visit} < 91
+
+  - dimension: has_visited_in_last_60_days
+    type: yesno
+    sql: ${days_since_last_visit} < 61
+
+  - dimension: has_visited_in_last_30_days
+    type: yesno
+    sql: ${days_since_last_visit} < 31
+
+  - dimension: has_visited_in_last_7_days
+    type: yesno
+    sql: ${days_since_last_visit} < 8
     
   - dimension: events_during_lifetime
     type: int
@@ -107,7 +127,31 @@
   - measure: total_visitors
     type: count_distinct
     sql: ${blended_user_id}
-    
+
+  - measure: total_visitors_last_90d
+    type: count_distinct
+    sql: ${blended_user_id}
+    filters: 
+      has_visited_in_last_90_days: yes
+
+  - measure: total_visitors_last_60d
+    type: count_distinct
+    sql: ${blended_user_id}
+    filters: 
+      has_visited_in_last_60_days: yes
+      
+  - measure: total_visitors_last_30d
+    type: count_distinct
+    sql: ${blended_user_id}
+    filters: 
+      has_visited_in_last_30_days: yes
+
+  - measure: total_visitors_last_7d
+    type: count_distinct
+    sql: ${blended_user_id}
+    filters: 
+      has_visited_in_last_7_days: yes
+
   - measure: total_events
     type: sum
     sql: ${events_during_lifetime}
