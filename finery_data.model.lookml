@@ -179,9 +179,13 @@
   - join: spree_customers
     sql_on: spree_customers.email = spree_orders.blended_email
     relationship: many_to_one
+  - join: visitors
+    sql_on: ${spree_customers.email} = ${visitors.email_address}
+    relationship: many_to_one
   - join: all_referrals
     sql_on: spree_orders.blended_email = all_referrals.email
     relationship: many_to_one
+
 
 - explore: spree_order_items
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
@@ -192,6 +196,9 @@
     relationship: many_to_one
   - join: spree_customers
     sql_on: spree_customers.email = spree_orders.blended_email
+    relationship: many_to_one
+  - join: visitors
+    sql_on: ${spree_customers.email} = ${visitors.email_address}
     relationship: many_to_one
   - join: spree_users
     sql_on: spree_orders.customer_id = spree_users.user_id

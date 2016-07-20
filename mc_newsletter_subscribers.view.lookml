@@ -173,20 +173,16 @@
     value_format: '0%'
     group_label: 'Engagement 90d'
      
-  - dimension: member_open_rate_tier_90d
-    type: tier
-    sql: ${member_open_rate_90d}
+  - dimension: has_opened_email_90d
+    type: yesno
+    sql: ${total_campaign_opens_90d} > 0
     group_label: 'Engagement 90d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
-     
-  - dimension: member_click_rate_tier_90d
-    type: tier
-    sql: ${member_click_rate_90d}
+    
+  - dimension: has_clicked_email_90d
+    type: yesno
+    sql: ${total_campaign_clicks_90d} > 0
     group_label: 'Engagement 90d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5]
-   
+    
 ## Engagement Metrics 60d
 
   - dimension: total_campaigns_sent_60d
@@ -222,20 +218,16 @@
     value_format: '0%'
     group_label: 'Engagement 60d'
      
-  - dimension: member_open_rate_tier_60d
-    type: tier
-    sql: ${member_open_rate_60d}
+  - dimension: has_opened_email_60d
+    type: yesno
+    sql: ${total_campaign_opens_60d} > 0
     group_label: 'Engagement 60d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
-     
-  - dimension: member_click_rate_tier_60d
-    type: tier
-    sql: ${member_click_rate_60d}
+    
+  - dimension: has_clicked_email_60d
+    type: yesno
+    sql: ${total_campaign_clicks_60d} > 0
     group_label: 'Engagement 60d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5]
-
+    
 ## Engagement Metrics 30d
 
   - dimension: total_campaigns_sent_30d
@@ -271,19 +263,16 @@
     value_format: '0%'
     group_label: 'Engagement 30d'
      
-  - dimension: member_open_rate_tier_30d
-    type: tier
-    sql: ${member_open_rate_30d}
+  - dimension: has_opened_email_30d
+    type: yesno
+    sql: ${total_campaign_opens_30d} > 0
     group_label: 'Engagement 30d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+    
+  - dimension: has_clicked_email_30d
+    type: yesno
+    sql: ${total_campaign_clicks_30d} > 0
+    group_label: 'Engagement 30d'
      
-  - dimension: member_click_rate_tier_30d
-    type: tier
-    sql: ${member_click_rate_30d}
-    group_label: 'Engagement 30d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5]    
 
 ## Engagement Metrics 7d
 
@@ -320,19 +309,16 @@
     value_format: '0%'
     group_label: 'Engagement 7d'
      
-  - dimension: member_open_rate_tier_7d
-    type: tier
-    sql: ${member_open_rate_7d}
+  - dimension: has_opened_email_7d
+    type: yesno
+    sql: ${total_campaign_opens_7d} > 0
     group_label: 'Engagement 7d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
-     
-  - dimension: member_click_rate_tier_7d
-    type: tier
-    sql: ${member_click_rate_7d}
+    
+  - dimension: has_clicked_email_7d
+    type: yesno
+    sql: ${total_campaign_clicks_7d} > 0
     group_label: 'Engagement 7d'
-    style: relational
-    tiers: [0,0.1,0.2,0.3,0.4,0.5]
+    
 
   - dimension: engagement_status
     sql: |
@@ -381,3 +367,51 @@
     decimals: 4
     sql: ${unique_cleaned_emails}/NULLIF(${unique_email_addresses},0)::REAL
     value_format: '#0.00%'
+
+  - measure: count_email_openers_90d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_opened_email_90d: yes
+  
+  - measure: count_email_clickers_90d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_clicked_email_90d: yes
+
+  - measure: count_email_openers_60d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_opened_email_60d: yes
+  
+  - measure: count_email_clickers_60d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_clicked_email_60d: yes
+
+  - measure: count_email_openers_30d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_opened_email_30d: yes
+  
+  - measure: count_email_clickers_30d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_clicked_email_30d: yes
+
+  - measure: count_email_openers_7d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_opened_email_7d: yes
+  
+  - measure: count_email_clickers_7d
+    type: count_distinct
+    sql: ${email_address}
+    filters:
+      has_clicked_email_7d: yes

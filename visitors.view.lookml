@@ -64,6 +64,22 @@
   - dimension: visits_after_first_purchase
     type: int
     sql: ${TABLE}.visits_after_first_purchase
+
+  - dimension: visits_after_first_purchase_tier
+    type: tier
+    sql: ${visits_after_first_purchase}
+    tiers: [0,1,2,3,4,5,10,20,30,40,50]
+    style: integer
+  
+  - dimension: has_visited_after_first_purchase
+    type: yesno
+    sql: ${visits_after_first_purchase} > 0
+  
+  - dimension: conversion_funnel_progress
+    sql: ${TABLE}.conversion_funnel_progress
+  
+  - dimension: conversion_funnel_progress_after_first_purchase
+    sql: ${TABLE}.conversion_funnel_progress_after_first_purchase
   
   # Landing page dimensions #
   
@@ -170,11 +186,11 @@
     decimals: 2
     sql: ${total_visits}/NULLIF(${total_visitors},0)::REAL
 
-  - dimension: total_visits_after_first_purchase
+  - measure: total_visits_after_first_purchase
     type: sum
     sql: ${visits_after_first_purchase}
 
-  - dimension: avg_after_first_purchase
+  - measure: avg_after_first_purchase
     type: average
     sql: ${visits_after_first_purchase}
 
