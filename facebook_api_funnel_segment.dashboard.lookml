@@ -470,3 +470,38 @@
     height: 4
     top: 16
     left: 0
+    
+  - name: segment_spend_split
+    title: Spend Split
+    type: looker_column
+    model: finery_data
+    explore: facebook_api_ad_performance_breakdown
+    dimensions: [facebook_api_ad_performance_breakdown.calendar_week, facebook_api_ad_performance_breakdown.audience_segment]
+    pivots: [facebook_api_ad_performance_breakdown.audience_segment]
+    measures: [facebook_api_ad_performance_breakdown.total_spend]
+    filters:
+      facebook_api_ad_performance_breakdown.breakdown_type: placement
+      facebook_api_ad_performance_breakdown.calendar_date: 14 weeks
+    sorts: [facebook_api_ad_performance_breakdown.calendar_week desc, facebook_api_ad_performance_breakdown.audience_segment]
+    limit: 500
+    column_limit: 50
+    stacking: percent
+    colors: ['#8dd3c7', '#ffed6f', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69',
+      '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#a3a3ff']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    hide_legend: false
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    ordering: none
+    show_null_labels: false

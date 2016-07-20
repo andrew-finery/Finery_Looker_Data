@@ -29,7 +29,7 @@
           when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
           when ${TABLE}.advert_set_name like '%RHS%' then 'Righthandside' end
 
-         
+  
   
   #- dimension: add_payment_info_facebook_pixel
   #  type: string
@@ -211,13 +211,14 @@
   #  sql: ${TABLE}.event_responses_7_days_after_clicking
 
   - dimension: frequency
-    type: string
-    sql: ${TABLE}.frequency
+    type: number
+    sql: cast(${TABLE}.frequency as decimal(20,10))
+    value_format: '#,##0.00'
 
   - dimension: impressions
-    type: string
+    type: number
     hidden: true
-    sql: ${TABLE}.impressions
+    sql: cast(${TABLE}.impressions as integer)
 
   - dimension: initiate_checkout_facebook_pixel
     type: string
@@ -527,6 +528,8 @@
     sql: ${TABLE}.website_ctr
     
     
+    
+    
   ######################################################################################################
   ###################################### MEASURES ####################################################
 ######################################################################################################
@@ -562,7 +565,34 @@
     type: number
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
     value_format: '#,##0.00'
+  
+  - measure: unique_users
+    label: Unique Users
+    type: number
+    sql: sum(${impressions} / NULLIF(${frequency},0) ::REAL)
+    value_format: '#,##0.00'
     
+  - measure: avg_frequency
+    label: Avg Frequency
+    type: number
+    sql: ${total_impressions}/${unique_users}
+    value_format: '#,##0.00'
+    
+  - measure: imp_times_relevance_score
+    label: imp_times_rel
+    type: number
+    sql: sum(${impressions} * (case when relevance_score ='' then '0' else relevance_score end))
+    
+  - measure: total_imp_with_relevance_score
+    label: total_imp_with_relevance_score
+    type: number
+    sql: sum(case when relevance_score ='' then '0' else ${impressions} end)
+
+  - measure: avg_relevance_score
+    label: Avg Relevance Score
+    type: number
+    sql: ${imp_times_relevance_score}/nullif(${total_imp_with_relevance_score},0)
+    value_format: '#,##0.00'
     
     ######################################################################################################
   ###################################### 1 day window click ####################################################
