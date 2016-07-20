@@ -88,6 +88,262 @@
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}.clean_time
+
+## Member engagement metrics
+
+  - dimension: total_campaigns_sent
+    type: int
+    sql: ${TABLE}.total_campaigns_sent
+    group_label: 'Engagement'
+      
+  - dimension: total_campaign_opens
+    type: int
+    sql: ${TABLE}.total_campaign_opens
+    group_label: 'Engagement'
+     
+  - dimension: total_campaign_clicks
+    type: int
+    sql: ${TABLE}.total_campaign_clicks
+    group_label: 'Engagement'
+     
+  - dimension: member_open_rate
+    type: number
+    sql: ${total_campaign_opens}/NULLIF(${total_campaigns_sent},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement'
+     
+  - dimension: member_click_rate
+    type: number
+    sql: ${total_campaign_clicks}/NULLIF(${total_campaigns_sent},0)::REAL
+    value_format: '0%' 
+    group_label: 'Engagement'
+     
+  - dimension: member_ctr
+    type: number
+    sql: ${total_campaign_clicks}/NULLIF(${total_campaign_opens},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement'
+     
+  - dimension: member_open_rate_tier
+    type: tier
+    sql: ${member_open_rate}
+    group_label: 'Engagement'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+     
+  - dimension: member_click_rate_tier
+    type: tier
+    sql: ${member_click_rate}
+    group_label: 'Engagement'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5]
+
+## Engagement Metrics 90d
+
+  - dimension: total_campaigns_sent_90d
+    type: int
+    sql: ${TABLE}.total_campaigns_sent_90d
+    group_label: 'Engagement 90d'
+      
+  - dimension: total_campaign_opens_90d
+    type: int
+    sql: ${TABLE}.total_campaign_opens_90d
+    group_label: 'Engagement 90d'
+     
+  - dimension: total_campaign_clicks_90d
+    type: int
+    sql: ${TABLE}.total_campaign_clicks_90d
+    group_label: 'Engagement 90d'
+     
+  - dimension: member_open_rate_90d
+    type: number
+    sql: ${total_campaign_opens_90d}/NULLIF(${total_campaigns_sent_90d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 90d'
+     
+  - dimension: member_click_rate_90d
+    type: number
+    sql: ${total_campaign_clicks_90d}/NULLIF(${total_campaigns_sent_90d},0)::REAL
+    value_format: '0%' 
+    group_label: 'Engagement 90d'
+     
+  - dimension: member_ctr_90d
+    type: number
+    sql: ${total_campaign_clicks_90d}/NULLIF(${total_campaign_opens_90d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 90d'
+     
+  - dimension: member_open_rate_tier_90d
+    type: tier
+    sql: ${member_open_rate_90d}
+    group_label: 'Engagement 90d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+     
+  - dimension: member_click_rate_tier_90d
+    type: tier
+    sql: ${member_click_rate_90d}
+    group_label: 'Engagement 90d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5]
+   
+## Engagement Metrics 60d
+
+  - dimension: total_campaigns_sent_60d
+    type: int
+    sql: ${TABLE}.total_campaigns_sent_60d
+    group_label: 'Engagement 60d'
+      
+  - dimension: total_campaign_opens_60d
+    type: int
+    sql: ${TABLE}.total_campaign_opens_60d
+    group_label: 'Engagement 60d'
+     
+  - dimension: total_campaign_clicks_60d
+    type: int
+    sql: ${TABLE}.total_campaign_clicks_60d
+    group_label: 'Engagement 60d'
+     
+  - dimension: member_open_rate_60d
+    type: number
+    sql: ${total_campaign_opens_60d}/NULLIF(${total_campaigns_sent_60d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 60d'
+     
+  - dimension: member_click_rate_60d
+    type: number
+    sql: ${total_campaign_clicks_60d}/NULLIF(${total_campaigns_sent_60d},0)::REAL
+    value_format: '0%' 
+    group_label: 'Engagement 60d'
+     
+  - dimension: member_ctr_60d
+    type: number
+    sql: ${total_campaign_clicks_60d}/NULLIF(${total_campaign_opens_60d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 60d'
+     
+  - dimension: member_open_rate_tier_60d
+    type: tier
+    sql: ${member_open_rate_60d}
+    group_label: 'Engagement 60d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+     
+  - dimension: member_click_rate_tier_60d
+    type: tier
+    sql: ${member_click_rate_60d}
+    group_label: 'Engagement 60d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5]
+
+## Engagement Metrics 30d
+
+  - dimension: total_campaigns_sent_30d
+    type: int
+    sql: ${TABLE}.total_campaigns_sent_30d
+    group_label: 'Engagement 30d'
+      
+  - dimension: total_campaign_opens_30d
+    type: int
+    sql: ${TABLE}.total_campaign_opens_30d
+    group_label: 'Engagement 30d'
+     
+  - dimension: total_campaign_clicks_30d
+    type: int
+    sql: ${TABLE}.total_campaign_clicks_30d
+    group_label: 'Engagement 30d'
+     
+  - dimension: member_open_rate_30d
+    type: number
+    sql: ${total_campaign_opens_30d}/NULLIF(${total_campaigns_sent_30d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 30d'
+     
+  - dimension: member_click_rate_30d
+    type: number
+    sql: ${total_campaign_clicks_30d}/NULLIF(${total_campaigns_sent_30d},0)::REAL
+    value_format: '0%' 
+    group_label: 'Engagement 30d'
+     
+  - dimension: member_ctr_30d
+    type: number
+    sql: ${total_campaign_clicks_30d}/NULLIF(${total_campaign_opens_30d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 30d'
+     
+  - dimension: member_open_rate_tier_30d
+    type: tier
+    sql: ${member_open_rate_30d}
+    group_label: 'Engagement 30d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+     
+  - dimension: member_click_rate_tier_30d
+    type: tier
+    sql: ${member_click_rate_30d}
+    group_label: 'Engagement 30d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5]    
+
+## Engagement Metrics 7d
+
+  - dimension: total_campaigns_sent_7d
+    type: int
+    sql: ${TABLE}.total_campaigns_sent_7d
+    group_label: 'Engagement 7d'
+      
+  - dimension: total_campaign_opens_7d
+    type: int
+    sql: ${TABLE}.total_campaign_opens_7d
+    group_label: 'Engagement 7d'
+     
+  - dimension: total_campaign_clicks_7d
+    type: int
+    sql: ${TABLE}.total_campaign_clicks_7d
+    group_label: 'Engagement 7d'
+     
+  - dimension: member_open_rate_7d
+    type: number
+    sql: ${total_campaign_opens_7d}/NULLIF(${total_campaigns_sent_7d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 7d'
+     
+  - dimension: member_click_rate_7d
+    type: number
+    sql: ${total_campaign_clicks_7d}/NULLIF(${total_campaigns_sent_7d},0)::REAL
+    value_format: '0%' 
+    group_label: 'Engagement 7d'
+     
+  - dimension: member_ctr_7d
+    type: number
+    sql: ${total_campaign_clicks_7d}/NULLIF(${total_campaign_opens_7d},0)::REAL
+    value_format: '0%'
+    group_label: 'Engagement 7d'
+     
+  - dimension: member_open_rate_tier_7d
+    type: tier
+    sql: ${member_open_rate_7d}
+    group_label: 'Engagement 7d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7]
+     
+  - dimension: member_click_rate_tier_7d
+    type: tier
+    sql: ${member_click_rate_7d}
+    group_label: 'Engagement 7d'
+    style: relational
+    tiers: [0,0.1,0.2,0.3,0.4,0.5]
+
+  - dimension: engagement_status
+    sql: |
+          case
+          when ${status} in ('unsubscribed', 'cleaned') then 'Unsubscribed/Cleaned'
+          when ${total_campaign_opens_30d} > 0 then 'Active'
+          when current_date - ${member_subscribed_time_date} < 20 then 'New List Member'
+          when ${total_campaign_opens_30d} = 0 then 'Inactive'
+          when ${email_address} is not null then 'Inactive'
+          else 'Not subscribed' end
+          
     
     
   # Measures

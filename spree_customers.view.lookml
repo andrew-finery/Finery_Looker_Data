@@ -111,7 +111,31 @@
     sql: ${TABLE}.last_order_currency
   
   - dimension: days_since_last_order
+    type: int
     sql: current_date - ${last_order_date}
+
+# Customer Status
+  - dimension: days_between_first_and_last_order
+    type: int
+    sql: ${last_order_date} - ${first_order_date}
+  
+  - dimension: average_days_between_orders
+    type: int
+    sql: |
+          case
+          when ${number_of_orders} = 1 then null
+          else ${days_between_first_and_last_order}/${number_of_orders}
+          end
+  
+  - dimension: customer_status
+    sql: |
+          case
+          when ${days_since_last_order} < 90 then 'Active'                                            -- around 66% of repurchasers make their second purchase within 90 days of their first, so people who have purchased in the last 90 days are deemed 'active'
+          when ${days_since_last_order} < ${average_days_between_orders} then 'Active'                -- If someone hasn't purchased for less than the average amnount of time between their previous ordered, they are deemed 'active'
+          when ${days_since_last_order} < 240 then 'At Risk'                                          -- 90% of repurchasers do so within 240 days.
+          when ${days_since_last_order} < 2*${average_days_between_orders} then 'Active'              -- If someone hasn't ordered for between 1 and 2 of their typical repurchase periods, they are deemed 'At Risk'
+          else 'Lapsed' end                                                                           -- If someone does not match the above criteria, they are deemed 'Lapsed'
+          
   
 # General Info
   - dimension: number_of_orders
