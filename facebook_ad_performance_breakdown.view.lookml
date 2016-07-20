@@ -25,19 +25,19 @@
           
   - dimension: placement_specific
     sql: |
-          case when ${TABLE}.breakdown like '%News Feed on Desktop Computers%' then 'News Feed Desktop'
-          when ${TABLE}.breakdown like '%Audience Network on Third-party Mobile Apps and Mobile Websites%' then 'Audience Network'
-          when ${TABLE}.breakdown like '%Right Column Ads on Home Page for Desktop Computers%' then 'Right Column Desktop'
-          when ${TABLE}.breakdown like '%Instagram on Mobile Devices%' then 'Instagram'
-          when ${TABLE}.breakdown like '%News Feed on Mobile Devices%' then 'News Feed Mobile' end
+          case when ${TABLE}.breakdown like 'News Feed on Desktop Computers' and ${TABLE}.breakdown_type = 'placement' then 'News Feed Desktop'
+          when ${TABLE}.breakdown like 'Audience Network on Third-party Mobile Apps and Mobile Websites' and ${TABLE}.breakdown_type = 'placement' then 'Audience Network'
+          when ${TABLE}.breakdown like 'Right Column Ads on Home Page for Desktop Computers' and ${TABLE}.breakdown_type = 'placement' then 'Right Column Desktop'
+          when ${TABLE}.breakdown like 'Instagram on Mobile Devices' and ${TABLE}.breakdown_type = 'placement' then 'Instagram'
+          when ${TABLE}.breakdown like 'News Feed on Mobile Devices' and ${TABLE}.breakdown_type = 'placement' then 'News Feed Mobile' end
           
   - dimension: placement_general
     sql: |
-          case when ${TABLE}.breakdown like '%News Feed on Desktop Computers%' then 'Desktop'
-          when ${TABLE}.breakdown like '%Audience Network on Third-party Mobile Apps and Mobile Websites%' then 'Mobile'
-          when ${TABLE}.breakdown like '%Right Column Ads on Home Page for Desktop Computers%' then 'Desktop'
-          when ${TABLE}.breakdown like '%Instagram on Mobile Devices%' then 'Mobile'
-          when ${TABLE}.breakdown like '%News Feed on Mobile Devices%' then 'Mobile' end
+          case when ${TABLE}.breakdown like '%News Feed on Desktop Computers%' and ${TABLE}.breakdown_type = 'placement' then 'Desktop'
+          when ${TABLE}.breakdown like '%Audience Network on Third-party Mobile Apps and Mobile Websites%' and ${TABLE}.breakdown_type = 'placement' then 'Mobile'
+          when ${TABLE}.breakdown like '%Right Column Ads on Home Page for Desktop Computers%' and ${TABLE}.breakdown_type = 'placement' then 'Desktop'
+          when ${TABLE}.breakdown like '%Instagram on Mobile Devices%' and ${TABLE}.breakdown_type = 'placement' then 'Instagram'
+          when ${TABLE}.breakdown like '%News Feed on Mobile Devices%' and ${TABLE}.breakdown_type = 'placement' then 'Mobile' end
     
   - dimension: country
     sql: |
