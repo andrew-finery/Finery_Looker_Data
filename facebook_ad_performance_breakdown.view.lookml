@@ -741,6 +741,34 @@
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
     value_format: '#,##0.00'
     
+  - measure: unique_users
+    label: Unique Users
+    type: number
+    sql: sum(${impressions} / NULLIF(${frequency},0) ::REAL)
+    value_format: '#,##0.00'
+    
+  - measure: avg_frequency
+    label: Avg Frequency
+    type: number
+    sql: ${total_impressions}/${unique_users}
+    value_format: '#,##0.00'
+    
+  - measure: imp_times_relevance_score
+    label: imp_times_rel
+    type: number
+    sql: sum(${impressions} * (case when relevance_score ='' then '0' else relevance_score end))
+    
+  - measure: total_imp_with_relevance_score
+    label: total_imp_with_relevance_score
+    type: number
+    sql: sum(case when relevance_score ='' then '0' else ${impressions} end)
+
+  - measure: avg_relevance_score
+    label: Avg Relevance Score
+    type: number
+    sql: ${imp_times_relevance_score}/nullif(${total_imp_with_relevance_score},0)
+    value_format: '#,##0.00'
+    
     
     ######################################################################################################
   ###################################### 1 day window click ####################################################
