@@ -80,7 +80,17 @@
   
   - dimension: conversion_funnel_progress_after_first_purchase
     sql: ${TABLE}.conversion_funnel_progress_after_first_purchase
-  
+
+  - dimension: visits_to_make_first_purchase
+    type: int
+    sql: ${TABLE}.visits_to_make_first_purchase
+
+  - dimension: visits_to_make_first_purchase_tier
+    type: tier
+    sql: ${visits_to_make_first_purchase}
+    tiers: [1,2,3,4,5,10,20]
+    style: integer
+    
   # Landing page dimensions #
   
   - dimension: landing_page_url_host
