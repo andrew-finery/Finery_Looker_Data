@@ -70,7 +70,7 @@
 
   - dimension: first_order_average_selling_price_tier
     type: tier
-    sql: ${first_order_avg_selling_price}
+    sql: ${first_order_average_selling_price}
     tiers: [0,20,40,60,80,100]
     style: integer
     value_format: '"£"0'
