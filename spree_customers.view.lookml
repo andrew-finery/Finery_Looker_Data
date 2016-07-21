@@ -62,6 +62,20 @@
     style: integer
     group_label: 'First Order Info'
   
+  - dimension: first_order_average_selling_price
+    type: number
+    decimals: 2
+    sql: ${first_order_gross_revenue}/NULLIF(${first_order_items_purchased},0)::REAL
+    group_label: 'First Order Info'
+
+  - dimension: first_order_average_selling_price_tier
+    type: tier
+    sql: ${first_order_avg_selling_price}
+    tiers: [0,20,40,60,80,100]
+    style: integer
+    value_format: '"£"0'
+    group_label: 'First Order Info'
+  
   - dimension: first_order_items_purchased
     type: int
     sql: ${TABLE}.first_order_items_purchased
