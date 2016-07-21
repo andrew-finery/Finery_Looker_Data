@@ -15,85 +15,133 @@
     type: time
     timeframes: [time, date, week, week_of_year, month, year]
     sql: ${TABLE}.first_order_time
-
+    
   - dimension_group: first_order_id
     sql: ${TABLE}.first_order_id
+    group_label: 'First Order Info'
 
   - dimension: first_order_promotion
     sql: ${TABLE}.first_order_promotion
+    group_label: 'First Order Info'
 
   - dimension: is_discounted_first_order
     type: yesno
     sql: ${first_order_promotion} is not null
+    group_label: 'First Order Info'
 
   - dimension: first_order_store_credit
     type: number
     decimals: 2
     sql: ${TABLE}.first_order_store_credit
+    group_label: 'First Order Info'
 
   - dimension: first_order_store_credit_flag
     type: yesno
     sql: ${first_order_store_credit} > 0
+    group_label: 'First Order Info'
 
   - dimension: first_order_promotion_or_store_credit_flag
     type: yesno
     sql: ${first_order_store_credit} > 0 or ${first_order_promotion} is not null
+    group_label: 'First Order Info'
     
   - dimension: first_order_currency
     sql: ${TABLE}.first_order_currency
+    group_label: 'First Order Info'
 
   - dimension: first_order_gross_revenue
     type: number
     decimals: 2
     sql: ${TABLE}.first_order_gross_revenue
+    group_label: 'First Order Info'
 
   - dimension: first_order_gross_revenue_tier
     type: tier
     sql: ${first_order_gross_revenue}
     tiers: [0,25,50,75,100,150,200,300]
     style: integer
-
+    group_label: 'First Order Info'
+  
+  - dimension: first_order_items_purchased
+    type: int
+    sql: ${TABLE}.first_order_items_purchased
+    group_label: 'First Order Info'
+    
+  - dimension: first_order_items_returned
+    type: int
+    sql: ${TABLE}.first_order_items_returned
+    group_label: 'First Order Info'
+    
+  - dimension: first_order_items_kept
+    type: int
+    sql: ${first_order_items_purchased} - ${first_order_items_returned}
+    group_label: 'First Order Info'
+    
+  - dimension: first_order_items_purchased_tier
+    type: tier
+    sql: ${first_order_items_purchased}
+    tiers: [1,2,3,4,5]
+    style: integer
+    group_label: 'First Order Info'
+    
+  - dimension: first_order_items_kept_tier
+    type: tier
+    sql: ${first_order_items_kept}
+    tiers: [0,1,2,3,4,5]
+    style: integer
+    group_label: 'First Order Info'
+    
+    
 # Second Order Info  
   - dimension_group: second_order
     type: time
     timeframes: [time, date, week, week_of_year, month, year]
     sql: ${TABLE}.second_order_time
-
+    
   - dimension_group: second_order_id
     sql: ${TABLE}.second_order_id
+    group_label: 'Second Order Info'
 
   - dimension: second_order_promotion
     sql: ${TABLE}.second_order_promotion
+    group_label: 'Second Order Info'
 
   - dimension: is_discounted_second_order
     type: yesno
     sql: ${second_order_promotion} is not null
+    group_label: 'Second Order Info'
 
   - dimension: second_order_store_credit
     type: number
     decimals: 2
     sql: ${TABLE}.second_order_store_credit
+    group_label: 'Second Order Info'
 
   - dimension: second_order_store_credit_flag
     type: yesno
     sql: ${second_order_store_credit} > 0
+    group_label: 'Second Order Info'
 
   - dimension: second_order_promotion_or_store_credit_flag
     type: yesno
     sql: ${second_order_store_credit} > 0 or ${second_order_promotion} is not null
+    group_label: 'Second Order Info'
 
   - dimension: second_order_currency
     sql: ${TABLE}.second_order_currency
+    group_label: 'Second Order Info'
 
   - dimension: days_between_first_and_second_order
     type: int
     sql: ${second_order_date} - ${first_order_date}
+    group_label: 'Repurchase Period Info'
 
   - dimension: days_between_first_and_second_order_tier
     type: tier
     sql: ${days_between_first_and_second_order}
     tiers: [0,30,60,90,120,150,180]
     style: integer
+    group_label: 'Repurchase Period Info'
 
 # Last Order Info
   - dimension_group: last_order
@@ -103,21 +151,26 @@
 
   - dimension_group: last_order_id
     sql: ${TABLE}.last_order_id
+    group_label: 'Last Order Info'
 
   - dimension: last_order_promotion
     sql: ${TABLE}.last_order_promotion
+    group_label: 'Last Order Info'
 
   - dimension: last_order_currency
     sql: ${TABLE}.last_order_currency
+    group_label: 'Last Order Info'
   
   - dimension: days_since_last_order
     type: int
     sql: current_date - ${last_order_date}
+    group_label: 'Repurchase Period Info'
 
 # Customer Status
   - dimension: days_between_first_and_last_order
     type: int
     sql: ${last_order_date} - ${first_order_date}
+    group_label: 'Repurchase Period Info'
   
   - dimension: average_days_between_orders
     type: int
@@ -126,6 +179,7 @@
           when ${number_of_orders} = 1 then null
           else ${days_between_first_and_last_order}/${number_of_orders}
           end
+    group_label: 'Repurchase Period Info'
   
   - dimension: customer_status
     sql: |
