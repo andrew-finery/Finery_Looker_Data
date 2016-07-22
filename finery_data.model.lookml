@@ -437,3 +437,5 @@
     from: mc_newsletter_subscribers
     sql_on: lower(${newsletter_subscriber_info.email_address}) = lower(${website_leads.email_address})
     relationship: many_to_one
+ 
+- explore: website_performance_checks
