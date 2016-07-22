@@ -415,6 +415,8 @@
 
 - explore: warehouse_stock_yesterday
 
+- explore: cml_orders
+
 - explore: website_promo_block_click_through_daily
   label: 'Promo Block Click-Through'
   description: 'Promo block click-through information by day'
