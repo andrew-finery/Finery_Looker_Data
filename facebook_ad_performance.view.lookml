@@ -7,7 +7,7 @@
           case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition'
           when ${TABLE}.campaign_name like '%Custom Audience%' then 'Retargeting Custom Audience'
           when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting DPA'
-          when ${TABLE}.campaign_name like '%Reactivation%' then 'Retargeting Customer Reactivation' end
+          when ${TABLE}.campaign_name like '%Buyers%' then 'Buyers' end
           
   - dimension: buyers_vs_nonbuyers
     sql: |
