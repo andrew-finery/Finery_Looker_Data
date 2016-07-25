@@ -31,6 +31,15 @@
      - dimension: option
        sql: ${TABLE}.option_name
 
+     - dimension: shorthand_name
+       sql: ${TABLE}.shorthand_name
+
+     - dimension: shorthand_name_first_word
+       sql: ${TABLE}.shorthand_name_first_word
+
+     - dimension: shorthand_name_second_word
+       sql: ${TABLE}.shorthand_name_second_word
+
      - dimension: bp_option
        label: BP Option
        sql: ${TABLE}.bp_option
