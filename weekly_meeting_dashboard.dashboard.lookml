@@ -131,7 +131,7 @@
     dimensions: [calendar_weeks.year_week_number]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
-      calendar_weeks.calendar_date_week: 12 weeks
+      calendar_weeks.calendar_date_week: 12 weeks ago for 12 weeks
     sorts: [calendar_weeks.year_week_number]
     limit: 500
     stacking: ''
