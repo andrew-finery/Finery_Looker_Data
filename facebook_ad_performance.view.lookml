@@ -25,7 +25,9 @@
           
   - dimension: placement
     sql: |
-          case when ${TABLE}.campaign_name like '%Instagram%' or ${TABLE}.advert_set_name like '%Instagram%' then 'Instagram'
+          case when ${TABLE}.advert_set_name = 'Best Buyers Lookalikes 5% - Desktop' then 'Desktop'
+          when ${TABLE}.advert_set_name = 'Best Buyers Lookalikes 5% - Mobile' then 'Mobile'
+          when ${TABLE}.campaign_name like '%Instagram%' or ${TABLE}.advert_set_name like '%Instagram%' then 'Instagram'
           when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
           when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%RHS%' or ${TABLE}.advert_set_name like '%Desktop%'  then 'Desktop' end
 
