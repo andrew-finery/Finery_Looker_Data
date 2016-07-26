@@ -76,7 +76,11 @@
   - dimension: audience
     type: string
     sql: ${TABLE}.audience
-
+    
+  - dimension: shorthand_name
+    type: string
+    sql: ${TABLE}.shorthand_name
+    
   - measure: count
     type: count
     drill_fields: [creative_id, product_name]

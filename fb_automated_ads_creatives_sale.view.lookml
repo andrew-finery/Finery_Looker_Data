@@ -99,5 +99,9 @@
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.upload_date
+    
+  - dimension: shorthand_name
+    type: string
+    sql: ${TABLE}.shorthand_name
 
 
