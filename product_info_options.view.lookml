@@ -34,6 +34,9 @@
      - dimension: shorthand_name
        sql: ${TABLE}.shorthand_name
 
+     - dimension: facebook_product_name
+       sql: coalesce(nullif(${shorthand_name}, ''), ${style})
+
      - dimension: shorthand_name_first_word
        sql: ${TABLE}.shorthand_name_first_word
 
