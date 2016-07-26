@@ -10,6 +10,10 @@
     convert_tz: false
     sql: ${TABLE}.calendar_date
 
+  - dimension: device_type
+    type: string
+    sql: ${TABLE}.device_type
+
   - dimension: page_type
     type: string
     sql: ${TABLE}.page_type
