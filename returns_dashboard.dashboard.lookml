@@ -1,5 +1,5 @@
-- dashboard: returns_dashboard_2
-  title: Returns Dashboard 2
+- dashboard: returns_dashboard
+  title: Returns Dashboard
   layout: static
   tile_size: 100
 
