@@ -349,6 +349,13 @@
     filters:
       has_repurchased: Yes
 
+  - measure: count_repurchasing_customers_30d
+    type: count_distinct
+    sql: ${email}
+    filters:
+      has_repurchased: Yes
+      days_between_first_and_second_order: <31
+
   - measure: count_repurchasing_customers_90d
     type: count_distinct
     sql: ${email}
@@ -374,6 +381,11 @@
     sql: ${count_repurchasing_customers}/NULLIF(${count_customers},0)::REAL
     value_format: '#0.00%'
 
+  - measure: repurchase_rate_30d
+    type: number
+    sql: ${count_repurchasing_customers_30d}/NULLIF(${count_customers},0)::REAL
+    value_format: '#0.00%'
+
   - measure: repurchase_rate_90d
     type: number
     sql: ${count_repurchasing_customers_90d}/NULLIF(${count_customers},0)::REAL
@@ -381,7 +393,7 @@
         
   - measure: repurchase_rate_180d
     type: number
-    sql: ${count_repurchasing_customers_90d}/NULLIF(${count_customers},0)::REAL
+    sql: ${count_repurchasing_customers_180d}/NULLIF(${count_customers},0)::REAL
     value_format: '#0.00%'
 
 # order info
