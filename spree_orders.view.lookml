@@ -472,6 +472,10 @@
   - dimension: items_returned
     type: int
     sql:  cast(coalesce(${TABLE}.items_returned, '0') as integer)
+  
+  - dimension: order_contains_return
+    type: yesno
+    sql: ${items_returned} > 0
  
   - dimension: return_rate_order
     label: Return Rate

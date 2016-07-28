@@ -105,7 +105,6 @@
     style: integer
     group_label: 'First Order Info'
     
-    
 # Second Order Info  
   - dimension_group: second_order
     type: time
