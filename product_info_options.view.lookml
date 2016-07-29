@@ -215,7 +215,11 @@
           Woven Tops: ${TABLE}.department = 'Woven Tops'
           Swimwear: ${TABLE}.department = 'Swimwear'
           else: 'Other'
-  
+     
+     - dimension: big_department
+       sql: ${TABLE}.big_department
+      
+        
      - dimension: product_area
        label: Product Area
        sql_case:

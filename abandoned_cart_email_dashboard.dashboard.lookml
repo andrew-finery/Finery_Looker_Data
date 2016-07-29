@@ -160,11 +160,11 @@
     type: single_value
     model: finery_data
     explore: sessions
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
       sessions.campaign_name: om_57f680befde1_Abandoned_basket
-    sorts: [transactions.count_transactions desc]
+    sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: ''
     ordering: none
@@ -382,7 +382,7 @@
     model: finery_data
     explore: sessions
     dimensions: [session_start_calendar.calendar_date_date]
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
       sessions.campaign_name: om_57f680befde1_Abandoned_basket
