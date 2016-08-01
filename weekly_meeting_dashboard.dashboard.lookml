@@ -219,6 +219,8 @@
     filters:
       session_start_calendar.calendar_date_month: 2 months
     filter_expression: ${session_start_calendar.calendar_date_day_of_month} < extract_days(now())
+#    filters:
+#      session_start_calendar.calendar_date_month: 2 months ago for 2 months
     sorts: [session_start_calendar.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -261,6 +263,8 @@
     filters:
       calendar_weeks.calendar_date_month: 2 months
     filter_expression: ${spree_orders.completed_day_of_month} < extract_days(now())
+#    filters:
+#      calendar_weeks.calendar_date_month: 2 months ago for 2 months
     sorts: [calendar_weeks.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -302,6 +306,8 @@
     filters:
       session_start_calendar.calendar_date_month: 2 months
     filter_expression: ${session_start_calendar.calendar_date_day_of_month} < extract_days(now())
+#    filters:
+#      session_start_calendar.calendar_date_month: 2 months ago for 2 months
     sorts: [session_start_calendar.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -344,6 +350,8 @@
     filters:
       calendar_weeks.calendar_date_month: 2 months
     filter_expression: ${spree_orders.completed_day_of_month} < extract_days(now())
+#    filters:
+#      calendar_weeks.calendar_date_month: 2 months ago for 2 months
     sorts: [calendar_weeks.calendar_date_month desc]
     limit: 500
     stacking: ''
@@ -395,6 +403,8 @@
     filters:
       calendar_weeks.calendar_date_date: 1 month ago for 2 months
       spree_orders.completed_date: before 0 days ago
+#    filters:
+#      calendar_weeks.calendar_date_month: 2 months ago for 2 months
     sorts: [calendar_weeks.calendar_date_month desc, spree_orders.completed_day_of_month]
     limit: 31
     stacking: ''
