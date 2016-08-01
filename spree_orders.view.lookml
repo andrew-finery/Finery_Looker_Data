@@ -35,6 +35,14 @@
           when ${TABLE}.item_count = 4 then '4'
           else '5+' end
 
+  - dimension: sale_item_count
+    type: int
+    sql: ${TABLE}.on_sale_items
+
+  - dimension: order_contains_sale_items
+    type: yesno
+    sql: ${sale_item_count} > 0
+    
   - dimension: order_code
     label: Order Code
     sql: ${TABLE}.order_code

@@ -32,6 +32,14 @@
     type: int
     sql: ${TABLE}.item_count
 
+  - dimension: sale_item_count
+    type: int
+    sql: ${TABLE}.on_sale_items
+
+  - dimension: order_contains_sale_items
+    type: yesno
+    sql: ${sale_item_count} > 0
+
   - dimension: item_count_tier
     label: Items in Order Tier
     sql: |
