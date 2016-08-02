@@ -31,7 +31,11 @@
           when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
           when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%RHS%' or ${TABLE}.advert_set_name like '%Desktop%'  then 'Desktop' end
 
-  
+  - dimension: advert_substring_name
+    sql: |
+         case when advert_name like 'Link%' then substring(advert_name,0,28) 
+         when advert_name like 'Multi%' then substring(advert_name,0,37) end 
+        
   
   #- dimension: add_payment_info_facebook_pixel
   #  type: string
