@@ -299,6 +299,9 @@
   
      - dimension: items_returned_b4_28_days_ago
        sql: ${TABLE}.items_returned_b4_28_days_ago
+
+     - dimension: related_products
+       sql: ${TABLE}.related_products_string
     
      - dimension: size_availability
        type: number
