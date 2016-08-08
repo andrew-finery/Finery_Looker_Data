@@ -10,6 +10,10 @@
   - join: visitors
     sql_on: ${sessions.blended_user_id} = ${visitors.blended_user_id}
     relationship: many_to_one
+  - join: newsletter_subscribers
+    from: mc_newsletter_subscribers
+    sql_on: lower(${newsletter_subscribers.email_address}) = lower(${visitors.blended_user_id})
+    relationship: many_to_one
   - join: customer_info
     from: spree_customers
     sql_on: lower(${customer_info.email}) = lower(${visitors.email_address})
