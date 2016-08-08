@@ -496,7 +496,7 @@
     show_view_names: true
     limit_displayed_rows: false
     y_axis_combined: true
-    y_axis_min: ['0.35']
+    y_axis_min: ['0.30']
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_labels: [Return Rate]
