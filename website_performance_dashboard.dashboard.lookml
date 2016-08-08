@@ -20,6 +20,7 @@
     hidden_fields: [website_performance_checks.calendar_date]
     filters:
       website_performance_checks.page_type: Home Page
+      website_performance_checks.platform: desktop
     sorts: [website_performance_checks.calendar_date desc]
     limit: 1
     show_view_names: false
@@ -43,6 +44,7 @@
     hidden_fields: [website_performance_checks.calendar_date]
     filters:
       website_performance_checks.page_type: Category Page
+      website_performance_checks.platform: desktop
     sorts: [website_performance_checks.calendar_date desc]
     limit: 1
     show_view_names: false
@@ -66,6 +68,7 @@
     hidden_fields: [website_performance_checks.calendar_date]
     filters:
       website_performance_checks.page_type: Product Page
+      website_performance_checks.platform: desktop
     sorts: [website_performance_checks.calendar_date desc]
     limit: 1
     show_view_names: false
@@ -674,3 +677,120 @@
     width: 12
     top: 58
     left: 12
+    
+  - name: site_response_time_by_page
+    title: Page Response Times
+    type: looker_line
+    model: finery_data
+    explore: website_performance_checks
+    dimensions: [website_performance_checks.calendar_date, website_performance_checks.page_type]
+    pivots: [website_performance_checks.page_type]
+    measures: [website_performance_checks.average_response_time]
+    listen:
+      date: website_performance_checks.calendar_date
+    sorts: [website_performance_checks.calendar_date desc, website_performance_checks.page_type]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    show_null_points: false
+    height: 10
+    width: 24
+    top: 69
+    left: 0
+
+  - name: queries_per_second_by_page
+    title: Queries per Second by Page
+    type: looker_line
+    model: finery_data
+    explore: website_performance_checks
+    dimensions: [website_performance_checks.calendar_date, website_performance_checks.page_type]
+    pivots: [website_performance_checks.page_type]
+    measures: [website_performance_checks.average_queries_per_second]
+    listen:
+      date: website_performance_checks.calendar_date
+    sorts: [website_performance_checks.calendar_date desc, website_performance_checks.page_type]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    show_null_points: false
+    height: 10
+    width: 24
+    top: 79
+    left: 0
+
+  - name: average_failed_requests_by_page
+    title: Average Failed Requests by Page
+    type: looker_line
+    model: finery_data
+    explore: website_performance_checks
+    dimensions: [website_performance_checks.calendar_date, website_performance_checks.page_type]
+    pivots: [website_performance_checks.page_type]
+    measures: [website_performance_checks.average_failed_requests]
+    listen:
+      date: website_performance_checks.calendar_date
+    sorts: [website_performance_checks.calendar_date desc, website_performance_checks.page_type]
+    limit: 500
+    column_limit: 50
+    stacking: ''
+    colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
+      '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    limit_displayed_rows: false
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    point_style: none
+    interpolation: linear
+    show_null_points: false
+    height: 10
+    width: 24
+    top: 89
+    left: 0

@@ -149,6 +149,21 @@
     sql: ${TABLE}.usability
     hidden: true
 
+  - dimension: response_time
+    type: int
+    sql: ${TABLE}.avg_response_time
+    hidden: true
+
+  - dimension: queries_per_second
+    type: int
+    sql: ${TABLE}.queries_per_second
+    hidden: true
+    
+  - dimension: failed_requests
+    type: int
+    sql: ${TABLE}.failed_requests
+    hidden: true
+
 ## Measures
 
   - measure: count_checks
@@ -193,3 +208,15 @@
   - measure: average_other_response_bytes
     type: average
     sql: ${other_response_bytes}
+
+  - measure: average_response_time
+    type: average
+    sql: ${response_time}
+
+  - measure: average_queries_per_second
+    type: average
+    sql: ${queries_per_second}
+    
+  - measure: average_failed_requests
+    type: average
+    sql: ${failed_requests}
