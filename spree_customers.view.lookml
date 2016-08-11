@@ -250,11 +250,19 @@
     hidden: true
 
   - dimension: total_gross_revenue_ex_discount_ex_shipping
-    label: Customer Gross Revenue
+    label: Customer Lifetime Value (Gross)
     type: number
     decimals: 2
     sql: ${TABLE}.total_gross_revenue_ex_discount_ex_shipping
 
+  - dimension: total_gross_revenue_ex_discount_ex_shipping_tier
+    label: Customer Lifetime Value Tier (Gross)
+    type: tier
+    sql: ${total_gross_revenue_ex_discount_ex_shipping}
+    tiers: [125,250]
+    style: integer
+    value_format: '"£"0'
+    
   - dimension: total_gross_revenue_ex_discount_ex_vat_ex_shipping
     label: Customer Gross Revenue ex. VAT
     type: number
@@ -291,10 +299,19 @@
     hidden: true
 
   - dimension: net_revenue
+    label: Customer Lifetime Value (Net)
     type: number
     decimals: 2
     sql: ${total_gross_revenue_ex_discount_ex_shipping} - ${total_refunded}
 
+  - dimension: net_revenue_tier
+    label: Customer Lifetime Value Tier (Net)
+    type: tier
+    sql: ${net_revenue}
+    tiers: [0,25,50,75,100,125,150,175,200,225,250]
+    style: integer
+    value_format: '"£"0'
+    
   - dimension: total_gross_cogs_gbp
     type: number
     decimals: 2

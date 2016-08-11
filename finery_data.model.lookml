@@ -89,12 +89,14 @@
   joins:
   - join: newsletter_subscribers
     from: mc_newsletter_subscribers
-    sql_on: lower(${newsletter_subscribers.email_address}) = lower(spree_customers.email)
+    sql_on: lower(${newsletter_subscribers.email_address}) = lower(${spree_customers.email})
     relationship: many_to_one
   - join: visitors
-    sql_on: spree_customers.email = ${visitors.email_address}
+    sql_on: lower(${spree_customers.email}) = lower(${visitors.email_address})
     relationship: one_to_one
-
+  - join: spree_users
+    sql_on: lower(${spree_customers.email}) = lower(${spree_users.email_address})
+    
 - explore: fb_daily_ad_performance
   label: 'Facebook Perfomance'
   joins:

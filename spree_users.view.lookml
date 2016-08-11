@@ -9,7 +9,11 @@
 
   - dimension: user_id
     sql: ${TABLE}.user_id
-
+  
+  - dimension: has_account
+    type: yesno
+    sql: ${user_id} is not null
+  
   - dimension: email_address
     sql: ${TABLE}.email_address
   
