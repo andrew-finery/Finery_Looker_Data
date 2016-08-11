@@ -307,8 +307,8 @@
   - dimension: net_revenue_tier
     label: Customer Lifetime Value Tier (Net)
     type: tier
-    sql: ${net_revenue}
-    tiers: [0,25,50,75,100,125,150,175,200,225,250]
+    sql: case when ${net_revenue} < 0.1 then 0 else ${net_revenue} end
+    tiers: [0.00,1.00,25,50,75,100,125,150,175,200,225,250]
     style: integer
     value_format: '"£"0'
     
