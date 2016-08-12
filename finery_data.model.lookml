@@ -220,9 +220,6 @@
   - join: spree_users
     sql_on: spree_orders.customer_id = spree_users.user_id
     relationship: many_to_one
-  - join: hermes_delivery_tracking
-    sql_on: hermes_delivery_tracking.tracking_code = concat(spree_orders.tracking_number,'a')
-    relationship: one_to_one
   - join: spree_addresses
     sql_on: spree_orders.ship_address_id = spree_addresses.address_id
     relationship: many_to_one

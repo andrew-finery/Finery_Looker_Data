@@ -249,11 +249,7 @@
   - measure: count_orders
     type: count_distinct
     sql: ${TABLE}.order_id
-    
-  - measure: count_customers
-    type: count_distinct
-    sql: ${TABLE}.customer_id  
-    
+
   - measure: distinct_skus_sold
     type: count_distinct
     sql: ${TABLE}.sku
