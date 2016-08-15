@@ -483,7 +483,7 @@
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_week: 16 weeks ago for 12 weeks
-    sorts: [spree_order_items.return_rate desc]
+    sorts: [calendar_weeks.year_week_number asc]
     limit: 500
     stacking: ''
     colors: ['#000000', '#191919', '#292929', '#3c3c3c', '#4e4e4e', '#626262', '#777777',
