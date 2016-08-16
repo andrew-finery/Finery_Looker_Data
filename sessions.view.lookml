@@ -1022,3 +1022,72 @@
     sql: ${conversion_funnel_10}/NULLIF(${count},0)::REAL
     value_format: '#0.00%'
 
+
+  - measure: dropout_rate_1
+    label: Dropout Rate 1 (All Sessions)
+    type: number
+    decimals: 4
+    sql: (${count} - ${conversion_funnel_2})/NULLIF(${count},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_2
+    label: Dropout Rate 2 (Category Page)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_2} - ${conversion_funnel_3})/NULLIF(${conversion_funnel_2},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_3
+    label: Dropout Rate 3 (Product Page)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_3} - ${conversion_funnel_4})/NULLIF(${conversion_funnel_3},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_4
+    label: Dropout Rate 4 (Add to Cart)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_4} - ${conversion_funnel_5})/NULLIF(${conversion_funnel_4},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_5
+    label: Dropout Rate 5 (View Cart)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_5} - ${conversion_funnel_6})/NULLIF(${conversion_funnel_5},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_6
+    label: Dropout Rate 6 (Checkout - Registration)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_6} - ${conversion_funnel_7})/NULLIF(${conversion_funnel_6},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_7
+    label: Dropout Rate 7 (Checkout - Address)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_7} - ${conversion_funnel_8})/NULLIF(${conversion_funnel_7},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: dropout_rate_8
+    label: Dropout Rate 8 (Checkout - Delivery)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_8} - ${conversion_funnel_9})/NULLIF(${conversion_funnel_8},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: dropout_rate_9
+    label: Dropout Rate 9 (Checkout - Payment)
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_9} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_9},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: cart_abandonment_rate
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_4} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_4},0)::REAL
+    value_format: '#0.00%'
