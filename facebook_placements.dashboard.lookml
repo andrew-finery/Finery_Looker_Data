@@ -1,8 +1,7 @@
-- dashboard: facebook_api_funnel_segment
-  title: Facebook API Segments
+- dashboard: facebook_placements
+  title: Facebook Placements Dashboard
   layout: static
   tile_size: 100
-
 
   filters:
   - name: facebook_country
@@ -11,13 +10,6 @@
     explore: facebook_api_ad_performance
     field: facebook_api_ad_performance.country
     default_value:
-  
-  #- name: sessions_country
-  #  title: "Sessions Country"
-  #  type: field_filter
-  #  explore: sessions
-  #  field: sessions.geography_country
-  #  default_value:
 
   elements:
   
@@ -26,8 +18,8 @@
     type: looker_area
     model: finery_data
     explore: facebook_api_ad_performance
-    dimensions: [facebook_api_ad_performance.calendar_date, facebook_api_ad_performance.audience_segment]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    dimensions: [facebook_api_ad_performance.calendar_date, facebook_api_ad_performance.placement]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.total_spend]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -56,8 +48,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
-
-
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 0
@@ -69,7 +61,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.total_impressions]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -100,6 +92,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 0
@@ -111,7 +105,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.total_clicks]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -142,6 +136,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 0
@@ -152,7 +148,7 @@
     type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     dimensions: [facebook_api_ad_performance.calendar_date]
     measures: [facebook_api_ad_performance.cost_per_mille]
     filters:
@@ -184,6 +180,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 4
@@ -195,7 +193,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.cost_per_click]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -226,6 +224,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 4
@@ -236,7 +236,7 @@
     type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     dimensions: [facebook_api_ad_performance.calendar_date]
     measures: [facebook_api_ad_performance.click_through_rate]
     filters:
@@ -268,6 +268,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 4
@@ -278,7 +280,7 @@
     type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     dimensions: [facebook_api_ad_performance.calendar_date]
     measures: [facebook_api_ad_performance.1d_cpa_product_view_content]
     filters:
@@ -310,6 +312,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 8
@@ -320,7 +324,7 @@
     type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     dimensions: [facebook_api_ad_performance.calendar_date]
     measures: [facebook_api_ad_performance.1d_cpa_add_to_cart]
     filters:
@@ -352,6 +356,8 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 8
@@ -362,7 +368,7 @@
     type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     dimensions: [facebook_api_ad_performance.calendar_date]
     measures: [facebook_api_ad_performance.1d_cpa_purchase]
     filters:
@@ -394,24 +400,25 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: '#808080'
+    show_null_points: false
+    discontinuous_nulls: true
     width: 4
     height: 4
     top: 8
     left: 8
     
-  - name: fb_tracker - Acquisition
-    title: FB Tracker - Acquisition
+  - name: fb_tracker_mobile
+    title: 10 Week Performance - Mobile
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
-      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.7d_cpa_purchase,
-      facebook_api_ad_performance.7d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Acquisition
-      facebook_api_ad_performance.calendar_date: 14 weeks ago for 14 weeks
+      facebook_api_ad_performance.placement: Mobile
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -423,19 +430,18 @@
     top: 12
     left: 0
     
-  - name: fb_tracker_retargeting_custom_audience
-    title: FB Tracker - Retargeting Custom Audience
+  - name: fb_tracker_desktop
+    title: 10 Week Performance - Desktop
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
-      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.7d_cpa_purchase,
-      facebook_api_ad_performance.7d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Retargeting Custom Audience
-      facebook_api_ad_performance.calendar_date: 14 weeks ago for 14 weeks
+      facebook_api_ad_performance.placement: Desktop
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -447,19 +453,18 @@
     top: 12
     left: 6
     
-  - name: fb_tracker_retargeting_dpa
-    title: FB Tracker - DPA
+  - name: fb_tracker_instagram
+    title: 10 Week Performance - Instagram
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
-      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.7d_cpa_purchase,
-      facebook_api_ad_performance.7d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Retargeting DPA
-      facebook_api_ad_performance.calendar_date: 14 weeks ago for 14 weeks
+      facebook_api_ad_performance.placement: Instagram
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -472,17 +477,17 @@
     left: 0
     
   - name: segment_spend_split
-    title: Spend Split
+    title: Spend Split - Last 10 Weeks
     type: looker_column
     model: finery_data
     explore: facebook_api_ad_performance_breakdown
-    dimensions: [facebook_api_ad_performance_breakdown.calendar_week, facebook_api_ad_performance_breakdown.audience_segment]
-    pivots: [facebook_api_ad_performance_breakdown.audience_segment]
+    dimensions: [facebook_api_ad_performance_breakdown.calendar_week, facebook_api_ad_performance_breakdown.placement_general]
+    pivots: [facebook_api_ad_performance_breakdown.placement_general]
     measures: [facebook_api_ad_performance_breakdown.total_spend]
     filters:
       facebook_api_ad_performance_breakdown.breakdown_type: placement
-      facebook_api_ad_performance_breakdown.calendar_date: 14 weeks
-    sorts: [facebook_api_ad_performance_breakdown.calendar_week desc, facebook_api_ad_performance_breakdown.audience_segment]
+      facebook_api_ad_performance_breakdown.calendar_date: 10 weeks
+    sorts: [facebook_api_ad_performance_breakdown.calendar_week desc, facebook_api_ad_performance_breakdown.placement_general]
     limit: 500
     column_limit: 50
     stacking: percent
@@ -516,7 +521,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.avg_relevance_score]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -533,8 +538,8 @@
     show_view_names: false
     limit_displayed_rows: false
     y_axis_combined: true
-    y_axis_min: ['5']
-    show_y_axis_labels: true
+    y_axis_min: ['4']
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     show_x_axis_label: false
@@ -554,7 +559,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
-    pivots: [facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.placement]
     measures: [facebook_api_ad_performance.avg_frequency]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
@@ -572,7 +577,7 @@
     limit_displayed_rows: false
     y_axis_combined: true
     y_axis_min: ['1']
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     show_x_axis_label: false

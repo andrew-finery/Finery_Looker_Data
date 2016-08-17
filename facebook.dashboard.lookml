@@ -1,5 +1,5 @@
-- dashboard: facebook_api
-  title: Facebook API
+- dashboard: facebook_dashboard
+  title: Facebook Dashboard
   layout: static
   tile_size: 100
 
@@ -10,13 +10,6 @@
     type: field_filter
     explore: facebook_api_ad_performance
     field: facebook_api_ad_performance.country
-    default_value:
-  
-  - name: sessions_country
-    title: "Sessions Country"
-    type: field_filter
-    explore: sessions
-    field: sessions.geography_country
     default_value:
 
   elements:
@@ -45,7 +38,7 @@
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     show_null_points: true
@@ -81,7 +74,7 @@
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     show_null_points: true
@@ -117,7 +110,7 @@
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     show_null_points: true
@@ -131,7 +124,7 @@
     
   - name: cpm_last_30_days
     title: Cost per 1000 Impressions
-    type: looker_area
+    type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
@@ -149,16 +142,15 @@
     y_axis_gridlines: true
     show_view_names: false
     y_axis_combined: false
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     colors: [salmon]
     show_null_points: true
-    point_style: circle
     interpolation: monotone
     ordering: none
     show_null_labels: false
@@ -170,7 +162,7 @@
     
   - name: cpc_last_30_days
     title: Cost per Click
-    type: looker_area
+    type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
@@ -188,16 +180,15 @@
     y_axis_gridlines: true
     show_view_names: false
     y_axis_combined: false
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     colors: [salmon]
     show_null_points: true
-    point_style: circle
     interpolation: monotone
     ordering: none
     show_null_labels: false
@@ -209,7 +200,7 @@
     
   - name: ctr_last_30_days
     title: Click Through Rate
-    type: looker_area
+    type: looker_line
     model: finery_data
     explore: facebook_api_ad_performance
     dimensions: [facebook_api_ad_performance.calendar_date]
@@ -227,16 +218,15 @@
     y_axis_gridlines: true
     show_view_names: false
     y_axis_combined: false
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_scale: auto
     colors: [salmon]
     show_null_points: true
-    point_style: circle
     interpolation: monotone
     ordering: none
     show_null_labels: false
@@ -245,6 +235,267 @@
     height: 3
     top: 4
     left: 4
+
+  - name: cpa_view_content_last_30_days
+    title: CPA View Content (1d)
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.1d_cpa_product_view_content]
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      country: facebook_api_ad_performance.country
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: [salmon]
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    width: 4
+    height: 3
+    top: 7
+    left: 0
+    
+  - name: cpa_atc_last_30_days
+    title: CPA Add to Cart (1d)
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.1d_cpa_add_to_cart]
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: [salmon]
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    width: 4
+    height: 3
+    top: 7
+    left: 4
+    
+  - name: cpa_sale_last_30_days
+    title: CPA Sale (1d)
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.1d_cpa_purchase]
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: [salmon]
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    width: 4
+    height: 3
+    top: 7
+    left: 8
+
+  - name: view_content_clicks_ratio
+    title: 'View Content: Clicks (1d)'
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.total_clicks, facebook_api_ad_performance.1d_total_action_view_content]
+    dynamic_fields:
+    - table_calculation: view_content_clicks_1d
+      label: 'View Content: Clicks (1d)'
+      expression: ${facebook_api_ad_performance.1d_total_action_view_content}/${facebook_api_ad_performance.total_clicks}
+      value_format:
+      value_format_name: percent_2
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    limit: '500'
+    column_limit: '50'
+    query_timezone: Europe/London
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: ['#7FCDAE', '#7ED09C', '#7DD389', '#85D67C', '#9AD97B', '#B1DB7A', '#CADF79',
+      '#E2DF78', '#E5C877', '#E7AF75', '#EB9474', '#EE7772']
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    hidden_fields: [facebook_api_ad_performance.total_clicks, facebook_api_ad_performance.1d_total_action_view_content]
+    y_axis_value_format: 0%
+    series_colors: {}
+    width: 4
+    height: 3
+    top: 10
+    left: 0
+
+  - name: add_to_cart_view_content_ratio
+    title: 'Add to Cart: View Content (1d)'
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.1d_total_action_add_to_cart, facebook_api_ad_performance.1d_total_action_view_content]
+    dynamic_fields:
+    - table_calculation: add_to_cart_view_content_1d
+      label: 'Add to Cart: View Content (1d)'
+      expression: ${facebook_api_ad_performance.1d_total_action_add_to_cart}/${facebook_api_ad_performance.1d_total_action_view_content}
+      value_format:
+      value_format_name: percent_2
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    limit: '500'
+    column_limit: '50'
+    query_timezone: Europe/London
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: ['#7FCDAE', '#7ED09C', '#7DD389', '#85D67C', '#9AD97B', '#B1DB7A', '#CADF79',
+      '#E2DF78', '#E5C877', '#E7AF75', '#EB9474', '#EE7772']
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    hidden_fields: [facebook_api_ad_performance.1d_total_action_add_to_cart, facebook_api_ad_performance.1d_total_action_view_content]
+    y_axis_value_format: 0%
+    series_colors: {}
+    width: 4
+    height: 3
+    top: 10
+    left: 4
+
+  - name: sale_add_to_cart_ratio
+    title: 'Sale: Add to Cart (1d)'
+    type: looker_line
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_date]
+    measures: [facebook_api_ad_performance.1d_total_action_add_to_cart, facebook_api_ad_performance.1d_total_action_purchase]
+    dynamic_fields:
+    - table_calculation: add_to_cart_view_content_1d
+      label: 'Sale: Add to Cart (1d)'
+      expression: ${facebook_api_ad_performance.1d_total_action_purchase}/${facebook_api_ad_performance.1d_total_action_add_to_cart}
+      value_format:
+      value_format_name: percent_2
+    filters:
+      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    sorts: [facebook_api_ad_performance.calendar_date desc]
+    limit: '500'
+    column_limit: '50'
+    query_timezone: Europe/London
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    y_axis_combined: false
+    show_y_axis_labels: false
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    colors: ['#7FCDAE', '#7ED09C', '#7DD389', '#85D67C', '#9AD97B', '#B1DB7A', '#CADF79',
+      '#E2DF78', '#E5C877', '#E7AF75', '#EB9474', '#EE7772']
+    show_null_points: true
+    interpolation: monotone
+    ordering: none
+    show_null_labels: false
+    y_axis_orientation: [left, left, right]
+    hidden_fields: [facebook_api_ad_performance.1d_total_action_add_to_cart, facebook_api_ad_performance.1d_total_action_purchase]
+    y_axis_value_format: 0%
+    series_colors: {}
+    width: 4
+    height: 3
+    top: 10
+    left: 8
     
   - name: fb_visits_and_orders_last_30_days
     title: FB Visits and Orders Last 30 Days
@@ -287,11 +538,11 @@
     interpolation: monotone
     width: 6
     height: 4
-    top: 7
+    top: 13
     left: 0
     
   - name: fb_tracker
-    title: FB Tracker
+    title: Performance Overiew - Last 10 Weeks
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
@@ -301,13 +552,15 @@
       facebook_api_ad_performance.28d_total_action_purchase]
     listen: 
       facebook_country: facebook_api_ad_performance.country
+    filters:
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     sorts: [facebook_api_ad_performance.calendar_week]
     limit: 500
     show_view_names: true
     table_theme: editable
     width: 6
     height: 4
-    top: 7
+    top: 13
     left: 6
     
   - name: avg_relevance_score
@@ -333,7 +586,7 @@
     limit_displayed_rows: false
     y_axis_combined: true
     y_axis_min: ['5']
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     show_x_axis_label: false
@@ -344,7 +597,7 @@
     interpolation: linear
     width: 6
     height: 4
-    top: 11
+    top: 17
     left: 0
     
   - name: avg_frequency
@@ -370,7 +623,7 @@
     limit_displayed_rows: false
     y_axis_combined: true
     y_axis_min: ['1']
-    show_y_axis_labels: true
+    show_y_axis_labels: false
     show_y_axis_ticks: true
     y_axis_tick_density: default
     show_x_axis_label: false
@@ -381,7 +634,7 @@
     interpolation: linear
     width: 6
     height: 4
-    top: 11
+    top: 17
     left: 6
 
 
