@@ -552,6 +552,29 @@
     type: yesno
     sql: ${TABLE}.sale_modal_success_flag = 1
 
+
+  - dimension: cart_size_value
+    type: number
+    decimals: 2
+    sql: ${TABLE}. cart_size_value_gbp
+  
+  - dimension: cart_size_value_tier
+    type: tier
+    tiers: [0,25,50,75,100,150,200]
+    sql: ${cart_size_value}
+    style: integer
+    value_format: '"£"0'
+    
+  - dimension: cart_size_items
+    type: int
+    sql: ${TABLE}. cart_size_items
+
+  - dimension: cart_size_items_tier
+    type: tier
+    tiers: [0,1,2,3,4,5]
+    sql: ${cart_size_items}
+    style: integer
+
     ##########################################################################################################################################################
   ######################################################## MEASURES ########################################################################################
 ##########################################################################################################################################################
