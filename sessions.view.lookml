@@ -556,7 +556,7 @@
   - dimension: cart_size_value
     type: number
     decimals: 2
-    sql: ${TABLE}. cart_size_value_gbp
+    sql: ${TABLE}.cart_size_value_gbp
   
   - dimension: cart_size_value_tier
     type: tier
@@ -567,7 +567,7 @@
     
   - dimension: cart_size_items
     type: int
-    sql: ${TABLE}. cart_size_items
+    sql: ${TABLE}.cart_size_items
 
   - dimension: cart_size_items_tier
     type: tier
