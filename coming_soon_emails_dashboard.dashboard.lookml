@@ -12,8 +12,12 @@
     explore: coming_soon_email_lists
     dimensions: [option_info.option, coming_soon_email_lists.sku]
     measures: [coming_soon_email_lists.list_members]
+    filters:
+      coming_soon_email_lists.most_recent_subscription_date: 7 days ago for 7 days
     sorts: [coming_soon_email_lists.list_members desc]
-    limit: 500
+    limit: '500'
+    column_limit: '50'
+    query_timezone: Europe/London
     show_view_names: false
     show_row_numbers: false
     truncate_column_names: false
@@ -82,7 +86,7 @@
       coming_soon_emails.email_description: -NULL
       coming_soon_emails.email_type: Coming Soon Notification
     sorts: [coming_soon_emails.email_sent_date desc]
-    limit: 20
+    limit: 15
     show_view_names: false
     show_row_numbers: false
     truncate_column_names: false
@@ -99,20 +103,23 @@
     top: 4
     left: 0
 
-  - name: coming_soon_reminder_performance
-    title: Coming Soon Reminder Performance
+  - name: coming_soon_reminder_performance_emails
+    title: Coming Soon Reminder Performance - Email Data
     type: table
     model: finery_data
     explore: sessions
     dimensions: [coming_soon_emails.email_sent_date, coming_soon_emails.option_name,
-      coming_soon_emails.emails_sent, coming_soon_emails.unique_opens, coming_soon_emails.campaign_open_rate,
-      coming_soon_emails.unique_clicks, coming_soon_emails.campaign_click_rate, coming_soon_emails.campaign_click_through_rate]
-    measures: [sessions.count, sessions.sum_orders, sessions.conversion_rate, sessions.sum_gross_revenue_ex_discount]
+      coming_soon_emails.email_type, coming_soon_emails.emails_sent, coming_soon_emails.unique_opens,
+      coming_soon_emails.campaign_open_rate, coming_soon_emails.unique_clicks, coming_soon_emails.campaign_click_rate,
+      coming_soon_emails.campaign_click_through_rate]
+    measures: []
     filters:
       coming_soon_emails.email_description: -NULL
       coming_soon_emails.email_type: No Purchase Reminder,No Open Reminder
-    sorts: [coming_soon_emails.email_sent_date desc]
-    limit: 20
+    sorts: [coming_soon_emails.email_sent_date desc, coming_soon_emails.option_name desc]
+    limit: '15'
+    column_limit: '50'
+    query_timezone: Europe/London
     show_view_names: false
     show_row_numbers: false
     truncate_column_names: false
@@ -127,4 +134,34 @@
     height: 6
     width: 12
     top: 10
+    left: 0
+
+  - name: coming_soon_reminder_performance_web
+    title: Coming Soon Reminder Performance - Web Data
+    type: table
+    model: finery_data
+    explore: sessions
+    dimensions: [coming_soon_emails.email_sent_date, coming_soon_emails.option_name]
+    measures: [sessions.count, sessions.sum_orders, sessions.conversion_rate, sessions.sum_gross_revenue_ex_discount]
+    filters:
+      coming_soon_emails.email_description: -NULL
+      coming_soon_emails.email_type: No Purchase Reminder,No Open Reminder
+    sorts: [coming_soon_emails.email_sent_date desc]
+    limit: '15'
+    column_limit: '50'
+    query_timezone: Europe/London
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    series_labels:
+      coming_soon_emails.email_sent_date: Date
+      coming_soon_emails.option_name: Option
+      sessions.count: Visits
+      sessions.sum_orders: Orders
+      sessions.sum_gross_revenue_ex_discount: Revenue
+    table_theme: editable
+    limit_displayed_rows: false
+    height: 4
+    width: 12
+    top: 16
     left: 0

@@ -27,4 +27,9 @@
   - measure: list_members
     type: count_distinct
     sql: ${email} || ${sku}
+  
+  - measure: most_recent_subscription_date
+    type: date
+    sql: MAX(${created_date})
+    convert_tz: false
 
