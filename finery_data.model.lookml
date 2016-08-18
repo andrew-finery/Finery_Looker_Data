@@ -181,6 +181,15 @@
 #    relationship: many_to_one
 
 - explore: spree_users
+  joins:
+  - join: newsletter_subscriber_info
+    from: mc_newsletter_subscribers
+    sql_on: lower(${newsletter_subscriber_info.email_address}) = lower(${spree_users.email_address})
+    relationship: one_to_one
+  - join: customer_info
+    from: spree_customers
+    sql_on: lower(${spree_users.email_address}) = lower(${customer_info.email})
+    relationship: one_to_one
     
 - explore: spree_orders
   joins:

@@ -72,32 +72,8 @@
   - measure: count_users
     type: count_distinct
     sql: ${customer_id}
-  
-  - measure: count_newsletter_subscribers
-    type: count_distinct
-    sql: ${customer_id}
-    filters:
-      newsletter_opt_in: yes
-  
-  - measure: average_age
-    type: average
-    sql: ${age}
-  
+
   - measure: sum_referrals_sent
     type: sum
     sql: ${TABLE}.referrals_sent
 
-  - measure: sum_total_credit_granted_gbp
-    type: sum
-    sql: ${TABLE}.total_credit_granted_gbp
-    value_format: '#,##0.00'
-    
-  - measure: sum_total_credit_used_gbp
-    type: sum
-    sql: ${TABLE}.total_credit_used_gbp
-    value_format: '#,##0.00'
-    
-  - measure: sum_current_live_credit_gbp
-    type: sum
-    sql: ${TABLE}.current_credit_gbp
-    value_format: '#,##0.00'
