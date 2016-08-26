@@ -63,6 +63,7 @@
 
 - explore: facebook_api_ad_performance
 - explore: facebook_api_ad_performance_breakdown
+- explore: facebook_carousel_breakdown
 
 
 - explore: fb_automated_ads_creatives
