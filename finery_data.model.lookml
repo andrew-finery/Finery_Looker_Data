@@ -465,3 +465,5 @@
     relationship: many_to_one
  
 - explore: website_performance_checks
+
+- explore: spree_import_notifications
