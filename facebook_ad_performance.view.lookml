@@ -11,8 +11,9 @@
           
   - dimension: buyers_vs_nonbuyers
     sql: |
-          case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
+          case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Buyers%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
           when ${TABLE}.campaign_name like '%Retention%' then 'Customer Retention'
+          when ${TABLE}.campaign_name like '%Buyers%' then 'Customer Retention'
           when ${TABLE}.campaign_name like '%Reactivation%' then 'Customer Retention' end
           
   - dimension: country
