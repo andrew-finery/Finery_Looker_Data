@@ -58,8 +58,6 @@
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
     relationship: many_to_one
-    
-#- explore: facebook_daily_ad_performance
 
 - explore: facebook_api_ad_performance
 - explore: facebook_api_ad_performance_breakdown
@@ -80,12 +78,6 @@
     sql_on: ${option_info.product_id} = ${fb_automated_ads_creatives_sale.product_id}
     relationship: many_to_one
     
-#- explore: facebook_daily_ad_performance_1day
-#  joins:
-#  - join: facebook_daily_ad_reach
-#    sql_on: ${facebook_daily_ad_performance_1day.date} = ${facebook_daily_ad_reach.date} and ${facebook_daily_ad_performance_1day.adset} = ${facebook_daily_ad_reach.add_id}
-#    relationship: one_to_one
-
 - explore: spree_customers
   joins:
   - join: newsletter_subscribers
@@ -113,18 +105,6 @@
     from: fb_daily_ad_perf_28day_click
     sql_on: ${fb_daily_ad_performance.calendar_date} = ${28_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${28_day_click_through.ad}
     relationship: one_to_one
-    
-- explore: brightpearl_sales_orders_final
-  label: 'Brightpearl Sales Orders'
-  joins:
-  - join: product_info_variants
-    from: product_info_variants
-    sql_on: ${brightpearl_sales_orders_final.ean} = ${product_info_variants.ean}
-    relationship: many_to_one
-  - join: product_info_options
-    from: product_info_options
-    sql_on: ${product_info_variants.option_id} = ${product_info_options.option_id}
-    relationship: many_to_one
 
 - explore: transactions
   label: 'Website Orders'
