@@ -273,6 +273,17 @@
      - dimension: number_of_dpa_feed_images
        label: Number of DPA Images
        sql: ${TABLE}.facebook_images
+       
+     - dimension: instagram_image
+       label: Instagram Product Image
+       type: string
+       sql: ${TABLE}.instagram_image_location
+       html: |
+            <img src="{{value}}" height="130" width="130"/>
+
+     - dimension: number_of_instagram_feed_images
+       label: Number of Instagram Images
+       sql: ${TABLE}.instagram_images
 
      - dimension: packshot_image
        label: DPA Packshot Product Image
