@@ -61,18 +61,22 @@
   - dimension: add_to_basket_facebook_pixel
     type: string
     sql: ${TABLE}.add_to_basket_facebook_pixel
+    hidden: true
 
   - dimension: add_to_basket_facebook_pixel_1_day_after_clicking
     type: string
     sql: ${TABLE}.add_to_basket_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: add_to_basket_facebook_pixel_28_days_after_clicking
     type: string
     sql: ${TABLE}.add_to_basket_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: add_to_basket_facebook_pixel_7_days_after_clicking
     type: string
     sql: ${TABLE}.add_to_basket_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   #- dimension: add_to_wishlist_facebook_pixel
   #  type: string
@@ -105,6 +109,7 @@
   - dimension: advert_relevance_score
     type: string
     sql: ${TABLE}.advert_relevance_score
+    hidden: true
 
   - dimension: advert_set_id
     type: string
@@ -118,6 +123,7 @@
     type: number
     hidden: true
     sql: ${TABLE}.amount_spent_gbp
+    hidden: true
 
   #- dimension: avg_duration_canvas_viewed_gbp
   #  type: string
@@ -135,6 +141,7 @@
   - dimension: button_clicks
     type: string
     sql: ${TABLE}.button_clicks
+    hidden: true
 
   - dimension: campaign_id
     type: string
@@ -148,6 +155,7 @@
     type: string
     hidden: true
     sql: ${TABLE}.clicks_all
+    hidden: true
 
   #- dimension: clicks_to_play_video
   #  type: string
@@ -169,29 +177,35 @@
     type: string
     hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel
+    hidden: true
 
   - dimension: complete_registration_facebook_pixel_1_day_after_clicking
     type: string
     hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: complete_registration_facebook_pixel_28_days_after_clicking
     type: string
     hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: complete_registration_facebook_pixel_7_days_after_clicking
     type: string
     hidden: true
     sql: ${TABLE}.complete_registration_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   - dimension: ctr_all
     type: string
     sql: ${TABLE}.ctr_all
+    hidden: true
 
   - dimension: ctr_link
     type: string
     sql: ${TABLE}.ctr_link
+    hidden: true
 
   - dimension: effective_status
     type: string
@@ -221,59 +235,73 @@
     type: number
     sql: cast(${TABLE}.frequency as decimal(20,10))
     value_format: '#,##0.00'
+    hidden: true
 
   - dimension: impressions
     type: number
     hidden: true
     sql: cast(${TABLE}.impressions as integer)
+    hidden: true
 
   - dimension: initiate_checkout_facebook_pixel
     type: string
     sql: ${TABLE}.initiate_checkout_facebook_pixel
+    hidden: true
 
   - dimension: initiate_checkout_facebook_pixel_1_day_after_clicking
     type: string
     sql: ${TABLE}.initiate_checkout_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: initiate_checkout_facebook_pixel_28_days_after_clicking
     type: string
     sql: ${TABLE}.initiate_checkout_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: initiate_checkout_facebook_pixel_7_days_after_clicking
     type: string
     sql: ${TABLE}.initiate_checkout_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   - dimension: lead_facebook_pixel
     type: string
     sql: ${TABLE}.lead_facebook_pixel
+    hidden: true
 
   - dimension: lead_facebook_pixel_1_day_after_clicking
     type: string
     sql: ${TABLE}.lead_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: lead_facebook_pixel_28_days_after_clicking
     type: string
     sql: ${TABLE}.lead_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: lead_facebook_pixel_7_days_after_clicking
     type: string
     sql: ${TABLE}.lead_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   - dimension: link_clicks
     type: string
     sql: ${TABLE}.link_clicks
+    hidden: true
 
   - dimension: link_clicks_1_day_after_clicking
     type: string
     sql: ${TABLE}.link_clicks_1_day_after_clicking
+    hidden: true
 
   - dimension: link_clicks_28_days_after_clicking
     type: string
     sql: ${TABLE}.link_clicks_28_days_after_clicking
+    hidden: true
 
   - dimension: link_clicks_7_days_after_clicking
     type: string
     sql: ${TABLE}.link_clicks_7_days_after_clicking
+    hidden: true
 
   - dimension: negative_feedback
     type: string
@@ -302,34 +330,42 @@
   - dimension: page_engagement
     type: string
     sql: ${TABLE}.page_engagement
+    hidden: true
 
   - dimension: page_engagement_1_day_after_clicking
     type: string
     sql: ${TABLE}.page_engagement_1_day_after_clicking
+    hidden: true
 
   - dimension: page_engagement_28_days_after_clicking
     type: string
     sql: ${TABLE}.page_engagement_28_days_after_clicking
+    hidden: true
 
   - dimension: page_engagement_7_days_after_clicking
     type: string
     sql: ${TABLE}.page_engagement_7_days_after_clicking
+    hidden: true
 
   - dimension: page_likes
     type: string
     sql: ${TABLE}.page_likes
+    hidden: true
 
   - dimension: page_likes_1_day_after_clicking
     type: string
     sql: ${TABLE}.page_likes_1_day_after_clicking
+    hidden: true
 
   - dimension: page_likes_28_days_after_clicking
     type: string
     sql: ${TABLE}.page_likes_28_days_after_clicking
+    hidden: true
 
   - dimension: page_likes_7_days_after_clicking
     type: string
     sql: ${TABLE}.page_likes_7_days_after_clicking
+    hidden: true
 
   #- dimension: page_tab_views
   #  type: string
@@ -358,90 +394,112 @@
   - dimension: post_comments
     type: string
     sql: ${TABLE}.post_comments
+    hidden: true
 
   - dimension: post_comments_1_day_after_clicking
     type: string
     sql: ${TABLE}.post_comments_1_day_after_clicking
+    hidden: true
 
   - dimension: post_comments_28_days_after_clicking
     type: string
     sql: ${TABLE}.post_comments_28_days_after_clicking
+    hidden: true
 
   - dimension: post_comments_7_days_after_clicking
     type: string
     sql: ${TABLE}.post_comments_7_days_after_clicking
+    hidden: true
 
   - dimension: post_engagement
     type: string
     sql: ${TABLE}.post_engagement
+    hidden: true
 
   - dimension: post_engagement_1_day_after_clicking
     type: string
     sql: ${TABLE}.post_engagement_1_day_after_clicking
+    hidden: true
 
   - dimension: post_engagement_28_days_after_clicking
     type: string
     sql: ${TABLE}.post_engagement_28_days_after_clicking
+    hidden: true
 
   - dimension: post_engagement_7_days_after_clicking
     type: string
     sql: ${TABLE}.post_engagement_7_days_after_clicking
+    hidden: true
 
   - dimension: post_likes
     type: string
     sql: ${TABLE}.post_likes
+    hidden: true
 
   - dimension: post_likes_1_day_after_clicking
     type: string
     sql: ${TABLE}.post_likes_1_day_after_clicking
+    hidden: true
 
   - dimension: post_likes_28_days_after_clicking
     type: string
     sql: ${TABLE}.post_likes_28_days_after_clicking
+    hidden: true
 
   - dimension: post_likes_7_days_after_clicking
     type: string
     sql: ${TABLE}.post_likes_7_days_after_clicking
+    hidden: true
 
   - dimension: post_shares
     type: string
     sql: ${TABLE}.post_shares
+    hidden: true
 
   - dimension: post_shares_1_day_after_clicking
     type: string
     sql: ${TABLE}.post_shares_1_day_after_clicking
+    hidden: true
 
   - dimension: post_shares_28_days_after_clicking
     type: string
     sql: ${TABLE}.post_shares_28_days_after_clicking
+    hidden: true
 
   - dimension: post_shares_7_days_after_clicking
     type: string
     sql: ${TABLE}.post_shares_7_days_after_clicking
+    hidden: true
 
   - dimension: purchase_facebook_pixel
     type: string
     sql: ${TABLE}.purchase_facebook_pixel
+    hidden: true
 
   - dimension: purchase_facebook_pixel_1_day_after_clicking
     type: string
     sql: ${TABLE}.purchase_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: purchase_facebook_pixel_28_days_after_clicking
     type: string
     sql: ${TABLE}.purchase_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: purchase_facebook_pixel_7_days_after_clicking
     type: string
     sql: ${TABLE}.purchase_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   - dimension: reach
     type: string
     sql: ${TABLE}.reach
+    hidden: true
 
   - dimension: relevance_score
     type: string
     sql: ${TABLE}.relevance_score
+    hidden: true
 
   - dimension: relevance_score_status
     type: string
@@ -501,38 +559,47 @@
   - dimension: view_content_facebook_pixel
     type: string
     sql: ${TABLE}.view_content_facebook_pixel
+    hidden: true
 
   - dimension: view_content_facebook_pixel_1_day_after_clicking
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_1_day_after_clicking
+    hidden: true
 
   - dimension: view_content_facebook_pixel_28_days_after_clicking
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_28_days_after_clicking
+    hidden: true
 
   - dimension: view_content_facebook_pixel_7_days_after_clicking
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_7_days_after_clicking
+    hidden: true
 
   - dimension: website_actions_all
     type: string
     sql: ${TABLE}.website_actions_all
+    hidden: true
 
   - dimension: website_actions_all_1_day_after_clicking
     type: string
     sql: ${TABLE}.website_actions_all_1_day_after_clicking
+    hidden: true
 
   - dimension: website_actions_all_28_days_after_clicking
     type: string
     sql: ${TABLE}.website_actions_all_28_days_after_clicking
+    hidden: true
 
   - dimension: website_actions_all_7_days_after_clicking
     type: string
     sql: ${TABLE}.website_actions_all_7_days_after_clicking
+    hidden: true
 
   - dimension: website_ctr
     type: string
     sql: ${TABLE}.website_ctr
+    hidden: true
     
     
     
