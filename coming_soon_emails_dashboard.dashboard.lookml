@@ -40,7 +40,7 @@
       session_start_calendar.calendar_date_date: before today
       session_start_calendar.calendar_date_week: after 2016/04/11
     sorts: [session_start_calendar.calendar_date_week]
-    limit: 20
+    limit: 200
     stacking: ''
     colors: ['#5245ed', '#ed6168', '#1ea8df', '#353b49', '#49cec1', '#b3a0dd', '#db7f2a',
       '#706080', '#a2dcf3', '#776fdf', '#e9b404', '#635189']
