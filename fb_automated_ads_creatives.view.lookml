@@ -18,6 +18,10 @@
   - dimension: facebook_image_location
     type: string
     sql: ${TABLE}.facebook_image_location
+    
+  - dimension: instagram_image_location
+    type: string
+    sql: ${TABLE}.instagram_image_location
 
   - dimension: on_sale_flag
     type: string
