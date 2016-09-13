@@ -302,13 +302,34 @@
     sql: |
          case
          when ${acquisition_channel} <> 'CRM' then null
+         
          when ${TABLE}.email_folder_name = 'Newsletters'
-              or (${TABLE}.email_test_id is not null and ${TABLE}.email_folder_name is null) then 'Newsletters'
-         when ${TABLE}.email_folder_name is not null then ${TABLE}.email_folder_name
+              or (${TABLE}.email_test_id is not null and ${TABLE}.email_folder_name is null)
+              or ${campaign_name} in ('Introducing spring\'s need-to-know neutral', 'Meet the new arrivals', 'Open now! Visit us at the Finery Fitting Room', 'Next level layers')
+              then 'Newsletters'
+        
+         when ${campaign_name} = 'om_57f680befde1_Abandoned_basket'
+              or ${campaign_name} = 'abandon_cart'
+              then 'Abandon Cart'
+              
+         when ${TABLE}.email_folder_name in ('Feb 2016 CRM', 'May 2016 CRM', 'August 2016 CRM', 'September Acquisition Emails', 'October Batch 2 Acquisition', '  October Batch 1 Acquisition', 'October Retention Emails', 'October Batch 1 Acquisition')
+              or ${campaign_name} like 'om_%'
+              then 'Lifecycle Marketing'
+         
+         when ${campaign_name} in ('Nice to meet you', 'Don’t forget your discount is waiting', 'Use it, don’t lose it', 'You’re so in the know', 'Donâ€™t forget your discount is waiting', 'Use it, donâ€™t lose it', 'Youâ€™re so in the know')
+              or ${TABLE}.email_folder_name = 'Welcome Chain'
+              then 'Welcome Chain'
+        
+         when ${coming_soon_emails.option_name} is not null
+              or ${TABLE}.email_folder_name = 'Coming Soon Emails'
+              then 'Coming Soon Emails'
+         
          when ${TABLE}.mkt_medium_ga = 'transactional' then 'Transactional'
-         when ${TABLE}.mkt_campaign_ga like 'om_%' then 'Ometria Campaign'
+         
          else 'Other'
          end
+
+# before we tagged the URL's with campaign ID's we tagged them with the subject line of the email, which is why you have so many manual additions to the buckets in this dimension.
   
   - dimension: traffic_source
     label: CRM/Brand/Paid
