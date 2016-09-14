@@ -447,3 +447,5 @@
 - explore: website_performance_checks
 
 - explore: spree_import_notifications
+
+- explore: redshift_table_checks
