@@ -6,10 +6,17 @@
 
   filters:
   - name: facebook_country
-    title: "Facebook Country"
+    title: "Country"
     type: field_filter
     explore: facebook_api_ad_performance
     field: facebook_api_ad_performance.country
+    default_value:
+    
+  - name: facebook_acquisition_retention
+    title: "Acquisition | Retention"
+    type: field_filter
+    explore: facebook_api_ad_performance
+    field: facebook_api_ad_performance.buyers_vs_nonbuyers
     default_value:
 
   elements:
@@ -25,6 +32,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -61,6 +69,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -97,6 +106,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -133,6 +143,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -171,6 +182,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -209,6 +221,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -247,6 +260,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -285,6 +299,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -323,6 +338,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
     show_value_labels: false
@@ -365,6 +381,9 @@
       value_format_name: percent_2
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: '500'
     column_limit: '50'
@@ -414,6 +433,9 @@
       value_format_name: percent_2
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: '500'
     column_limit: '50'
@@ -463,6 +485,9 @@
       value_format_name: percent_2
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: '500'
     column_limit: '50'
@@ -552,6 +577,7 @@
       facebook_api_ad_performance.28d_total_action_purchase]
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     filters:
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     sorts: [facebook_api_ad_performance.calendar_week]
@@ -572,6 +598,9 @@
     measures: [facebook_api_ad_performance.avg_relevance_score]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_relevance_score desc]
     limit: 500
     stacking: ''
@@ -609,6 +638,9 @@
     measures: [facebook_api_ad_performance.avg_frequency]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_frequency desc]
     limit: 500
     stacking: ''
