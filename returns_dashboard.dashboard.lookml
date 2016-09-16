@@ -7,8 +7,8 @@
 
   elements:
 
-  - name: ss16_worst_30_returners
-    title: Worst 30 Returning Options (SS16)
+  - name: AW16_worst_30_returners
+    title: Worst 30 Returning Options (AW16)
     type: table
     model: finery_data
     explore: spree_order_items
@@ -19,7 +19,7 @@
       spree_order_items.total_items_returned_not_as_described, spree_order_items.total_items_returned_faulty]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: SS16
+      option_info.sub_season: AW16
       spree_order_items.total_items_sold: '>10'
     sorts: [spree_order_items.return_rate desc]
     limit: 30
@@ -43,14 +43,14 @@
     width: 10
 
   - name: season_return_rate
-    title: SS16 Stock - Return Rate
+    title: AW16 Stock - Return Rate
     type: single_value
     model: finery_data
     explore: spree_order_items
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: SS16
+      option_info.sub_season: AW16
     sorts: [spree_order_items.return_rate desc]
     limit: 1
     value_format: '#0.0%'
@@ -109,7 +109,7 @@
     width: 3
 
   - name: season_category_return_rates
-    title: SS16 Category Return Rates
+    title: AW16 Category Return Rates
     type: looker_bar
     model: finery_data
     explore: spree_order_items
@@ -117,7 +117,7 @@
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: SS16
+      option_info.sub_season: AW16
     sorts: [spree_order_items.return_rate desc]
     limit: 30
     stacking: ''
@@ -156,7 +156,7 @@
     width: 3
 
   - name: size_category_return_rates
-    title: SS16 Size Return Rates
+    title: AW16 Size Return Rates
     type: looker_bar
     model: finery_data
     explore: spree_order_items
@@ -164,7 +164,7 @@
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: SS16
+      option_info.sub_season: AW16
       variant_info.size: '6,8,10,12,14,16'
     sorts: [spree_order_items.return_rate desc]
     limit: 30
