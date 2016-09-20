@@ -89,6 +89,14 @@
     timeframes: [time, date, week, month]
     sql: ${TABLE}.clean_time
 
+  - dimension: unsubscription_campaign_title
+    type: string
+    sql: ${TABLE}.unsub_campaign_title
+
+  - dimension: unsubscription_campaign_id
+    type: string
+    sql: ${TABLE}.unsub_campaign_id
+
 ## Member engagement metrics
 
   - dimension: total_campaigns_sent
