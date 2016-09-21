@@ -284,7 +284,6 @@
     type: number
     decimals: 2
     sql: ${TABLE}.total_refunded
-    hidden: true
 
   - dimension: total_store_credit_refunded
     type: number
@@ -350,6 +349,26 @@
     type: yesno
     sql: ${TABLE}.top_customer_flag = 'Yes'
 
+  - dimension: return_rate_items
+    type: number
+    decimals: 2
+    sql: ${items_returned}/NULLIF(${items_purchased},0)::REAL
+    value_format: '#0%'
+   
+  - dimension: return_rate_value
+    type: number
+    decimals: 2
+    sql: (${total_gross_revenue_ex_discount_ex_shipping} - ${net_revenue})/NULLIF(${total_gross_revenue_ex_discount_ex_shipping},0)::REAL
+    value_format: '#0%'
+ 
+  - dimension: net_revenue_per_order
+    type: number
+    decimals: 2
+    sql: ${net_revenue}/NULLIF(${number_of_orders},0)::REAL
+    value_format: '#0.00'
+  
+ 
+ 
 ################################################################################################################    
   ############################################ Measures ##########################################################
     ################################################################################################################     
