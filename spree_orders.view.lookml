@@ -199,6 +199,13 @@
     tiers: [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200]
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
 
+  - dimension: basket_size_ex_shipping
+    label: Basket Size ex. Shipping
+    type: number
+    decimals: 2
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) / ${exchange_rate}
+    value_format: '#,##0.00'
+
   - dimension: basket_size_tier_50_gbp
     type: tier
     tiers: [50,100,150,200]
