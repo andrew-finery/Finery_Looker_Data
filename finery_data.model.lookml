@@ -189,9 +189,6 @@
   - join: visitors
     sql_on: ${spree_customers.email} = ${visitors.email_address}
     relationship: many_to_one
-  - join: all_referrals
-    sql_on: spree_orders.blended_email = all_referrals.email
-    relationship: many_to_one
 
 
 - explore: spree_order_items
@@ -272,16 +269,6 @@
     sql_on: ${variant_info.option_id} = ${option_info.option_id}
     relationship: many_to_one
 
-
-- explore: all_referrals
-  joins:
-  - join: spree_customers
-    sql_on: all_referrals.email = spree_customers.email
-    relationship: one_to_one
-  - join: visitors
-    sql_on: all_referrals.email = ${visitors.email_address}
-    relationship: one_to_one
-
 - explore: snowplow_product_click_through_daily
   joins:
   - join: option_info_daily
@@ -337,6 +324,23 @@
     sql_on: lower(${mc_newsletter_subscribers.email_address}) = lower(${spree_users.email_address})
     relationship: one_to_one
 
+- explore: mc_referrals
+  label:  'Mailchimp Referrals'
+  description: 'Customer referral scheme info'
+  joins:
+  - join: customer_info
+    from: spree_customers
+    sql_on: lower(${mc_referrals.email_address}) = lower(${customer_info.email})
+    relationship: one_to_one
+  - join: web_visitor_info
+    from: visitors
+    sql_on: lower(${mc_referrals.email_address}) = lower(${web_visitor_info.email_address})
+    relationship: one_to_one
+  - join: newsletter_subscribers
+    from: mc_newsletter_subscribers
+    sql_on: lower(${mc_referrals.email_address}) = lower(${newsletter_subscribers.email_address})
+    relationship: one_to_one
+    
 - explore: mc_campaign_member_activity
   label:  'Mailchimp Newsletter Subscriber Activity'
   description: 'Finery newsletter subscriber activity'
