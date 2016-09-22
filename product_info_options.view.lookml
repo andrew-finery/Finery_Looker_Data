@@ -214,6 +214,7 @@
           Woven Day Dresses: ${TABLE}.department = 'Woven Day Dresses'
           Woven Tops: ${TABLE}.department = 'Woven Tops'
           Swimwear: ${TABLE}.department = 'Swimwear'
+          Leather: ${TABLE}.department = 'Leather'
           else: 'Other'
      
      - dimension: big_department
