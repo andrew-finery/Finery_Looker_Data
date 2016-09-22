@@ -41,7 +41,7 @@
     
   - dimension: country
     sql: |
-          cas ewhen ${TABLE}.breakdown like 'IE' then 'IE'
+          case when ${TABLE}.breakdown like 'IE' then 'IE'
           when ${TABLE}.breakdown like 'FR' then 'FR'
           when ${TABLE}.breakdown like 'TR' then 'TR'
           when ${TABLE}.breakdown like 'JE' then 'JE'

@@ -21,7 +21,11 @@
           case when ${TABLE}.campaign_name like '%UK%' then 'UK'
           when ${TABLE}.campaign_name like '%USA%' then 'US'
           when ${TABLE}.campaign_name like '%Ireland%' then 'IE'
-          when ${TABLE}.campaign_name like '%AUS%' then 'AUS' end
+          when ${TABLE}.campaign_name like '%AUS%' then 'AUS'
+          when ${TABLE}.campaign_name like 'UK_%' then 'UK'
+          when ${TABLE}.campaign_name like 'US_%' then 'US'
+          when ${TABLE}.campaign_name like 'IE_%' then 'IE'
+          else 'Unknown' end
           
           
   - dimension: placement
