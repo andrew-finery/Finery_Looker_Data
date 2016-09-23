@@ -11,6 +11,13 @@
     explore: facebook_api_ad_performance
     field: facebook_api_ad_performance.country
     default_value:
+    
+  - name: facebook_acquisition_retention
+    title: "Non Buyers | Buyers"
+    type: field_filter
+    explore: facebook_api_ad_performance
+    field: facebook_api_ad_performance.buyers_vs_nonbuyers
+    default_value:
 
   elements:
   
@@ -24,6 +31,9 @@
     measures: [facebook_api_ad_performance.total_spend]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -68,6 +78,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -112,6 +123,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -155,7 +167,8 @@
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
-      country: facebook_api_ad_performance.country
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -200,6 +213,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -244,6 +258,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -288,6 +303,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -332,6 +348,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -376,6 +393,7 @@
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
       facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50
@@ -420,6 +438,9 @@
     filters:
       facebook_api_ad_performance.audience_segment: Acquisition
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -431,8 +452,8 @@
     top: 12
     left: 0
     
-  - name: fb_tracker_retargeting_custom_audience
-    title: 10 Week Performance - Retargeting Custom Audience
+  - name: fb_tracker_custom_audience
+    title: 10 Week Performance - Custom Audience
     type: table
     model: finery_data
     explore: facebook_api_ad_performance
@@ -441,8 +462,11 @@
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Retargeting Custom Audience
+      facebook_api_ad_performance.audience_segment: Custom Audience
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -464,8 +488,11 @@
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Retargeting DPA
+      facebook_api_ad_performance.audience_segment: DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
     limit: 500
     column_limit: 50
@@ -477,44 +504,52 @@
     top: 16
     left: 0
     
-  - name: segment_spend_split
-    title: Spend Split - Last 10 Weeks
+  - name: audience_segment_spend_split
+    title: Audience Segment Spend Split
     type: looker_column
     model: finery_data
-    explore: facebook_api_ad_performance_breakdown
-    dimensions: [facebook_api_ad_performance_breakdown.calendar_week, facebook_api_ad_performance_breakdown.audience_segment]
-    pivots: [facebook_api_ad_performance_breakdown.audience_segment]
-    measures: [facebook_api_ad_performance_breakdown.total_spend]
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_week, facebook_api_ad_performance.audience_segment]
+    pivots: [facebook_api_ad_performance.audience_segment]
+    measures: [facebook_api_ad_performance.total_spend]
     filters:
-      facebook_api_ad_performance_breakdown.breakdown_type: placement
-      facebook_api_ad_performance_breakdown.calendar_date: 10 weeks
-    sorts: [facebook_api_ad_performance_breakdown.calendar_week desc, facebook_api_ad_performance_breakdown.audience_segment]
-    limit: 500
-    column_limit: 50
+      facebook_api_ad_performance.calendar_week: 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
+    sorts: [facebook_api_ad_performance.calendar_week desc, facebook_api_ad_performance.audience_segment]
+    limit: '500'
+    column_limit: '50'
+    query_timezone: Europe/London
     stacking: percent
-    colors: ['#8dd3c7', '#ffed6f', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69',
-      '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#a3a3ff']
     show_value_labels: false
     label_density: 25
     legend_position: center
-    hide_legend: false
     x_axis_gridlines: false
     y_axis_gridlines: true
-    show_view_names: false
+    show_view_names: true
     limit_displayed_rows: false
     y_axis_combined: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
-    show_x_axis_label: false
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
     show_x_axis_ticks: true
     x_axis_scale: auto
+    y_axis_scale_mode: linear
     ordering: none
     show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: '#808080'
+    colors: 'palette: Santa Cruz'
+    series_colors: {}
     width: 6
     height: 4
     top: 16
     left: 6
+  
     
   - name: avg_relevance_score
     title: Avg Relevance Score
@@ -526,6 +561,9 @@
     measures: [facebook_api_ad_performance.avg_relevance_score]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_relevance_score desc]
     limit: 500
     stacking: ''
@@ -564,6 +602,9 @@
     measures: [facebook_api_ad_performance.avg_frequency]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_frequency desc]
     limit: 500
     stacking: ''
