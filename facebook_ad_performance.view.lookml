@@ -5,16 +5,17 @@
   - dimension: audience_segment
     sql: |
           case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition'
-          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Retargeting Custom Audience'
-          when ${TABLE}.campaign_name like '%DPA%' then 'Retargeting DPA'
-          when ${TABLE}.campaign_name like '%Buyers%' then 'Buyers' end
+          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Custom Audience'
+          when ${TABLE}.campaign_name like '%_CA_%' then 'Custom Audience'
+          when ${TABLE}.campaign_name like '%DPA%' then 'DPA' end
+          
           
   - dimension: buyers_vs_nonbuyers
     sql: |
-          case when ${TABLE}.campaign_name not like '%Retention%' and ${TABLE}.campaign_name not like '%Buyers%' and ${TABLE}.campaign_name not like '%Reactivation%' then 'Customer Acquisition'
-          when ${TABLE}.campaign_name like '%Retention%' then 'Customer Retention'
-          when ${TABLE}.campaign_name like '%Buyers%' then 'Customer Retention'
-          when ${TABLE}.campaign_name like '%Reactivation%' then 'Customer Retention' end
+          case when ${TABLE}.campaign_name like '%Retention%' then 'Buyers'
+          when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
+          when ${TABLE}.campaign_name like '%Buyers%' then 'Buyers'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else 'NonBuyers' end
           
   - dimension: country
     sql: |
