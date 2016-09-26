@@ -98,7 +98,13 @@
        type: number
        sql: ${TABLE}.retail_price_hkd
        value_format: '##0'
-       
+
+     - dimension: current_price_eur
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.retail_price_eur
+       value_format: '##0'
+
      - dimension: pre_sale_price_usd
        group_label: 'Prices'
        type: number
@@ -133,6 +139,12 @@
        group_label: 'Prices'
        type: number
        sql: ${TABLE}.pre_sale_price_hkd
+       value_format: '##0'
+
+     - dimension: pre_sale_price_eur
+       group_label: 'Prices'
+       type: number
+       sql: ${TABLE}.pre_sale_price_eur
        value_format: '##0'
 
      - dimension: first_price
