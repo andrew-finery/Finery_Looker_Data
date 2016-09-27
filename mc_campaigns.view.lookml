@@ -90,6 +90,10 @@
     type: int
     sql: ${TABLE}.subscriber_clicks
 
+  - dimension: unsubscriptions
+    type: int
+    sql: ${TABLE}.total_unsubscribes
+
   - dimension: campaign_click_rate
     type: number
     decimals: 4
@@ -101,7 +105,19 @@
     decimals: 4
     sql: ${subscriber_clicks}/NULLIF(${unique_opens},0)::REAL
     value_format: '#0.00%'
-    
+
+  - dimension: campaign_unsubscription_rate_opens
+    type: number
+    decimals: 4
+    sql: ${unsubscriptions}/NULLIF(${unique_opens},0)::REAL
+    value_format: '#0.00%'
+
+  - dimension: campaign_unsubscription_rate_emails_sent
+    type: number
+    decimals: 4
+    sql: ${unsubscriptions}/NULLIF(${emails_sent},0)::REAL
+    value_format: '#0.00%'
+
 ### Measures
   
   - measure: total_emails_sent
@@ -146,6 +162,21 @@
     type: count_distinct
     sql: ${campaign_id}
   
+  - measure: total_unsubscriptions
+    type: sum
+    sql: ${unsubscriptions}
+  
+  - measure: unsubscription_rate_opens
+    type: number
+    decimals: 4
+    sql: ${total_unsubscriptions}/NULLIF(${total_unique_opens},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: unsubscription_rate_emails_sent
+    type: number
+    decimals: 4
+    sql: ${total_unsubscriptions/NULLIF(${total_emails_sent},0)::REAL
+    value_format: '#0.00%'  
   
   
   
