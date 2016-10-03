@@ -41,7 +41,9 @@
     sql: |
          case when advert_name like 'Link%' then substring(advert_name,0,20) 
          when advert_name like 'Multi%' then substring(advert_name,0,29)
-         when advert_name like 'Video%' then substring(advert_name,0,22) end
+         when advert_name like 'Video%' then substring(advert_name,0,22)
+         when advert_name like '%Multi%' then substring(advert_name,0,4) 
+         when advert_name like 'Dynamic%' then 'DPA' end
         
   
   #- dimension: add_payment_info_facebook_pixel
