@@ -819,3 +819,26 @@
     left: 0
     height: 10
     width: 20
+
+  - name: country_performance_last_week
+    title: Performance by Country - Last Week
+    type: table
+    model: finery_data
+    explore: spree_orders
+    dimensions: [spree_addresses.country]
+    measures: [spree_orders.count_orders, spree_orders.sum_gross_revenue_ex_discount_in_gbp,
+      spree_orders.avg_gross_revenue_ex_discount_in_gbp, spree_orders.avg_items_in_basket,
+      spree_orders.asp]
+    filters:
+      spree_orders.completed_date: last week
+      spree_orders.completed_time: before today
+    sorts: [spree_orders.order_per_day desc 0, spree_orders.count_orders desc]
+    limit: '10'
+    column_limit: '50'
+    total: true
+    query_timezone: Europe/London
+    show_view_names: false
+    top: 60
+    left: 0
+    height: 8
+    width: 20
