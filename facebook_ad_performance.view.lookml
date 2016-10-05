@@ -132,6 +132,17 @@
     hidden: true
     sql: ${TABLE}.amount_spent_gbp
     hidden: true
+  
+  - dimension: smartly_commission
+    type: number
+    decimals: 4
+    sql: '0.0155' # Smartly commission approximately 1.55%
+  
+  - dimension: amount_spent_including_smartly_commission
+    type: number
+    decimals: 4
+    sql: ${amount_spent_gbp} * (1 + ${smartly_commission})
+    hidden: true
 
   #- dimension: avg_duration_canvas_viewed_gbp
   #  type: string
@@ -628,6 +639,12 @@
     type: sum
     decimals: 2
     sql: ${amount_spent_gbp}
+    value_format: '#,##0.00'
+
+  - measure: total_spend_including_smartly_commission
+    type: sum
+    decimals: 2
+    sql: ${amount_spent_including_smartly_commission}
     value_format: '#,##0.00'
 
   - measure: click_through_rate
