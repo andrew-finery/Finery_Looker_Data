@@ -79,6 +79,8 @@
     from: product_info_options
     sql_on: ${option_info.product_id} = ${fb_automated_ads_creatives_sale.product_id}
     relationship: many_to_one
+  - join: facebook_ads_copy
+    type: cross
     
 - explore: spree_customers
   joins:
@@ -243,6 +245,8 @@
     from: product_info_option_daily
     sql_on: ${daily_sales.calendar_date_date} = ${option_info_daily.calendar_date_date} and ${variant_info.option_id} = ${option_info_daily.option_id}
     relationship: many_to_one
+  - join: facebook_ads_copy
+    type: cross
 
 
 - explore: mandrill_email_summary
