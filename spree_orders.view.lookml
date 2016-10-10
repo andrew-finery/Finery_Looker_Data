@@ -364,6 +364,15 @@
     tiers: [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8]
     style: relational
     value_format: '0%'
+
+  - dimension: has_free_returns
+    type: yesno
+    sql: ${TABLE}.before_paid_returns_date= 1 or ${TABLE}.free_returns_flag = 1
+
+  - dimension: has_free_returns_backdated
+    description: 'Flags whether the order would have free returns under the new policy implemented on 01/09/2016'
+    type: yesno
+    sql: ${TABLE}.free_returns_flag = 1
     
 #################################################################################################################################################################################
 ####################################################### MEASURES ################################################################################################################
