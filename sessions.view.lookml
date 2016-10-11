@@ -123,6 +123,12 @@
     type: int
     sql: ${TABLE}.product_views
 
+  - dimension: product_views_tier
+    type: tier
+    tiers: [0,1,2,3,4,5]
+    style: integer
+    sql: case when ${product_views} is null then 0 else ${product_views} end
+
   - dimension: products_purchased
     type: int
     sql: ${TABLE}.products_purchased
@@ -621,7 +627,14 @@
   - measure: count_percent_of_total
     label: Visits Percent of Total
     type: percent_of_total
+    direction: row
     sql: ${count}
+
+  - measure: visits_percent_of_total_column
+    type: percent_of_total
+    direction: column
+    sql: ${count}
+    decimals: 1
 
   - measure: bounced_sessions_count
     label: Bounced Visits Total
