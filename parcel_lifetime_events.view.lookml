@@ -5,11 +5,13 @@
   - dimension: delivery_attempted
     type: number
     sql: ${TABLE}.delivery_attempted
+    hidden: true
 
   - dimension: delivery_confirmed
     type: number
     sql: ${TABLE}.delivery_confirmed
-
+    hidden: true
+    
   - dimension: despatch_site
     type: string
     sql: ${TABLE}.despatch_site
@@ -17,15 +19,16 @@
   - dimension: destination
     type: string
     sql: ${TABLE}.destination
-
+    
   - dimension: event_code
     type: string
     sql: ${TABLE}.event_code
-
+    hidden: true
+    
   - dimension: event_location
     type: string
     sql: ${TABLE}.event_location
-
+    
   - dimension: event_location2
     type: string
     sql: ${TABLE}.event_location2
@@ -33,7 +36,8 @@
   - dimension: event_location_code
     type: string
     sql: ${TABLE}.event_location_code
-
+    hidden: true
+    
   - dimension_group: event
     type: time
     timeframes: [time, date, week, month]
@@ -42,16 +46,20 @@
   - dimension: item_code
     type: string
     sql: ${TABLE}.item_code
-
+    hidden: true
+    
   - dimension: problem
     type: number
     sql: ${TABLE}.problem
-
+    hidden: true
+    
   - dimension: record_type
     type: string
     sql: ${TABLE}.record_type
+    hidden: true
 
   - dimension: senders_reference
+    label: 'shipment number'
     type: string
     sql: ${TABLE}.senders_reference
 
@@ -70,8 +78,4 @@
   - dimension: wire_number
     type: string
     sql: ${TABLE}.wire_number
-
-  - measure: count
-    type: count
-    drill_fields: []
-
+    hidden: true

@@ -193,7 +193,12 @@
   - join: visitors
     sql_on: ${spree_customers.email} = ${visitors.email_address}
     relationship: many_to_one
-
+  - join: parcel_lifetime_events
+    sql_on: spree_orders.shipment_number = parcel_lifetime_events.senders_reference
+    relationship: many_to_one
+  - join: parcel_tracking
+    sql_on: spree_orders.shipment_number = parcel_tracking.senders_reference
+    relationship: one_to_one
 
 - explore: spree_order_items
   fields: [ALL_FIELDS*, -online_products.option_for_returns_report]
@@ -430,6 +435,8 @@
 - explore: warehouse_stock_yesterday
 
 - explore: cml_orders
+
+- explore: parcel_tracking
 
 - explore: website_promo_block_click_through_daily
   label: 'Promo Block Click-Through'
