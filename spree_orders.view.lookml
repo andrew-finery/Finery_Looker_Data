@@ -367,7 +367,7 @@
 
   - dimension: has_free_returns
     type: yesno
-    sql: ${TABLE}.before_paid_returns_date= 1 or ${TABLE}.free_returns_flag = 1
+    sql: (${TABLE}.free_returns_flag = 1 and ${TABLE}.before_paid_returns_date = 0) or (${TABLE}.before_paid_returns_date = 1 and ${TABLE}.uk_order_flag = 1)
 
   - dimension: has_free_returns_backdated
     description: 'Flags whether the order would have free returns under the new policy implemented on 01/09/2016'
