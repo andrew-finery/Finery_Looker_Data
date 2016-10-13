@@ -146,6 +146,11 @@
     type: yesno
     sql: ${tracking_number} <> 'a'
     
+  - dimension: rm_delivery_due_date
+    type: time
+    timeframes: [date, day_of_week_index]
+    sql: ${TABLE}.rm_delivery_due_date
+    
 
 ##################################### REVENUE DIMENSIONS ##########################################################
 
@@ -232,6 +237,7 @@
   - dimension: primary_promotion
     label: Promotion
     sql: ${TABLE}.promotion
+  
   
 ####################### FLAGS ######################################################################################
 

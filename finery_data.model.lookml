@@ -194,10 +194,10 @@
     sql_on: ${spree_customers.email} = ${visitors.email_address}
     relationship: many_to_one
   - join: parcel_lifetime_events
-    sql_on: spree_orders.shipment_number = parcel_lifetime_events.senders_reference
+    sql_on: spree_orders.shipment_number = parcel_lifetime_events.senders_reference and spree_orders.tracking_number = parcel_lifetime_events.item_code
     relationship: many_to_one
   - join: parcel_tracking
-    sql_on: spree_orders.shipment_number = parcel_tracking.senders_reference
+    sql_on: spree_orders.shipment_number = parcel_tracking.senders_reference and spree_orders.tracking_number = parcel_tracking.item_code
     relationship: one_to_one
 
 - explore: spree_order_items

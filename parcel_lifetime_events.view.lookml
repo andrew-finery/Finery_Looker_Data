@@ -46,7 +46,6 @@
   - dimension: item_code
     type: string
     sql: ${TABLE}.item_code
-    hidden: true
     
   - dimension: problem
     type: number
