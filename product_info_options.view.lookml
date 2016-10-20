@@ -242,9 +242,29 @@
           else: 'Other'
  
      - dimension: sub_season
-       label: Sub-Season
+       label: Main Season
        sql: ${TABLE}.sub_season_code
-    
+     
+     - dimension: main_season_group
+       sql_case: 
+         New: ${sub_season} = 'SS17'
+         Current: ${sub_season} = 'AW16'
+         Previous: ${sub_season} = 'SS16'
+         else: 'Old'
+     
+     - dimension: category_type
+       sql: ${TABLE}.category_type
+     
+     - dimension: sub_season_2
+       label: Sub Season
+       sql: ${TABLE}.sub_season
+       
+     - dimension: colour_group_zedonk
+       sql: ${TABLE}.colour_group_2
+       
+     - dimension: washcare_instructions
+       sql: ${TABLE}.washcare_instructions
+       
      - dimension: factory
        label: Factory
        sql: ${TABLE}.factory

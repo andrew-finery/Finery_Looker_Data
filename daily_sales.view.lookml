@@ -13,7 +13,7 @@
     timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     convert_tz: false
     sql: ${TABLE}.calendar_date
-
+ 
   - dimension: year_week_number
     label: Year Week Number
     sql: ${TABLE}.year_week_number
@@ -262,6 +262,19 @@
     filters:
       calendar_date_day_of_week_index: 6
 
+  - measure: closing_stock_end_of_week_last_year
+    label: Closing Stock Units - Last Week - LY
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_day_of_week_index} = 6
+          and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM dateadd(week, -1, current_date))
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.closing_stock else 0 end
+          )
+    value_format: '#,##0'          
+
+
 # stock value @ cost
 
   - measure: closing_stock_value_cost
@@ -308,6 +321,18 @@
     filters:
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'
+
+  - measure: closing_stock_value_cost_end_of_week_last_year
+    label: Closing Stock Value @ Cost - End of Week - LY
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_day_of_week_index} = 6
+          and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM dateadd(week, -1, current_date))
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) else 0 end
+          )
+    value_format: '#,##0'     
     
 # closing stock @ retail
 
@@ -362,6 +387,18 @@
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'
 
+  - measure: closing_stock_value_retail_end_of_week_last_year
+    label: Closing Stock Value @ Retail - End of Week - LY
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_day_of_week_index} = 6
+          and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM dateadd(week, -1, current_date))
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.closing_stock * ${price} else 0 end
+          )
+    value_format: '#,##0' 
+
 # closing stock @ retail (FULL PRICE)
 
   - measure: closing_stock_value_retail_full_price
@@ -408,6 +445,18 @@
     filters:
       calendar_date_day_of_week_index: 6
     value_format: '#,##0.00'
+
+  - measure: closing_stock_value_retail_end_of_week_full_price_last_year
+    label: Closing Stock Value @ Retail - End of Week (Full Price) - LY
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_day_of_week_index} = 6
+          and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM dateadd(week, -1, current_date))
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.closing_stock*${original_price} else 0 end
+          )
+    value_format: '#,##0' 
     
 ### Number of sku's in stock measures
   
@@ -436,6 +485,18 @@
     filters:
       count_on_hand: -NULL, -0
       calendar_date_date: yesterday
+
+  - measure: skus_in_stock_last_year
+    label: Sizes in Stock - Last Year
+    type: number
+    sql: |
+          count (distinct
+          case when ${calendar_date_day_of_week_index} = MOD(EXTRACT(DOW FROM current_date - 1)::integer - 1 + 7, 7)
+          and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 1)
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${sku} else null end
+          )
+    value_format: '#,##0' 
 
 ####################### Weekly/Monthly Measures
 
@@ -480,7 +541,18 @@
     sql: ${TABLE}.items_sold    
     filters:
       calendar_date_date: this week
-
+  
+  - measure: sum_items_sold_last_week_last_year
+    label: Units Sold - Last Week LY
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 1)
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.items_sold else null end
+          )
+    value_format: '#,##0'     
+  
   - measure: gross_item_revenue_gbp_ex_vat_ex_discount_yesterday
     label: Gross Revenue ex. VAT, Discount - Yesterday
     type: sum
@@ -526,6 +598,19 @@
     filters:
       calendar_date_date: this week
 
+  - measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year
+    label: Gross Revenue ex. VAT, Discount - Last Week LY
+    type: sum
+    decimals: 2
+    type: number
+    sql: |
+          sum (
+          case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 1)
+          and ${calendar_date_date} between current_date - 400 and current_date - 300
+          then ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount else null end
+          )
+    value_format: '#,##0'
+    
   - measure: sales_mix_last_7_days
     label: Sales Mix - Last 7 Days
     type: percent_of_total
@@ -558,7 +643,7 @@
 ########################################################################################################################
 
   - measure: units_sold_wow
-    label: Units Sold - Week-On-Week
+    label: Units Sold Last Week - WoW
     type: number
     decimals: 2
     sql: (${sum_items_sold_last_week} - ${sum_items_sold_week_before})/NULLIF(${sum_items_sold_week_before},0)::REAL
@@ -571,7 +656,6 @@
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
-    hidden: true
 
   - measure: units_sold_yest_vs_lw
     label: Units Sold - Yesterday vs Last Week
@@ -589,7 +673,7 @@
         {% endif %}
 
   - measure: gross_revenue_wow
-    label: Gross Revenue - Week-On-Week
+    label: Gross Revenue Last Week - WoW
     type: number
     decimals: 2
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL
@@ -602,9 +686,44 @@
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
-    hidden: true
-    
   
+  - measure: units_sold_yoy
+    label: Units Sold Last Week - YoY
+    type: number
+    decimals: 2
+    sql: (${sum_items_sold_last_week} - ${sum_items_sold_last_week_last_year})/NULLIF(${sum_items_sold_last_week_last_year},0)::REAL
+    value_format: '#.00%'
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+  
+  - measure: gross_revenue_yoy
+    label: Revenue Last Week - YoY
+    type: number
+    decimals: 2
+    sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year},0)::REAL
+    value_format: '#0.00%'
+    html: |
+        {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+
+  - measure: closing_stock_yesterday_yoy
+    label: Closing Stock Units Last Week - YoY
+    type: number
+    decimals: 2
+    sql: (${closing_stock_last_week} - ${closing_stock_end_of_week_last_year})/NULLIF(${closing_stock_end_of_week_last_year},0)::REAL
+    value_format: '#0.00%'
+        
   - measure: units_sold_l4w
     type: sum
     sql: ${TABLE}.items_sold    
