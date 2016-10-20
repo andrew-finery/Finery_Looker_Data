@@ -177,6 +177,7 @@
     relationship: one_to_one
     
 - explore: spree_orders
+  always_join: [parcel_tracking]
   joins:
   - join: calendar_weeks
     sql_on: date(spree_orders.completed_at) = calendar_weeks.calendar_date

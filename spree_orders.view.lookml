@@ -42,7 +42,30 @@
   - dimension: order_contains_sale_items
     type: yesno
     sql: ${sale_item_count} > 0
-    
+  
+
+          
+  - dimension: RM_order_flag
+    type: int
+    sql: |
+          case when spree_orders.delivery_type = 'Next Day Delivery' then 1 
+          when spree_orders.delivery_type = 'Standard Delivery' then 1 end
+          
+  - dimension: RM_late_order_flag
+    type: int
+    sql: |
+          case when datediff(day, ${TABLE}.rm_delivery_due_date, parcel_tracking.attempted_delivery) > 0 and ${RM_order_flag} = 1 then 1 end 
+  
+  - dimension: RM_delivery_on_time_flag
+    type: int
+    sql: |
+          case when datediff(day, ${TABLE}.rm_delivery_due_date, parcel_tracking.attempted_delivery) <= 0 and ${RM_order_flag} = 1 then 1 end 
+          
+  - dimension: RM_no_attempted_delivery_flag
+    type: int
+    sql: |
+          case when parcel_tracking.attempted_delivery is null and ${RM_order_flag} = 1 then 1 end        
+  
   - dimension: order_code
     label: Order Code
     sql: ${TABLE}.order_code
@@ -392,6 +415,48 @@
     sql: ${TABLE}.order_id
     filters:
       state: -canceled
+      
+  - measure: RM_orders
+    type: sum
+    sql: ${RM_order_flag}
+      
+  - measure: total_on_time_delivery_attempt_rm_orders
+    label: RM On Time Attempt Deliveries
+    type: sum
+    sql: ${RM_delivery_on_time_flag}
+    
+  - measure: total_late_delivery_attempt_rm_orders
+    label: RM Late Attempt Deliveries
+    type: sum
+    sql: ${RM_late_order_flag}
+    
+  
+  - measure: total_no_attempted_delivery_rm_orders
+    label: RM No Attempt Deliveries
+    type: sum
+    sql: ${RM_no_attempted_delivery_flag}
+  
+      
+  - measure: percentage_of_on_time_rm_deliveries
+    label: RM On Time Attempted Deliveries Percentage
+    type: number
+    decimals: 2
+    sql: ${total_on_time_delivery_attempt_rm_orders}/NULLIF(${RM_orders},0)::REAL
+    value_format: '#0.00%'
+    
+  - measure: percentage_of_late_rm_deliveries
+    label: RM Late Attempted Deliveries Percentage
+    type: number
+    decimals: 2
+    sql: ${total_late_delivery_attempt_rm_orders}/NULLIF(${RM_orders},0)::REAL
+    value_format: '#0.00%'
+  
+  - measure: percentage_of_no_attempted_deliveries
+    label: RM No Attempted Deliveries Percentage
+    type: number
+    decimals: 2
+    sql: ${total_no_attempted_delivery_rm_orders}/NULLIF(${RM_orders},0)::REAL
+    value_format: '#0.00%'
   
   - measure: orders_perc_of_total
     label: Orders % Column
