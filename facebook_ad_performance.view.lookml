@@ -17,6 +17,11 @@
           when ${TABLE}.campaign_name like '%Buyers%' then 'Buyers'
           when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else 'NonBuyers' end
           
+  - dimension: aa_vs_custom
+    sql: |
+          case when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' then 'Custom' 
+          else 'AA' end
+          
   - dimension: country
     sql: |
           case when ${TABLE}.campaign_name like '%UK%' then 'UK'
@@ -39,7 +44,10 @@
 
   - dimension: advert_substring_name
     sql: |
-         case when advert_name like 'Link%' then substring(advert_name,0,20) 
+         case when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' and ${TABLE}.advert_name like '%Link%' then substring(advert_name,42,20)
+         when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' and ${TABLE}.advert_name like '%Multi%' then substring(advert_name,42,29)
+         when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' and ${TABLE}.advert_name like '%Video%' then substring(advert_name,42,24)
+         when advert_name like 'Link%' then substring(advert_name,0,20) 
          when advert_name like 'Multi%' then substring(advert_name,0,29)
          when advert_name like 'Video%' then substring(advert_name,0,22)
          when advert_name like '%Multi%' then substring(advert_name,0,4) 
