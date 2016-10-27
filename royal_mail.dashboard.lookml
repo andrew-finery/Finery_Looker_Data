@@ -17,6 +17,7 @@
     filters:
       spree_orders.completed_week: 10 weeks ago for 10 weeks
       spree_orders.completed_date: after 2016/10/03
+      spree_orders.RM_order_flag: '1'
     sorts: [spree_orders.completed_week desc]
     limit: '500'
     column_limit: '50'
@@ -74,6 +75,7 @@
       spree_orders.delivery_type: Standard Delivery,Next Day Delivery
       spree_orders.completed_date: after 2016/10/03
       spree_orders.completed_week: 10 weeks ago for 10 weeks
+      spree_orders.RM_order_flag: '1'
     sorts: [spree_orders.completed_week desc, spree_orders.delivery_type]
     limit: '500'
     column_limit: '50'
@@ -120,6 +122,7 @@
       spree_orders.delivery_type: Next Day Delivery
       spree_orders.completed_date: after 2016/10/03
       spree_orders.completed_week: 10 weeks ago for 10 weeks
+      spree_orders.RM_order_flag: '1'
     sorts: [spree_orders.completed_week desc, spree_orders.delivery_type]
     limit: '500'
     column_limit: '50'
@@ -169,6 +172,7 @@
       spree_orders.delivery_type: Standard Delivery
       spree_orders.completed_date: after 2016/10/03
       spree_orders.completed_week: 10 weeks ago for 10 weeks
+      spree_orders.RM_order_flag: '1'
     sorts: [spree_orders.completed_week desc, spree_orders.delivery_type]
     limit: '500'
     column_limit: '50'

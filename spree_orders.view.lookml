@@ -43,13 +43,13 @@
     type: yesno
     sql: ${sale_item_count} > 0
   
-
           
   - dimension: RM_order_flag
     type: int
     sql: |
-          case when spree_orders.delivery_type = 'Next Day Delivery' then 1 
-          when spree_orders.delivery_type = 'Standard Delivery' then 1 end
+          case when spree_orders.delivery_type = 'Next Day Delivery' and parcel_tracking.last_event_status_detail is not null then 1 
+          when spree_orders.delivery_type = 'Standard Delivery' and parcel_tracking.last_event_status_detail is not null then 1 
+          else 0 end
           
   - dimension: RM_late_order_flag
     type: int
@@ -419,6 +419,12 @@
   - measure: RM_orders
     type: sum
     sql: ${RM_order_flag}
+    
+  - measure: No_RM_match_orders
+    type: count
+    sql: ${RM_order_flag}
+    filters:
+      RM_order_flag: 0
       
   - measure: total_on_time_delivery_attempt_rm_orders
     label: RM On Time Attempt Deliveries
@@ -436,7 +442,13 @@
     type: sum
     sql: ${RM_no_attempted_delivery_flag}
   
-      
+  - measure: percentage_of_no_rm_match_orders
+    label: No RM Match Orders Percentage
+    type: number
+    decimals: 2
+    sql: ${No_RM_match_orders}/(NULLIF(${RM_orders},0)::REAL + NULLIF(${No_RM_match_orders},0)::REAL)
+    value_format: '#0.00%'
+    
   - measure: percentage_of_on_time_rm_deliveries
     label: RM On Time Attempted Deliveries Percentage
     type: number
