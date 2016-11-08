@@ -662,17 +662,31 @@
   
   - measure: total_ads_live
     type: count_distinct
-    sql: ${campaign_id} || ${advert_id}
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
     filters:
       advert_is_live: yes
 
   - measure: total_automated_ads_live
     type: count_distinct
-    sql: ${campaign_id} || ${advert_id}
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
     filters:
       advert_is_live: yes
       advert_type: Automated Carousel Ad
-  
+
+  - measure: total_dpa_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+      advert_type: DPA Carousel Ad
+
+  - measure: total_manual_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+      advert_type: Manual Carousel Ad, Manual Link Post Ad, Manual Video Post Ad
+
   - measure: total_impressions
     type: sum
     sql: ${impressions}
