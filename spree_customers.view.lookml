@@ -367,7 +367,34 @@
     sql: ${net_revenue}/NULLIF(${number_of_orders},0)::REAL
     value_format: '#0.00'
   
- 
+  - dimension: rfm_recency
+    sql: |
+          case
+          when current_date - ${last_order_date} < 183 then 1
+          when current_date - ${last_order_date} < 366 then 2
+          when current_date - ${last_order_date} >= 366 then 3
+          else null end
+          
+  - dimension: rfm_frequency
+    sql: |
+          case
+          when ${number_of_orders} > 2 then 1
+          when ${number_of_orders} = 2 then 2
+          when ${number_of_orders} = 1 then 3
+          else null end
+          
+    
+  - dimension: rfm_monetary
+    sql: |
+          case
+          when ${net_revenue} >= 100 then 1
+          when ${net_revenue} > 0 then 2
+          when ${net_revenue} <= 0 then 3
+          else null end
+          
+  - dimension: rfm_bucket
+    sql: ${rfm_recency}||'-'||${rfm_frequency}||'-'||${rfm_monetary}
+          
  
 ################################################################################################################    
   ############################################ Measures ##########################################################

@@ -121,6 +121,27 @@
     type: string
     sql: ${TABLE}.advert_name
 
+  - dimension: advert_type
+    type: string
+    sql: |
+          case
+          when ${advert_name} like 'Dynamic_Ad%' then 'DPA Carousel Ad'
+          when ${advert_name} like '0%' then 'Automated Carousel Ad'
+          when ${advert_name} like '1%' then 'Automated Carousel Ad'
+          when ${advert_name} like '2%' then 'Automated Carousel Ad'
+          when ${advert_name} like '3%' then 'Automated Carousel Ad'
+          when ${advert_name} like '4%' then 'Automated Carousel Ad'
+          when ${advert_name} like '5%' then 'Automated Carousel Ad'
+          when ${advert_name} like '6%' then 'Automated Carousel Ad'
+          when ${advert_name} like '7%' then 'Automated Carousel Ad'
+          when ${advert_name} like '8%' then 'Automated Carousel Ad'
+          when ${advert_name} like '9%' then 'Automated Carousel Ad'
+          when ${advert_name} like '%Multi_product_Post%' then 'Manual Carousel Ad'
+          when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
+          when ${advert_name} like '%Video_Post%' then 'Manual Video Post Ad'
+          else 'Other' end
+
+
   - dimension: advert_relevance_score
     type: string
     sql: ${TABLE}.advert_relevance_score
@@ -268,6 +289,10 @@
     hidden: true
     sql: cast(${TABLE}.impressions as integer)
     hidden: true
+  
+  - dimension: advert_is_live
+    type: yesno
+    sql: ${impressions} > 0
 
   - dimension: initiate_checkout_facebook_pixel
     type: string
@@ -633,6 +658,33 @@
   ######################################################################################################
   ###################################### MEASURES ####################################################
 ######################################################################################################
+  
+  - measure: total_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+
+  - measure: total_automated_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+      advert_type: Automated Carousel Ad
+
+  - measure: total_dpa_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+      advert_type: DPA Carousel Ad
+
+  - measure: total_manual_ads_live
+    type: count_distinct
+    sql: ${campaign_id} || ${advert_id} || ${advert_set_id}
+    filters:
+      advert_is_live: yes
+      advert_type: Manual Carousel Ad, Manual Link Post Ad, Manual Video Post Ad
 
   - measure: total_impressions
     type: sum
