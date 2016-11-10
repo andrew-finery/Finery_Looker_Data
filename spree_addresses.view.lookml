@@ -37,6 +37,9 @@
   - dimension: full_post_code
     sql: ${TABLE}.zipcode
     
+  - dimension: phone_number
+    sql: ${TABLE}.phone_number
+
   - dimension: address_line_1
     sql: ${TABLE}.address_line_1
     
