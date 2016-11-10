@@ -38,8 +38,8 @@
     sql: |
           case
           when ${TABLE}.campaign_name like '%Instagram%' or ${TABLE}.advert_set_name like '%Instagram%' then 'Instagram'
-          when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' or ${TABLE}.advert_set_name like '%Mobile%' then 'Mobile' 
-          when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%RHS%' or ${TABLE}.advert_set_name like '%Desktop%'  then 'Desktop' end
+          when ${TABLE}.campaign_name like '%Mobile%' or ${TABLE}.advert_set_name like '%NFM%' then 'Mobile' 
+          when ${TABLE}.campaign_name like '%Desktop%' or ${TABLE}.advert_set_name like '%NFD%' or ${TABLE}.advert_set_name like '%RHS%' then 'Desktop' end
 
   - dimension: advert_substring_name
     sql: |
