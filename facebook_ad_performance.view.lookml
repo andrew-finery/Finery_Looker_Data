@@ -14,8 +14,8 @@
     sql: |
           case when ${TABLE}.campaign_name like '%Retention%' then 'Buyers'
           when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
-          when ${TABLE}.campaign_name like '%Buyers%' then 'Buyers'
-          when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else 'NonBuyers' end
+          when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
+          when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else null end
           
   - dimension: aa_vs_custom
     sql: |
