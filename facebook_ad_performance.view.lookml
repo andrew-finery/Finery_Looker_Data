@@ -5,9 +5,11 @@
   - dimension: audience_segment
     sql: |
           case when ${TABLE}.campaign_name like '%Acquisition%' then 'Acquisition'
-          when ${TABLE}.campaign_name like '%Custom Audience%' then 'Custom Audience'
-          when ${TABLE}.campaign_name like '%_CA_%' then 'Custom Audience'
-          when ${TABLE}.campaign_name like '%DPA%' then 'DPA' end
+          when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'Custom Audience'
+          when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'Custom Audience'
+          when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_NonBuyers%'then 'DPA' 
+          when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - CA'
+          when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - DPA' end
           
           
   - dimension: buyers_vs_nonbuyers
