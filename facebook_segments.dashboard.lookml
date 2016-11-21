@@ -436,7 +436,7 @@
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Acquisition
+      facebook_api_ad_performance.audience_segment: NonBuyers - Acquisition
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     listen: 
       facebook_country: facebook_api_ad_performance.country
@@ -462,7 +462,7 @@
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: Custom Audience
+      facebook_api_ad_performance.audience_segment: NonBuyers - Custom Audience
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     listen: 
       facebook_country: facebook_api_ad_performance.country
@@ -488,7 +488,7 @@
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
       facebook_api_ad_performance.28d_total_action_purchase]
     filters:
-      facebook_api_ad_performance.audience_segment: DPA
+      facebook_api_ad_performance.audience_segment: NonBuyers - DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
     listen: 
       facebook_country: facebook_api_ad_performance.country
@@ -502,6 +502,58 @@
     width: 6
     height: 4
     top: 16
+    left: 0
+    
+  - name: fb_tracker_retargeting_ca_buyers
+    title: 10 Week Performance - Buyers CA
+    type: table
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_week]
+    measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.28d_total_action_purchase]
+    filters:
+      facebook_api_ad_performance.audience_segment: Buyers - CA
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
+    sorts: [facebook_api_ad_performance.calendar_week desc]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    table_theme: editable
+    limit_displayed_rows: false
+    width: 6
+    height: 4
+    top: 16
+    left: 6
+    
+  - name: fb_tracker_retargeting_dpa_buyers
+    title: 10 Week Performance - Buyers DPA
+    type: table
+    model: finery_data
+    explore: facebook_api_ad_performance
+    dimensions: [facebook_api_ad_performance.calendar_week]
+    measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
+      facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
+      facebook_api_ad_performance.28d_total_action_purchase]
+    filters:
+      facebook_api_ad_performance.audience_segment: Buyers - DPA
+      facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
+    listen: 
+      facebook_country: facebook_api_ad_performance.country
+      facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
+    sorts: [facebook_api_ad_performance.calendar_week desc]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    table_theme: editable
+    limit_displayed_rows: false
+    width: 6
+    height: 4
+    top: 20
     left: 0
     
   - name: audience_segment_spend_split
@@ -547,7 +599,7 @@
     series_colors: {}
     width: 6
     height: 4
-    top: 16
+    top: 20
     left: 6
   
     
@@ -589,7 +641,7 @@
     interpolation: linear
     width: 6
     height: 4
-    top: 20
+    top: 24
     left: 0
     
   - name: avg_frequency
@@ -630,5 +682,5 @@
     interpolation: linear
     width: 6
     height: 4
-    top: 20
+    top: 24
     left: 6
