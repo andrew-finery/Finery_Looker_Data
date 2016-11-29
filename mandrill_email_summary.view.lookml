@@ -59,7 +59,7 @@
       Referral: ${email_subject} like 'Your exclusive invitation from %'
       Items Refunded: ${email_subject} like 'Your returned items were refunded - %' or ${email_subject} like '%Reimbursement Notification%'
       Return Being Processed: ${email_subject} like 'Your return is being processed - %' or ${email_subject} like 'Your Return is being processed - %'
-      Abandoned Cart: ${email_subject} like '%Forget something?%' or ${email_subject} like '%We have saved your items%'  or ${email_subject} like '%We saved your items%' or ${email_subject} like '%Did you drop something?%'
+      Abandoned Cart: ${email_subject} like '%Forget something?%' or ${email_subject} like '%We have saved your items%'  or ${email_subject} like '%We saved your items%' or ${email_subject} like '%Did you drop something?%' or ${email_subject} like '%We Saved Your Items%' or ${email_subject} like '%Did you drop something?%'
       Password Reset: ${email_subject} = 'Reset your Finery Password'
       Fine Soceity: ${email_subject} = 'Welcome to the club!'
       Special Gift: ${email_subject} = 'A special gift from us to you'

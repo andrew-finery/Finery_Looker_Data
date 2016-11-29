@@ -314,7 +314,7 @@
               or ${campaign_name} in ('Introducing spring\'s need-to-know neutral', 'Meet the new arrivals', 'Open now! Visit us at the Finery Fitting Room', 'Next level layers')
               then 'Newsletters'
         
-         when ${campaign_name} = 'om_57f680befde1_Abandoned_basket'
+         when ${campaign_name} in ('om_57f680befde1_Abandoned_basket', 'om_3092a235a0bc_Abandoned_Basket_Black_Friday')
               or ${campaign_name} = 'abandon_cart'
               then 'Abandon Cart'
               

@@ -125,7 +125,7 @@
     measures: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
     sorts: [sessions.count desc]
     limit: 500
     column_limit: ''
@@ -163,7 +163,7 @@
     measures: [sessions.sum_orders]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
     sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: ''
@@ -201,7 +201,7 @@
     measures: [sessions.conversion_rate]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
     sorts: [sessions.conversion_rate desc]
     limit: 500
     column_limit: ''
@@ -347,7 +347,7 @@
     measures: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
       sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     column_limit: ''
@@ -385,7 +385,7 @@
     measures: [sessions.sum_orders]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     column_limit: ''
@@ -423,7 +423,7 @@
     measures: [sessions.sum_gross_revenue_ex_discount]
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
-      sessions.campaign_name: om_57f680befde1_Abandoned_basket
+      sessions.crm_sub_channel: Abandon Cart
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     stacking: ''
