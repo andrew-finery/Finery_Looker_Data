@@ -36,8 +36,11 @@
   - join: coming_soon_emails
     from: coming_soon_email_summary
     sql_on: ${coming_soon_emails.sku} = ${sessions.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${sessions.campaign_term}
-
-
+    relationship: many_to_one
+  - join: affiliate_lookup
+    sql_on: cast(${affiliate_lookup.affiliate_id} as varchar(255)) = ${sessions.campaign_name}
+    relationship: many_to_one
+    
 - explore: website_products
   from: website_product_stats
   joins:
