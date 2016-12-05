@@ -38,7 +38,7 @@
     sql_on: ${coming_soon_emails.sku} = ${sessions.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${sessions.campaign_term}
     relationship: many_to_one
   - join: affiliate_lookup
-    sql_on: cast(${affiliate_lookup.affiliate_id} as varchar(255)) = ${sessions.campaign_name}
+    sql_on: cast(${affiliate_lookup.campaign_id} as varchar(255)) = ${sessions.campaign_name}
     relationship: many_to_one
     
 - explore: website_products
@@ -395,7 +395,11 @@
 - explore: webgains_orders
   label:  'Webgains Orders'
   description: 'Information on all orders tracked by Webgains'
-
+  joins:
+  - join: affiliate_lookup
+    sql_on: cast(${affiliate_lookup.campaign_id} as varchar(255)) = ${webgains_orders.campaign_id}
+    relationship: many_to_one
+  
 - explore: spree_stripped_out_orders
   label: 'Non-Reported Orders'
   description: 'Information on all orders that are not reported on for revenue purposes'

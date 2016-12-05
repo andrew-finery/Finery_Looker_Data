@@ -1,10 +1,10 @@
 - view: affiliate_lookup
-  sql_table_name: affiliate_data.lookup_table
+  sql_table_name: affiliate_data.campaign_lookup
   fields:
 
-  - dimension: affiliate_id
+  - dimension: campaign_id
     type: number
-    sql: ${TABLE}.affiliate_id
+    sql: ${TABLE}.campaign_id
 
   - dimension: affiliate_name
     type: string
