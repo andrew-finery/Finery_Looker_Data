@@ -474,3 +474,5 @@
 - explore: spree_import_notifications
 
 - explore: redshift_table_checks
+
+- explore: daily_kpis
