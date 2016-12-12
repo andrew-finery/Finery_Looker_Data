@@ -10,6 +10,10 @@
   - dimension: country_id
     sql: ${TABLE}.country_id
     hidden: true
+  
+  - dimension: uk_flag
+    type: yesno
+    sql: ${country_id} = 44
     
   - dimension: map_postcode
     label: Postcode Area

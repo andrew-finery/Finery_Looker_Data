@@ -123,7 +123,7 @@
     sql_case:
       In-Store: ${TABLE}.in_store_flag = 1
       else: Online
-
+  
 # Shipping Dimensions
   
   - dimension: ship_address_id
@@ -133,7 +133,11 @@
   - dimension: shipping_method
     label: Delivery Method
     sql: ${TABLE}.shipping_method
-
+  
+  - dimension: paid_for_shipping
+    type: yesno
+    sql: ${TABLE}.shipment_total > 0
+  
   - dimension: shipment_number
     label: Shipment Number
     sql: ${TABLE}.shipment_number
@@ -505,7 +509,7 @@
     type: count_distinct
     sql: ${TABLE}.order_id
     filters:
-      items_returned: -0
+      items_returned: '>0'
  
   - measure: orders_with_discount
     label: Orders with Discount
