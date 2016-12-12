@@ -248,6 +248,7 @@
     y_axis_scale_mode: linear
     label_value_format: 0, "k"
     show_null_labels: false
+    show_dropoff: true
     height: 4
     width: 6
     top: 18
@@ -291,6 +292,7 @@
     x_axis_scale: auto
     y_axis_scale_mode: linear
     show_null_labels: false
+    show_dropoff: true
     height: 4
     width: 6
     top: 18
@@ -335,6 +337,7 @@
     y_axis_scale_mode: linear
     label_value_format: 0.0%
     show_null_labels: false
+    show_dropoff: true
     height: 4
     width: 6
     top: 22
@@ -379,6 +382,7 @@
     y_axis_scale_mode: linear
     label_value_format: '"£"0'
     show_null_labels: false
+    show_dropoff: true
     height: 4
     width: 6
     top: 22
