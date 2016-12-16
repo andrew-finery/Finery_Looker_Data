@@ -362,3 +362,20 @@
     type: string
     sql: ${TABLE}.us_sale_dpa_product_viewed_all
 
+  - dimension: uk_sale_acquisition
+    type: string
+    sql: ${TABLE}.uk_sale_acq
+
+  - dimension: uk_sale_custom_audience
+    type: string
+    sql: ${TABLE}.uk_sale_ca
+
+  - dimension: uk_sale_buyers_custom_audience
+    type: string
+    sql: ${TABLE}.uk_sale_buyers_ca
+
+  - dimension: uk_sale_buyers_dpa
+    type: string
+    sql: ${TABLE}.uk_sale_buyers_dpa
+  
+
