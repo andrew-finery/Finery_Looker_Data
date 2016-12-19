@@ -85,6 +85,9 @@
   - join: facebook_ads_copy
     type: cross
     
+  
+- explore: adwords_criteria_performance
+    
 - explore: spree_customers
   joins:
   - join: newsletter_subscribers
