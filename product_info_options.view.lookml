@@ -348,8 +348,8 @@
     
      - dimension: size_availability
        type: number
-       decimals: 2
-       sql: ${sizes_in_stock}/nullif(${sizes_online},0)::REAL
+       decimals: 4
+       sql: coalesce((${sizes_in_stock}/nullif(${sizes_online},0)::REAL), 0)
        value_format: '0%'
       
      - dimension: return_rate
@@ -360,9 +360,56 @@
             else ${items_returned_b4_28_days_ago}/nullif(${items_sold_b4_28_days_ago},0)::REAL
             end
        value_format: '0%'
+
+## DISPLAY FEED DIMENSIONS
        
+     - dimension: unique_id
+       sql: ${product_id}
+       group_label: Display Feed
+     
+     - dimension: reporting_label
+       sql: ${shorthand_name} || '_' || ${product_id}
+       group_label: Display Feed
+     
+     - dimension: is_active
+       sql: | 
+            case
+            when (${online_flag}
+                  and ${size_availability} >= 0.5
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}) then 'TRUE'
+            else 'FALSE' end
+       group_label: Display Feed
+     
+     - dimension: fallback
+       sql: ${is_active}
+       group_label: Display Feed
+    
+    # clarify what fallback means
+     
+     - dimension: display_feed_product_link
+       sql: | 
+            case when ${on_sale_flag} = 'On Sale' then 'https://www.finerylondon.com/t/final-call/?utm_list_id=179a8621fb&pin_products=' || ${product_id}
+            else 'https://www.finerylondon.com/t/new-collection/?pin_products=' || ${product_id}
+            end
+       group_label: Display Feed
+     
+     - dimension: is_default
+       sql: | 
+              case when ${product_id} = (select max (product_id) from sales.option_info
+                                          where online_flag = 'Yes'
+                                          and (coalesce((variants_in_stock/nullif(variants_in_spree,0)::REAL), 0)) >= 0.5
+                                          and stock_on_hand > 0
+                                          and option_info.coming_soon_spree != 'true'
+                                          and option_info.display_rule_spree not in (1,2,3)
+                                          )
+                   then 'TRUE' else 'FALSE' end
+                                          
+       group_label: Display Feed
+      
+     
 ########################################################################################################################################
-############################################### DIMENSIONS #############################################################################
+############################################### MEASURES #############################################################################
 ########################################################################################################################################
      - measure: nbr_weeks_online
        type: int
