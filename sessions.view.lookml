@@ -314,7 +314,7 @@
               or ${campaign_name} in ('Introducing spring\'s need-to-know neutral', 'Meet the new arrivals', 'Open now! Visit us at the Finery Fitting Room', 'Next level layers')
               then 'Newsletters'
         
-         when ${campaign_name} in ('om_57f680befde1_Abandoned_basket', 'om_3092a235a0bc_Abandoned_Basket_Black_Friday')
+         when ${campaign_name} in ('om_57f680befde1_Abandoned_basket', 'om_3092a235a0bc_Abandoned_Basket_Black_Friday', 'om_49921c675983_Abandoned_Basket_Sale_7_days')
               or ${campaign_name} = 'abandon_cart'
               then 'Abandon Cart'
               
@@ -881,7 +881,7 @@
   - measure: average_basket_size
     type: number
     decimals: 2
-    sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_orders},0)::REAL
+    sql: ${sum_gross_revenue_ex_discount}/NULLIF(${sum_orders},0)::REAL
 
     
 #################################################################################################################

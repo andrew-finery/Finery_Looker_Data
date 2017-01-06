@@ -371,20 +371,36 @@
        sql: ${shorthand_name} || '_' || ${product_id}
        group_label: Display Feed
      
-     - dimension: is_active
+     - dimension: is_active_ecom
        sql: | 
             case
             when (${online_flag}
                   and ${size_availability} >= 0.5
                   and ${units_in_stock} > 0
-                  and not ${coming_soon_flag}) then 'TRUE'
+                  and not ${coming_soon_flag}
+                  and ${dpa_image} is not null) then 'TRUE'
             else 'FALSE' end
        group_label: Display Feed
-     
-     - dimension: fallback
-       sql: ${is_active}
+
+     - dimension: is_active_packshot
+       sql: | 
+            case
+            when (${online_flag}
+                  and ${size_availability} >= 0.5
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}
+                  and ${packshot_image} is not null) then 'TRUE'
+            else 'FALSE' end
        group_label: Display Feed
-    
+       
+     - dimension: fallback_ecom
+       sql: ${is_active_ecom}
+       group_label: Display Feed
+
+     - dimension: fallback_packshot
+       sql: ${is_active_packshot}
+       group_label: Display Feed
+       
     # clarify what fallback means
      
      - dimension: display_feed_product_link
@@ -402,6 +418,8 @@
                                           and stock_on_hand > 0
                                           and option_info.coming_soon_spree != 'true'
                                           and option_info.display_rule_spree not in (1,2,3)
+                                          and facebook_image_location is not null
+                                          and packshot_image_location is not null
                                           )
                    then 'TRUE' else 'FALSE' end
                                           
