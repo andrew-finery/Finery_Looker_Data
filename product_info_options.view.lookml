@@ -405,26 +405,38 @@
      
      - dimension: display_feed_product_link
        sql: | 
-            case when ${on_sale_flag} = 'On Sale' then 'https://www.finerylondon.com/t/final-call/?utm_list_id=179a8621fb&pin_products=' || ${product_id}
+            case when ${on_sale_flag} = 'On Sale' then 'https://www.finerylondon.com/t/final-call/?pin_products=' || ${product_id}
             else 'https://www.finerylondon.com/t/new-collection/?pin_products=' || ${product_id}
             end
        group_label: Display Feed
      
-     - dimension: is_default
+     - dimension: is_default_ecom
        sql: | 
-              case when ${product_id} = (select max (product_id) from sales.option_info
+              case when ${product_id} = (select MIN (product_id) from sales.option_info
                                           where online_flag = 'Yes'
                                           and (coalesce((variants_in_stock/nullif(variants_in_spree,0)::REAL), 0)) >= 0.5
                                           and stock_on_hand > 0
                                           and option_info.coming_soon_spree != 'true'
                                           and option_info.display_rule_spree not in (1,2,3)
                                           and facebook_image_location is not null
-                                          and packshot_image_location is not null
                                           )
                    then 'TRUE' else 'FALSE' end
                                           
        group_label: Display Feed
-      
+
+     - dimension: is_default_packshot
+       sql: | 
+              case when ${product_id} = (select MIN (product_id) from sales.option_info
+                                          where online_flag = 'Yes'
+                                          and (coalesce((variants_in_stock/nullif(variants_in_spree,0)::REAL), 0)) >= 0.5
+                                          and stock_on_hand > 0
+                                          and option_info.coming_soon_spree != 'true'
+                                          and option_info.display_rule_spree not in (1,2,3)
+                                          and packshot_image_location is not null
+                                          )
+                   then 'TRUE' else 'FALSE' end
+                                          
+       group_label: Display Feed      
      
 ########################################################################################################################################
 ############################################### MEASURES #############################################################################
