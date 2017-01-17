@@ -138,6 +138,7 @@
           when ${advert_name} like '7%' then 'Automated Carousel Ad'
           when ${advert_name} like '8%' then 'Automated Carousel Ad'
           when ${advert_name} like '9%' then 'Automated Carousel Ad'
+          when ${advert_name} like '%Multi_product Post_Customer Reactivation%' then 'Automated Carousel Ad'
           when ${advert_name} like '%Multi_product_Post%' then 'Manual Carousel Ad'
           when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
           when ${advert_name} like '%Video_Post%' then 'Manual Video Post Ad'
