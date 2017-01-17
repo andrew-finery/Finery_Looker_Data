@@ -12,6 +12,14 @@
           case when ${TABLE}.accountdescriptivename like 'uk_%' then 'UK'
           case when ${TABLE}.accountdescriptivename like 'ie_%' then 'IE'
           case when ${TABLE}.accountdescriptivename like 'us_%' then 'US' end
+          
+  - dimension: audience_segment
+    sql: |
+          case when ${TABLE}.campaign like '%acquisition%' then 'acquisition'
+          case when ${TABLE}.campaign like '%retargeting%' then 'retargeting'
+          case when ${TABLE}.campaign like '%buyers%' then 'buyers' end
+          
+          
   - dimension: ad_group
     type: string
     sql: ${TABLE}.ad_group
@@ -53,8 +61,10 @@
     sql: ${TABLE}.click_type
 
   - dimension: clicks
-    type: string
-    sql: ${TABLE}.clicks
+    type: number
+    hidden: true
+    sql: cast(${TABLE}.impressions as integer)
+    hidden: true
 
   - dimension: conversion_optimizer_bid_type
     type: string
@@ -113,8 +123,10 @@
     sql: ${TABLE}.first_position_cpc
 
   - dimension: impressions
-    type: string
-    sql: ${TABLE}.impressions
+    type: number
+    hidden: true
+    sql: cast(${TABLE}.impressions as integer)
+    hidden: true
 
   - dimension: is_negative
     type: string
@@ -182,4 +194,31 @@
     decimals: 2
     sql: ${cost}/1000000
     value_format: '#,##0.00'
+    
+  - measure: total_impressions
+    type: sum
+    sql: ${impressions}
+    
+  - measure: total_clicks
+    type: sum
+    sql: ${clicks}
+    
+  - measure: click_through_rate
+    label: CTR
+    type: number
+    sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL
+    value_format: '0.00%'
+    
+  - measure: cost_per_click
+    label: CPC
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_clicks},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: cost_per_mille
+    label: CPM
+    type: number
+    sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
+    value_format: '#,##0.00'
+  
 
