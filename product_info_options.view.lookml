@@ -1,5 +1,9 @@
 - view: product_info_options
-  sql_table_name: sales.option_info
+  derived_table:
+    sql: |
+          select * from sales.option_info a
+          left join (select product_id as product_id_2, model_name, background_colour from finery.product_shoot_information) b
+          on a.product_id = b.product_id_2
 
 
   fields:
@@ -208,6 +212,12 @@
        sql: ${TABLE}.option_image
        html: |
           <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="130" width="86"/>
+
+     - dimension: image_model_name
+       sql: initcap(${TABLE}.model_name)
+
+     - dimension: image_background_colour
+       sql: initcap(${TABLE}.background_colour)
 
      - dimension: category
        label: Department
