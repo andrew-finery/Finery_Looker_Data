@@ -63,7 +63,7 @@
   - dimension: clicks
     type: number
     hidden: true
-    sql: cast(${TABLE}.impressions as integer)
+    sql: cast(${TABLE}.clicks as integer)
     hidden: true
 
   - dimension: conversion_optimizer_bid_type
