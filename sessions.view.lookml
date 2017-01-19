@@ -393,6 +393,15 @@
     sql: ${TABLE}.refr_urlpath_ga
     
   # MKT fields (paid acquisition channels)
+  
+  - dimension: fb_audience_segment
+    sql: |
+          case when ${TABLE}.mkt_campaign_ga like '%Acquisition%' then 'NonBuyers - Acquisition'
+          when ${TABLE}.mkt_campaign_ga like '%Custom Audience%' and ${TABLE}.mkt_campaign_ga like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
+          when ${TABLE}.mkt_campaign_ga like '%_CA_%' and ${TABLE}.mkt_campaign_ga like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
+          when ${TABLE}.mkt_campaign_ga like '%_DPA%' and ${TABLE}.mkt_campaign_ga like '%_NonBuyers%'then 'NonBuyers - DPA' 
+          when ${TABLE}.mkt_campaign_ga like '%_CA_%' and ${TABLE}.mkt_campaign_ga like '%_Buyers%' then 'Buyers - CA'
+          when ${TABLE}.mkt_campaign_ga like '%_DPA%' and ${TABLE}.mkt_campaign_ga like '%_Buyers%' then 'Buyers - DPA' end
     
   - dimension: campaign_medium
     label: Campaign Medium
