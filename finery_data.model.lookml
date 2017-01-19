@@ -40,6 +40,10 @@
   - join: affiliate_lookup
     sql_on: cast(${affiliate_lookup.campaign_id} as varchar(255)) = ${sessions.campaign_name}
     relationship: many_to_one
+  - join: adwords_campaigns
+    from: adwords_campaigns
+    sql_on: ${adwords_campaigns.campaign_id} = ${sessions.campaign_name}
+    relationship: many_to_one
     
 - explore: website_products
   from: website_product_stats
@@ -87,6 +91,8 @@
     
   
 - explore: adwords_criteria_performance
+
+- explore: search_query_performance
     
 - explore: spree_customers
   joins:
