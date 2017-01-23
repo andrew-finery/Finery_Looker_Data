@@ -12,6 +12,36 @@
 ############################################### DIMENSIONS #############################################################################
 ########################################################################################################################################
 
+     
+     - dimension: google_category
+       type: string
+       sql: |
+            case
+            when ${category} = 'Accessories' then 'Clothing & Accessories > Clothing Accessories' 
+            when ${category} = 'Jersey Day Dresses' then 'Clothing & Accessories > Clothing > Dresses' 
+            when ${category} = 'Jersey Tops' then 'Clothing & Accessories > Clothing > Shirts & Tops' 
+            when ${category} = 'Jewellery' then 'Clothing & Accessories > Jewellery & Watches' 
+            when ${category} = 'Jumpsuits' then 'Clothing & Accessories > Clothing > One-Pieces' 
+            when ${category} = 'Knitwear' then 'Clothing & Accessories > Clothing > Shirts & Tops' 
+            when ${category} = 'Leather' then 'Clothing & Accessories > Clothing'
+            when ${category} = 'Occasion Dresses' then 'Clothing & Accessories > Clothing > Dresses' 
+            when ${category} = 'Other' then 'Clothing & Accessories > Clothing' 
+            when ${category} = 'Outerwear & Blazers' then 'Clothing & Accessories > Clothing > Outerwear'
+            when ${category} = 'Shoes' then 'Clothing & Accessories > Shoes'
+            when ${category} = 'Skirts' then 'Clothing & Accessories > Clothing > Skirts' 
+            when ${category} = 'Swimwear' then 'Clothing & Accessories > Clothing > Swimwear'
+            when ${category} = 'Trousers & Shorts' then 'Clothing & Accessories > Clothing' 
+            when ${category} = 'Woven Day Dresses' then 'Clothing & Accessories > Clothing > Dresses' 
+            when ${category} = 'Woven Tops' then 'Clothing & Accessories > Clothing > Shirts & Tops' 
+            
+            end
+            
+     
+          
+     - dimension: description
+       label: Description
+       sql: ${TABLE}.description
+       
      - dimension: style
        label: Style
        sql: ${TABLE}.style_name
