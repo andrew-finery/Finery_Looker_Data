@@ -56,7 +56,14 @@
     from: product_info_options
     sql_on: ${website_products.id} = ${option_info.product_id} 
     relationship: many_to_one
+  - join: option_info_daily
+    from: product_info_option_daily
+    sql_on: ${visits.start_date} = ${option_info_daily.calendar_date_date}
+    relationship: many_to_one
     
+  
+  
+  
 - explore: snowplow_transaction_attribution
   joins:
   - join: transactions
