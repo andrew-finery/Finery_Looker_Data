@@ -892,6 +892,31 @@
     decimals: 2
     sql: ${sum_gross_revenue_ex_discount}/NULLIF(${sum_orders},0)::REAL
 
+  - measure: average_items_in_basket
+    type: number
+    decimals: 2
+    sql: ${sum_products_purchased}/NULLIF(${sum_orders},0)::REAL
+  
+  - measure: average_selling_price
+    type: number
+    decimals: 2
+    sql: (${sum_gross_revenue_ex_discount} - ${sum_shipping_revenue})/NULLIF(${sum_products_purchased},0)::REAL
+    
+# products added to cart per visit
+  - measure: products_added_to_cart_per_visit
+    type: number
+    decimals: 2
+    sql: ${sum_products_added_to_cart}/NULLIF(${count},0)::REAL
+    value_format: '#0.00'
+    
+# % of product views added to cart
+  - measure: product_added_to_cart_view_ratio
+    type: number
+    decimals: 2
+    sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL
+    value_format: '#0.00%'
+    
+    
     
 #################################################################################################################
 ########################################### Conversion Funnel Measures ##########################################
@@ -1161,4 +1186,10 @@
     type: number
     decimals: 4
     sql: (${conversion_funnel_4} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_4},0)::REAL
+    value_format: '#0.00%'
+
+  - measure: checkout_abandonment_rate
+    type: number
+    decimals: 4
+    sql: (${conversion_funnel_7} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_7},0)::REAL
     value_format: '#0.00%'
