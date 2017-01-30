@@ -16,8 +16,9 @@
   - dimension: audience_segment
     sql: |
           case when ${TABLE}.campaign like '%acquisition%' then 'acquisition'
-          when ${TABLE}.campaign like '%retargeting%' then 'retargeting'
-          when ${TABLE}.campaign like '%buyers%' then 'buyers' end
+          when ${TABLE}.campaign like '%retarget%' then 'retargeting'
+          when ${TABLE}.campaign like '%buyers%' then 'buyers' 
+          else 'mixture' end
           
           
   - dimension: ad_group
