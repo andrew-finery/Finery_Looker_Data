@@ -10,14 +10,14 @@
   - dimension: Country
     sql: |
           case when ${TABLE}.accountdescriptivename like 'uk_%' then 'UK'
-          case when ${TABLE}.accountdescriptivename like 'ie_%' then 'IE'
-          case when ${TABLE}.accountdescriptivename like 'us_%' then 'US' end
+          when ${TABLE}.accountdescriptivename like 'ie_%' then 'IE'
+          when ${TABLE}.accountdescriptivename like 'us_%' then 'US' end
           
   - dimension: audience_segment
     sql: |
           case when ${TABLE}.campaign like '%acquisition%' then 'acquisition'
-          case when ${TABLE}.campaign like '%retargeting%' then 'retargeting'
-          case when ${TABLE}.campaign like '%buyers%' then 'buyers' end
+          when ${TABLE}.campaign like '%retargeting%' then 'retargeting'
+          when ${TABLE}.campaign like '%buyers%' then 'buyers' end
           
           
   - dimension: ad_group
