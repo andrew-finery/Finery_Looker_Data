@@ -75,6 +75,21 @@
   #  sql: ${TABLE}.add_payment_info_facebook_pixel_7_days_after_clicking
   #  type: string
 
+  - dimension: conversion_value_1_day_after_clicking
+    type: number
+    sql: ${TABLE}.conversion_value_1_day_after_clicking
+    hidden: true
+    
+  - dimension: conversion_value_7_days_after_clicking
+    type: number
+    sql: ${TABLE}.conversion_value_7_days_after_clicking
+    hidden: true
+    
+  - dimension: conversion_value_28_days_after_clicking
+    type: number
+    sql: ${TABLE}.conversion_value_28_days_after_clicking
+    hidden: true
+    
   - dimension: add_to_basket_facebook_pixel
     type: string
     sql: ${TABLE}.add_to_basket_facebook_pixel
@@ -696,7 +711,42 @@
   - measure: total_clicks
     type: sum
     sql: ${clicks_all}
-
+  
+  
+  
+  - measure: total_conversion_value_1_day_after_clicking
+    type: sum
+    decimals: 2
+    sql: ${conversion_value_1_day_after_clicking}
+    value_format: '#,##0.00'
+    
+  - measure: total_conversion_value_7_days_after_clicking
+    type: sum
+    decimals: 2
+    sql: ${conversion_value_7_days_after_clicking}
+    value_format: '#,##0.00'
+    
+  - measure: total_conversion_value_28_days_after_clicking
+    type: sum
+    decimals: 2
+    sql: ${conversion_value_28_days_after_clicking}
+    value_format: '#,##0.00'
+    
+  - measure: 1d_average_basket
+    type: number
+    sql: ${total_conversion_value_1_day_after_clicking}/ NULLIF(${1d_total_action_purchase},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 7d_average_basket
+    type: number
+    sql: ${total_conversion_value_7_days_after_clicking}/ NULLIF(${7d_total_action_purchase},0) ::REAL
+    value_format: '#,##0.00'
+    
+  - measure: 28d_average_basket
+    type: number
+    sql: ${total_conversion_value_28_days_after_clicking}/ NULLIF(${28d_total_action_purchase},0) ::REAL
+    value_format: '#,##0.00'
+  
   - measure: total_spend
     type: sum
     decimals: 2
