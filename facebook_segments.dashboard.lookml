@@ -434,7 +434,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - Acquisition
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
@@ -460,7 +460,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - Custom Audience
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
@@ -486,7 +486,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
@@ -512,7 +512,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     filters:
       facebook_api_ad_performance.audience_segment: Buyers - CA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
@@ -538,7 +538,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_cpa_purchase,
       facebook_api_ad_performance.1d_total_action_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     filters:
       facebook_api_ad_performance.audience_segment: Buyers - DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
