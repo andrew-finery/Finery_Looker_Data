@@ -13,7 +13,7 @@
 
   - dimension_group: member_subscribed_time
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     sql: ${TABLE}.confirm_time
 
   - dimension: confirm_ip
@@ -81,12 +81,12 @@
 
   - dimension_group: member_unsubscribed_time
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     sql: ${TABLE}.unsub_time
 
   - dimension_group: member_cleaned_time
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, date, hour_of_day, hour, time_of_day, day_of_week_index, day_of_week, week, week_of_year, day_of_month, month, month_num, year, quarter, quarter_of_year]
     sql: ${TABLE}.clean_time
 
   - dimension: unsubscription_campaign_title
