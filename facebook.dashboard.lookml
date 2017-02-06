@@ -574,7 +574,7 @@
     dimensions: [facebook_api_ad_performance.calendar_week]
     measures: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.1d_total_action_purchase,
       facebook_api_ad_performance.1d_cpa_purchase, facebook_api_ad_performance.28d_cpa_purchase,
-      facebook_api_ad_performance.28d_total_action_purchase]
+      facebook_api_ad_performance.28d_total_action_purchase, facebook_api_ad_performance.28d_average_basket]
     listen: 
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
