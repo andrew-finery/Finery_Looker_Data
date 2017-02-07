@@ -17,7 +17,8 @@
     sql: |
           case when ${TABLE}.campaign like '%acquisition%' then 'acquisition'
           when ${TABLE}.campaign like '%retarget%' then 'retargeting'
-          when ${TABLE}.campaign like '%buyers%' then 'buyers' 
+          when ${TABLE}.campaign like '%buyers%' then 'buyers'
+          when ${TABLE}.campaign like '%shopping_feed%' then 'shopping_feed'
           else 'mixture' end
           
           
