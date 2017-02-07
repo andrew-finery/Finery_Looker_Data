@@ -286,9 +286,9 @@
      
      - dimension: main_season_group
        sql_case: 
-         New: ${sub_season} = 'SS17'
-         Current: ${sub_season} = 'AW16'
-         Previous: ${sub_season} = 'SS16'
+         New: ${sub_season} = 'AW17'
+         Current: ${sub_season} = 'SS17'
+         Previous: ${sub_season} = 'AW16'
          else: 'Old'
      
      - dimension: category_type
