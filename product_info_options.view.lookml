@@ -396,14 +396,26 @@
        type: string
        sql: |
             case
-            when ${size_availability} >= 0.5 then 'in stock' else 'out of stock' end
+            when (${online_flag}
+                  and ${size_availability} >= 0.5
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}
+                  and ${dpa_image} is not null)
+            then 'in stock' else 'out of stock'
+            end
             
             
      - dimension: availability_dpa_addtocart
        type: string
        sql: |
             case
-            when ${size_availability} > 0 then 'in stock' else 'out of stock' end
+            when (${online_flag}
+                  and ${size_availability} > 0
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}
+                  and ${dpa_image} is not null)
+            then 'in stock' else 'out of stock'
+            end
       
      - dimension: return_rate
        type: number
