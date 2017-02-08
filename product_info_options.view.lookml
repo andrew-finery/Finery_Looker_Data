@@ -400,6 +400,13 @@
             else ${items_returned_b4_28_days_ago}/nullif(${items_sold_b4_28_days_ago},0)::REAL
             end
        value_format: '0%'
+      
+     - dimension: product_page_url
+       sql: | 
+            'https://www.finerylondon.com/uk/products/' || ${slug}
+            
+       
+       
 
 ## DISPLAY FEED DIMENSIONS
        
