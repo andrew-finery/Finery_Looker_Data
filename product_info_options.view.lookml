@@ -391,6 +391,19 @@
        decimals: 4
        sql: coalesce((${sizes_in_stock}/nullif(${sizes_online},0)::REAL), 0)
        value_format: '0%'
+       
+     - dimension: availability_dpa_productviewed
+       type: string
+       sql: |
+            case
+            when ${size_availability} >= 0.5 then 'in stock' else 'out of stock' end
+            
+            
+     - dimension: availability_dpa_addtocart
+       type: string
+       sql: |
+            case
+            when ${size_availability} > 0 then 'in stock' else 'out of stock' end
       
      - dimension: return_rate
        type: number
