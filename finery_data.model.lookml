@@ -99,6 +99,8 @@
   
 - explore: adwords_criteria_performance
 
+- explore: adwords_search_query_performance
+
 - explore: search_query_performance
     
 - explore: spree_customers
