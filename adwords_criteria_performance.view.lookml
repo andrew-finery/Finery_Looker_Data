@@ -73,8 +73,10 @@
     sql: ${TABLE}.conversion_optimizer_bid_type
 
   - dimension: conversions
-    type: string
+    type: number
+    hidden: true
     sql: ${TABLE}.conversions
+    hidden: true
 
   - dimension: cost
     type: number
@@ -197,6 +199,10 @@
     sql: ${cost}/1000000
     value_format: '#,##0.00'
     
+  - measure: total_conversions
+    type: sum
+    sql: ${conversions}
+    
   - measure: total_impressions
     type: sum
     sql: ${impressions}
@@ -204,6 +210,12 @@
   - measure: total_clicks
     type: sum
     sql: ${clicks}
+    
+  - measure: cost_per_purchase
+    label: CPA Purchase
+    type: number
+    sql: ${total_spend}/ NULLIF(${total_conversions},0) ::REAL
+    value_format: '#,##0.00'
     
   - measure: click_through_rate
     label: CTR
