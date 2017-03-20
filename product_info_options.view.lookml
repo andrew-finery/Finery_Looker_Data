@@ -412,6 +412,31 @@
        decimals: 4
        sql: coalesce((${sizes_in_stock}/nullif(${sizes_online},0)::REAL), 0)
        value_format: '0%'
+       
+     - dimension: availability_dpa_productviewed
+       type: string
+       sql: |
+            case
+            when (${online_flag}
+                  and ${size_availability} >= 0.5
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}
+                  and ${dpa_image} is not null)
+            then 'in stock' else 'out of stock'
+            end
+            
+            
+     - dimension: availability_dpa_addtocart
+       type: string
+       sql: |
+            case
+            when (${online_flag}
+                  and ${size_availability} > 0
+                  and ${units_in_stock} > 0
+                  and not ${coming_soon_flag}
+                  and ${dpa_image} is not null)
+            then 'in stock' else 'out of stock'
+            end
       
      - dimension: return_rate
        type: number
@@ -421,6 +446,13 @@
             else ${items_returned_b4_28_days_ago}/nullif(${items_sold_b4_28_days_ago},0)::REAL
             end
        value_format: '0%'
+      
+     - dimension: product_page_url
+       sql: | 
+            'https://www.finerylondon.com/uk/products/' || ${slug}
+            
+       
+       
 
 ## DISPLAY FEED DIMENSIONS
        
