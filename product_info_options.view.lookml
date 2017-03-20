@@ -324,6 +324,27 @@
         £150 - £200: ${current_price_gbp} < 200
         £200 - £300: ${current_price_gbp} < 300
         else: '£300 and over'
+
+     - dimension: selling_price_tiered_10
+       label: Current Price Tier (£10)
+       sql_case:
+        £0 - £10: ${current_price_gbp} < 10
+        £10 - £20: ${current_price_gbp} < 20
+        £20 - £30: ${current_price_gbp} < 30
+        £30 - £40: ${current_price_gbp} < 40
+        £40 - £50: ${current_price_gbp} < 50
+        £50 - £60: ${current_price_gbp} < 60
+        £60 - £70: ${current_price_gbp} < 70
+        £70 - £80: ${current_price_gbp} < 80
+        £80 - £90: ${current_price_gbp} < 90
+        £90 - £100: ${current_price_gbp} < 100
+        £100 - £110: ${current_price_gbp} < 110
+        £110 - £120: ${current_price_gbp} < 120
+        £120 - £130: ${current_price_gbp} < 130
+        £130 - £140: ${current_price_gbp} < 140
+        £140 - £150: ${current_price_gbp} < 150
+        £150 - £300: ${current_price_gbp} < 300
+        else: '£300 and over'
     
      - dimension: discount_level_tier
        label: Discount Level Tier
