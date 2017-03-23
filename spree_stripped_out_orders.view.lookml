@@ -209,13 +209,6 @@
     sql: ${TABLE}.order_id
     filters:
       items_returned: -0, -NULL
- 
-  - measure: orders_with_discount
-    label: Orders with Discount
-    type: count_distinct
-    sql: ${TABLE}.order_id
-    filters:
-      discount_flag: Yes
   
   - measure: count_customers
     label: Customers

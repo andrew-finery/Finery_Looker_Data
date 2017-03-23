@@ -246,7 +246,7 @@
     value_format: '#,##0.00'
     hidden: true
 
-  - measure: revenue_ex_voucher_and_vat
+  - dimension: revenue_ex_voucher_and_vat
     type: number
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate}
     decimals: 2

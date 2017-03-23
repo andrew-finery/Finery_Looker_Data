@@ -18,7 +18,7 @@
     sql: |
           case when carousel_card = 'No Breakdown' then 'DPA Cards'
           when carousel_card = 'Finery London' then 'Finery London'
-          when carousel_card = '{{product.name}}' then 'DPA Cards'
+          when carousel_card like '%product.name%' then 'DPA Cards'
           else substring(carousel_card, 4, len(carousel_card)) end
           
   - dimension: ad_id

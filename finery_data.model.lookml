@@ -1,6 +1,5 @@
 - connection: finery-redshift
 
-- scoping: true                  # for backward compatibility
 - include: "*.view.lookml"       # include all the views
 - include: "*.dashboard.lookml"  # include all the dashboards
 
@@ -60,7 +59,10 @@
     from: product_info_option_daily
     sql_on: ${visits.start_date} = ${option_info_daily.calendar_date_date}
     relationship: many_to_one
-    
+  - join: coming_soon_emails
+    from: coming_soon_email_summary
+    sql_on: ${coming_soon_emails.sku} = ${visits.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${visits.campaign_term}
+    relationship: many_to_one    
   
   
   
@@ -72,7 +74,11 @@
   - join: sessions
     sql_on: ${snowplow_transaction_attribution.user_id} = ${sessions.domain_user_id} and ${snowplow_transaction_attribution.domain_session_index} = ${sessions.domain_session_index}
     relationship: many_to_one
-
+  - join: coming_soon_emails
+    from: coming_soon_email_summary
+    sql_on: ${coming_soon_emails.sku} = ${sessions.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${sessions.campaign_term}
+    relationship: many_to_one
+    
 - explore: facebook_api_ad_performance
 - explore: facebook_api_ad_performance_breakdown
 - explore: facebook_carousel_breakdown
@@ -86,6 +92,7 @@
     relationship: many_to_one
   - join: facebook_ads_copy
     type: cross
+    relationship: many_to_one
 
 - explore: fb_automated_ads_creatives_sale
   joins:
@@ -95,13 +102,13 @@
     relationship: many_to_one
   - join: facebook_ads_copy
     type: cross
+    relationship: many_to_one
     
   
 - explore: adwords_criteria_performance
 
 - explore: adwords_search_query_performance
 
-- explore: search_query_performance
     
 - explore: spree_customers
   joins:
@@ -114,23 +121,8 @@
     relationship: one_to_one
   - join: spree_users
     sql_on: lower(${spree_customers.email}) = lower(${spree_users.email_address})
+    relationship: one_to_one
     
-- explore: fb_daily_ad_performance
-  label: 'Facebook Perfomance'
-  joins:
-  - join: 1_day_click_through
-    from: fb_daily_ad_perf_1day_click
-    sql_on: ${fb_daily_ad_performance.calendar_date} = ${1_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${1_day_click_through.ad}
-    relationship: one_to_one
-  - join: 7_day_click_through
-    from: fb_daily_ad_perf_7day_click
-    sql_on: ${fb_daily_ad_performance.calendar_date} = ${7_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${7_day_click_through.ad}
-    relationship: one_to_one
-  - join: 28_day_click_through
-    from: fb_daily_ad_perf_28day_click
-    sql_on: ${fb_daily_ad_performance.calendar_date} = ${28_day_click_through.calendar_date} and ${fb_daily_ad_performance.ad} = ${28_day_click_through.ad}
-    relationship: one_to_one
-
 - explore: transactions
   label: 'Website Orders'
   joins:
@@ -150,6 +142,10 @@
     from: spree_customers
     sql_on: ${customer_info.email} = ${transactions.blended_email}
     relationship: many_to_one
+  - join: coming_soon_emails
+    from: coming_soon_email_summary
+    sql_on: ${coming_soon_emails.sku} = ${website_visits.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${website_visits.campaign_term}
+    relationship: many_to_one 
     
 #- explore: atomic_events
 #  fields: [ALL_FIELDS]
@@ -274,6 +270,7 @@
     relationship: many_to_one
   - join: facebook_ads_copy
     type: cross
+    relationship: many_to_one
 
 
 - explore: mandrill_email_summary
@@ -338,7 +335,10 @@
     from: sessions
     sql_on: ${website_page_views.domain_userid} = ${visits.domain_user_id} and ${website_page_views.domain_sessionidx} = ${visits.domain_session_index}    
     relationship: many_to_one
-    
+  - join: coming_soon_emails
+    from: coming_soon_email_summary
+    sql_on: ${coming_soon_emails.sku} = ${visits.campaign_name} and cast(to_char(${coming_soon_emails.email_sent_date}, 'dd/mm/yyyy') as varchar(255)) = ${visits.campaign_term}
+    relationship: many_to_one 
 
 
 - explore: mc_newsletter_subscribers
