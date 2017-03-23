@@ -19,14 +19,24 @@
             group by 1
            )
            
+           , step_3 as (
+           SELECT 
+           DATE(cast(date as date)) AS calendar_date, 
+           spend as daily_affiliate_fix_spend
+           FROM affiliate_data.fixed_fee_daily
+           )
+
+           
            select
            a.calendar_date,
            a.facebook_spend,
            b.orders,
-           b.gross_revenue
+           b.gross_revenue,
+           c.daily_affiliate_fix_spend
            from
            step_1 a
            left join step_2 b on a.calendar_date = b.calendar_date
+           left join step_3 c on a.calendar_date = c.calendar_date
 
   fields:
 
@@ -41,6 +51,11 @@
     type: number
     decimals: 2
     sql: ${TABLE}.facebook_spend
+    
+  - dimension: daily_affiliate_fix_spend
+    type: number
+    decimals: 2
+    sql: ${TABLE}.daily_affiliate_fix_spend
   
   - dimension: orders
     type: int
@@ -54,6 +69,12 @@
 
 # Measures
 
+  - measure: sum_daily_affiliate_fix_spend
+    type: sum
+    decimals: 2
+    sql: ${daily_affiliate_fix_spend}
+    value_format: '#,##0.00'
+    
   - measure: sum_facebook_spend
     type: sum
     sql: ${facebook_spend}
