@@ -176,7 +176,7 @@
     width: 12
     top: 9
     left: 13
-    
+
   - name: cancelled_revenue_last_12_months
     title: Cancelled Orders - Gross Revenue - Last 12 Months
     type: looker_line

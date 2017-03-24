@@ -14,20 +14,20 @@
     type: field_filter
     explore: sessions
     field: sessions.geography_country
-    default_value: 
-  
+    default_value:
+
   - name: traffic_source
     title: "Traffic Source"
     type: field_filter
     explore: sessions
     field: sessions.traffic_source
     default_value:
-    
+
   - name: device
     title: "Device"
     type: field_filter
     explore: sessions
-    field: sessions.device_type    
+    field: sessions.device_type
     default_value:
 
   elements:
@@ -159,7 +159,7 @@
     left: 0
     height: 6
     width: 8
-    
+
   - name: product_cr_by_channel
     title: Product Conversion Rate by Channel
     type: looker_line
@@ -244,7 +244,7 @@
     left: 0
     height: 6
     width: 8
-    
+
   - name: prod_views_per_visit_by_channel
     title: Product Views/Visit by Channel
     type: looker_line
@@ -289,7 +289,7 @@
     width: 8
 
 ## Traffic split by channel
-  
+
   - name: traffic_split_by_channel
     title: Traffic Split by Channel
     type: looker_area
@@ -464,7 +464,7 @@
     left: 0
     height: 6
     width: 8
-    
+
   - name: product_cr_by_device
     title: Product Conversion Rate by Device
     type: looker_line
@@ -553,7 +553,7 @@
     left: 0
     height: 6
     width: 8
-    
+
   - name: prod_views_per_visit_by_device
     title: Product Views/Visit by Device
     type: looker_line
@@ -600,7 +600,7 @@
     width: 8
 
 ## Traffic split by device
-  
+
   - name: traffic_split_by_device
     title: Traffic Split by Device
     type: looker_area
@@ -644,7 +644,7 @@
     left: 0
     height: 6
     width: 8
-    
+
 ########### DROPOUT RATES ########################
 
   - name: dropout_rate_1
@@ -928,7 +928,7 @@
     left: 8
     height: 4
     width: 8
-    
+
   - name: dropout_rate_7
     title: Dropout Rate 7 (Checkout - Address)
     type: looker_line
@@ -1069,7 +1069,7 @@
     left: 0
     height: 4
     width: 8
-    
+
 ########### DROPOUT RATES BY CHANNEL########################
 
   - name: dropout_rate_1_by_channel
@@ -1359,7 +1359,7 @@
     left: 8
     height: 4
     width: 8
-    
+
   - name: dropout_rate_7_by_channel
     title: Dropout Rate 7 (Checkout - Address) - by Channel
     type: looker_line
@@ -1503,7 +1503,7 @@
     left: 0
     height: 4
     width: 8
-    
+
 ########### DROPOUT RATES BY DEVICE########################
 
   - name: dropout_rate_1_by_device
@@ -1805,7 +1805,7 @@
     left: 8
     height: 4
     width: 8
-    
+
   - name: dropout_rate_7_by_device
     title: Dropout Rate 7 (Checkout - Address) - by Device
     type: looker_line

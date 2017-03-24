@@ -108,8 +108,8 @@
     height: 4
     top: 0
     left: 6
-    
-    
+
+
   - name: percentage_on_time_delivery_attempt_next_day
     title: Percentage of On Time Delivery Attempt - Next Day Delivery
     type: looker_line
@@ -159,7 +159,7 @@
     height: 4
     top: 4
     left: 0
-    
+
   - name: percentage_on_time_delivery_attempt_standard
     title: Percentage of On Time Delivery Attempt - Standard Delivery
     type: looker_line
@@ -209,5 +209,3 @@
     height: 4
     top: 4
     left: 6
-
-

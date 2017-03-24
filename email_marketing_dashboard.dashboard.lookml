@@ -105,4 +105,3 @@
     interpolation: linear
     series_types: {}
     hidden_fields: [sessions.count, sessions.sum_orders, sessions.conversion_rate]
-

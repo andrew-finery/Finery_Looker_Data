@@ -40,7 +40,7 @@
     left: 0
     height: 3
     width: 10
-    
+
   - name: customer_cohorts_rpr2
     title: Customer Cohorts - Repurchase Rate 2 (Repeat Orders/Number of Customers)
     type: table
@@ -53,7 +53,7 @@
     - table_calculation: repurchase_rate_2
       label: Repurchase Rate 2
       expression: offset(if(is_null(${spree_customers.count_customers}), null, running_total(${spree_orders.count_orders})/max(${spree_customers.count_customers}) - 1), max(diff_months(${calendar_weeks.calendar_date_month},${spree_customers.first_order_month})))
-      
+
     - table_calculation: months_after_first_order
       label: Months After First Order
       expression: concat("Month + ", row()-1)

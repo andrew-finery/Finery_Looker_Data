@@ -21,7 +21,7 @@
     width: 8
     top: 0
     left: 0
-    
+
   - name: yest_orders_vs_visits
     title: Orders and Visits Yesterday
     type: looker_column
@@ -83,7 +83,7 @@
     width: 6
     top: 9
     left: 0
-    
+
   - name: orders_table
     title: Orders
     type: table
@@ -104,7 +104,7 @@
     width: 6
     top: 13
     left: 0
-    
+
   - name: revenue_table
     title: Revenue
     type: table
@@ -125,7 +125,7 @@
     width: 6
     top: 17
     left: 0
-    
+
   - name: visits_table
     title: Visits
     type: table
@@ -146,7 +146,7 @@
     width: 6
     top: 21
     left: 0
-    
+
   - name: new_visits_table
     title: New Visits
     type: table
@@ -167,7 +167,7 @@
     width: 6
     top: 25
     left: 0
-    
+
   - name: engaged_visits_table
     title: Engaged Visits
     type: table
@@ -188,7 +188,7 @@
     width: 6
     top: 29
     left: 0
-    
+
   - name: page_views_table
     title: Page Views
     type: table
@@ -209,7 +209,7 @@
     width: 6
     top: 33
     left: 0
-    
+
   - name: page_views_per_visit
     title: Page Views per Visit
     type: table
@@ -230,7 +230,7 @@
     width: 6
     top: 37
     left: 0
-    
+
   - name: bounce_rate_table
     title: Bounce Rate
     type: table
@@ -617,5 +617,5 @@
     width: 9
     top: 33
     left: 15
-    
+
 # referrals

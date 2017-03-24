@@ -23,7 +23,7 @@
     width: 3
     top: 0
     left: 0
-    
+
   - name: add_a_unique_name_793
     title: Orders per Customer
     type: single_value
@@ -53,7 +53,7 @@
     width: 3
     top: 0
     left: 6
-    
+
   - name: add_a_unique_name_674
     title: Total Customers - Last 7 Days
     type: single_value
@@ -69,7 +69,7 @@
     width: 3
     top: 0
     left: 9
-    
+
 ############################### Line 2
 
   - name: add_a_unique_name_652
@@ -102,7 +102,7 @@
     width: 5
     top: 2
     left: 0
-    
+
   - name: add_a_unique_name_373
     title: Basket Size - New vs Repreat Purchase - Last 7 Days
     type: looker_bar
@@ -262,7 +262,7 @@
     width: 6
     top: 8
     left: 0
-    
+
   - name: add_a_unique_name_288
     title: Customer Split - London vs Non-London
     type: looker_pie

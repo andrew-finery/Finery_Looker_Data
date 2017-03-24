@@ -11,7 +11,7 @@
     explore: facebook_api_ad_performance
     field: facebook_api_ad_performance.country
     default_value:
-    
+
   - name: facebook_acquisition_retention
     title: "Non Buyers | Buyers"
     type: field_filter
@@ -20,7 +20,7 @@
     default_value:
 
   elements:
-  
+
   - name: total_spend
     title: Total Spend
     type: looker_area
@@ -31,7 +31,7 @@
     measures: [facebook_api_ad_performance.total_spend]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -65,7 +65,7 @@
     height: 4
     top: 0
     left: 0
-    
+
   - name: impressions_last_30_days
     title: Impressions
     type: looker_area
@@ -76,7 +76,7 @@
     measures: [facebook_api_ad_performance.total_impressions]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -110,7 +110,7 @@
     height: 4
     top: 0
     left: 4
-    
+
   - name: clicks_last_30_days
     title: Clicks
     type: looker_area
@@ -121,7 +121,7 @@
     measures: [facebook_api_ad_performance.total_clicks]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -155,7 +155,7 @@
     height: 4
     top: 0
     left: 8
-    
+
   - name: cpm_last_30_days
     title: Cost per 1000 Impressions
     type: looker_line
@@ -166,7 +166,7 @@
     measures: [facebook_api_ad_performance.cost_per_mille]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -200,7 +200,7 @@
     height: 4
     top: 4
     left: 0
-    
+
   - name: cpc_last_30_days
     title: Cost per Click
     type: looker_line
@@ -211,7 +211,7 @@
     measures: [facebook_api_ad_performance.cost_per_click]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -245,7 +245,7 @@
     height: 4
     top: 4
     left: 8
-    
+
   - name: ctr_last_30_days
     title: Click Through Rate
     type: looker_line
@@ -256,7 +256,7 @@
     measures: [facebook_api_ad_performance.click_through_rate]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -290,7 +290,7 @@
     height: 4
     top: 4
     left: 4
-    
+
   - name: view_content_cpa
     title: View Content CPA
     type: looker_line
@@ -301,7 +301,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_product_view_content]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -335,7 +335,7 @@
     height: 4
     top: 8
     left: 0
-    
+
   - name: add_to_cart_cpa
     title: Add to Cart CPA
     type: looker_line
@@ -346,7 +346,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_add_to_cart]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -380,7 +380,7 @@
     height: 4
     top: 8
     left: 4
-    
+
   - name: purchase_cpa
     title: Purchase CPA
     type: looker_line
@@ -391,7 +391,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_purchase]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
@@ -425,7 +425,7 @@
     height: 4
     top: 8
     left: 8
-    
+
   - name: fb_tracker - Acquisition
     title: 10 Week Performance - Acquisition
     type: table
@@ -438,7 +438,7 @@
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - Acquisition
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
@@ -451,7 +451,7 @@
     height: 4
     top: 12
     left: 0
-    
+
   - name: fb_tracker_custom_audience
     title: 10 Week Performance - Custom Audience
     type: table
@@ -464,7 +464,7 @@
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - Custom Audience
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
@@ -477,7 +477,7 @@
     height: 4
     top: 12
     left: 6
-    
+
   - name: fb_tracker_retargeting_dpa
     title: 10 Week Performance - DPA
     type: table
@@ -490,7 +490,7 @@
     filters:
       facebook_api_ad_performance.audience_segment: NonBuyers - DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
@@ -503,7 +503,7 @@
     height: 4
     top: 16
     left: 0
-    
+
   - name: fb_tracker_retargeting_ca_buyers
     title: 10 Week Performance - Buyers CA
     type: table
@@ -516,7 +516,7 @@
     filters:
       facebook_api_ad_performance.audience_segment: Buyers - CA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
@@ -529,7 +529,7 @@
     height: 4
     top: 16
     left: 6
-    
+
   - name: fb_tracker_retargeting_dpa_buyers
     title: 10 Week Performance - Buyers DPA
     type: table
@@ -542,7 +542,7 @@
     filters:
       facebook_api_ad_performance.audience_segment: Buyers - DPA
       facebook_api_ad_performance.calendar_date: 9 weeks ago for 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc]
@@ -555,7 +555,7 @@
     height: 4
     top: 20
     left: 0
-    
+
   - name: audience_segment_spend_split
     title: Audience Segment Spend Split
     type: looker_column
@@ -566,7 +566,7 @@
     measures: [facebook_api_ad_performance.total_spend]
     filters:
       facebook_api_ad_performance.calendar_week: 10 weeks
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_week desc, facebook_api_ad_performance.audience_segment]
@@ -601,8 +601,8 @@
     height: 4
     top: 20
     left: 6
-  
-    
+
+
   - name: avg_relevance_score
     title: Avg Relevance Score
     type: looker_line
@@ -613,7 +613,7 @@
     measures: [facebook_api_ad_performance.avg_relevance_score]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_relevance_score desc]
@@ -643,7 +643,7 @@
     height: 4
     top: 24
     left: 0
-    
+
   - name: avg_frequency
     title: Avg Frequency
     type: looker_line
@@ -654,7 +654,7 @@
     measures: [facebook_api_ad_performance.avg_frequency]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.avg_frequency desc]

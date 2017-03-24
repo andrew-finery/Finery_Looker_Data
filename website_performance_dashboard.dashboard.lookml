@@ -27,7 +27,7 @@
     show_row_numbers: false
     truncate_column_names: false
     series_labels:
-      website_performance_checks.screenshot: 
+      website_performance_checks.screenshot:
     table_theme: transparent
     limit_displayed_rows: false
     height: 7
@@ -58,7 +58,7 @@
     width: 8
     top: 0
     left: 8
-    
+
   - name: current_pdp_screenshot
     title: Latest Product Page Check
     type: table
@@ -82,7 +82,7 @@
     width: 8
     top: 0
     left: 16
-    
+
   - name: site_speed_by_page_desktop
     title: Desktop Page Speeds
     type: looker_line
@@ -123,7 +123,7 @@
     width: 12
     top: 8
     left: 0
-    
+
   - name: site_speed_by_page_mobile
     title: Mobile Page Speeds
     type: looker_line
@@ -164,7 +164,7 @@
     width: 12
     top: 8
     left: 12
-    
+
   - name: total_request_size_by_page_desktop
     title: Desktop Page Request Sizes
     type: looker_line
@@ -205,7 +205,7 @@
     width: 12
     top: 15
     left: 0
-    
+
   - name: total_request_size_by_page_mobile
     title: Mobile Page Request Sizes
     type: looker_line
@@ -246,7 +246,7 @@
     width: 12
     top: 15
     left: 12
-    
+
   - name: no_resources_by_page_desktop
     title: Desktop Numbers of Resources
     type: looker_line
@@ -287,7 +287,7 @@
     width: 12
     top: 22
     left: 0
-    
+
   - name: no_resources_by_page_mobile
     title: Mobile Numbers of Resources
     type: looker_line
@@ -368,7 +368,7 @@
     width: 12
     top: 29
     left: 0
-    
+
   - name: no_js_resources_by_page_mobile
     title: Mobile Numbers of JS Resources
     type: looker_line
@@ -408,8 +408,8 @@
     width: 12
     top: 29
     left: 12
-      
-    
+
+
   - name: homepage_desktop_size_breakdown
     title: Homepage - Desktop - Response Size Breakdown
     type: looker_area
@@ -677,7 +677,7 @@
     width: 12
     top: 58
     left: 12
-    
+
   - name: site_response_time_by_page
     title: Page Response Times
     type: looker_line

@@ -38,7 +38,7 @@
     left: 4
     height: 3
     width: 4
-    
+
   - name: gross_rev_last_month
     title: Revenue
     type: single_value
@@ -55,7 +55,7 @@
     left: 8
     height: 3
     width: 4
-    
+
   - name: basket_size_last_month
     title: Basket Size
     type: single_value
@@ -72,7 +72,7 @@
     left: 12
     height: 3
     width: 4
-    
+
   - name: average_discount_last_month
     title: Average Total Discount
     type: single_value
@@ -317,7 +317,7 @@
     left: 15
     height: 6
     width: 5
-    
+
   - name: orders_by_hour
     title: Avg Orders by Hour v Previous Month
     type: looker_line
@@ -585,7 +585,7 @@
     left: 0
     height: 6
     width: 5
-    
+
   - name: new_customers_by_dom
     title: New Customers by Day of Month
     type: looker_line
@@ -619,7 +619,7 @@
     left: 5
     height: 6
     width: 5
-    
+
   - name: asp_by_dom
     title: Avg. Selling Price by Day of Month
     type: looker_line
@@ -653,7 +653,7 @@
     left: 10
     height: 6
     width: 5
-    
+
   - name: new_customers_using_discount_percentage_by_dom
     title: New Customers Using Voucher by Day of Month
     type: looker_line
@@ -710,7 +710,7 @@
     left: 0
     height: 7
     width: 10
-    
+
   - name: top_discount_codes
     title: Top Voucher Codes
     type: table
@@ -760,7 +760,7 @@
     left: 0
     height: 9
     width: 10
-    
+
   - name: sales_by_size
     title: Sales by Size v Previous Month (Apparel)
     type: table

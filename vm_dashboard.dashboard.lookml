@@ -36,7 +36,7 @@
     left: 0
     height: 10
     width: 6
-    
+
   - name: revenue_per_impression_plot
     title: Revenue per Impression Plot
     type: looker_scatter
@@ -191,7 +191,7 @@
     left: 6
     height: 5
     width: 6
-  
+
   - name: zero_selling_options_product_views
     title: Zero Selling Options - Product View Info
     type: table

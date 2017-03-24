@@ -202,4 +202,3 @@
     left: 10
     height: 4
     width: 3
-

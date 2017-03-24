@@ -78,7 +78,7 @@
     left: 4
     height: 2
     width: 4
-    
+
   - name: abaondon_cart_click_rate_30_day
     title: Click Rate - Last 30 Days
     type: single_value
@@ -116,7 +116,7 @@
     left: 8
     height: 2
     width: 4
-    
+
   - name: abandon_cart_web_visits_last_30_days
     title: Web Visits - Last 30 Days
     type: single_value
@@ -154,7 +154,7 @@
     left: 0
     height: 2
     width: 4
-    
+
   - name: abandon_cart_orders_last_30_days
     title: Orders - Last 30 Days
     type: single_value
@@ -192,7 +192,7 @@
     left: 4
     height: 2
     width: 4
-    
+
   - name: abandon_cart_cr_30_days
     title: Conversion Rate - Last 30 Days
     type: single_value
@@ -230,7 +230,7 @@
     left: 8
     height: 2
     width: 4
-    
+
   - name: abandon_cart_email_sent
     title: Emails Sent - Last 30 Days
     type: looker_line
@@ -265,7 +265,7 @@
     left: 0
     height: 4
     width: 6
-    
+
   - name: abandon_cart_open_rate
     title: Open Rate - Last 30 Days
     type: looker_line
@@ -337,7 +337,7 @@
     left: 0
     height: 4
     width: 6
-    
+
   - name: abandon_cart_visits_to_site
     title: Visits to Site - Last 30 Days
     type: looker_line
@@ -375,7 +375,7 @@
     left: 6
     height: 4
     width: 6
-    
+
   - name: abandon_cart_orders
     title: Orders - Last 30 Days
     type: looker_column

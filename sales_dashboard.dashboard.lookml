@@ -28,7 +28,7 @@
     height: 2
     top: 0
     left: 0
-    
+
   - name: basket_size_yesterday
     title: Basket Size Yesterday (excluding Coupons,VAT,Shipping)
     type: single_value
@@ -42,7 +42,7 @@
     height: 2
     top: 0
     left: 3
-  
+
   - name: gross_revenue_yesterday
     title: Gross Revenue Yesterday (excluding Coupons,VAT,Shipping)
     type: single_value
@@ -70,8 +70,8 @@
     height: 2
     top: 0
     left: 9
-    
-############################ Line 2: Tiles Listening to Filer ####################################################### 
+
+############################ Line 2: Tiles Listening to Filer #######################################################
 
   - name: total_orders
     title: Total Orders
@@ -86,7 +86,7 @@
     height: 2
     top: 2
     left: 0
-    
+
   - name: basket_size
     title: Basket Size (excluding Coupons,VAT,Shipping)
     type: single_value
@@ -100,7 +100,7 @@
     height: 2
     top: 2
     left: 3
-  
+
   - name: gross_revenue
     title: Gross Revenue (excluding Coupons,VAT,Shipping)
     type: single_value
@@ -147,7 +147,7 @@
     height: 3
     top: 4
     left: 0
-    
+
   - name: revenue_mtd
     title: Revenue - Month-to-Date
     type: single_value
@@ -165,7 +165,7 @@
     height: 3
     top: 4
     left: 3
-    
+
   - name: revenue_this_month_vs_last_month
     title: Revenue by Day This Month vs Last Month
     type: looker_line
@@ -199,7 +199,7 @@
     top: 4
     left: 6
 
-    
+
 ################################ Line 4 ##################################################################
 
   - name: orders_tw_v_lw
@@ -318,7 +318,7 @@
     height: 3
     top: 10
     left: 6
-    
+
 ################################################## Line 6 #################################################################
 
   - name: avg_discount

@@ -167,7 +167,7 @@
     width: 22
 
 ## ORDERS
-  
+
   - name: orders_yesterday_v_last_week
     title: Orders Yesterday vs Last Week
     type: table
@@ -337,7 +337,7 @@
     left: 44
     height: 14
     width: 22
-    
+
 ## CONVERSION RATE
 
   - name: conversion_rate_short_name_yesterday_v_last_week
@@ -509,7 +509,7 @@
     left: 44
     height: 14
     width: 22
-    
+
 ## New Visit %
 
   - name: new_visitor_percentage_yesterday_v_last_week
@@ -681,7 +681,7 @@
     left: 44
     height: 14
     width: 22
-    
+
 ## Referrals
 
   - name: sum_referrals_sent_yesterday_v_last_week
@@ -891,4 +891,3 @@
     left: 33
     height: 22
     width: 33
-    

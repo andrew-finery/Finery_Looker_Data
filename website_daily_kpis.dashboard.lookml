@@ -71,7 +71,7 @@
 
 
 
-      
+
   filters:
 
   - name: date
@@ -100,7 +100,7 @@
   elements:
 
 ## Visits Row
-  
+
   - name: visits_yesterday
     title: Visits Yesterday
     type: single_value
@@ -752,7 +752,7 @@
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
         color: "#f91284", label: '', value_format: '#0.0'}]
     y_axis_value_format: ''
-    
+
 ## Product Conversion Rate Row
 
   - name: product_conversion_rate_yesterday
@@ -970,7 +970,7 @@
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
         color: "#f91284", label: '', value_format: '#0'}]
     y_axis_value_format: ''
-    
+
 ## Revenue per 1k Impressions Row
 
   - name: revenue_per_1k_impressions_yesterday
@@ -1078,8 +1078,8 @@
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min,
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
         color: "#f91284", label: '', value_format: '#0.0'}]
-    y_axis_value_format: '' 
-    
+    y_axis_value_format: ''
+
 ## Gross Revenue Row
 
   - name: sum_gross_revenue_ex_discount_yesterday
@@ -3164,4 +3164,3 @@
 
 
 
-    

@@ -12,7 +12,7 @@
     default_value:
 
   elements:
-  
+
   - name: total_spend
     title: Total Spend
     type: looker_area
@@ -54,7 +54,7 @@
     height: 4
     top: 0
     left: 0
-    
+
   - name: impressions_last_30_days
     title: Impressions
     type: looker_area
@@ -65,7 +65,7 @@
     measures: [facebook_api_ad_performance.total_impressions]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -98,7 +98,7 @@
     height: 4
     top: 0
     left: 4
-    
+
   - name: clicks_last_30_days
     title: Clicks
     type: looker_area
@@ -109,7 +109,7 @@
     measures: [facebook_api_ad_performance.total_clicks]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -142,7 +142,7 @@
     height: 4
     top: 0
     left: 8
-    
+
   - name: cpm_last_30_days
     title: Cost per 1000 Impressions
     type: looker_line
@@ -153,7 +153,7 @@
     measures: [facebook_api_ad_performance.cost_per_mille]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -186,7 +186,7 @@
     height: 4
     top: 4
     left: 0
-    
+
   - name: cpc_last_30_days
     title: Cost per Click
     type: looker_line
@@ -197,7 +197,7 @@
     measures: [facebook_api_ad_performance.cost_per_click]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -230,7 +230,7 @@
     height: 4
     top: 4
     left: 8
-    
+
   - name: ctr_last_30_days
     title: Click Through Rate
     type: looker_line
@@ -241,7 +241,7 @@
     measures: [facebook_api_ad_performance.click_through_rate]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -274,7 +274,7 @@
     height: 4
     top: 4
     left: 4
-    
+
   - name: view_content_cpa
     title: View Content CPA
     type: looker_line
@@ -285,7 +285,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_product_view_content]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -318,7 +318,7 @@
     height: 4
     top: 8
     left: 0
-    
+
   - name: add_to_cart_cpa
     title: Add to Cart CPA
     type: looker_line
@@ -329,7 +329,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_add_to_cart]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -362,7 +362,7 @@
     height: 4
     top: 8
     left: 4
-    
+
   - name: purchase_cpa
     title: Purchase CPA
     type: looker_line
@@ -373,7 +373,7 @@
     measures: [facebook_api_ad_performance.1d_cpa_purchase]
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    listen: 
+    listen:
       facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
@@ -406,7 +406,7 @@
     height: 4
     top: 8
     left: 8
-    
+
   - name: fb_tracker_mobile
     title: 10 Week Performance - Mobile
     type: table
@@ -429,7 +429,7 @@
     height: 4
     top: 12
     left: 0
-    
+
   - name: fb_tracker_desktop
     title: 10 Week Performance - Desktop
     type: table
@@ -452,7 +452,7 @@
     height: 4
     top: 12
     left: 6
-    
+
   - name: fb_tracker_instagram
     title: 10 Week Performance - Instagram
     type: table
@@ -475,7 +475,7 @@
     height: 4
     top: 16
     left: 0
-    
+
   - name: segment_spend_split
     title: Spend Split - Last 10 Weeks
     type: looker_column
@@ -514,7 +514,7 @@
     height: 4
     top: 16
     left: 6
-    
+
   - name: avg_relevance_score
     title: Avg Relevance Score
     type: looker_line
@@ -552,7 +552,7 @@
     height: 4
     top: 20
     left: 0
-    
+
   - name: avg_frequency
     title: Avg Frequency
     type: looker_line

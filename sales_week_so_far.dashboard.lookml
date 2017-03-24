@@ -40,7 +40,7 @@
     left: 4
     height: 3
     width: 4
-    
+
   - name: gross_rev_this_week
     title: Revenue
     type: single_value
@@ -58,7 +58,7 @@
     left: 8
     height: 3
     width: 4
-    
+
   - name: basket_size_this_week
     title: Basket Size
     type: single_value
@@ -76,7 +76,7 @@
     left: 12
     height: 3
     width: 4
-    
+
   - name: average_discount_this_week
     title: Average Total Discount
     type: single_value
@@ -330,7 +330,7 @@
     left: 15
     height: 6
     width: 5
-    
+
   - name: orders_by_hour
     title: Avg Orders by Hour v Previous Week
     type: looker_line
@@ -609,7 +609,7 @@
     left: 0
     height: 6
     width: 5
-    
+
   - name: new_customers_by_weekday
     title: New Customers by Weekday
     type: looker_line
@@ -644,7 +644,7 @@
     left: 5
     height: 6
     width: 5
-    
+
   - name: asp_by_weekday
     title: Avg. Selling Price by Weekday
     type: looker_line
@@ -679,7 +679,7 @@
     left: 10
     height: 6
     width: 5
-    
+
   - name: new_customers_using_discount_percentage_by_weekday
     title: New Customers Using Voucher by Weekday
     type: looker_line
@@ -738,7 +738,7 @@
     left: 0
     height: 7
     width: 10
-    
+
   - name: top_discount_codes
     title: Top Voucher Codes
     type: table
@@ -790,7 +790,7 @@
     left: 0
     height: 9
     width: 10
-    
+
   - name: sales_by_size
     title: Sales by Size v Previous Week (Apparel)
     type: table

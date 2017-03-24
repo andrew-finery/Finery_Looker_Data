@@ -45,7 +45,7 @@
     width: 6
     top: 0
     left: 0
-  
+
   - name: orders_last_12_weeks
     title: Orders - Last 12 Weeks
     type: looker_column
@@ -83,7 +83,7 @@
     width: 6
     top: 0
     left: 6
-    
+
   - name: conversion_rate_last_12_weeks
     title: Conversion Rate - Last 12 Weeks
     type: looker_column
@@ -122,7 +122,7 @@
     width: 6
     top: 4
     left: 0
-    
+
   - name: basket_size_last_12_weeks
     title: Basket Size - Last 12 Weeks
     type: looker_column
@@ -160,7 +160,7 @@
     width: 6
     top: 4
     left: 6
-    
+
 #### Slide 2
 
   - name: visits_by_channel_last_12_weeks
@@ -206,7 +206,7 @@
     width: 12
     top: 9
     left: 0
-    
+
 
 #### Slide 3
   - name: visits_month_on_month_so_far
@@ -387,7 +387,7 @@
     width: 6
     top: 22
     left: 6
-    
+
 #### Slide 4
   - name: running_total_revenue_mom
     title: Running Total Revenue Month on Month
@@ -435,7 +435,7 @@
     width: 12
     top: 27
     left: 0
-    
+
 #### Slide 5
 
   - name: newsletter_subscribers_last_12_weeks
