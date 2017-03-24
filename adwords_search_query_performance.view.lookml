@@ -96,7 +96,7 @@
     
 
   - measure: nr_of_searches
-    type: count
+    type: count_distinct
     sql: ${search_term}
     
   - measure: total_spend

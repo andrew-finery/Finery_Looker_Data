@@ -51,7 +51,7 @@
     explore: sessions
     dimensions: [sessions.start_hour_of_day, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     filters:
       sessions.device_type: -Other/Unknown
       sessions.start_date: yesterday
@@ -173,18 +173,18 @@
     type: table
     model: finery_data
     explore: sessions
-    dimensions: [transactions.trans_time_date, sessions.device_type]
+    dimensions: [sessions.start_date, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
+        concat(round(100 * (${sessions.sum_orders} - offset(${sessions.sum_orders},1))/offset(${sessions.sum_orders},1),2),"%")
     filters:
       sessions.device_type: -Other/Unknown
-      transactions.trans_time_date: 8 days ago, 1 day ago
-    sorts: [transactions.trans_time_date desc]
+      sessions.start_date: 8 days ago, 1 day ago
+    sorts: [sessions.start_date desc]
     limit: 500
     column_limit: ''
     show_view_names: false
@@ -198,18 +198,18 @@
     type: table
     model: finery_data
     explore: sessions
-    dimensions: [transactions.trans_time_week, sessions.device_type]
+    dimensions: [sessions.start_week, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     dynamic_fields:
     - table_calculation: week_on_week
       label: Week on Week
       expression: |
-        concat(round(100 * (${transactions.count_transactions} - offset(${transactions.count_transactions},1))/offset(${transactions.count_transactions},1),2),"%")
+        concat(round(100 * (${sessions.sum_orders} - offset(${sessions.sum_orders},1))/offset(${sessions.sum_orders},1),2),"%")
     filters:
       sessions.device_type: -Other/Unknown
-      transactions.trans_time_date: 3 weeks ago for 2 weeks
-    sorts: [transactions.trans_time_week desc]
+      sessions.start_date: 3 weeks ago for 2 weeks
+    sorts: [sessions.start_week desc]
     limit: 500
     column_limit: ''
     show_view_names: false
@@ -223,13 +223,13 @@
     type: looker_line
     model: finery_data
     explore: sessions
-    dimensions: [transactions.trans_time_date, sessions.device_type]
+    dimensions: [sessions.start_date, sessions.device_type]
     pivots: [sessions.device_type]
-    measures: [transactions.count_transactions]
+    measures: [sessions.sum_orders]
     filters:
       sessions.device_type: -Other/Unknown
-      transactions.trans_time_date: 31 days ago for 30 days
-    sorts: [transactions.trans_time_date]
+      sessions.start_date: 31 days ago for 30 days
+    sorts: [sessions.start_date]
     limit: 500
     column_limit: ''
     show_null_points: true

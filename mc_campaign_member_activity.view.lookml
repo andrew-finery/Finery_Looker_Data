@@ -26,7 +26,7 @@
     sql: ${email_address} || ${campaign_id}
 
   - measure: unique_clicks_total
-    type: count
+    type: count_distinct
     sql: ${email_address} || ${campaign_id}
     filters:
       clicks: '>0'

@@ -154,7 +154,7 @@
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
-      country: facebook_api_ad_performance.country
+      facebook_country: facebook_api_ad_performance.country
     sorts: [facebook_api_ad_performance.calendar_date desc]
     limit: 500
     column_limit: 50

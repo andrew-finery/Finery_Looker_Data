@@ -67,7 +67,7 @@
     sql: ${failed_deliveries} 
   
   - measure: total_orders
-    type: count
+    type: count_distinct
     sql: ${alt_ref1}
 
   - measure: Percentage_of_failed_times

@@ -108,7 +108,7 @@
     type: looker_bar
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.first_order_flag]
+    dimensions: [spree_orders.new_customer_flag]
     measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days

@@ -142,7 +142,7 @@
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
-      country: facebook_api_ad_performance.country
+      facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
@@ -259,7 +259,7 @@
     filters:
       facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
     listen: 
-      country: facebook_api_ad_performance.country
+      facebook_country: facebook_api_ad_performance.country
       facebook_acquisition_retention: facebook_api_ad_performance.buyers_vs_nonbuyers
     sorts: [facebook_api_ad_performance.calendar_date desc]
     stacking: ''
@@ -532,8 +532,6 @@
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
       sessions.acquisition_channel: Facebook - Paid Marketing
-    listen: 
-      sessions_country: sessions.geography_country
     sorts: [session_start_calendar.calendar_date_date]
     limit: 500
     stacking: ''

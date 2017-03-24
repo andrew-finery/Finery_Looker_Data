@@ -425,8 +425,8 @@
     sql: ${RM_order_flag}
     
   - measure: No_RM_match_orders
-    type: count
-    sql: ${RM_order_flag}
+    type: count_distinct
+    sql: ${TABLE}.order_id
     filters:
       RM_order_flag: 0
       

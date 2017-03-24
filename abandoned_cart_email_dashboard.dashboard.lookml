@@ -348,7 +348,7 @@
     filters:
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
       sessions.crm_sub_channel: Abandon Cart
-      sorts: [session_start_calendar.calendar_date_date desc]
+    sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
     column_limit: ''
     stacking: ''
