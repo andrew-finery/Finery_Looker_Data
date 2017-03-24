@@ -17,7 +17,7 @@
     sql: ${TABLE}.currency
 
   - dimension: customer_id
-    type: int
+    type: number
     sql: ${TABLE}.customer_id
 
   - dimension: discount
@@ -36,7 +36,7 @@
     sql: ${TABLE}.exchange_rate
 
   - dimension: items_returned
-    type: int
+    type: number
     sql: ${TABLE}.items_returned
 
   - dimension: max_selling_price
@@ -51,7 +51,7 @@
     sql: ${TABLE}.order_code
 
   - dimension: order_id
-    type: int
+    type: number
     # hidden: true
     sql: ${TABLE}.order_id
 
@@ -73,7 +73,7 @@
     sql: ${TABLE}.price
 
   - dimension: product_id
-    type: int
+    type: number
     sql: ${TABLE}.product_id
 
   - dimension: product_on_sale_flag
@@ -81,7 +81,7 @@
     sql: ${TABLE}.product_on_sale_flag
 
   - dimension: quantity
-    type: int
+    type: number
     sql: ${TABLE}.quantity
 
   - dimension: reason_to_strip_out
@@ -103,10 +103,9 @@
     sql: ${TABLE}.tax_rate
 
   - dimension: variant_id
-    type: int
+    type: number
     sql: ${TABLE}.variant_id
 
   - measure: count
     type: count
     drill_fields: [orders.order_id]
-

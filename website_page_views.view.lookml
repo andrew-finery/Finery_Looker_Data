@@ -141,21 +141,18 @@
 
   - measure: exit_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${count_exits}/NULLIF(${count_total_page_views},0)::REAL
-    value_format: '#0.00%'
 
   - measure: bounce_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${count_bounces}/NULLIF(${count_lands},0)::REAL
-    value_format: '#0.00%'
     
   - measure: click_through_rate_any_page
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: 1 - ${exit_rate}
-    value_format: '#0.00%'
 
   - measure: count_next_page_product_views
     type: count
@@ -165,9 +162,8 @@
     
   - measure: click_through_rate_product_page
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${count_next_page_product_views}/NULLIF(${count_total_page_views},0)::REAL
-    value_format: '#0.00%'  
   
   
   

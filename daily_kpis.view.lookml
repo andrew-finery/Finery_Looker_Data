@@ -49,21 +49,21 @@
   
   - dimension: facebook_spend
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.facebook_spend
     
   - dimension: daily_affiliate_fix_spend
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.daily_affiliate_fix_spend
   
   - dimension: orders
-    type: int
+    type: number
     sql: ${TABLE}.orders
     
   - dimension: gross_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue
 
 
@@ -71,9 +71,8 @@
 
   - measure: sum_daily_affiliate_fix_spend
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${daily_affiliate_fix_spend}
-    value_format: '#,##0.00'
     
   - measure: sum_facebook_spend
     type: sum
@@ -87,4 +86,3 @@
     type: sum
     sql: ${gross_revenue}
   
-

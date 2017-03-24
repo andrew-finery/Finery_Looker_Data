@@ -1295,7 +1295,7 @@
     series_types: {}
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min,
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
-        color: "#f91284", label: '', value_format: '#0.00'}]
+        color: "#f91284", label: '', }]
     y_axis_value_format: ''
 
 ## Average Items in Basket Row
@@ -1513,7 +1513,7 @@
     series_types: {}
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min,
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
-        color: "#f91284", label: '', value_format: '#0.00'}]
+        color: "#f91284", label: '', }]
     y_axis_value_format: ''
 
 ## DR1 (Homepage) Row
@@ -3039,7 +3039,7 @@
     series_types: {}
     reference_lines: [{reference_type: line, line_value: mean, range_start: max, range_end: min,
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
-        color: "#f91284", label: '', value_format: '#0.00'}]
+        color: "#f91284", label: '', }]
     y_axis_value_format: ''
 
 ## Products Added to Cart / Views Row

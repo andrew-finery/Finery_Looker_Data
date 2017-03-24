@@ -141,7 +141,7 @@
     hidden: true
 
   - dimension: structured_event_value
-    type: int
+    type: number
     sql: ${TABLE}.se_value
     hidden: true
     
@@ -306,21 +306,21 @@
   - measure: new_user_percentage
     label: New User %
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${count_new_users}/NULLIF(${count_users},0)::REAL
     value_format: '#.00%'
 
   - measure: new_session_percentage
     label: New Session %
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${count_new_sessions}/NULLIF(${count_sessions},0)::REAL
     value_format: '#.00%'
   
   - measure: user_logged_in_percentage
     label: Logged In %
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${count_users_logged_in}/NULLIF(${count_users},0)::REAL
     value_format: '#.00%'
 
@@ -360,13 +360,13 @@
   - measure: page_views_per_session
     label: Page Views per Session
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${count_page_views}/NULLIF(${count_sessions},0)::REAL
     value_format: '#.00'
   
   - measure: total_usage_time_10s
     type: count_distinct
-    decimals: 2
+    value_format_name: decimal_2
     sql: CONCAT(FLOOR(EXTRACT (EPOCH FROM ${TABLE}.collector_tstamp)/10), ${session_id})
     filters:
       app_id: production
@@ -374,13 +374,13 @@
   
   - measure: total_usage_time_mins
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_usage_time_10s}/6
     hidden: true
   
   - measure: engagement_time_per_session_number
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: (${total_usage_time_mins}/NULLIF(${count_sessions}, 0)::REAL)
     hidden: true
 
@@ -413,20 +413,20 @@
   - measure: conversion_rate
     label: Conversion Rate
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${transactions.count_transactions}/NULLIF(${count_sessions},0)::REAL
     value_format: '#.00%'
   
 #  - measure: avg_basket_size
 #    label: AVERAGE BASKET SIZE
 #    type: number
-#    decimals: 2
+#    value_format_name: decimal_2
 #    sql: ${items_purchased}/NULLIF(${transactions.count_transactions},0)::REAL
   
 #  - measure: avg_basket_value
 #    label: AVERAGE BASKET VALUE
 #    type: number
-#    decimals: 2
+#    value_format_name: decimal_2
 #    sql: ${sum_revenue_ex_coupon_and_vat}/NULLIF(${transactions.count_transactions},0)::REAL
 #    format: "£%0.2f"
 
@@ -436,14 +436,14 @@
   - measure: newsletter_signup_rate
     label: Newsletter Signup Rate
     type: number
-    decimals: 1
+    value_format_name: decimal_1
     sql: ${email_subscriptions.count_newsletter_subscribers}/NULLIF(${count_new_users},0)::REAL
     value_format: '##0.0%'
     
   - measure: referral_rate
     label: Referral Rate
     type: number
-    decimals: 1
+    value_format_name: decimal_1
     sql: ${email_subscriptions.count_referrals}/NULLIF(${count_users_logged_in},0)::REAL
     value_format: '##0.0%'
   
@@ -510,14 +510,14 @@
   - measure: button_clicks_invite_ratio
     label: Friends Invited - Button Clicked Ratio
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql:  coalesce(${invite_friends_events}/NULLIF(${free_gift_click_event},0)::REAL, '0')
     value_format: '#.##%'  
 
   - measure: avg_friend_invites_sent
     label: Average Friends Invited
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql:  coalesce(${total_friends_invited}/NULLIF(${invite_friends_events},0)::REAL, '0')
     value_format: '#.##'
   

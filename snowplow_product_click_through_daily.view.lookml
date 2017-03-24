@@ -42,22 +42,22 @@
    
    - dimension: attributed_items
      type: number
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${TABLE}.attributed_items
    
    - dimension: attributed_gross_item_revenue
      type: number
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${TABLE}.attributed_gross_item_revenue
      
    - dimension: attributed_gross_revenue_ex_voucher
      type: number
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${TABLE}.attributed_gross_revenue_ex_voucher
      
    - dimension: attributed_gross_revenue_ex_voucher_ex_vat
      type: number
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${TABLE}.attributed_gross_revenue_ex_voucher_ex_vat
    
 
@@ -98,4 +98,4 @@
    - measure: attributed_revenue_per_1k_impressions
      type: number
      sql: 1000*${sum_attributed_revenue}/NULLIF(${sum_product_impressions},0)::REAL
-     value_format: '#0.00'
+     

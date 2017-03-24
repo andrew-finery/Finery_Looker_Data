@@ -8,7 +8,7 @@
     sql: ${TABLE}.email_address
 
   - dimension: member_rating
-    type: int
+    type: number
     sql: ${TABLE}.member_rating
 
   - dimension_group: member_subscribed_time
@@ -100,17 +100,17 @@
 ## Member engagement metrics
 
   - dimension: total_campaigns_sent
-    type: int
+    type: number
     sql: ${TABLE}.total_campaigns_sent
     group_label: 'Engagement'
       
   - dimension: total_campaign_opens
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_opens
     group_label: 'Engagement'
      
   - dimension: total_campaign_clicks
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_clicks
     group_label: 'Engagement'
      
@@ -149,17 +149,17 @@
 ## Engagement Metrics 90d
 
   - dimension: total_campaigns_sent_90d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaigns_sent_90d
     group_label: 'Engagement 90d'
       
   - dimension: total_campaign_opens_90d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_opens_90d
     group_label: 'Engagement 90d'
      
   - dimension: total_campaign_clicks_90d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_clicks_90d
     group_label: 'Engagement 90d'
      
@@ -194,17 +194,17 @@
 ## Engagement Metrics 60d
 
   - dimension: total_campaigns_sent_60d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaigns_sent_60d
     group_label: 'Engagement 60d'
       
   - dimension: total_campaign_opens_60d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_opens_60d
     group_label: 'Engagement 60d'
      
   - dimension: total_campaign_clicks_60d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_clicks_60d
     group_label: 'Engagement 60d'
      
@@ -239,17 +239,17 @@
 ## Engagement Metrics 30d
 
   - dimension: total_campaigns_sent_30d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaigns_sent_30d
     group_label: 'Engagement 30d'
       
   - dimension: total_campaign_opens_30d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_opens_30d
     group_label: 'Engagement 30d'
      
   - dimension: total_campaign_clicks_30d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_clicks_30d
     group_label: 'Engagement 30d'
      
@@ -285,17 +285,17 @@
 ## Engagement Metrics 7d
 
   - dimension: total_campaigns_sent_7d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaigns_sent_7d
     group_label: 'Engagement 7d'
       
   - dimension: total_campaign_opens_7d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_opens_7d
     group_label: 'Engagement 7d'
      
   - dimension: total_campaign_clicks_7d
-    type: int
+    type: number
     sql: ${TABLE}.total_campaign_clicks_7d
     group_label: 'Engagement 7d'
      
@@ -366,15 +366,13 @@
 
   - measure: unsubscription_percentage
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_unsubscribed_emails}/NULLIF(${unique_email_addresses},0)::REAL
-    value_format: '#0.00%'
 
   - measure: cleaned_percentage
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_cleaned_emails}/NULLIF(${unique_email_addresses},0)::REAL
-    value_format: '#0.00%'
 
   - measure: count_email_openers_90d
     type: count_distinct

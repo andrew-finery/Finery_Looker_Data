@@ -65,58 +65,53 @@
     sql: ${TABLE}.reply_to
 
   - dimension: emails_sent
-    type: int
+    type: number
     sql: ${TABLE}.emails_sent
 
   - dimension: opens
-    type: int
+    type: number
     sql: ${TABLE}.opens
 
   - dimension: unique_opens
-    type: int
+    type: number
     sql: ${TABLE}.unique_opens
 
   - dimension: campaign_open_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_opens}/NULLIF(${emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: clicks
-    type: int
+    type: number
     sql: ${TABLE}.clicks
 
   - dimension: subscriber_clicks
-    type: int
+    type: number
     sql: ${TABLE}.subscriber_clicks
 
   - dimension: unsubscriptions
-    type: int
+    type: number
     sql: ${TABLE}.total_unsubscribes
 
   - dimension: campaign_click_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${subscriber_clicks}/NULLIF(${emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: campaign_click_through_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${subscriber_clicks}/NULLIF(${unique_opens},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: campaign_unsubscription_rate_opens
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unsubscriptions}/NULLIF(${unique_opens},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: campaign_unsubscription_rate_emails_sent
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unsubscriptions}/NULLIF(${emails_sent},0)::REAL
-    value_format: '#0.00%'
 
 ### Measures
   
@@ -142,21 +137,18 @@
     
   - measure: open_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_unique_opens}/NULLIF(${total_emails_sent},0)::REAL
-    value_format: '#0.00%'
     
   - measure: click_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_subscriber_clicks}/NULLIF(${total_emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - measure: click_through_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_subscriber_clicks}/NULLIF(${total_unique_opens},0)::REAL
-    value_format: '#0.00%'
     
   - measure: unique_campaigns_count
     type: count_distinct
@@ -168,15 +160,13 @@
   
   - measure: unsubscription_rate_opens
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_unsubscriptions}/NULLIF(${total_unique_opens},0)::REAL
-    value_format: '#0.00%'
     
   - measure: unsubscription_rate_emails_sent
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_unsubscriptions/NULLIF(${total_emails_sent},0)::REAL
-    value_format: '#0.00%'  
   
   
   

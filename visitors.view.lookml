@@ -24,7 +24,7 @@
     sql: ${TABLE}.last_touch
   
   - dimension: days_since_last_visit
-    type: int
+    type: number
     sql: ${last_touch_date} - ${first_touch_date}
   
   - dimension: has_visited_in_last_90_days
@@ -44,7 +44,7 @@
     sql: ${days_since_last_visit} < 8
     
   - dimension: events_during_lifetime
-    type: int
+    type: number
     sql: ${TABLE}.number_of_events
     
   - dimension: events_during_lifetime_tiered
@@ -53,7 +53,7 @@
     sql: ${events_during_lifetime}
 
   - dimension: number_of_visits
-    type: int
+    type: number
     sql: ${TABLE}.number_of_sessions
     
   - dimension: number_of_visits_tiered
@@ -62,7 +62,7 @@
     sql: ${number_of_visits}
   
   - dimension: visits_after_first_purchase
-    type: int
+    type: number
     sql: ${TABLE}.visits_after_first_purchase
 
   - dimension: visits_after_first_purchase_tier
@@ -82,7 +82,7 @@
     sql: ${TABLE}.conversion_funnel_progress_after_first_purchase
 
   - dimension: visits_to_make_first_purchase
-    type: int
+    type: number
     sql: ${TABLE}.visits_to_make_first_purchase
 
   - dimension: visits_to_make_first_purchase_tier
@@ -184,7 +184,7 @@
     
   - measure: events_per_visitor
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_events}/NULLIF(${total_visitors},0)::REAL
     
   - measure: total_visits
@@ -193,7 +193,7 @@
     
   - measure: sessions_per_visitor
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_visits}/NULLIF(${total_visitors},0)::REAL
 
   - measure: total_visits_after_first_purchase

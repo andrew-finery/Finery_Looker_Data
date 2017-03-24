@@ -51,10 +51,9 @@
   - dimension: percent_difference_distinct_key_1
     type: number
     sql: (${number_of_rows} - ${count_distinct_key_1}) / NULLIF(${number_of_rows}, 0)::REAL
-    value_format: '0.00%'
+    
   
   - dimension: percent_difference_distinct_key_2
     type: number
     sql: (${number_of_rows} - ${count_distinct_key_2}) / NULLIF(${number_of_rows}, 0)::REAL
-    value_format: '0.00%'
-
+    

@@ -54,19 +54,15 @@
 
   - dimension: campaign_open_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_opens}/NULLIF(${emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: campaign_click_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_clicks}/NULLIF(${emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: campaign_click_through_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_clicks}/NULLIF(${unique_opens},0)::REAL
-    value_format: '#0.00%'
-

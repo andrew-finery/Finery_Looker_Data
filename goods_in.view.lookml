@@ -40,14 +40,12 @@
   - measure: received_value_cost
     label: Received Value @ Cost
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${received_quantity} * ${variant_info.total_landed_cost_gbp}
-    value_format: '#,##0.00'
     
   - measure: received_value_retail
     label: Received Value @ Retail
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${received_quantity} * ${option_info.max_price}
-    value_format: '#,##0.00'
   

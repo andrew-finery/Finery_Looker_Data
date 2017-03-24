@@ -18,7 +18,7 @@
     sql: ${TABLE}.email_address
   
   - dimension: customer_id
-    type: int
+    type: number
     sql: ${TABLE}.user_id
     hidden: true
     
@@ -53,7 +53,7 @@
     hidden: true
   
   - dimension: age
-    type: int
+    type: number
     sql: |
           case when floor((current_date - ${birth_date_date})/ 365) > 100 then null
                when floor((current_date - ${birth_date_date})/ 365) < 10 then null
@@ -76,4 +76,3 @@
   - measure: sum_referrals_sent
     type: sum
     sql: ${TABLE}.referrals_sent
-

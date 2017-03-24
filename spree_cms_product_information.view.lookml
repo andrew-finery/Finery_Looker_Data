@@ -17,9 +17,8 @@
   - dimension: product_price
     label: Product Price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.price_gbp 
-    value_format: '##0.00'
 
   - dimension: about_me
     label: About Me

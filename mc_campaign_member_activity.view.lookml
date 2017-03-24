@@ -10,12 +10,12 @@
     sql: ${TABLE}.member_email_address
 
   - dimension: opens
-    type: int
+    type: number
     sql: ${TABLE}.opens
     hidden: true
 
   - dimension: clicks
-    type: int
+    type: number
     sql: ${TABLE}.clicks
     hidden: true
     
@@ -39,15 +39,13 @@
   
   - measure: open_rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${unique_opens_total}/${emails_sent}::REAL
-    value_format: '#0.00%'
   
   - measure: click_rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${unique_clicks_total}/${emails_sent}::REAL
-    value_format: '#0.00%'
     
   - measure: opens_total
     type: sum

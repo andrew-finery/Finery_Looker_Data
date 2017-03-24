@@ -11,7 +11,7 @@
     sql: ${TABLE}.colname
 
   - dimension: error_code
-    type: int
+    type: number
     sql: ${TABLE}.err_code
 
   - dimension: error_reason
@@ -27,11 +27,11 @@
     sql: ${TABLE}.line_number
 
   - dimension: position
-    type: int
+    type: number
     sql: ${TABLE}.position
 
   - dimension: query
-    type: int
+    type: number
     sql: ${TABLE}.query
 
   - dimension: raw_field_value
@@ -43,11 +43,11 @@
     sql: ${TABLE}.raw_line
 
   - dimension: session
-    type: int
+    type: number
     sql: ${TABLE}.session
 
   - dimension: slice
-    type: int
+    type: number
     sql: ${TABLE}.slice
 
   - dimension_group: start_time
@@ -56,7 +56,7 @@
     sql: ${TABLE}.starttime
 
   - dimension: table
-    type: int
+    type: number
     sql: ${TABLE}.tbl
 
   - dimension: type
@@ -64,6 +64,5 @@
     sql: ${TABLE}.type
 
   - dimension: user_id
-    type: int
+    type: number
     sql: ${TABLE}.userid
-

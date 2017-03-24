@@ -14,7 +14,7 @@
     sql: ${TABLE}.calendar_date
 
   - dimension: css_response_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.css_response_bytes as integer)
     hidden: true
     
@@ -24,17 +24,17 @@
     hidden: true
     
   - dimension: html_response_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.html_response_bytes as integer)
     hidden: true
     
   - dimension: image_response_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.image_response_bytes as integer)
     hidden: true
     
   - dimension: javascript_response_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.javascript_response_bytes as integer)
     hidden: true
     
@@ -99,7 +99,7 @@
     hidden: true
     
   - dimension: other_response_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.other_response_bytes as integer)
     hidden: true
     
@@ -128,7 +128,7 @@
     hidden: true
 
   - dimension: total_request_bytes
-    type: int
+    type: number
     sql: cast(${TABLE}.total_request_bytes as integer)
     hidden: true
     
@@ -150,17 +150,17 @@
     hidden: true
 
   - dimension: response_time
-    type: int
+    type: number
     sql: ${TABLE}.avg_response_time
     hidden: true
 
   - dimension: queries_per_second
-    type: int
+    type: number
     sql: ${TABLE}.queries_per_second
     hidden: true
     
   - dimension: failed_requests
-    type: int
+    type: number
     sql: ${TABLE}.failed_requests
     hidden: true
 

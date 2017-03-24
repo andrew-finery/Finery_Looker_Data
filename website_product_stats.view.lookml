@@ -3,7 +3,7 @@
   fields:
 
   - dimension: id
-    type: int
+    type: number
     sql: ${TABLE}.id
 
   - dimension: clicks
@@ -35,20 +35,20 @@
 
   - dimension: gross_item_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_item_revenue
     hidden: true
 
   - dimension: gross_revenue_ex_voucher
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_ex_voucher
     hidden: true
 
   - dimension: gross_revenue_ex_voucher_and_vat
     label: Gross Revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_ex_voucher_and_vat
 
 # Measures
@@ -75,23 +75,22 @@
 
   - measure: sum_gross_revenue
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_revenue_ex_voucher_and_vat}
   
   - measure: product_conversion_rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${sum_products_purchased}/NULLIF(${sum_product_views},0)::REAL
-    value_format: '0.00%'
+    
 
   - measure: product_click_through_rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${sum_clicks}/NULLIF(${sum_impressions},0)::REAL
-    value_format: '0.00%'
+    
   
   - measure: revenue_per_1k_impressions
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: (1000 * ${sum_gross_revenue})/NULLIF(${sum_impressions},0)::REAL
-    value_format: '0.00'

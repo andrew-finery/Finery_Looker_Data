@@ -55,7 +55,7 @@
     - table_calculation: total_visits_per_user
       label: Total Visits per User
       expression: offset(if(is_null(${sessions.visitors_count}), null, running_total(${sessions.count})/max(${sessions.visitors_count})), max(diff_months(${session_start_calendar.calendar_date_month},${visitors.first_touch_month})))
-      value_format: '#0.00'
+      
     - table_calculation: months_after_first_visit
       label: Months After First Visit
       expression: concat("Month + ", row()-1)

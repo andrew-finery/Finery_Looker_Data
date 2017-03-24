@@ -19,12 +19,12 @@
   
   - dimension: duration_seconds
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: datediff(seconds,cast(${TABLE}.start_time as datetime),cast(${TABLE}.end_time as datetime))
   
   - dimension: duration_minutes
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${duration_seconds}/cast('60' as decimal (10,4))
 
 # Measures
@@ -51,6 +51,5 @@
   
   - measure: average_script_run_time_minutes
     type: average
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${duration_minutes}
-

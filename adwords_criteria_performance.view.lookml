@@ -195,9 +195,8 @@
 
   - measure: total_spend
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${cost}/1000000
-    value_format: '#,##0.00'
     
   - measure: total_conversions
     type: sum
@@ -215,24 +214,23 @@
     label: CPA Purchase
     type: number
     sql: ${total_spend}/ NULLIF(${total_conversions},0) ::REAL
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
   - measure: click_through_rate
     label: CTR
     type: number
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL
-    value_format: '0.00%'
+    
     
   - measure: cost_per_click
     label: CPC
     type: number
     sql: ${total_spend}/ NULLIF(${total_clicks},0) ::REAL
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
   - measure: cost_per_mille
     label: CPM
     type: number
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
   
-

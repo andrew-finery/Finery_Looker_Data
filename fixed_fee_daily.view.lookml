@@ -13,6 +13,6 @@
 
   - measure: total_spend
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${spend}
     value_format: '#,##0.00'

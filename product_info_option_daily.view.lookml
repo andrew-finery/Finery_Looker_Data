@@ -63,7 +63,7 @@
      
    - dimension: product_impressions
      type: number
-     decimals: 0
+     value_format_name: decimal_0
      sql: coalesce(${TABLE}.category_impressions, '0')
      hidden: true
      
@@ -152,7 +152,7 @@
    
    - dimension: size_availability
      type: number
-     decimals: 4
+     value_format_name: decimal_4
      sql: ${variants_in_spree_and_in_stock}/NULLIF(${variants_in_spree},0)::REAL
    
    - dimension: low_stock_flag
@@ -185,10 +185,10 @@
 
    - measure: return_rate
      type: number
-     decimals: 4
+     value_format_name: decimal_4
      label: Return Rate
      sql: ${sum_items_returned}/NULLIF(${sum_items_sold},0)::REAL
-     value_format: '0.00%'
+     
 
    - measure: sum_closing_stock_yesterday
      type: sum
@@ -199,31 +199,27 @@
    
    - measure: sum_gross_revenue_gbp
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      label: Gross Revenue
      sql: ${gross_revenue_gbp}
-     value_format: '#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      label: Gross Revenue ex. VAT
      sql: ${gross_revenue_gbp_ex_vat}
-     value_format: '#,##0.00'
      
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      label: Gross Revenue ex. VAT, Discount
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
-     value_format: '#,##0.00'
 
    - measure: sum_gross_revenue_gbp_ex_vat_ex_discount_last_week
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      label: Gross Revenue ex. VAT, DIscount LW
      sql: ${gross_revenue_gbp_ex_vat_ex_discount}
-     value_format: '#,##0.00'
      filters:
       calendar_date_date: last week
       
@@ -257,17 +253,17 @@
 
    - measure: click_through_rate
      type: number
-     decimals: 4
+     value_format_name: decimal_4
      label: Click-Through Rate
      sql: ${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL
-     value_format: '0.00%'
+     
 
    - measure: conversion_rate
      type: number
-     decimals: 4
+     value_format_name: decimal_4
      label: Conversion Rate
      sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL
-     value_format: '0.00%'
+     
   
    - measure: go_live_date
      type: string

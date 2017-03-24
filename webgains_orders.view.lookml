@@ -20,17 +20,17 @@
 
   - dimension: commission
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.commission
  
   - dimension: over_ride
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${campaign_id} = 139873 then 0.1 else 0.3 end
  
   - dimension: commission_plus_over_ride
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${commission} * (1 + ${over_ride})
  
   - dimension: currency
@@ -64,7 +64,7 @@
 
   - dimension: order_value
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.value
 
   - dimension: voucher_code
@@ -76,26 +76,25 @@
   - measure: sum_commission
     type: sum
     sql: ${commission}
-    value_format: '#0.00'
+    
     filters:
       status: confirmed, delayed
 
   - measure: sum_commission_plus_over_ride
     type: sum
     sql: ${commission_plus_over_ride}
-    value_format: '#0.00'
+    
     filters:
       status: confirmed, delayed
   
   - measure: average_over_ride
     type: number
-    decimals: 4
-    value_format: "#0.00%"
+    value_format_name: percent_2
     sql: (${sum_commission_plus_over_ride} - ${sum_commission})/NULLIF(${sum_commission},0)::REAL
 
   - measure: sum_revenue
     type: sum
     sql: ${order_value}
-    value_format: '#0.00'
+    
     filters:
       status: confirmed, delayed

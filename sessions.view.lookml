@@ -20,7 +20,7 @@
     
   - dimension: session_index
     label: Visit Number
-    type: int
+    type: number
     sql: ${TABLE}.session_index
   
   - dimension: session_id
@@ -55,7 +55,7 @@
   # Events per visit and bounces (infered) #
 
   - dimension: events_during_session
-    type: int
+    type: number
     sql: ${TABLE}.number_of_events
     hidden: true
     
@@ -76,42 +76,42 @@
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1
 
   - dimension: accounts_created
-    type: int
+    type: number
     sql: ${TABLE}.accounts_created
     hidden: true
 
   - dimension: newsletter_signups
-    type: int
+    type: number
     sql: ${TABLE}.newsletter_signups
     hidden: true
 
   - dimension: products_added_to_cart
-    type: int
+    type: number
     sql: ${TABLE}.products_added_to_cart
     hidden: true
 
   - dimension: product_removed_from_cart
-    type: int
+    type: number
     sql: ${TABLE}.product_removed_from_cart
     hidden: true
 
   - dimension: cart_events
-    type: int
+    type: number
     sql: ${TABLE}.cart_events
     hidden: true
 
   - dimension: referrals_sent
-    type: int
+    type: number
     sql: ${TABLE}.referrals_sent
     hidden: true
 
   - dimension: checkout_progress
-    type: int
+    type: number
     sql: ${TABLE}.checkout_progress
     hidden: true
 
   - dimension: product_impressions
-    type: int
+    type: number
     sql: ${TABLE}.category_impressions
     hidden: true
   
@@ -120,7 +120,7 @@
     sql: ${TABLE}.customer_at_start_of_visit_flag = 1
   
   - dimension: product_views
-    type: int
+    type: number
     sql: ${TABLE}.product_views
 
   - dimension: product_views_tier
@@ -130,27 +130,27 @@
     sql: case when ${product_views} is null then 0 else ${product_views} end
 
   - dimension: products_purchased
-    type: int
+    type: number
     sql: ${TABLE}.products_purchased
     hidden: true
 
   - dimension: orders
-    type: int
+    type: number
     sql: ${TABLE}.orders
   
   - dimension: gross_revenue_ex_discount
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_ex_discount
     
   - dimension: gross_revenue_ex_discount_ex_vat
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_ex_discount_ex_vat
   
   - dimension: shipping_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.shipping_revenue
     
   - dimension: engaged_session
@@ -591,7 +591,7 @@
 
   - dimension: cart_size_value
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.cart_size_value_gbp
   
   - dimension: cart_size_value_tier
@@ -602,7 +602,7 @@
     value_format: '"£"0'
     
   - dimension: cart_size_items
-    type: int
+    type: number
     sql: ${TABLE}.cart_size_items
 
   - dimension: cart_size_items_tier
@@ -643,7 +643,7 @@
     type: percent_of_total
     direction: column
     sql: ${count}
-    decimals: 1
+    value_format_name: decimal_1
 
   - measure: bounced_sessions_count
     label: Bounced Visits Total
@@ -655,9 +655,8 @@
   - measure: bounce_rate
     label: Bounce Rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${bounced_sessions_count}/NULLIF(${count},0)::REAL
-    value_format: '0.00%'
 
   - measure: engaged_sessions_count
     label: Engaged Sessions Total
@@ -669,16 +668,14 @@
   - measure: engagement_rate
     label: Engagement Rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
-    value_format: '0.00%'
 
   - measure: engagement_rate_short_name
     label: Engag. Rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${engaged_sessions_count}/NULLIF(${count},0)::REAL
-    value_format: '0.00%'
 
   - measure: logged_in_sessions_count
     label: Logged In Visits Total
@@ -690,24 +687,24 @@
   - measure: conversion_rate
     label: Conversion Rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${sum_orders}/NULLIF(${count},0)::REAL
-    value_format: '0.00%'
+    
 
   - measure: conversion_rate_short_name
     label: Conv. Rate
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${sum_orders}/NULLIF(${count},0)::REAL
-    value_format: '0.00%'
+    
     hidden: true
     
   - measure: revenue_per_session
     label: Revenue Per Visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${count},0)::REAL
-    value_format: '#0.00'
+    
     
   - measure: sessions_from_new_visitors_count
     label: New Visits Total
@@ -724,16 +721,14 @@
   - measure: new_visitor_percentage
     label: New Visit %
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sessions_from_new_visitors_count}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
   - measure: returning_visitor_percentage
     label: Returning Visit %
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sessions_from_returning_visitor_count}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
   - measure: visitors_count
     label: Total Visitors
@@ -748,19 +743,19 @@
   - measure: events_per_session
     label: Events Per Visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${events_count}/NULLIF(${count},0)::REAL
     
   - measure: events_per_visitor
     label: Events Per Visitor
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${events_count}/NULLIF(${visitors_count},0)::REAL
 
   - measure: page_views_per_visit
     label: Page Views Per Visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_page_views}/NULLIF(${count},0)::REAL
     
   - measure: sum_accounts_created
@@ -776,9 +771,8 @@
   - measure: nl_signup_rate
     label: Newsletter Signup Rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sum_newsletter_signups}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: sale_modal_views_total
     type: count_distinct
@@ -794,15 +788,13 @@
 
   - measure: sale_modal_success_rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sale_modal_successes_total}/NULLIF(${sale_modal_views_total},0)::REAL
-    value_format: '#0.00%'
 
   - measure: sale_modal_bounce_rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: (${sale_modal_views_total} - ${sale_modal_successes_total})/NULLIF(${sale_modal_views_total},0)::REAL
-    value_format: '#0.00%'
     
   - measure: sum_products_added_to_cart
     label: Products Added to Cart Total
@@ -836,15 +828,15 @@
 
   - measure: products_impressions_per_visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_product_impressions}/NULLIF(${count},0)::REAL
-    value_format: '#0.00'    
+        
   
   - measure: revenue_per_1k_impressions
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: 1000*${sum_gross_revenue_ex_discount_ex_vat}/NULLIF(${sum_product_impressions},0)::REAL
-    value_format: '#0.00'
+    
     
   - measure: sum_product_views
     label: Product Views Total
@@ -858,15 +850,14 @@
 
   - measure: product_views_per_visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_product_views}/NULLIF(${count},0)::REAL
-    value_format: '#0.00'
+    
 
   - measure: product_conversion_rate
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sum_products_purchased}/NULLIF(${sum_product_views},0)::REAL
-    value_format: '#0.00%'
     
   - measure: sum_orders
     type: sum
@@ -874,47 +865,46 @@
   
   - measure: sum_gross_revenue_ex_discount
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_revenue_ex_discount}
     
   - measure: sum_gross_revenue_ex_discount_ex_vat
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_revenue_ex_discount_ex_vat}
   
   - measure: sum_shipping_revenue
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${shipping_revenue}
 
   - measure: average_basket_size
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount}/NULLIF(${sum_orders},0)::REAL
 
   - measure: average_items_in_basket
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_products_purchased}/NULLIF(${sum_orders},0)::REAL
   
   - measure: average_selling_price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: (${sum_gross_revenue_ex_discount} - ${sum_shipping_revenue})/NULLIF(${sum_products_purchased},0)::REAL
     
 # products added to cart per visit
   - measure: products_added_to_cart_per_visit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_products_added_to_cart}/NULLIF(${count},0)::REAL
-    value_format: '#0.00'
+    
     
 # % of product views added to cart
   - measure: product_added_to_cart_view_ratio
     type: number
-    decimals: 2
+    value_format_name: percent_2
     sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL
-    value_format: '#0.00%'
     
     
     
@@ -1051,145 +1041,124 @@
   - measure: 1_conversion_funnel_all_sessions
     label: Conversion Funnel 1 (All Sessions)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${count}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
   - measure: 2_conversion_funnel_category_page
     label: Conversion Funnel 2 (Category Page)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_2}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 3_conversion_funnel_product_page
     label: Conversion Funnel 3 (Product Page)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_3}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 4_conversion_funnel_add_to_cart
     label: Conversion Funnel 4 (Add to Cart)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_4}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 5_conversion_funnel_view_cart
     label: Conversion Funnel 5 (View Cart)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_5}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
   - measure: 6_conversion_funnel_checkout_registration
     label: Conversion Funnel 6 (Checkout - Registration)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_6}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 7_conversion_funnel_checkout_address
     label: Conversion Funnel 7 (Checkout - Enter Address)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_7}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 8_conversion_funnel_checkout_delivery
     label: Conversion Funnel 8 (Checkout - Delivery Method)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_8}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 9_conversion_funnel_checkout_payment
     label: Conversion Funnel 9 (Checkout - Payment)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_9}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
     
   - measure: 10_conversion_funnel_order
     label: Conversion Funnel 10 (Placed Order)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${conversion_funnel_10}/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
 
   - measure: dropout_rate_1
     label: Dropout Rate 1 (All Sessions)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${count} - ${conversion_funnel_2})/NULLIF(${count},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_2
     label: Dropout Rate 2 (Category Page)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_2} - ${conversion_funnel_3})/NULLIF(${conversion_funnel_2},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_3
     label: Dropout Rate 3 (Product Page)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_3} - ${conversion_funnel_4})/NULLIF(${conversion_funnel_3},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_4
     label: Dropout Rate 4 (Add to Cart)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_4} - ${conversion_funnel_5})/NULLIF(${conversion_funnel_4},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_5
     label: Dropout Rate 5 (View Cart)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_5} - ${conversion_funnel_6})/NULLIF(${conversion_funnel_5},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_6
     label: Dropout Rate 6 (Checkout - Registration)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_6} - ${conversion_funnel_7})/NULLIF(${conversion_funnel_6},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_7
     label: Dropout Rate 7 (Checkout - Address)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_7} - ${conversion_funnel_8})/NULLIF(${conversion_funnel_7},0)::REAL
-    value_format: '#0.00%'
 
   - measure: dropout_rate_8
     label: Dropout Rate 8 (Checkout - Delivery)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_8} - ${conversion_funnel_9})/NULLIF(${conversion_funnel_8},0)::REAL
-    value_format: '#0.00%'
     
   - measure: dropout_rate_9
     label: Dropout Rate 9 (Checkout - Payment)
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_9} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_9},0)::REAL
-    value_format: '#0.00%'
     
   - measure: cart_abandonment_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_4} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_4},0)::REAL
-    value_format: '#0.00%'
 
   - measure: checkout_abandonment_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${conversion_funnel_7} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_7},0)::REAL
-    value_format: '#0.00%'

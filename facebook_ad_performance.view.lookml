@@ -181,12 +181,12 @@
   
   - dimension: smartly_commission
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: '0.0155' # Smartly commission approximately 1.55%
   
   - dimension: amount_spent_including_smartly_commission
     type: number
-    decimals: 4
+    value_format_name: decimal_4
     sql: ${amount_spent_gbp} * (1 + ${smartly_commission})
     hidden: true
 
@@ -716,78 +716,67 @@
   
   - measure: total_conversion_value_1_day_after_clicking
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${conversion_value_1_day_after_clicking}
-    value_format: '#,##0.00'
     
   - measure: total_conversion_value_7_days_after_clicking
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${conversion_value_7_days_after_clicking}
-    value_format: '#,##0.00'
     
   - measure: total_conversion_value_28_days_after_clicking
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${conversion_value_28_days_after_clicking}
-    value_format: '#,##0.00'
     
   - measure: 1d_average_basket
     type: number
     sql: ${total_conversion_value_1_day_after_clicking}/ NULLIF(${1d_total_action_purchase},0) ::REAL
-    value_format: '#,##0.00'
     
   - measure: 7d_average_basket
     type: number
     sql: ${total_conversion_value_7_days_after_clicking}/ NULLIF(${7d_total_action_purchase},0) ::REAL
-    value_format: '#,##0.00'
     
   - measure: 28d_average_basket
     type: number
     sql: ${total_conversion_value_28_days_after_clicking}/ NULLIF(${28d_total_action_purchase},0) ::REAL
-    value_format: '#,##0.00'
   
   - measure: total_spend
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${amount_spent_gbp}
-    value_format: '#,##0.00'
 
   - measure: total_spend_including_smartly_commission
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${amount_spent_including_smartly_commission}
-    value_format: '#,##0.00'
 
   - measure: click_through_rate
     label: CTR
     type: number
+    value_format_name: percent_2
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL
-    value_format: '0.00%'
+    
     
   - measure: cost_per_click
     label: CPC
     type: number
     sql: ${total_spend}/ NULLIF(${total_clicks},0) ::REAL
-    value_format: '#,##0.00'
 
   - measure: cost_per_mille
     label: CPM
     type: number
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL
-    value_format: '#,##0.00'
   
   - measure: unique_users
     label: Unique Users
     type: number
     sql: sum(${impressions} / NULLIF(${frequency},0) ::REAL)
-    value_format: '#,##0.00'
     
   - measure: avg_frequency
     label: Avg Frequency
     type: number
     sql: ${total_impressions}/${unique_users}
-    value_format: '#,##0.00'
     
   - measure: imp_times_relevance_score
     label: imp_times_rel
@@ -805,7 +794,7 @@
     label: Avg Relevance Score
     type: number
     sql: ${imp_times_relevance_score}/nullif(${total_imp_with_relevance_score},0)
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
     ######################################################################################################
   ###################################### 1 day window click ####################################################
@@ -998,5 +987,3 @@
   
   
   
-
-

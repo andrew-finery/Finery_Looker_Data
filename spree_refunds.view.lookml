@@ -22,15 +22,13 @@
        
   - dimension: amount_refunded
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.amount_refunded
-    value_format: '##0.00'
        
   - dimension: amount_refunded_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.amount_refunded_gbp
-    value_format: '##0.00'
   
     
 
@@ -47,6 +45,5 @@
            
   - measure: total_refunded_gbp
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${amount_refunded_gbp}
-    value_format: '##0.00'

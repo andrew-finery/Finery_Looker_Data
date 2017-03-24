@@ -409,9 +409,8 @@
     
      - dimension: size_availability
        type: number
-       decimals: 4
+       value_format_name: percent_0
        sql: coalesce((${sizes_in_stock}/nullif(${sizes_online},0)::REAL), 0)
-       value_format: '0%'
        
      - dimension: availability_dpa_productviewed
        type: string
@@ -535,7 +534,7 @@
 ############################################### MEASURES #############################################################################
 ########################################################################################################################################
      - measure: nbr_weeks_online
-       type: int
+       type: number
        sql: ${weeks_online}
     
      - measure: image
@@ -563,4 +562,3 @@
        sql: ${TABLE}.product_group_id
        filters:
         online_flag: Yes 
-

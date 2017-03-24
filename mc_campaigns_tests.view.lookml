@@ -36,36 +36,34 @@
     sql: ${TABLE}.reply_to
 
   - dimension: variate_emails_sent
-    type: int
+    type: number
     sql: ${TABLE}.emails_sent
 
   - dimension: variate_opens
-    type: int
+    type: number
     sql: ${TABLE}.opens
 
   - dimension: variate_unique_opens
-    type: int
+    type: number
     sql: ${TABLE}.unique_opens
 
   - dimension: variate_open_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${variate_unique_opens}/NULLIF(${variate_emails_sent},0)::REAL
-    value_format: '#0.00%'
 
   - dimension: variate_clicks
-    type: int
+    type: number
     sql: ${TABLE}.clicks
 
   - dimension: variate_subscriber_clicks
-    type: int
+    type: number
     sql: ${TABLE}.subscriber_clicks
 
   - dimension: variate_click_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${variate_subscriber_clicks}/NULLIF(${variate_emails_sent},0)::REAL
-    value_format: '#0.00%'
     
 ### Measures
   
@@ -91,15 +89,13 @@
     
   - measure: open_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_unique_opens}/NULLIF(${total_emails_sent},0)::REAL
-    value_format: '#0.00%'
     
   - measure: click_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_subscriber_clicks}/NULLIF(${total_emails_sent},0)::REAL
-    value_format: '#0.00%'
     
   - measure: unique_campaigns_count
     type: count_distinct

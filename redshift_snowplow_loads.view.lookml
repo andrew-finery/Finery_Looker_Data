@@ -21,7 +21,7 @@
     sql: ${TABLE}.latest_event_collected
 
   - dimension: rows_loaded
-    type: int
+    type: number
     sql: ${TABLE}.rows_loaded
 
 ###

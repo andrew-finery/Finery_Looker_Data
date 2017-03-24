@@ -719,15 +719,14 @@
 
   - measure: total_spend
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${amount_spent_gbp}
-    value_format: '#,##0.00'
 
   - measure: click_through_rate
     label: CTR
     type: number
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL
-    value_format: '0.00%'
+    
     
   - measure: cost_per_click
     label: CPC
@@ -959,4 +958,3 @@
     sql: ${total_spend}/ NULLIF(${28d_total_action_initate_checkout},0) ::REAL
     value_format: '#,##0.00'
   
-

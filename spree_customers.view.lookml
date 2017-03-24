@@ -31,7 +31,7 @@
 
   - dimension: first_order_store_credit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.first_order_store_credit
     group_label: 'First Order Info'
 
@@ -51,7 +51,7 @@
 
   - dimension: first_order_gross_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.first_order_gross_revenue
     group_label: 'First Order Info'
 
@@ -64,7 +64,7 @@
   
   - dimension: first_order_average_selling_price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${first_order_gross_revenue}/NULLIF(${first_order_items_purchased},0)::REAL
     group_label: 'First Order Info'
 
@@ -77,17 +77,17 @@
     group_label: 'First Order Info'
   
   - dimension: first_order_items_purchased
-    type: int
+    type: number
     sql: ${TABLE}.first_order_items_purchased
     group_label: 'First Order Info'
     
   - dimension: first_order_items_returned
-    type: int
+    type: number
     sql: ${TABLE}.first_order_items_returned
     group_label: 'First Order Info'
     
   - dimension: first_order_items_kept
-    type: int
+    type: number
     sql: ${first_order_items_purchased} - ${first_order_items_returned}
     group_label: 'First Order Info'
     
@@ -126,7 +126,7 @@
 
   - dimension: second_order_store_credit
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.second_order_store_credit
     group_label: 'Second Order Info'
 
@@ -145,7 +145,7 @@
     group_label: 'Second Order Info'
 
   - dimension: days_between_first_and_second_order
-    type: int
+    type: number
     sql: ${second_order_date} - ${first_order_date}
     group_label: 'Repurchase Period Info'
 
@@ -175,18 +175,18 @@
     group_label: 'Last Order Info'
   
   - dimension: days_since_last_order
-    type: int
+    type: number
     sql: current_date - ${last_order_date}
     group_label: 'Repurchase Period Info'
 
 # Customer Status
   - dimension: days_between_first_and_last_order
-    type: int
+    type: number
     sql: ${last_order_date} - ${first_order_date}
     group_label: 'Repurchase Period Info'
   
   - dimension: average_days_between_orders
-    type: int
+    type: number
     sql: |
           case
           when ${number_of_orders} = 1 then null
@@ -245,14 +245,14 @@
 
   - dimension: total_gross_revenue_pre_discount_ex_shipping
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_gross_revenue_pre_discount_ex_shipping
     hidden: true
 
   - dimension: total_gross_revenue_ex_discount_ex_shipping
     label: Customer Lifetime Value (Gross)
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_gross_revenue_ex_discount_ex_shipping
 
   - dimension: total_gross_revenue_ex_discount_ex_shipping_tier
@@ -266,7 +266,7 @@
   - dimension: total_gross_revenue_ex_discount_ex_vat_ex_shipping
     label: Customer Gross Revenue ex. VAT
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_gross_revenue_ex_discount_ex_vat_ex_shipping
 
   - dimension: total_shipping_revenue
@@ -276,31 +276,31 @@
 
   - dimension: total_store_credit_used
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_store_credit_used
     hidden: true
 
   - dimension: total_refunded
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_refunded
 
   - dimension: total_store_credit_refunded
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_store_credit_refunded
     hidden: true
 
   - dimension: total_cash_refunded
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_cash_refunded
     hidden: true
 
   - dimension: net_revenue
     label: Customer Lifetime Value (Net)
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_gross_revenue_ex_discount_ex_shipping} - ${total_refunded}
 
   - dimension: net_revenue_tier
@@ -313,35 +313,35 @@
     
   - dimension: total_gross_cogs_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_gross_cogs_gbp
     hidden: true
 
   - dimension: total_net_cogs_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_net_cogs_gbp
     hidden: true
 
   - dimension: total_gross_revenue_ex_discount_gbp
     label: CLV (gross) inc. vat, shipping
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_gross_revenue_ex_discount_gbp
 
   - dimension: total_net_store_credit_used_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_net_store_credit_used_gbp
 
   - dimension: total_vat_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_vat_gbp
 
   - dimension: net_profit_pre_ops_and_markeing
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.net_profit_pre_ops_and_markeing
 
   - dimension: top_customer_flag
@@ -351,21 +351,19 @@
 
   - dimension: return_rate_items
     type: number
-    decimals: 2
+    value_format_name: percent_0
     sql: ${items_returned}/NULLIF(${items_purchased},0)::REAL
-    value_format: '#0%'
    
   - dimension: return_rate_value
     type: number
-    decimals: 2
+    value_format_name: percent_0
     sql: (${total_gross_revenue_ex_discount_ex_shipping} - ${net_revenue})/NULLIF(${total_gross_revenue_ex_discount_ex_shipping},0)::REAL
-    value_format: '#0%'
  
   - dimension: net_revenue_per_order
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${net_revenue}/NULLIF(${number_of_orders},0)::REAL
-    value_format: '#0.00'
+    
   
   - dimension: rfm_recency
     sql: |
@@ -441,22 +439,25 @@
   - measure: repurchase_rate
     type: number
     sql: ${count_repurchasing_customers}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00%'
+    value_format_name: percent_2
 
   - measure: repurchase_rate_30d
     type: number
     sql: ${count_repurchasing_customers_30d}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00%'
+    value_format_name: percent_2
+
 
   - measure: repurchase_rate_90d
     type: number
     sql: ${count_repurchasing_customers_90d}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00%'
+    value_format_name: percent_2
+
         
   - measure: repurchase_rate_180d
     type: number
     sql: ${count_repurchasing_customers_180d}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00%'
+    value_format_name: percent_2
+
 
 # order info
   - measure: sum_orders
@@ -466,7 +467,7 @@
   - measure: orders_per_customer
     type: number
     sql: ${sum_orders}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00'    
+        
 
   - measure: sum_discounted_orders
     type: sum
@@ -475,7 +476,7 @@
   - measure: discounted_order_percentage
     type: number
     sql: ${sum_discounted_orders}/NULLIF(${sum_orders},0)::REAL
-    value_format: '#0.00'   
+       
 
   - measure: average_days_between_first_and_second_order
     type: average
@@ -493,94 +494,86 @@
   - measure: return_rate
     type: number
     sql: ${total_items_returned}/NULLIF(${total_items_purchased},0)::REAL
-    value_format: '#0.00%'
+    value_format_name: percent_2
+
     
 #revenue info
   - measure: sum_gross_revenue_pre_discount_ex_shipping
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_gross_revenue_pre_discount_ex_shipping}
-    value_format: '#,##0.00'
     hidden: true
     
   - measure: sum_gross_revenue
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_gross_revenue_ex_discount_ex_shipping}
-    value_format: '#,##0.00'
     
   - measure: sum_gross_revenue_ex_vat
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_gross_revenue_ex_discount_ex_vat_ex_shipping}
-    value_format: '#,##0.00'
 
   - measure: sum_shipping_revenue
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_shipping_revenue}
-    value_format: '#,##0.00'
     hidden: true
     
   - measure: sum_store_credit_used
     type: sum
     sql: ${total_store_credit_used}
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     hidden: true
     
   - measure: sum_amount_refunded
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_refunded}
-    value_format: '#,##0.00'
     
   - measure: sum_store_credit_refunded
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_store_credit_refunded}
-    value_format: '#,##0.00'
     hidden: true
 
   - measure: sum_cash_refunded
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_cash_refunded}
-    value_format: '#,##0.00'
     hidden: true
 
   - measure: sum_net_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_revenue} - ${sum_amount_refunded}
-    value_format: '#,##0.00'
 
   - measure: sum_net_profit_pre_ops_and_markeing
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${net_profit_pre_ops_and_markeing}
-    value_format: '#,##0.00'
     
 # avg revenue info
   - measure: avg_basket_gross
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_revenue}/NULLIF(${sum_orders},0)::REAL
-    value_format: '#0.00'    
+        
 
   - measure: gross_revenue_per_customer
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_revenue}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00'  
+      
 
   - measure: avg_basket_net
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_net_revenue}/NULLIF(${sum_orders},0)::REAL
-    value_format: '#0.00'
+    
     
   - measure: net_revenue_per_customer
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_net_revenue}/NULLIF(${count_customers},0)::REAL
-    value_format: '#0.00'  
+      

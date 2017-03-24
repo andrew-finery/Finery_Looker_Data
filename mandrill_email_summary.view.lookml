@@ -21,35 +21,35 @@
 
   - dimension: opens
     sql: ${TABLE}.opens
-    type: int
+    type: number
     
   - dimension: clicks
     sql: ${TABLE}.clicks
-    type: int
+    type: number
     
   - dimension: bounces
     sql: ${TABLE}.bounces
-    type: int
+    type: number
     
   - dimension: soft_bounces
     sql: ${TABLE}.soft_bounces
-    type: int
+    type: number
     
   - dimension: delays
     sql: ${TABLE}.delays
-    type: int
+    type: number
     
   - dimension: rejections
     sql: ${TABLE}.rejections
-    type: int
+    type: number
     
   - dimension: unsubscribes
     sql: ${TABLE}.unsubscribes
-    type: int
+    type: number
     
   - dimension: marked_as_spam
     sql: ${TABLE}.marked_as_spam
-    type: int
+    type: number
 
   - dimension: email_group
     sql_case:

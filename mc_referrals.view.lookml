@@ -8,7 +8,7 @@
     sql: ${TABLE}.email_address
 
   - dimension: member_rating
-    type: int
+    type: number
     sql: ${TABLE}.member_rating
 
   - dimension_group: member_subscribed_time
@@ -123,12 +123,10 @@
 
   - measure: unsubscription_percentage
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_unsubscribed_emails}/NULLIF(${unique_email_addresses},0)::REAL
-    value_format: '#0.00%'
 
   - measure: cleaned_percentage
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${unique_cleaned_emails}/NULLIF(${unique_email_addresses},0)::REAL
-    value_format: '#0.00%'

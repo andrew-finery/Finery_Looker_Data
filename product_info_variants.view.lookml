@@ -34,7 +34,7 @@
 
   - dimension: total_landed_cost_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.total_landed_cost_gbp
 
   - dimension: variant_id

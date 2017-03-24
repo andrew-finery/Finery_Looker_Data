@@ -4,7 +4,7 @@
 
   - dimension: id
     primary_key: true
-    type: int
+    type: number
     sql: ${TABLE}.id
 
   - dimension: clicks
@@ -34,4 +34,3 @@
   - measure: count
     type: count
     drill_fields: [id]
-

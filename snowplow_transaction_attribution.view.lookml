@@ -19,7 +19,7 @@
    
    - dimension: attribution_ratio
      type: number
-     decimals: 4
+     value_format_name: decimal_4
      sql: ${TABLE}.attribution_percentage * 0.0001
    
     ###################################################################################################################################
@@ -28,12 +28,12 @@
    
    - measure: attributed_orders
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${attribution_ratio}
 
    - measure: attributed_new_customers
      type: sum
-     decimals: 2
+     value_format_name: decimal_2
      sql: ${attribution_ratio}
      filters:
       transactions.new_customer_flag: yes
@@ -41,6 +41,5 @@
    - measure: attributed_revenue_ex_discount_ex_vat
      label: Attributed Revenue ex. discount, VAT
      type: sum
-     decimals: 2
-     value_format: '#,##0.00'
+     value_format_name: decimal_2
      sql: ${attribution_ratio} * ${transactions.revenue_ex_voucher_and_vat} / ${transactions.exchange_rate}

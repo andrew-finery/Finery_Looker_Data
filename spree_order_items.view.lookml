@@ -47,25 +47,22 @@
     
   - dimension: price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.price
-    value_format: '#,##0.00'
 
   - dimension: pre_sale_price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: |
           case
           when ${TABLE}.pre_sale_price is null then ${TABLE}.price
           when ${TABLE}.price >= ${TABLE}.pre_sale_price then ${TABLE}.price
           else ${TABLE}.pre_sale_price end
-    value_format: '#,##0.00'
   
   - dimension: retail_markdown
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${pre_sale_price} = 0 then 0 else (${pre_sale_price} - ${price}) / ${pre_sale_price} end
-    value_format: '#0.00%'
   
   - dimension: retail_markdown_tier
     sql_case:
@@ -87,27 +84,23 @@
   
   - dimension: pre_retail_markdown_price_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: coalesce(${pre_sale_price}, ${price}) / ${exchange_rate}
-    value_format: '#,##0.00'    
   
   - dimension: price_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price} / ${exchange_rate}
-    value_format: '#,##0.00'
 
   - dimension: max_selling_price
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.max_selling_price
-    value_format: '#,##0.00'
 
   - dimension: max_selling_price_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${max_selling_price} / ${exchange_rate}
-    value_format: '#,##0.00'
 
   - dimension: selling_price_tiered
     sql_case:
@@ -126,9 +119,8 @@
   
   - dimension: landed_cost_per_unit_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${variant_info.total_landed_cost_gbp}
-    value_format: '#,##0.00'
   
   - dimension: discount_level_tier
     sql_case:
@@ -142,73 +134,62 @@
   
   - dimension: gross_item_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.price * ${TABLE}.quantity
-    value_format: '#,##0.00'
     hidden: true
 
   - dimension: gross_item_revenue_pre_retail_markdown_gbp
     type: number
     sql: ${pre_retail_markdown_price_gbp} * ${TABLE}.quantity
-    value_format: '#,##0.00' 
     
   - dimension: gross_item_revenue_in_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price_gbp} * ${TABLE}.quantity
-    value_format: '#,##0.00'
 
   - dimension: gross_item_revenue_ex_voucher_discount_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${TABLE}.order_total = 0 then 0 else ${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end
-    value_format: '#,##0.00'
     
   - dimension: gross_item_revenue_ex_discount_ex_vat_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${TABLE}.order_total = 0 then 0 else (${gross_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) / (1+${tax_rate})) end
-    value_format: '#,##0.00'
 
 ####
   - dimension: net_item_revenue
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${TABLE}.price * (${TABLE}.quantity - ${TABLE}.items_returned)
-    value_format: '#,##0.00'
     hidden: true
 
   - dimension: net_item_revenue_pre_retail_markdown_gbp
     type: number
     sql: ${pre_retail_markdown_price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
-    value_format: '#,##0.00' 
     
   - dimension: net_item_revenue_in_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
-    value_format: '#,##0.00'
 
   - dimension: net_item_revenue_ex_voucher_discount_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${TABLE}.order_total = 0 then 0 else ${net_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end
-    value_format: '#,##0.00'
     
   - dimension: net_item_revenue_ex_discount_ex_vat_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: case when ${TABLE}.order_total = 0 then 0 else (${net_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) / (1+${tax_rate})) end
-    value_format: '#,##0.00'
 ####
 
 
   # Margin Dimensions
   - dimension: landed_cost_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${landed_cost_per_unit_gbp} * ${quantity}
-    value_format: '#,##0.00'
 
     
  #################################### Returns Dimensions #########################################################################################################################
@@ -225,21 +206,19 @@
     sql: ${TABLE}.return_tstamp
   
   - dimension: days_to_process_return
-    type: int
+    type: number
     sql: ${return_time_date} - ${order_time_date}
     
   - dimension: return_item_value_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price_gbp} * ${TABLE}.items_returned
-    value_format: '#,##0.00'
     hidden: true
     
   - dimension: net_reveune_after_returns_gbp
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price_gbp} * (${TABLE}.quantity - ${TABLE}.items_returned)
-    value_format: '#,##0.00'
     hidden: true
 
 #################################################################################################################################################################################
@@ -378,80 +357,68 @@
     
   - measure: return_rate
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${total_items_returned}/NULLIF(${total_items_sold},0)::REAL
-    value_format: '#0.00%'
     
   - measure: sum_return_item_value_gbp
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price} * ${items_returned} / ${exchange_rate}
-    value_format: '#,##0.00'
     hidden: true
       
   - measure: sum_return_item_value_gbp_ex_vat
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${price} * ${items_returned} / (1+${tax_rate}) / ${exchange_rate}
-    value_format: '#,##0.00'
     hidden: true
     
   - measure: return_rate_value
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${sum_return_item_value_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL
-    value_format: '#0.00%'
   
   ######################################################## GROSS Revenue Measures #######################################################################################################
 
   - measure: sum_pre_retail_markdown_item_revenue_in_gbp
     type: sum
     sql: ${gross_item_revenue_pre_retail_markdown_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
   - measure: sum_gross_item_revenue_in_gbp
     type: sum
     sql: ${price} * ${quantity} / ${exchange_rate}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: sum_gross_item_revenue_ex_voucher_discount_gbp
     type: sum
     sql: ${gross_item_revenue_ex_voucher_discount_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
   - measure: sum_net_item_revenue_gbp
     type: sum
     sql: ${price} * (${quantity} - ${items_returned}) / ${exchange_rate}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp
     label: Gross Revenue
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
   
   - measure: sum_gross_item_revenue_in_gbp_ex_vat
     type: sum
     sql: (${price} * ${quantity} / (1+${tax_rate})) / ${exchange_rate}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     
   - measure: sum_net_item_revenue_gbp_ex_vat
     type: sum
     sql: (${price} * (${quantity} - ${items_returned}) / (1+${tax_rate})) / ${exchange_rate}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: sum_net_item_revenue_ex_discount_ex_vat_gbp
     type: sum
     sql: ${net_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: count_days
     type: count_distinct
@@ -461,87 +428,77 @@
   - measure: revenue_per_day
     label: Revenue per Day
     type: number
-    decimals: 0
+    value_format_name: decimal_0
     sql: ${sum_gross_item_revenue_ex_discount_ex_vat_gbp}/nullif(${count_days},0)::REAL
-    value_format: '#,##0'
   
   ########################################################## GROSS Margin Measures ########################################################################################################
   
   - measure: sum_gross_landed_cost_gbp
     type: sum
     sql: ${variant_info.total_landed_cost_gbp} * ${quantity}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: sum_gross_margin_gbp_ex_vat
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_item_revenue_ex_discount_ex_vat_gbp} - ${sum_gross_landed_cost_gbp}
-    value_format: '#,##0.00' 
   
   - measure: gross_margin_percent_ex_vat
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${sum_gross_margin_gbp_ex_vat}/NULLIF(${sum_gross_item_revenue_ex_discount_ex_vat_gbp},0)::REAL
-    value_format: '#0.00%'
     
   ########################################################## NET Margin Measures ########################################################################################################
   
   - measure: sum_net_landed_cost_gbp
     type: sum
     sql: ${variant_info.total_landed_cost_gbp} * (${quantity} - ${items_returned})
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
 
   - measure: sum_net_margin_gbp_ex_vat
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_net_item_revenue_ex_discount_ex_vat_gbp} - ${sum_net_landed_cost_gbp}
-    value_format: '#,##0.00' 
   
   - measure: net_margin_percent_ex_vat
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${sum_net_margin_gbp_ex_vat}/NULLIF(${sum_net_item_revenue_ex_discount_ex_vat_gbp},0)::REAL
-    value_format: '#0.00%'
 
 ###################################################### DISCOUNT STUFF ##################################################
 
   - measure: avg_retail_markdown
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${sum_pre_retail_markdown_item_revenue_in_gbp} - ${sum_gross_item_revenue_in_gbp})/NULLIF(${sum_pre_retail_markdown_item_revenue_in_gbp},0)::REAL
-    value_format: '#0.00%'
     
   - measure: avg_voucher_discount
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: (${sum_gross_item_revenue_in_gbp} - ${sum_gross_item_revenue_ex_voucher_discount_gbp})/NULLIF(${sum_pre_retail_markdown_item_revenue_in_gbp},0)::REAL
-    value_format: '#0.00%'
   
   - measure: avg_total_discount
     type: number
-    decimals: 4
+    value_format_name: percent_2
     sql: ${avg_retail_markdown} + ${avg_voucher_discount}
-    value_format: '#0.00%'
 
   - measure: total_retail_markdown
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_pre_retail_markdown_item_revenue_in_gbp} - ${sum_gross_item_revenue_in_gbp}
-    value_format: '#0.00'
+    
     
   - measure: total_voucher_discount
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${sum_gross_item_revenue_in_gbp} - ${sum_gross_item_revenue_ex_voucher_discount_gbp}  
-    value_format: '#0.00'
+    
     
   - measure: total_discount
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${total_retail_markdown} + ${total_voucher_discount}
-    value_format: '#0.00'
+    
     
     ####################################################################################    
   ################################################# TW, LW, L4W, MTD, STD #######################################################################################################################
@@ -552,32 +509,28 @@
   - measure: gross_rev_ex_discount_ex_vat_tw
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     filters:
       order_time_date: last week
  
   - measure: gross_rev_ex_discount_ex_vat_lw
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     filters:
       order_time_date: "2 weeks ago"
   
   - measure: gross_rev_ex_discount_ex_vat_l4w
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     filters:
       order_time_date: 5 weeks ago for 4 weeks
 
   - measure: gross_rev_ex_discount_ex_vat_mtd
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     filters:
       order_time_date: this month
       order_time_time: before this week
@@ -585,8 +538,7 @@
   - measure: gross_rev_ex_discount_ex_vat_std
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp}
-    decimals: 2
-    value_format: '#,##0.00'
+    value_format_name: decimal_2
     filters:
       order_time_date: after 2015/02/01
       order_time_time: before this week
@@ -595,42 +547,37 @@
 
   - measure: pc1_profit_tw
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
-    value_format: '#,##0.00'
     filters:
       order_time_date: last week
       
   - measure: pc1_profit_lw
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
-    value_format: '#,##0.00'
     filters:
       order_time_date: 2 weeks ago
 
   - measure: pc1_profit_l4w
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
-    value_format: '#,##0.00'
     filters:
       order_time_date: 5 weeks ago for 4 weeks
 
   - measure: pc1_profit_mtd
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
-    value_format: '#,##0.00'
     filters:
       order_time_date: this month
       order_time_time: before this week
  
   - measure: pc1_profit_std
     type: sum
-    decimals: 2
+    value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity})
-    value_format: '#,##0.00'
     filters:
       order_time_date: after 2015/02/01
       order_time_time: before this week
