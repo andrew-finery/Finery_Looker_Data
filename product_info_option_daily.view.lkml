@@ -258,7 +258,7 @@ view: product_info_option_daily {
   measure: sum_gross_revenue_gbp_ex_vat_ex_discount_last_week {
     type: sum
     value_format_name: decimal_2
-    label: "Gross Revenue ex. VAT, DIscount LW"
+    label: "Gross Revenue ex. VAT, Discount LW"
     sql: ${gross_revenue_gbp_ex_vat_ex_discount} ;;
 
     filters: {
@@ -303,14 +303,14 @@ view: product_info_option_daily {
 
   measure: click_through_rate {
     type: number
-    value_format_name: decimal_4
+    value_format_name: percent_2
     label: "Click-Through Rate"
     sql: ${sum_product_clicks}/NULLIF(${sum_product_impressions},0)::REAL ;;
   }
 
   measure: conversion_rate {
     type: number
-    value_format_name: decimal_4
+    value_format_name: percent_2
     label: "Conversion Rate"
     sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL ;;
   }
