@@ -115,6 +115,8 @@ explore: snowplow_transaction_attribution {
 
 explore: facebook_api_ad_performance {}
 
+explore: ometria_email_data {}
+
 explore: facebook_api_ad_performance_breakdown {}
 
 explore: facebook_carousel_breakdown {}

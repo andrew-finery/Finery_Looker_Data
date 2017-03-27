@@ -3142,9 +3142,3 @@
         margin_top: deviation, margin_value: mean, margin_bottom: deviation, label_position: left,
         color: "#f91284", label: '', value_format: '#0.0%'}]
     y_axis_value_format: ''
-
-
-
-
-
-
