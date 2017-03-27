@@ -888,12 +888,14 @@ view: facebook_api_ad_performance {
   measure: cost_per_click {
     label: "CPC"
     type: number
+    value_format_name: decimal_2
     sql: ${total_spend}/ NULLIF(${total_clicks},0) ::REAL ;;
   }
 
   measure: cost_per_mille {
     label: "CPM"
     type: number
+    value_format_name: decimal_2
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL ;;
   }
 
@@ -906,6 +908,7 @@ view: facebook_api_ad_performance {
   measure: avg_frequency {
     label: "Avg Frequency"
     type: number
+    value_format_name: decimal_2
     sql: ${total_impressions}/${unique_users} ;;
   }
 
