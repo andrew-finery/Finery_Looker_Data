@@ -271,6 +271,7 @@ view: adwords_criteria_performance {
   measure: click_through_rate {
     label: "CTR"
     type: number
+    value_format_name: percent_2
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL ;;
   }
 
