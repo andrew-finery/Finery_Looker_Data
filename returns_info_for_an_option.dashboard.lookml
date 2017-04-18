@@ -214,7 +214,6 @@
       value_format_name: percent_0
     hidden_fields: [spree_order_items.total_items_returned]
     filters:
-      calendar_weeks.calendar_date_date: before 28 days ago
       spree_order_items.return_reason: -NULL
     listen:
       option: option_info.option
