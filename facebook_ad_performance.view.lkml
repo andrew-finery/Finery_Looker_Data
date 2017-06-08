@@ -167,6 +167,7 @@ view: facebook_api_ad_performance {
       when ${advert_name} like '%Multi_product_Post%' then 'Manual Carousel Ad'
       when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
       when ${advert_name} like '%Video_Post%' then 'Manual Video Post Ad'
+      when ${advert_name} like '%_Collection%' then 'Manual Collection Ad'
       else 'Other' end
        ;;
   }
