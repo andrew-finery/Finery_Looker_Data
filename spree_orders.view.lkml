@@ -503,7 +503,7 @@ view: spree_orders {
   dimension: total_discount_percentage_inc_sc {
     type:  number
     value_format_name: percent_2
-    sql:  ${sum_total_discount_retail_md_voucher_store_credit}/(${sum_total_discount_retail_md_voucher_store_credit} + ${sum_gross_revenue_ex_discount_and_shipping_in_gbp}) ;;
+    sql:  ${sum_total_discount_retail_md_voucher_store_credit}/(${sum_total_discount_retail_md_voucher_store_credit} + ${sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp}) ;;
   }
 
   dimension: order_contains_markdown {
@@ -1102,6 +1102,13 @@ view: spree_orders {
     }
   }
 
+  measure: sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp {
+    label: "Gross Revenue ex. Voucher, Store Credit, Shipping"
+    type: sum
+    sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
+    value_format_name: decimal_2
+  }
+
   measure: sum_gross_revenue_ex_discount_and_store_credit_ex_vat {
     type: sum
     sql: ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total ;;
@@ -1126,6 +1133,24 @@ view: spree_orders {
       value: "-canceled"
     }
   }
+
+  measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping {
+    label: "Gross Revenue ex. Voucher, Store Credit, Shipping, VAT"
+    type: sum
+    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))))  / ${exchange_rate} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: avg_basket_ex_discount_store_credot_shipping_vat {
+    label: "Avg Basket ex. Voucher, Store Credit, Shipping, VAT"
+    type:  number
+    value_format_name: decimal_2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL ;;
+  }
+
+
+
+
 
   ################################################# GROSS REVENUE MEASURES EXCLUDING SHIPPING ############################################################
 
