@@ -500,6 +500,12 @@ view: spree_orders {
     sql: ${retail_markdown_gbp} + ((${discount} + ${store_credit_used})/${exchange_rate}) ;;
   }
 
+  dimension: total_discount_percentage_inc_sc {
+    type:  number
+    value_format_name: percent_2
+    sql:  ${sum_total_discount_retail_md_voucher_store_credit}/(${sum_total_discount_retail_md_voucher_store_credit} + ${sum_gross_revenue_ex_discount_and_shipping_in_gbp}) ;;
+  }
+
   dimension: order_contains_markdown {
     type: yesno
     sql: ${total_discount_retail_md_voucher_store_credit} > 0 ;;
