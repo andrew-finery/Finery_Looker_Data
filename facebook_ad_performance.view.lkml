@@ -153,6 +153,7 @@ view: facebook_api_ad_performance {
     type: string
     sql: case
       when ${advert_name} like 'Dynamic_Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like 'Dynamic Product Ad%' then 'DPA Carousel Ad'
       when ${advert_name} like '0%' then 'Automated Carousel Ad'
       when ${advert_name} like '1%' then 'Automated Carousel Ad'
       when ${advert_name} like '2%' then 'Automated Carousel Ad'
