@@ -107,7 +107,7 @@ view: missed_revenues {
 
   measure: out_of_stock_product_views_percentage{
     type: number
-    sql: ${out_of_stock_product_views_total}/${product_views_total} ;;
+    sql: ${out_of_stock_product_views_total}/nullif(${product_views_total},0)::REAL ;;
     value_format_name: percent_1
   }
 
@@ -125,7 +125,7 @@ view: missed_revenues {
 
   measure: out_of_stock_product_impressions_percentage{
     type: number
-    sql: ${out_of_stock_product_impressions_total}/${product_impressions_total} ;;
+    sql: ${out_of_stock_product_impressions_total}/nullif(${product_impressions_total},0)::REAL ;;
     value_format_name: percent_1
   }
 

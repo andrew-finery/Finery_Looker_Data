@@ -653,4 +653,16 @@ explore: daily_kpis {}
 
 explore: daily_chapters_stats {}
 
-explore: missed_revenues {}
+explore: missed_revenues {
+  join: variant_info {
+    from: product_info_variants
+    sql_on: ${missed_revenues.ean} = ${variant_info.ean} ;;
+    relationship: many_to_one
+  }
+
+  join: option_info {
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    relationship: many_to_one
+  }
+}
