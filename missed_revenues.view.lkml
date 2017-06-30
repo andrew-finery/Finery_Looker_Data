@@ -17,7 +17,7 @@ view: missed_revenues {
   dimension: category_impressions {
     type: number
     sql: ${TABLE}.category_impressions ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   dimension: ean {
@@ -52,19 +52,19 @@ view: missed_revenues {
   dimension: oos_impressions {
     type: number
     sql: ${TABLE}.oos_impressions ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   dimension: oos_views {
     type: number
     sql: ${TABLE}.oos_views ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   dimension: product_views {
     type: number
     sql: ${TABLE}.product_views ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
 ### Measures
@@ -96,13 +96,13 @@ view: missed_revenues {
   measure: product_views_total{
     type: sum
     sql: ${product_views} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   measure: out_of_stock_product_views_total{
     type: sum
     sql: ${oos_views} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   measure: out_of_stock_product_views_percentage{
@@ -114,13 +114,13 @@ view: missed_revenues {
   measure: product_impressions_total{
     type: sum
     sql: ${category_impressions} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   measure: out_of_stock_product_impressions_total{
     type: sum
     sql: ${oos_impressions} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
   }
 
   measure: out_of_stock_product_impressions_percentage{
