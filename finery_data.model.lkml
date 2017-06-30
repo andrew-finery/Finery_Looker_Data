@@ -652,3 +652,5 @@ explore: redshift_table_checks {}
 explore: daily_kpis {}
 
 explore: daily_chapters_stats {}
+
+explore: missed_revenues {}
