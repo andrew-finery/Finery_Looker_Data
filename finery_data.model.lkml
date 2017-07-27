@@ -666,3 +666,17 @@ explore: missed_revenues {
     relationship: many_to_one
   }
 }
+
+explore: john_lewis_sor {
+  join: variant_info {
+    from: product_info_variants
+    sql_on: ${john_lewis_sor.ean} = ${variant_info.ean} ;;
+    relationship: many_to_one
+  }
+
+  join: option_info {
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    relationship: many_to_one
+  }
+}
