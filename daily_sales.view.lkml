@@ -204,6 +204,13 @@ view: daily_sales {
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
   }
 
+  measure: gross_item_revenue_gbp_ex_discount {
+    label: "Gross Revenue ex. Discount"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+  }
+
   measure: sales_mix {
     label: "Revenue Mix"
     type: percent_of_total
@@ -222,6 +229,13 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.net_revenue_gbp_ex_vat_ex_discount ;;
+  }
+
+  measure: net_item_revenue_gbp_ex_discount {
+    label: "Net Revenue ex. Discount"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.net_revenue_gbp_ex_discount ;;
   }
 
   measure: return_item_value_gbp {
