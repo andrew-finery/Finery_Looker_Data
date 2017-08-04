@@ -451,7 +451,8 @@ view: sessions {
     sql: case
       when ${acquisition_channel} <> 'CRM' then null
 
-      when ${TABLE}.email_folder_name = 'Newsletters'
+      when ${campaign_source} = 'ometria'
+           or  ${TABLE}.email_folder_name = 'Newsletters'
            or (${TABLE}.email_test_id is not null and ${TABLE}.email_folder_name is null)
            or ${campaign_name} in ('Introducing spring\'s need-to-know neutral', 'Meet the new arrivals', 'Open now! Visit us at the Finery Fitting Room', 'Next level layers')
            then 'Newsletters'
