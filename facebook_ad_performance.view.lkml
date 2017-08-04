@@ -180,6 +180,31 @@ view: facebook_api_ad_performance {
        ;;
   }
 
+  dimension: advert_group {
+    type: string
+    sql: case
+      when ${advert_name} like 'Dynamic_Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like 'Dynamic Product Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like '0%' then 'Automated Carousel Ad'
+      when ${advert_name} like '1%' then 'Automated Carousel Ad'
+      when ${advert_name} like '2%' then 'Automated Carousel Ad'
+      when ${advert_name} like '3%' then 'Automated Carousel Ad'
+      when ${advert_name} like '4%' then 'Automated Carousel Ad'
+      when ${advert_name} like '5%' then 'Automated Carousel Ad'
+      when ${advert_name} like '6%' then 'Automated Carousel Ad'
+      when ${advert_name} like '7%' then 'Automated Carousel Ad'
+      when ${advert_name} like '8%' then 'Automated Carousel Ad'
+      when ${advert_name} like '9%' then 'Automated Carousel Ad'
+      when ${advert_name} like '%Multi_product Post_Customer Reactivation%' then 'Automated Carousel Ad'
+      when ${advert_name} like '%ALICE%' then 'Alice Levine'
+      when ${advert_name} like '%WAVEN%' then 'Waven'
+      when ${advert_name} like '%SLOGAN%' then 'Slogan'
+      when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
+      when ${advert_name} like '%_Collection%' then 'Manual Collection Ad'
+      else 'Other' end
+       ;;
+  }
+
   dimension: advert_relevance_score {
     type: string
     sql: ${TABLE}.advert_relevance_score ;;
