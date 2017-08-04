@@ -407,6 +407,11 @@ view: sessions {
     sql: ${TABLE}.landing_page_path ;;
   }
 
+  dimension: landing_page_query {
+    label: "Landing Page Query"
+    sql: ${TABLE}.landing_page_query ;;
+  }
+
   dimension: landing_page {
     label: "Landing Page Full"
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path ;;
