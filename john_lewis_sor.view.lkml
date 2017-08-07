@@ -5,7 +5,7 @@ derived_table: {
         select ean, loc_name, calendar_date from
         (select ean from web.variant_info group by 1)
         cross join
-        (select loc_name from john_lewis.sales where report_type != 'Report Type' and file_date > '2017-07-19' group by 1)
+        (select loc_name from john_lewis.sales where report_type != 'Report Type' and case when report_date = 'Report Date' then null else to_date(report_date, 'DD/MM/YYYY') end  > '2017-07-19' group by 1)
         cross join
         (select calendar_date from finery.calendar where calendar_date between '2017-07-18' and current_date - 1)
         )
