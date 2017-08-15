@@ -322,6 +322,10 @@ view: sessions {
     sql: ${TABLE}.geo_country_code_2_characters ;;
   }
 
+  dimension: geography_country_uk_flag {
+    sql: case when ${TABLE}.geo_country_code_2_characters = 'GB' then 'UK' else 'Non-UK' end ;;
+  }
+
   dimension: geography_country {
     label: "Geo - Country"
 
