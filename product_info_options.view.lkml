@@ -403,17 +403,17 @@ view: product_info_options {
   dimension: main_season_group {
     case: {
       when: {
-        sql: ${sub_season} = 'AW17' ;;
+        sql: ${sub_season} = 'SS18' ;;
         label: "New"
       }
 
       when: {
-        sql: ${sub_season} = 'SS17' ;;
+        sql: ${sub_season} = 'AW17' ;;
         label: "Current"
       }
 
       when: {
-        sql: ${sub_season} = 'AW16' ;;
+        sql: ${sub_season} = 'SS17' ;;
         label: "Previous"
       }
 
