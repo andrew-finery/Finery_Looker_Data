@@ -645,6 +645,8 @@ explore: website_leads {
 
 explore: website_performance_checks {}
 
+explore: affiliate_daily_spend {}
+
 explore: spree_import_notifications {}
 
 explore: redshift_table_checks {}
