@@ -20,7 +20,7 @@ view: mc_campaigns_tests {
   dimension_group: variate_send_time {
     type: time
     timeframes: [time, date, hour_of_day, week, month]
-    sql: cast(${TABLE}.email_sent_time as datetime) ;;
+    sql: cast(${TABLE}.send_time as datetime) ;;
   }
 
   dimension: variate_subject_line {
