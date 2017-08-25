@@ -6,6 +6,18 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
+named_value_format: pounds_k {
+  value_format: "\£#,##0.0,\" k\""
+}
+
+named_value_format: pounds {
+  value_format: "\£#,##0"
+}
+
+named_value_format: thousands {
+  value_format: "#,##0.0,\" k\""
+}
+
 explore: sessions {
   symmetric_aggregates: yes
 
