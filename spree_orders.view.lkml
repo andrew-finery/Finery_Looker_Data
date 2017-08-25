@@ -1330,6 +1330,13 @@ view: spree_orders {
     sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
+  measure: avg_gross_revenue_gbp_ex_voucher_and_shipping_and_store_credit {
+    label: "Avg Basket Size ex. Voucher, Shipping, Store Credit"
+    type: number
+    value_format_name: decimal_2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
+  }
+
   measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat {
     label: "Avg Basket Size ex. Voucher & VAT"
     type: number
