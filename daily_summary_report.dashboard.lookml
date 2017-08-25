@@ -6,6 +6,30 @@
 
   elements:
 
+
+  - name: date
+    title: For Date
+    model: finery_data
+    explore: spree_orders
+    type: single_value
+    fields: [calendar_weeks.calendar_date_date]
+    fill_fields: [calendar_weeks.calendar_date_date]
+    filters:
+      calendar_weeks.calendar_date_date: 1 days ago for 1 days
+    sorts: [calendar_weeks.calendar_date_date desc]
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    custom_color: forestgreen
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    value_format: ''
+    single_value_title: ''
+
+
   - name: revenue_short_term
     title: Revenue
     model: finery_data
