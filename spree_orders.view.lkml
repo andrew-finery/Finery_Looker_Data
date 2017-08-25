@@ -2320,7 +2320,7 @@ view: spree_orders {
     type: number
     value_format_name: percent_0
     group_label: "Basket Reporting Measures"
-    sql: (${basket_year_to_date} - ${basket_year_to_date_last_year})/NULLIF(${basket_year_to_date_yoy},0)::REAL ;;
+    sql: (${basket_year_to_date} - ${basket_year_to_date_last_year})/NULLIF(${basket_year_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}

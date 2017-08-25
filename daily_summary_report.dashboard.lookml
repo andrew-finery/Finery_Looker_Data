@@ -219,6 +219,53 @@
     totals_color: "#808080"
     series_types: {}
 
+  - name: john_lewis_net_revenue
+    title: John Lewis - Net Revenue
+    model: finery_data
+    explore: john_lewis_sor
+    type: table
+    fields: [john_lewis_sor.net_revenue_yesterday, john_lewis_sor.net_revenue_yesterday_last_week,
+      john_lewis_sor.net_revenue_yesterday_week_on_week, john_lewis_sor.net_revenue_week_to_date,
+      john_lewis_sor.net_revenue_week_to_date_lw, john_lewis_sor.net_revenue_week_to_date_week_on_week,
+      john_lewis_sor.net_revenue_month_to_date, john_lewis_sor.net_revenue_month_to_date_last_month,
+      john_lewis_sor.net_revenue_month_to_date_month_on_month]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+
+
+
   - name: revenue_wow
     title: Revenue Week on Week
     model: finery_data
@@ -426,3 +473,193 @@
         showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
         type: linear, unpinAxis: false, valueFormat: '"£"###0', series: [{id: '201733',
             name: '201733'}, {id: '201734', name: '201734'}]}]
+
+  - name: revenue_long_term
+    title: Revenue
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_month,
+      spree_orders.revenue_month_to_date_month_on_month, spree_orders.revenue_month_to_date_last_year,
+      spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_target_month_to_date,
+      spree_orders.revenue_month_to_date_vs_target, spree_orders.revenue_year_to_date,
+      spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 56}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 55}]
+
+  - name: traffic_long_term
+    title: Traffic
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
+      sessions.visits_month_to_date_mom, sessions.visits_month_to_date_last_year, sessions.visits_month_to_date_yoy,
+      sessions.visits_target_month_to_date, sessions.visits_month_to_date_vs_target,
+      sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+
+  - name: conversion_rate_long_term
+    title: Conversion Rate
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.conversion_month_to_date, sessions.conversion_month_to_date_last_month,
+      sessions.conversion_month_to_date_mom, sessions.conversion_month_to_date_last_year,
+      sessions.conversion_month_to_date_yoy, sessions.conversion_target_month_to_date,
+      sessions.conversion_month_to_date_vs_target, sessions.conversion_year_to_date,
+      sessions.conversion_year_to_date_last_year, sessions.conversion_year_to_date_yoy]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+
+
+  - name: basket_long_term
+    title: Basket Size
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [spree_orders.basket_month_to_date, spree_orders.basket_month_to_date_last_month,
+      spree_orders.basket_month_to_date_mom, spree_orders.basket_month_to_date_last_year,
+      spree_orders.basket_month_to_date_yoy, spree_orders.basket_target_month_to_date,
+      spree_orders.basket_month_to_date_vs_target, spree_orders.basket_year_to_date,
+      spree_orders.basket_year_to_date_last_year, spree_orders.basket_year_to_date_yoy]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 56}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 55}]
