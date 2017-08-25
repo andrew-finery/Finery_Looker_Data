@@ -117,7 +117,7 @@ dimension: ean {
 
 
   measure: net_revenue_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: sum
     sql: ${gross_revenue} - ${refunds} ;;
     value_format_name: pounds
@@ -130,7 +130,7 @@ dimension: ean {
   }
 
   measure: net_revenue_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: sum
     sql: ${gross_revenue} - ${refunds} ;;
     value_format_name: pounds
@@ -144,7 +144,7 @@ dimension: ean {
   }
 
   measure: net_revenue_yesterday_week_on_week {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Net Revenue Reporting Measures"
@@ -160,7 +160,7 @@ dimension: ean {
   }
 
   measure: net_revenue_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     value_format_name: pounds
     sql: sum(case when (${calendar_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then (${gross_revenue} - ${refunds}) else 0 end) ;;
@@ -168,7 +168,7 @@ dimension: ean {
   }
 
   measure: net_revenue_yesterday_year_on_year {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Net Revenue Reporting Measures"

@@ -1713,7 +1713,7 @@ view: spree_orders {
 ###### Meausres for time period reporting
 
   measure: revenue_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: sum
     sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
     value_format_name: pounds_k
@@ -1726,7 +1726,7 @@ view: spree_orders {
   }
 
   measure: revenue_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: sum
     sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
     value_format_name: decimal_0
@@ -1740,7 +1740,7 @@ view: spree_orders {
   }
 
   measure: revenue_yesterday_week_on_week {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Revenue Reporting Measures"
@@ -1756,7 +1756,7 @@ view: spree_orders {
   }
 
   measure: revenue_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
@@ -1764,7 +1764,7 @@ view: spree_orders {
   }
 
   measure: revenue_yesterday_year_on_year {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Revenue Reporting Measures"
@@ -1997,7 +1997,7 @@ view: spree_orders {
 
 
   measure: orders_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: count_distinct
     sql: ${order_id} ;;
     group_label: "Order Reporting Measures"
@@ -2009,7 +2009,7 @@ view: spree_orders {
   }
 
   measure: orders_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: count_distinct
     sql: ${order_id} ;;
     group_label: "Order Reporting Measures"
@@ -2021,7 +2021,7 @@ view: spree_orders {
   }
 
   measure: orders_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: count(distinct case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${order_id} else null end) ;;
     group_label: "Order Reporting Measures"
@@ -2108,7 +2108,7 @@ view: spree_orders {
   }
 
   measure: basket_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: number
     sql: ${revenue_yesterday}/${orders_yesterday} ;;
     value_format_name: pounds
@@ -2116,7 +2116,7 @@ view: spree_orders {
   }
 
   measure: basket_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: number
     sql: ${revenue_yesterday_last_week}/${orders_yesterday_last_week} ;;
     value_format_name: pounds
@@ -2124,7 +2124,7 @@ view: spree_orders {
   }
 
   measure: basket_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: ${revenue_yesterday_last_year}/${orders_yesterday_last_year} ;;
     value_format_name: pounds
@@ -2220,7 +2220,7 @@ view: spree_orders {
   }
 
   measure: basket_yesterday_wow {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Basket Reporting Measures"
@@ -2236,7 +2236,7 @@ view: spree_orders {
   }
 
   measure: basket_yesterday_yoy {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Basket Reporting Measures"

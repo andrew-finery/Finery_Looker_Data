@@ -1533,7 +1533,7 @@ view: sessions {
 ########################## MGMT Reporting
 
   measure: visits_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: count_distinct
     sql: ${session_id} ;;
     value_format_name: thousands
@@ -1546,7 +1546,7 @@ view: sessions {
   }
 
   measure: visits_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: count_distinct
     sql: ${session_id} ;;
     value_format_name: thousands
@@ -1559,7 +1559,7 @@ view: sessions {
   }
 
   measure: visits_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: count(distinct case when (${start_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${session_id} else null end) ;;
     value_format_name: thousands
@@ -1656,7 +1656,7 @@ view: sessions {
 
 
   measure: visits_yesterday_wow {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Traffic Reporting Measures"
@@ -1672,7 +1672,7 @@ view: sessions {
   }
 
   measure: visits_yesterday_yoy {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Traffic Reporting Measures"
@@ -1821,7 +1821,7 @@ view: sessions {
 
 
   measure: orders_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: sum
     sql: ${orders} ;;
 
@@ -1834,7 +1834,7 @@ view: sessions {
   }
 
   measure: orders_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: sum
     sql: ${orders} ;;
     value_format_name: decimal_0
@@ -1848,7 +1848,7 @@ view: sessions {
   }
 
   measure: orders_yesterday_week_on_week {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Orders Reporting Measures"
@@ -1864,14 +1864,14 @@ view: sessions {
   }
 
   measure: orders_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: sum(case when (${start_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then (${orders}) else 0 end) ;;
     group_label: "Orders Reporting Measures"
   }
 
   measure: orders_yesterday_year_on_year {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Orders Reporting Measures"
@@ -2111,7 +2111,7 @@ view: sessions {
 
 
   measure: conversion_yesterday {
-    label: "Yest"
+    label: "Actual"
     type: number
     sql: ${orders_yesterday}/nullif(${visits_yesterday},0)::REAL ;;
     value_format_name: percent_1
@@ -2119,7 +2119,7 @@ view: sessions {
   }
 
   measure: conversion_yesterday_last_week {
-    label: "Yest LW"
+    label: "LW"
     type: number
     sql: ${orders_yesterday_last_week}/nullif(${visits_yesterday_last_week},0)::REAL ;;
     value_format_name: percent_1
@@ -2127,7 +2127,7 @@ view: sessions {
   }
 
   measure: conversion_yesterday_last_year {
-    label: "Yest LY"
+    label: "LY"
     type: number
     sql: ${orders_yesterday_last_year}/nullif(${visits_yesterday_last_year},0)::REAL ;;
     value_format_name: percent_1
@@ -2223,7 +2223,7 @@ view: sessions {
   }
 
   measure: conversion_yesterday_wow {
-    label: "Yest WoW"
+    label: "%"
     type: number
     value_format_name: percent_0
     group_label: "Conversion Reporting Measures"
@@ -2239,7 +2239,7 @@ view: sessions {
   }
 
   measure: conversion_yesterday_yoy {
-    label: "Yest YoY"
+    label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Conversion Reporting Measures"
