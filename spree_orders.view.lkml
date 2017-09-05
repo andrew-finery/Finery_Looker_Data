@@ -1714,29 +1714,18 @@ view: spree_orders {
 
   measure: revenue_yesterday {
     label: "Actual"
-    type: sum
-    sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
-
-    filters: {
-      field: completed_date
-      value: "yesterday"
-    }
   }
 
   measure: revenue_yesterday_last_week {
     label: "LW"
-    type: sum
-    sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
-    value_format_name: decimal_0
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
-
-    filters: {
-      field: completed_date
-      value: "8 days ago for 1 day"
-    }
   }
 
   measure: revenue_yesterday_week_on_week {
@@ -1998,26 +1987,16 @@ view: spree_orders {
 
   measure: orders_yesterday {
     label: "Actual"
-    type: count_distinct
-    sql: ${order_id} ;;
+    type: number
+    sql: count(distinct case when ${completed_date} = current_date - 1 then ${order_id} else 0 end) ;;
     group_label: "Order Reporting Measures"
-
-    filters: {
-      field: completed_date
-      value: "yesterday"
-    }
   }
 
   measure: orders_yesterday_last_week {
     label: "LW"
-    type: count_distinct
-    sql: ${order_id} ;;
+    type: number
+    sql: count(distinct case when ${completed_date} = current_date - 8 then ${order_id} else 0 end) ;;
     group_label: "Order Reporting Measures"
-
-    filters: {
-      field: completed_date
-      value: "8 days ago for 1 day"
-    }
   }
 
   measure: orders_yesterday_last_year {
@@ -2142,7 +2121,7 @@ view: spree_orders {
   measure: basket_week_to_date_last_week {
     label: "WTD LW"
     type: number
-    sql: ${revenue_week_to_date_lw}/${orders_week_to_date_last_year} ;;
+    sql: ${revenue_week_to_date_lw}/${orders_week_to_date_last_week} ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }

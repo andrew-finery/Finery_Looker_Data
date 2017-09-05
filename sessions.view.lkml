@@ -1534,28 +1534,18 @@ view: sessions {
 
   measure: visits_yesterday {
     label: "Actual"
-    type: count_distinct
-    sql: ${session_id} ;;
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
-
-    filters: {
-      field: start_date
-      value: "yesterday"
-    }
   }
 
   measure: visits_yesterday_last_week {
     label: "LW"
-    type: count_distinct
-    sql: ${session_id} ;;
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
-
-    filters: {
-      field: start_date
-      value: "8 days ago for 1 day"
-    }
   }
 
   measure: visits_yesterday_last_year {
@@ -1822,29 +1812,18 @@ view: sessions {
 
   measure: orders_yesterday {
     label: "Actual"
-    type: sum
-    sql: ${orders} ;;
+    type: number
+    sql: sum(case when ${start_date} = current_date - 1 then (${orders}) else 0 end) ;;
 
     group_label: "Orders Reporting Measures"
-
-    filters: {
-      field: start_date
-      value: "yesterday"
-    }
   }
 
   measure: orders_yesterday_last_week {
     label: "LW"
-    type: sum
-    sql: ${orders} ;;
-    value_format_name: decimal_0
+    type: number
+    sql: sum(case when ${start_date} = current_date - 8 then (${orders}) else 0 end) ;;
 
     group_label: "Orders Reporting Measures"
-
-    filters: {
-      field: start_date
-      value: "8 days ago for 1 day"
-    }
   }
 
   measure: orders_yesterday_week_on_week {
@@ -2145,7 +2124,7 @@ view: sessions {
   measure: conversion_week_to_date_last_week {
     label: "WTD LW"
     type: number
-    sql: ${orders_week_to_date_lw}/nullif(${visits_week_to_date_last_year},0)::REAL ;;
+    sql: ${orders_week_to_date_lw}/nullif(${visits_week_to_date_last_week},0)::REAL ;;
     value_format_name: percent_1
     group_label: "Conversion Reporting Measures"
   }

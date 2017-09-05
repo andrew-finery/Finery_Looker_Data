@@ -6,7 +6,48 @@
 
   elements:
 
-
+  - name: date_
+    title: ""
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [calendar_weeks.calendar_date_date, spree_orders.completed_day_of_week,
+      calendar_weeks.week_number, calendar_weeks.year]
+    filters:
+      calendar_weeks.calendar_date_date: 1 days ago for 1 days
+    sorts: [calendar_weeks.calendar_date_date desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - table_calculation: calculation_1
+      label: Calculation 1
+      expression: concat(${calendar_weeks.calendar_date_date}, ", ", ${spree_orders.completed_day_of_week},
+        " Week ", ${calendar_weeks.week_number}, " ")
+      value_format:
+      value_format_name:
+      _kind_hint: dimension
+    show_view_names: true
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"]}, bold: false, italic: false, strikethrough: false}]
+    hidden_fields: [calendar_weeks.year, calendar_weeks.week_number, spree_orders.completed_day_of_week,
+      calendar_weeks.calendar_date_date]
+    series_labels:
+      calculation_1: Date
+    height: 1
+    width: 12
+    top: 0
+    left: 0
 
   - name: traffic_short_term
     title: Traffic
@@ -691,3 +732,71 @@
     width: 12
     top: 15
     left: 0
+
+  - name: top_products_yesterday_ecom
+    title: Top Products Yesterday - finerylondon.com
+    model: finery_data
+    explore: spree_order_items
+    type: table
+    fields: [option_info.style, option_info.colour, option_info.option_image, spree_order_items.total_items_sold,
+      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp]
+    filters:
+      calendar_weeks.calendar_date_date: 1 days ago for 1 days
+    sorts: [spree_order_items.total_items_sold desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      option_info.style: Style
+      option_info.colour: Colour
+      option_info.option_image: Image
+      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp: Revenue
+      spree_order_items.total_items_sold: Units Sold
+    height: 16
+    width: 6
+    top: 16
+    left: 0
+
+  - name: top_products_yesterday_jl
+    title: Top Products Yesterday - John Lewis
+    model: finery_data
+    explore: john_lewis_sor
+    type: table
+    fields: [option_info.style, option_info.colour, john_lewis_sor.sum_sales_units,
+      john_lewis_sor.sum_gross_revenue, option_info.option_image]
+    filters:
+      john_lewis_sor.calendar_date: 1 days ago for 1 days
+    sorts: [john_lewis_sor.sum_sales_units desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      option_info.style: Style
+      option_info.colour: Colour
+      option_info.option_image: Image
+      john_lewis_sor.sum_sales_units: Units
+      john_lewis_sor.sum_gross_revenue: Revenue
+    height: 16
+    width: 6
+    top: 16
+    left: 6
