@@ -30,6 +30,10 @@ view: spree_addresses {
     sql: ${TABLE}.country ;;
   }
 
+  dimension: country_group {
+    sql: case when ${country} = 'United Kingdom' then 'UK' when ${country} in ('Ireland', 'United States' then 'IE/US' else 'Other' end  ;;
+  }
+
   dimension: london_flag {
     sql: case when ${TABLE}.map_postcode in ('E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC') then 'London' else 'Non-London' end ;;
   }
