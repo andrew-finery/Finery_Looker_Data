@@ -6,6 +6,18 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
+named_value_format: pounds_k {
+  value_format: "\£#,##0.0,\" k\""
+}
+
+named_value_format: pounds {
+  value_format: "\£#,##0"
+}
+
+named_value_format: thousands {
+  value_format: "#,##0.0,\" k\""
+}
+
 explore: sessions {
   symmetric_aggregates: yes
 
@@ -645,6 +657,8 @@ explore: website_leads {
 
 explore: website_performance_checks {}
 
+explore: affiliate_daily_spend {}
+
 explore: spree_import_notifications {}
 
 explore: redshift_table_checks {}
@@ -652,3 +666,31 @@ explore: redshift_table_checks {}
 explore: daily_kpis {}
 
 explore: daily_chapters_stats {}
+
+explore: missed_revenues {
+  join: variant_info {
+    from: product_info_variants
+    sql_on: ${missed_revenues.ean} = ${variant_info.ean} ;;
+    relationship: many_to_one
+  }
+
+  join: option_info {
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    relationship: many_to_one
+  }
+}
+
+explore: john_lewis_sor {
+  join: variant_info {
+    from: product_info_variants
+    sql_on: ${john_lewis_sor.ean} = ${variant_info.ean} ;;
+    relationship: many_to_one
+  }
+
+  join: option_info {
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    relationship: many_to_one
+  }
+}

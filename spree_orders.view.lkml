@@ -500,6 +500,12 @@ view: spree_orders {
     sql: ${retail_markdown_gbp} + ((${discount} + ${store_credit_used})/${exchange_rate}) ;;
   }
 
+  measure: total_discount_percentage_inc_sc {
+    type:  number
+    value_format_name: percent_2
+    sql:  ${sum_total_discount_retail_md_voucher_store_credit}/(${sum_total_discount_retail_md_voucher_store_credit} + ${sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp}) ;;
+  }
+
   dimension: order_contains_markdown {
     type: yesno
     sql: ${total_discount_retail_md_voucher_store_credit} > 0 ;;
@@ -550,6 +556,12 @@ view: spree_orders {
     description: "Flags whether the order would have free returns under the new policy implemented on 01/09/2016"
     type: yesno
     sql: ${TABLE}.free_returns_flag = 1 ;;
+  }
+
+
+  dimension: vip_order_flag {
+    type: yesno
+    sql: ${TABLE}.vip_order_flag = 1 ;;
   }
 
   #################################################################################################################################################################################
@@ -842,7 +854,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_in_gbp {
-    label: "Gross Revenue (inc. VAT, Discount, Shipping)"
+    label: "Gross Revenue (inc. VAT & Discount & Shipping)"
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -867,7 +879,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_in_gbp_ex_vat {
-    label: "Gross Revenue (ex. VAT, inc. Discount, Shipping)"
+    label: "Gross Revenue (ex. VAT - inc. Discount & Shipping)"
     type: sum
     sql: ((${TABLE}.item_total*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -886,7 +898,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_in_gbp_inc_canceled {
-    label: "Gross Revenue (inc. Cancelled Orders, VAT, Discount, Shipping)"
+    label: "Gross Revenue (inc. Cancelled Orders & VAT & Discount & Shipping)"
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1023,7 +1035,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_shipping_in_gbp {
-    label: "Gross Revenue ex. Voucher, Shipping"
+    label: "Gross Revenue ex. Voucher & Shipping"
     type: sum
     sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1048,7 +1060,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat {
-    label: "Gross Revenue ex. Voucher, VAT"
+    label: "Gross Revenue ex. Voucher & VAT"
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1060,7 +1072,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k {
-    label: "Gross Revenue ex. Voucher, VAT (K)"
+    label: "Gross Revenue ex. Voucher &, VAT (K)"
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total) / ${exchange_rate} / 1000 ;;
     value_format: "\"£\"##0.0\"k\""
@@ -1085,7 +1097,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp {
-    label: "Gross Revenue ex. Voucher, Store Credit"
+    label: "Gross Revenue ex. Voucher & Store Credit"
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1094,6 +1106,13 @@ view: spree_orders {
       field: state
       value: "-canceled"
     }
+  }
+
+  measure: sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp {
+    label: "Gross Revenue ex. Voucher & Store Credit & Shipping"
+    type: sum
+    sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
+    value_format_name: decimal_2
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_ex_vat {
@@ -1110,7 +1129,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat {
-    label: "Gross Revenue ex. Voucher, Store Credit, VAT"
+    label: "Gross Revenue ex. Voucher & Store Credit & VAT"
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1121,10 +1140,28 @@ view: spree_orders {
     }
   }
 
+  measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping {
+    label: "Gross Revenue ex. Voucher & Store Credit & Shipping, VAT"
+    type: sum
+    sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))))  / ${exchange_rate} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: avg_basket_ex_discount_store_credot_shipping_vat {
+    label: "Avg Basket ex. Voucher & Store Credit & Shipping, VAT"
+    type:  number
+    value_format_name: decimal_2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL ;;
+  }
+
+
+
+
+
   ################################################# GROSS REVENUE MEASURES EXCLUDING SHIPPING ############################################################
 
   measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping {
-    label: "Gross Revenue (ex. VAT, Discount, Shipping)"
+    label: "Gross Revenue (ex. VAT & Discount & Shipping)"
     type: sum
     sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1266,7 +1303,7 @@ view: spree_orders {
   }
 
   measure: avg_gross_revenue_ex_discount_and_shipping_in_gbp {
-    label: "Avg Basket Size ex. Voucher, Shipping"
+    label: "Avg Basket Size ex. Voucher & Shipping"
     type: number
     value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
@@ -1280,7 +1317,7 @@ view: spree_orders {
   }
 
   measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp {
-    label: "Avg Basket Size ex. Voucher, Store Credit"
+    label: "Avg Basket Size ex. Voucher & Store Credit"
     type: number
     value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
@@ -1293,15 +1330,22 @@ view: spree_orders {
     sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
+  measure: avg_gross_revenue_gbp_ex_voucher_and_shipping_and_store_credit {
+    label: "Avg Basket Size ex. Voucher, Shipping, Store Credit"
+    type: number
+    value_format_name: decimal_2
+    sql: ${sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
+  }
+
   measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat {
-    label: "Avg Basket Size ex. Voucher, VAT"
+    label: "Avg Basket Size ex. Voucher & VAT"
     type: number
     value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat {
-    label: "Avg Basket Size ex. Voucher, Store Credit, VAT"
+    label: "Avg Basket Size ex. Voucher & Store Credit & VAT"
     type: number
     value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
@@ -1552,7 +1596,7 @@ view: spree_orders {
   }
 
   measure: sum_net_revenue_ex_discount_gbp_ex_vat {
-    label: "Net. Revenue ex. Discount, VAT"
+    label: "Net. Revenue ex. Discount & VAT"
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1577,7 +1621,7 @@ view: spree_orders {
   }
 
   measure: sum_net_revenue_ex_discount_ex_store_credit_gbp {
-    label: "Net Revenue ex. Voucher, Store Credit"
+    label: "Net Revenue ex. Voucher & Store Credit"
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded} + ${shipping_total}) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1602,7 +1646,7 @@ view: spree_orders {
   }
 
   measure: sum_net_revenue_ex_discount_ex_store_credit_gbp_ex_vat {
-    label: "Net Revenue ex. Voucher, Store Credit, VAT"
+    label: "Net Revenue ex. Voucher & Store Credit & VAT"
     type: sum
     sql: (((${item_total} - ${discount} - ${amount_refunded}  - ${store_credit_used} + ${store_credit_refunded})*(1/(1+${tax_rate}))) + ${shipping_total}) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1663,4 +1707,655 @@ view: spree_orders {
     sql: ${gross_revenue_per_order} - ${shipping_revenue_per_order} - ${amount_refunded_per_order} - ${net_store_credit_used_per_order} - ${vat_per_order} - ${net_cogs_per_order} ;;
     group_label: "Unit Order Economics"
   }
+
+
+#############################################################
+###### Meausres for time period reporting
+
+  measure: revenue_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_yesterday_week_on_week {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_yesterday} - ${revenue_yesterday_last_week})/NULLIF(${revenue_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_yesterday_year_on_year {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_yesterday} - ${revenue_yesterday_last_year})/NULLIF(${revenue_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_week_to_date {
+    label: "WTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_week_to_date_lw {
+    label: "WTD LW"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_week_to_date_week_on_week {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_week_to_date} - ${revenue_week_to_date_lw})/NULLIF(${revenue_week_to_date_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_week_to_date_ly {
+    label: "WTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_week_to_date_year_on_year {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_week_to_date} - ${revenue_week_to_date_ly})/NULLIF(${revenue_week_to_date_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_month_to_date {
+    label: "MTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_month_to_date_month_on_month {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_month_to_date} - ${revenue_month_to_date_last_month})/NULLIF(${revenue_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_month_to_date_year_on_year {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_month_to_date} - ${revenue_month_to_date_last_year})/NULLIF(${revenue_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_year_to_date {
+    label: "YTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_year_to_date_year_on_year {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_year_to_date} - ${revenue_year_to_date_last_year})/NULLIF(${revenue_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: avg((select sum(Case when calendar_date = current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_yesterday_vs_target {
+    label: "Yest vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_yesterday} - ${revenue_target_yesterday})/NULLIF(${revenue_target_yesterday},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_week_to_date_vs_target {
+    label: "WTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_week_to_date} - ${revenue_target_week_to_date})/NULLIF(${revenue_target_week_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue Reporting Measures"
+  }
+
+  measure: revenue_month_to_date_vs_target {
+    label: "MTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue Reporting Measures"
+    sql: (${revenue_month_to_date} - ${revenue_target_month_to_date})/NULLIF(${revenue_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
+  measure: orders_yesterday {
+    label: "Actual"
+    type: number
+    sql: count(distinct case when ${completed_date} = current_date - 1 then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: count(distinct case when ${completed_date} = current_date - 8 then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: count(distinct case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${order_id} else null end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_week_to_date {
+    label: "WTD"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_week_to_date_last_week {
+    label: "WTD LW"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_week_to_date_last_year {
+    label: "WTD LY"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_month_to_date {
+    label: "MTD"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_year_to_date {
+    label: "YTD"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${order_id} else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: count(distinct case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${order_id} else 0 end) ;;
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: avg((select sum(Case when calendar_date = current_date - 1 then orders else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: orders_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then orders else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Order Reporting Measures"
+  }
+  measure: orders_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then orders else 0 end) from finery.targets_2017)) ;;
+    value_format_name: pounds_k
+    group_label: "Order Reporting Measures"
+  }
+
+  measure: basket_yesterday {
+    label: "Actual"
+    type: number
+    sql: ${revenue_yesterday}/${orders_yesterday} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: ${revenue_yesterday_last_week}/${orders_yesterday_last_week} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: ${revenue_yesterday_last_year}/${orders_yesterday_last_year} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_week_to_date {
+    label: "WTD"
+    type: number
+    sql: ${revenue_week_to_date}/${orders_week_to_date} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_week_to_date_last_week {
+    label: "WTD LW"
+    type: number
+    sql: ${revenue_week_to_date_lw}/${orders_week_to_date_last_week} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_week_to_date_last_year {
+    label: "WTD LY"
+    type: number
+    sql: ${revenue_week_to_date_ly}/${orders_week_to_date_last_year} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_month_to_date {
+    label: "MTD"
+    type: number
+    sql: ${revenue_month_to_date}/${orders_month_to_date} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: ${revenue_month_to_date_last_month}/${orders_month_to_date_last_month} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: ${revenue_month_to_date_last_year}/${orders_month_to_date_last_year} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_year_to_date {
+    label: "YTD"
+    type: number
+    sql: ${revenue_year_to_date}/${orders_year_to_date} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: ${revenue_year_to_date_last_year}/${orders_year_to_date_last_year} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: ${revenue_target_yesterday}/${orders_target_yesterday} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: ${revenue_target_week_to_date}/${orders_target_week_to_date} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: ${revenue_target_month_to_date}/${orders_target_month_to_date} ;;
+    value_format_name: pounds
+    group_label: "Basket Reporting Measures"
+  }
+
+  measure: basket_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_yesterday} - ${basket_yesterday_last_week})/NULLIF(${basket_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_yesterday} - ${basket_yesterday_last_year})/NULLIF(${basket_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_week_to_date} - ${basket_week_to_date_last_week})/NULLIF(${basket_week_to_date_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_week_to_date_yoy {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_yesterday} - ${basket_week_to_date_last_year})/NULLIF(${basket_week_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_month_to_date} - ${basket_month_to_date_last_month})/NULLIF(${basket_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_month_to_date} - ${basket_month_to_date_last_year})/NULLIF(${basket_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_year_to_date} - ${basket_year_to_date_last_year})/NULLIF(${basket_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_yeaterday_vs_target {
+    label: "Yest vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_yesterday} - ${basket_target_yesterday})/NULLIF(${basket_target_yesterday},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_week_to_date_vs_target {
+    label: "WTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_week_to_date} - ${basket_target_week_to_date})/NULLIF(${basket_target_week_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: basket_month_to_date_vs_target {
+    label: "MTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Basket Reporting Measures"
+    sql: (${basket_month_to_date} - ${basket_target_month_to_date})/NULLIF(${basket_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
 }

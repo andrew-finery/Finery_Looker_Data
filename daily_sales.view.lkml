@@ -198,10 +198,17 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount {
-    label: "Gross Revenue ex. VAT, Discount"
+    label: "Gross Revenue ex. VAT & Discount"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount {
+    label: "Gross Revenue ex. Discount"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
   }
 
   measure: sales_mix {
@@ -218,10 +225,17 @@ view: daily_sales {
   }
 
   measure: net_item_revenue_gbp_ex_vat_ex_discount {
-    label: "Net Revenue ex. VAT, Discount"
+    label: "Net Revenue ex. VAT & Discount"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.net_revenue_gbp_ex_vat_ex_discount ;;
+  }
+
+  measure: net_item_revenue_gbp_ex_discount {
+    label: "Net Revenue ex. Discount"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.net_revenue_gbp_ex_discount ;;
   }
 
   measure: return_item_value_gbp {
@@ -232,7 +246,7 @@ view: daily_sales {
   }
 
   measure: return_item_value_gbp_ex_vat_ex_discount {
-    label: "Return Item Value ex. VAT, Discount"
+    label: "Return Item Value ex. VAT & Discount"
     type: number
     value_format_name: decimal_2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount} ;;
@@ -255,7 +269,7 @@ view: daily_sales {
   }
 
   measure: asp_ex_vat_ex_discount {
-    label: "Average Selling Price ex. VAT, Discount"
+    label: "Average Selling Price ex. VAT & Discount"
     type: number
     value_format_name: decimal_2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_items_sold},0)::REAL ;;
@@ -760,7 +774,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_yesterday {
-    label: "Gross Revenue ex. VAT, Discount - Yesterday"
+    label: "Gross Revenue ex. VAT & Discount - Yesterday"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
@@ -772,7 +786,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week {
-    label: "Gross Revenue ex. VAT, Discount - Last Week"
+    label: "Gross Revenue ex. VAT & Discount - Last Week"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
@@ -784,7 +798,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_before {
-    label: "Gross Revenue ex. VAT, Discount - Week Before Last"
+    label: "Gross Revenue ex. VAT & Discount - Week Before Last"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
@@ -796,7 +810,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days {
-    label: "Gross Revenue ex. VAT, Discount - Last 7 Days"
+    label: "Gross Revenue ex. VAT & Discount - Last 7 Days"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
@@ -808,7 +822,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_to_date {
-    label: "Gross Revenue ex. VAT, Discount - Week to Date"
+    label: "Gross Revenue ex. VAT & Discount - Week to Date"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
@@ -820,7 +834,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year {
-    label: "Gross Revenue ex. VAT, Discount - Last Week LY"
+    label: "Gross Revenue ex. VAT & Discount - Last Week LY"
     type: number
     value_format_name: decimal_2
     sql: sum (

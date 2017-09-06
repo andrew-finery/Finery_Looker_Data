@@ -37,7 +37,8 @@ view: calendar_weeks {
 
   dimension: week_number {
     label: "Week Number"
-    sql: ${TABLE}.week_number ;;
+    type:  number
+    sql: ${TABLE}.week_number;;
   }
 
   dimension: period {

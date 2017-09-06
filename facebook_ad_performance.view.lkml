@@ -1,6 +1,13 @@
 view: facebook_api_ad_performance {
   sql_table_name: facebook_data.facebook_ad_performance ;;
 
+  dimension: dpa_type {
+    sql: case when ${TABLE}.campaign_name like '%AddToCart%' then 'AddToCart'
+      when ${TABLE}.campaign_name like '%Addtocart%' then 'AddToCart'
+      when ${TABLE}.campaign_name like '%ProductViewed%' then 'ProductViewed' end
+       ;;
+  }
+
   dimension: audience_segment {
     sql: case when ${TABLE}.campaign_name like '%Acquisition%' then 'NonBuyers - Acquisition'
       when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
@@ -153,6 +160,7 @@ view: facebook_api_ad_performance {
     type: string
     sql: case
       when ${advert_name} like 'Dynamic_Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like 'Dynamic Product Ad%' then 'DPA Carousel Ad'
       when ${advert_name} like '0%' then 'Automated Carousel Ad'
       when ${advert_name} like '1%' then 'Automated Carousel Ad'
       when ${advert_name} like '2%' then 'Automated Carousel Ad'
@@ -167,6 +175,32 @@ view: facebook_api_ad_performance {
       when ${advert_name} like '%Multi_product_Post%' then 'Manual Carousel Ad'
       when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
       when ${advert_name} like '%Video_Post%' then 'Manual Video Post Ad'
+      when ${advert_name} like '%_Collection%' then 'Manual Collection Ad'
+      else 'Other' end
+       ;;
+  }
+
+  dimension: advert_group {
+    type: string
+    sql: case
+      when ${advert_name} like 'Dynamic_Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like 'Dynamic Product Ad%' then 'DPA Carousel Ad'
+      when ${advert_name} like '0%' then 'Automated Carousel Ad'
+      when ${advert_name} like '1%' then 'Automated Carousel Ad'
+      when ${advert_name} like '2%' then 'Automated Carousel Ad'
+      when ${advert_name} like '3%' then 'Automated Carousel Ad'
+      when ${advert_name} like '4%' then 'Automated Carousel Ad'
+      when ${advert_name} like '5%' then 'Automated Carousel Ad'
+      when ${advert_name} like '6%' then 'Automated Carousel Ad'
+      when ${advert_name} like '7%' then 'Automated Carousel Ad'
+      when ${advert_name} like '8%' then 'Automated Carousel Ad'
+      when ${advert_name} like '9%' then 'Automated Carousel Ad'
+      when ${advert_name} like '%Multi_product Post_Customer Reactivation%' then 'Automated Carousel Ad'
+      when ${advert_name} like '%ALICE%' then 'Alice Levine'
+      when ${advert_name} like '%WAVEN%' then 'Waven'
+      when ${advert_name} like '%SLOGAN%' then 'Slogan'
+      when ${advert_name} like '%Link_Post%' then 'Manual Link Post Ad'
+      when ${advert_name} like '%_Collection%' then 'Manual Collection Ad'
       else 'Other' end
        ;;
   }

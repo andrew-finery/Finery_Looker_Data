@@ -322,6 +322,10 @@ view: sessions {
     sql: ${TABLE}.geo_country_code_2_characters ;;
   }
 
+  dimension: geography_country_uk_flag {
+    sql: case when ${TABLE}.geo_country_code_2_characters = 'GB' then 'UK' else 'Non-UK' end ;;
+  }
+
   dimension: geography_country {
     label: "Geo - Country"
 
@@ -407,6 +411,11 @@ view: sessions {
     sql: ${TABLE}.landing_page_path ;;
   }
 
+  dimension: landing_page_query {
+    label: "Landing Page Query"
+    sql: ${TABLE}.landing_page_query ;;
+  }
+
   dimension: landing_page {
     label: "Landing Page Full"
     sql: ${TABLE}.landing_page_host || ${TABLE}.landing_page_path ;;
@@ -451,7 +460,8 @@ view: sessions {
     sql: case
       when ${acquisition_channel} <> 'CRM' then null
 
-      when ${TABLE}.email_folder_name = 'Newsletters'
+      when ${campaign_source} = 'ometria'
+           or  ${TABLE}.email_folder_name = 'Newsletters'
            or (${TABLE}.email_test_id is not null and ${TABLE}.email_folder_name is null)
            or ${campaign_name} in ('Introducing spring\'s need-to-know neutral', 'Meet the new arrivals', 'Open now! Visit us at the Finery Fitting Room', 'Next level layers')
            then 'Newsletters'
@@ -1518,4 +1528,840 @@ view: sessions {
     value_format_name: percent_2
     sql: (${conversion_funnel_7} - ${conversion_funnel_10})/NULLIF(${conversion_funnel_7},0)::REAL ;;
   }
+
+
+########################## MGMT Reporting
+
+  measure: visits_yesterday {
+    label: "Actual"
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: count(distinct case when (${start_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_week_to_date {
+    label: "WTD"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_week_to_date_last_week {
+    label: "WTD LW"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_week_to_date_last_year {
+    label: "WTD LY"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_month_to_date {
+    label: "MTD"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_year_to_date {
+    label: "YTD"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: count(distinct case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: avg((select sum(Case when calendar_date = current_date - 1 then visits else null end) from finery.targets_2017)) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then visits else null end) from finery.targets_2017)) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+  measure: visits_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then visits else null end) from finery.targets_2017)) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+
+
+  measure: visits_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_yesterday} - ${visits_yesterday_last_week})/NULLIF(${visits_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_yesterday} - ${visits_yesterday_last_year})/NULLIF(${visits_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_week_to_date} - ${visits_week_to_date_last_week})/NULLIF(${visits_week_to_date_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_week_to_date_yoy {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_yesterday} - ${visits_week_to_date_last_year})/NULLIF(${visits_week_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_month_to_date} - ${visits_month_to_date_last_month})/NULLIF(${visits_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_month_to_date} - ${visits_month_to_date_last_year})/NULLIF(${visits_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_year_to_date} - ${visits_year_to_date_last_year})/NULLIF(${visits_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_yeaterday_vs_target {
+    label: "Yest vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_yesterday} - ${visits_target_yesterday})/NULLIF(${visits_target_yesterday},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_week_to_date_vs_target {
+    label: "WTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_week_to_date} - ${visits_target_week_to_date})/NULLIF(${visits_target_week_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_month_to_date_vs_target {
+    label: "MTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_month_to_date} - ${visits_target_month_to_date})/NULLIF(${visits_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
+
+
+
+
+  measure: orders_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${start_date} = current_date - 1 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: sum(case when ${start_date} = current_date - 8 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_yesterday_week_on_week {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_yesterday} - ${orders_yesterday_last_week})/NULLIF(${orders_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: sum(case when (${start_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then (${orders}) else 0 end) ;;
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_yesterday_year_on_year {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_yesterday} - ${orders_yesterday_last_year})/NULLIF(${orders_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_week_to_date {
+    label: "WTD"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('week', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_week_to_date_lw {
+    label: "WTD LW"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('week', current_date - 8) and current_date - 8 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_week_to_date_week_on_week {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_week_to_date} - ${orders_week_to_date_lw})/NULLIF(${orders_week_to_date_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_week_to_date_ly {
+    label: "WTD LY"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_week_to_date_year_on_year {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Reporting Measures"
+    sql: (${orders_week_to_date} - ${orders_week_to_date_ly})/NULLIF(${orders_week_to_date_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_month_to_date {
+    label: "MTD"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_month_to_date_month_on_month {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_month_to_date} - ${orders_month_to_date_last_month})/NULLIF(${orders_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_month_to_date_year_on_year {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_month_to_date} - ${orders_month_to_date_last_year})/NULLIF(${orders_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_year_to_date {
+    label: "YTD"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('year', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (${orders}) else 0 end) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_year_to_date_year_on_year {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_year_to_date} - ${orders_year_to_date_last_year})/NULLIF(${orders_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: avg((select sum(Case when calendar_date = current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_yesterday_vs_target {
+    label: "Yest vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_yesterday} - ${orders_target_yesterday})/NULLIF(${orders_target_yesterday},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_week_to_date_vs_target {
+    label: "WTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_week_to_date} - ${orders_target_week_to_date})/NULLIF(${orders_target_week_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
+
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_month_to_date_vs_target {
+    label: "MTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_month_to_date} - ${orders_target_month_to_date})/NULLIF(${orders_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
+
+#  label: "Conversion Rate"
+#  type: number
+#  value_format_name: percent_2
+#  sql: ${sum_orders}/NULLIF(${count},0)::REAL ;;
+
+
+  measure: conversion_yesterday {
+    label: "Actual"
+    type: number
+    sql: ${orders_yesterday}/nullif(${visits_yesterday},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: ${orders_yesterday_last_week}/nullif(${visits_yesterday_last_week},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: ${orders_yesterday_last_year}/nullif(${visits_yesterday_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_week_to_date {
+    label: "WTD"
+    type: number
+    sql: ${orders_week_to_date}/nullif(${visits_week_to_date},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_week_to_date_last_week {
+    label: "WTD LW"
+    type: number
+    sql: ${orders_week_to_date_lw}/nullif(${visits_week_to_date_last_week},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_week_to_date_last_year {
+    label: "WTD LY"
+    type: number
+    sql: ${orders_week_to_date_ly}/nullif(${visits_week_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_month_to_date {
+    label: "MTD"
+    type: number
+    sql: ${orders_month_to_date}/nullif(${visits_month_to_date},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: ${orders_month_to_date_last_month}/nullif(${visits_month_to_date_last_month},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: ${orders_month_to_date_last_year}/nullif(${visits_month_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_year_to_date {
+    label: "YTD"
+    type: number
+    sql: ${orders_year_to_date}/nullif(${visits_year_to_date},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: ${orders_year_to_date_last_year}/nullif(${visits_year_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_target_yesterday {
+    label: "Target Yest"
+    type: number
+    sql: ${orders_target_yesterday}/nullif(${visits_target_yesterday},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_target_week_to_date {
+    label: "Target WTD"
+    type: number
+    sql: ${orders_target_week_to_date}/nullif(${visits_target_week_to_date},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_target_month_to_date {
+    label: "Target MTD"
+    type: number
+    sql: ${orders_target_month_to_date}/nullif(${visits_target_month_to_date},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_yesterday} - ${conversion_yesterday_last_week})/NULLIF(${conversion_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_yesterday} - ${conversion_yesterday_last_year})/NULLIF(${conversion_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_week_to_date} - ${conversion_week_to_date_last_week})/NULLIF(${conversion_week_to_date_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_week_to_date_yoy {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_yesterday} - ${conversion_week_to_date_last_year})/NULLIF(${conversion_week_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_month_to_date} - ${conversion_month_to_date_last_month})/NULLIF(${conversion_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_month_to_date} - ${conversion_month_to_date_last_year})/NULLIF(${conversion_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_year_to_date} - ${conversion_year_to_date_last_year})/NULLIF(${conversion_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_yeaterday_vs_target {
+    label: "Yest vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_yesterday} - ${conversion_target_yesterday})/NULLIF(${conversion_target_yesterday},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_week_to_date_vs_target {
+    label: "WTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_week_to_date} - ${conversion_target_week_to_date})/NULLIF(${conversion_target_week_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_month_to_date_vs_target {
+    label: "MTD vs Target"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Reporting Measures"
+    sql: (${conversion_month_to_date} - ${conversion_target_month_to_date})/NULLIF(${conversion_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
+
+
 }
