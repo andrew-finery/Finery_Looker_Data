@@ -1995,7 +1995,7 @@ view: spree_orders {
   measure: orders_yesterday_last_week {
     label: "LW"
     type: number
-    sql: count(distinct case when ${completed_date} = current_date - 8 then ${order_id} else null end) ;;
+    sql: count(distinct case when ${completed_date} = current_date - 8 then ${order_id} else 0 end) ;;
     group_label: "Order Reporting Measures"
   }
 
