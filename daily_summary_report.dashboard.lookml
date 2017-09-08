@@ -801,17 +801,18 @@
     top: 16
     left: 6
 
-  - name: traffic_by_source
-    title: Traffic Sources
+  - name: revenue_short_term_by_channel
+    title: Revenue by Channel
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: table
-    fields: [sessions.visits_yesterday, sessions.visits_yesterday_last_week, sessions.visits_yesterday_wow,
-      sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy, sessions.visits_week_to_date,
-      sessions.visits_week_to_date_last_week, sessions.visits_week_to_date_wow, sessions.visits_week_to_date_last_year,
-      sessions.visits_week_to_date_yoy, sessions.channel_grouping_3]
-    fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.visits_yesterday desc]
+    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+      transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
+      transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
+      transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
+      transactions.conversion_channel]
+    sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
     total: true
@@ -847,22 +848,28 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 850}]
     height: 3
     width: 12
     top: 32
     left: 0
 
-  - name: traffic_by_device
-    title: Traffic by Device
+  - name: revenue_short_term_by_device
+    title: Revenue by Device
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: table
-    fields: [sessions.visits_yesterday, sessions.visits_yesterday_last_week, sessions.visits_yesterday_wow,
-      sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy, sessions.visits_week_to_date,
-      sessions.visits_week_to_date_last_week, sessions.visits_week_to_date_wow, sessions.visits_week_to_date_last_year,
-      sessions.visits_week_to_date_yoy, sessions.device_type]
-    fill_fields: [sessions.device_type]
-    sorts: [sessions.visits_yesterday desc]
+    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+      transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
+      transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
+      transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
+      transactions.conversion_device]
+    sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
     total: true
@@ -898,21 +905,28 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 850}]
     height: 2
     width: 12
     top: 35
     left: 0
 
-  - name: traffic_by_uk_non_uk
-    title: Traffic by Region
+  - name: revenue_short_term_by_country
+    title: Revenue by Country
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: table
-    fields: [sessions.geography_country_uk_flag, sessions.visits_yesterday, sessions.visits_yesterday_last_week,
-      sessions.visits_yesterday_wow, sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy,
-      sessions.visits_week_to_date, sessions.visits_week_to_date_last_week, sessions.visits_week_to_date_wow,
-      sessions.visits_week_to_date_last_year, sessions.visits_week_to_date_yoy]
-    sorts: [sessions.visits_yesterday desc]
+    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+      transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
+      transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
+      transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
+      transactions.conversion_country]
+    sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
     total: true
@@ -948,8 +962,11 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      sessions.geography_country_uk_flag: Country
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 850}]
     height: 2
     width: 12
     top: 37
