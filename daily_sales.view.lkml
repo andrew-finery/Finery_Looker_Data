@@ -154,6 +154,12 @@ view: daily_sales {
     sql: ${TABLE}.items_returned ;;
   }
 
+  measure: sum_returns_value_cost {
+    label: "Returns Value @ Cost"
+    type: sum
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.items_returned ;;
+  }
+
   measure: sum_items_sold_after_returns {
     label: "Net Units Sold"
     type: sum

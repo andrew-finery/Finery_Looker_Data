@@ -1710,12 +1710,13 @@ view: spree_orders {
 
 
 #############################################################
+
 ###### Meausres for time period reporting
 
   measure: revenue_yesterday {
     label: "Actual"
     type: number
-    sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1723,7 +1724,7 @@ view: spree_orders {
   measure: revenue_yesterday_last_week {
     label: "LW"
     type: number
-    sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1747,7 +1748,7 @@ view: spree_orders {
   measure: revenue_yesterday_last_year {
     label: "LY"
     type: number
-    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1771,7 +1772,7 @@ view: spree_orders {
   measure: revenue_week_to_date {
     label: "WTD"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1779,7 +1780,7 @@ view: spree_orders {
   measure: revenue_week_to_date_lw {
     label: "WTD LW"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1803,7 +1804,7 @@ view: spree_orders {
   measure: revenue_week_to_date_ly {
     label: "WTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1827,7 +1828,7 @@ view: spree_orders {
   measure: revenue_month_to_date {
     label: "MTD"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1835,7 +1836,7 @@ view: spree_orders {
   measure: revenue_month_to_date_last_month {
     label: "MTD LM"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1859,7 +1860,7 @@ view: spree_orders {
   measure: revenue_month_to_date_last_year {
     label: "MTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1883,7 +1884,7 @@ view: spree_orders {
   measure: revenue_year_to_date {
     label: "YTD"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
@@ -1891,7 +1892,7 @@ view: spree_orders {
   measure: revenue_year_to_date_last_year {
     label: "YTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Revenue Reporting Measures"
   }
