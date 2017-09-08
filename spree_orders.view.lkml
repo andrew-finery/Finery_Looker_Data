@@ -2052,7 +2052,7 @@ view: spree_orders {
     label: "YTD"
     type: number
     sql: count(distinct case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${order_id} else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: thousands
     group_label: "Order Reporting Measures"
   }
 
@@ -2060,6 +2060,7 @@ view: spree_orders {
     label: "YTD LY"
     type: number
     sql: count(distinct case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${order_id} else 0 end) ;;
+    value_format_name: thousands
     group_label: "Order Reporting Measures"
   }
 
