@@ -523,20 +523,39 @@ view: sessions {
   }
 
   dimension: channel_grouping_3 {
-    label: "Search + Direct / Facebook / Other"
+    label: "Channel"
 
     case: {
       when: {
-        sql: ${acquisition_channel} in ('SEM Brand', 'Search', 'Direct') ;;
-        label: "Search & Direct"
+        sql: ${acquisition_channel} in ('SEM Brand', 'Search') ;;
+        label: "Search"
       }
 
       when: {
         sql: ${acquisition_channel} in ('Facebook - Paid Marketing') ;;
-        label: "Facebook (Paid)"
+        label: "Paid Social"
       }
 
-      else: "Other"
+      when: {
+        sql: ${acquisition_channel} in ('CRM', 'Email', 'Other Marketing Source') ;;
+        label: "CRM (Email)"
+      }
+
+      when: {
+        sql: ${acquisition_channel} in ('Social') ;;
+        label: "Organic Social"
+      }
+
+      when: {
+        sql: ${acquisition_channel} in ('Referrals') ;;
+        label: "Referrals"
+      }
+      when: {
+        sql: ${acquisition_channel} in ('Affiliates') ;;
+        label: "Affiliates"
+      }
+
+      else: "Direct"
     }
   }
 
