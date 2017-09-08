@@ -54,7 +54,7 @@
     query_timezone: Europe/London
     series_types: {}
     width: 12
-    height: 3
+    height: 2
     top: 0
     left: 0
 
