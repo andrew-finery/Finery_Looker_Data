@@ -527,7 +527,7 @@
     series_types: {}
     hidden_fields:
     width: 6
-    height: 2
+    height: 1
     top: 6
     left: -3
 
@@ -585,7 +585,7 @@
     series_types: {}
     hidden_fields:
     width: 6
-    height: 2
+    height: 1
     top: 6
     left: 3
 
@@ -642,7 +642,7 @@
     series_types: {}
     hidden_fields:
     width: 6
-    height: 2
+    height: 1
     top: 6
     left: 9
 
@@ -704,7 +704,7 @@
     hidden_fields:
     width: 18
     height: 2
-    top: 8
+    top: 7
     left: -3
 
 
@@ -770,12 +770,12 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 10
+    top: 9
     left: -3
 
 
   - name: uk_revenue_graph_last_26_weeks
-    title: Uk Revenue - Last 26 Weeks
+    title: UK Revenue - Last 26 Weeks
     model: finery_data
     explore: spree_orders
     type: looker_line
@@ -835,7 +835,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 10
+    top: 9
     left: 3
 
 
@@ -901,7 +901,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 10
+    top: 9
     left: 9
 
 
@@ -967,7 +967,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 14
+    top: 13
     left: -3
 
 
@@ -1033,7 +1033,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 14
+    top: 13
     left: 3
 
 
@@ -1099,7 +1099,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 14
+    top: 13
     left: 9
 
 
@@ -1164,7 +1164,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 18
+    top: 17
     left: -3
 
 
@@ -1230,7 +1230,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 18
+    top: 17
     left: 3
 
 
@@ -1295,5 +1295,5 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 6
     height: 4
-    top: 18
+    top: 17
     left: 9
