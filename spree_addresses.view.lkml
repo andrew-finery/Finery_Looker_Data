@@ -31,9 +31,8 @@ view: spree_addresses {
   }
 
   dimension: country_group {
-    sql: case when ${country} = 'United Kingdom' then 'UK'
-      when ${country} = 'Ireland' then 'Ireland
-      when ${country} = 'United States' then 'United States' else 'Other' end  ;;
+    sql: case when ${country} = 'United Kingdom' then 'UK' when ${country} = 'Ireland' then 'Ireland  when  ${country} = 'United States' then 'United States' else 'Other' end  ;;
+
   }
 
   dimension: london_flag {
