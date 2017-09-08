@@ -53,7 +53,7 @@
     interpolation: linear
     query_timezone: Europe/London
     series_types: {}
-    width: 10
+    width: 11
     height: 3
     top: 0
     left: 0
