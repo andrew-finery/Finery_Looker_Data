@@ -21,7 +21,7 @@
     column_limit: 50
     dynamic_fields:
     - table_calculation: change_wow
-      label: "% Change WoW"
+      label: "% Change"
       expression: "${visits.page_views_per_visit}/offset(${visits.page_views_per_visit},1)-1"
       value_format:
       value_format_name: percent_1
