@@ -5,18 +5,20 @@
 
   elements:
 
-  - name: uk_performance_revenue
-    title: UK Performance - Revenue
+  - name: revenue_all
+    title: Revenue By Country
     model: finery_data
     explore: spree_orders
     type: table
     fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.revenue_yesterday_last_week,
-      spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw, spree_orders.revenue_week_to_date_ly,
-      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_month,
-      spree_orders.revenue_month_to_date_last_year, spree_orders.revenue_yesterday_last_year,
-      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: UK
+      spree_orders.revenue_yesterday_week_on_week, spree_orders.revenue_yesterday_last_year,
+      spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_week_to_date,
+      spree_orders.revenue_week_to_date_lw, spree_orders.revenue_week_to_date_week_on_week,
+      spree_orders.revenue_month_to_date_last_month, spree_orders.revenue_month_to_date_month_on_month,
+      spree_orders.revenue_week_to_date_ly, spree_orders.revenue_week_to_date_year_on_year,
+      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_year,
+      spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_year_to_date,
+      spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
@@ -51,113 +53,11 @@
     interpolation: linear
     query_timezone: Europe/London
     series_types: {}
-    width: 6
-    height: 2
+    width: 18
+    height: 3
     top: 0
     left: 0
 
-
-  - name: ie_us_performance_revenue
-    title: Ireland & US Performance - Revenue
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.revenue_yesterday_last_week,
-      spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw, spree_orders.revenue_week_to_date_ly,
-      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_month,
-      spree_orders.revenue_month_to_date_last_year, spree_orders.revenue_yesterday_last_year,
-      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: IE/US
-    sorts: [spree_orders.revenue_yesterday desc]
-    limit: 100
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    width: 6
-    height: 2
-    top: 2
-    left: 3
-
-  - name: other_performance_revenue
-    title: Other Country Performance - Revenue
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.revenue_yesterday_last_week,
-      spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw, spree_orders.revenue_week_to_date_ly,
-      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_month,
-      spree_orders.revenue_month_to_date_last_year, spree_orders.revenue_yesterday_last_year,
-      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: Other
-    sorts: [spree_orders.revenue_yesterday desc]
-    limit: 100
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    width: 6
-    height: 2
-    top: 2
-    left: 9
 
 
 
