@@ -835,7 +835,7 @@ view: spree_orders {
     label: "LW"
     type: number
     sql: sum(case when ${completed_date} = current_date - 8 then ${gross_cogs_gbp} else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Gross Cogs Reporting Measures"
   }
 
@@ -859,7 +859,7 @@ view: spree_orders {
     label: "LY"
     type: number
     sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${gross_cogs_gbp} else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Gross Cogs Reporting Measures"
   }
 
@@ -891,7 +891,7 @@ view: spree_orders {
     label: "WTD LW"
     type: number
     sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ggross_cogs_week_to_date_lw 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Gross Cogs Reporting Measures"
   }
 
@@ -940,7 +940,7 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Gross Cogs eporting Measures"
+    group_label: "Gross Cogs Reporting Measures"
   }
 
   measure: gross_cogs_month_to_date_last_month {
