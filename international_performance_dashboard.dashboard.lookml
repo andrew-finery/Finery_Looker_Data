@@ -124,20 +124,43 @@
 
 
   - name: gross_margin
-    title: Gross Margin By Location
+    title: UGross Margin By Location
     model: finery_data
     explore: spree_orders
     type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.sum_gross_cogs_gbp]
-    filters:
-      calendar_weeks.calendar_date_date: 1 days ago for 1 days
+    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.gross_cogs_yesterday,
+      spree_orders.revenue_year_to_date, spree_orders.gross_cogs_year_to_date]
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
     dynamic_fields:
-    - table_calculation: gross_margin
-      label: Gross Margin %
-      expression: "(${spree_orders.revenue_yesterday}-${spree_orders.sum_gross_cogs_gbp})/${spree_orders.revenue_yesterday}"
+    - table_calculation: of_total_revenue_yest
+      label: "% of Total Revenue Yest."
+      expression: "${spree_orders.revenue_yesterday}/sum(${spree_orders.revenue_yesterday})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_margin_ytd
+      label: "% Gross Margin YTD"
+      expression: "(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})/${spree_orders.revenue_year_to_date}"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_profit_ytd
+      label: Gross Profit YTD £
+      expression: "${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date}"
+      value_format:
+      value_format_name: pounds_k
+      _kind_hint: measure
+    - table_calculation: gross_revenue_mix_ytd
+      label: Gross Revenue mix YTD
+      expression: "${spree_orders.revenue_year_to_date}/sum(${spree_orders.revenue_year_to_date})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_profit_mix_ytd
+      label: Gross Profit Mix YTD %
+      expression: "(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})/sum(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})"
       value_format:
       value_format_name: percent_0
       _kind_hint: measure
@@ -167,16 +190,22 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
     show_null_points: true
     point_style: none
     interpolation: linear
     query_timezone: Europe/London
     series_types: {}
-    hidden_fields:
+    hidden_fields: [spree_orders.gross_cogs_year_to_date, spree_orders.revenue_year_to_date]
     width: 13
     height: 3
     top: 6
     left: -1
+
 
 
   - name: uk_revenue_graph_last_30_days
