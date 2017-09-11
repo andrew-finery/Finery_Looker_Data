@@ -834,7 +834,7 @@ view: spree_orders {
   measure: gross_cogs_yesterday_last_week {
     label: "LW"
     type: number
-    sql: sum(case when ${completed_date} = current_date - 8 then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} = current_date - 8 then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -858,7 +858,7 @@ view: spree_orders {
   measure: gross_cogs_yesterday_last_year {
     label: "LY"
     type: number
-    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -914,7 +914,7 @@ view: spree_orders {
   measure: gross_cogs_week_to_date_ly {
     label: "WTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -938,7 +938,7 @@ view: spree_orders {
   measure: gross_cogs_month_to_date {
     label: "MTD"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs eporting Measures"
   }
@@ -946,7 +946,7 @@ view: spree_orders {
   measure: gross_cogs_month_to_date_last_month {
     label: "MTD LM"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -970,7 +970,7 @@ view: spree_orders {
   measure: gross_cogs_month_to_date_last_year {
     label: "MTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -994,7 +994,7 @@ view: spree_orders {
   measure: gross_cogs_year_to_date {
     label: "YTD"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
@@ -1002,7 +1002,7 @@ view: spree_orders {
   measure: gross_cogs_year_to_date_last_year {
     label: "YTD LY"
     type: number
-    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then gross_cogs_gbp else 0 end) ;;
+    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds_k
     group_label: "Gross Cogs Reporting Measures"
   }
