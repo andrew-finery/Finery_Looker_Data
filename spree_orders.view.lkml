@@ -2091,7 +2091,7 @@ view: spree_orders {
   measure: basket_yesterday {
     label: "Actual"
     type: number
-    sql: ${revenue_yesterday}/${orders_yesterday} ;;
+    sql: ${revenue_yesterday}/NULLIF(${orders_yesterday},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2099,7 +2099,7 @@ view: spree_orders {
   measure: basket_yesterday_last_week {
     label: "LW"
     type: number
-    sql: ${revenue_yesterday_last_week}/${orders_yesterday_last_week} ;;
+    sql: ${revenue_yesterday_last_week}/NULLIF(${orders_yesterday_last_week},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2107,7 +2107,7 @@ view: spree_orders {
   measure: basket_yesterday_last_year {
     label: "LY"
     type: number
-    sql: ${revenue_yesterday_last_year}/${orders_yesterday_last_year} ;;
+    sql: ${revenue_yesterday_last_year}/NULLIF(${orders_yesterday_last_year},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2115,7 +2115,7 @@ view: spree_orders {
   measure: basket_week_to_date {
     label: "WTD"
     type: number
-    sql: ${revenue_week_to_date}/${orders_week_to_date} ;;
+    sql: ${revenue_week_to_date}/NULLIF(${orders_week_to_date},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2123,7 +2123,7 @@ view: spree_orders {
   measure: basket_week_to_date_last_week {
     label: "WTD LW"
     type: number
-    sql: ${revenue_week_to_date_lw}/${orders_week_to_date_last_week} ;;
+    sql: ${revenue_week_to_date_lw}/NULLIF(${orders_week_to_date_last_week},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2131,7 +2131,7 @@ view: spree_orders {
   measure: basket_week_to_date_last_year {
     label: "WTD LY"
     type: number
-    sql: ${revenue_week_to_date_ly}/${orders_week_to_date_last_year} ;;
+    sql: ${revenue_week_to_date_ly}/NULLIF(${orders_week_to_date_last_year},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2139,7 +2139,7 @@ view: spree_orders {
   measure: basket_month_to_date {
     label: "MTD"
     type: number
-    sql: ${revenue_month_to_date}/${orders_month_to_date} ;;
+    sql: ${revenue_month_to_date}/NULLIF(${orders_month_to_date},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2147,7 +2147,7 @@ view: spree_orders {
   measure: basket_month_to_date_last_month {
     label: "MTD LM"
     type: number
-    sql: ${revenue_month_to_date_last_month}/${orders_month_to_date_last_month} ;;
+    sql: ${revenue_month_to_date_last_month}/NULLIF(${orders_month_to_date_last_month},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2155,7 +2155,7 @@ view: spree_orders {
   measure: basket_month_to_date_last_year {
     label: "MTD LY"
     type: number
-    sql: ${revenue_month_to_date_last_year}/${orders_month_to_date_last_year} ;;
+    sql: ${revenue_month_to_date_last_year}/NULLIF(${orders_month_to_date_last_year},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2163,7 +2163,7 @@ view: spree_orders {
   measure: basket_year_to_date {
     label: "YTD"
     type: number
-    sql: ${revenue_year_to_date}/${orders_year_to_date} ;;
+    sql: ${revenue_year_to_date}/NULLIF(${orders_year_to_date},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2171,7 +2171,7 @@ view: spree_orders {
   measure: basket_year_to_date_last_year {
     label: "YTD LY"
     type: number
-    sql: ${revenue_year_to_date_last_year}/${orders_year_to_date_last_year} ;;
+    sql: ${revenue_year_to_date_last_year}/NULLIF(${orders_year_to_date_last_year},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2179,7 +2179,7 @@ view: spree_orders {
   measure: basket_target_yesterday {
     label: "Target Yest"
     type: number
-    sql: ${revenue_target_yesterday}/${orders_target_yesterday} ;;
+    sql: ${revenue_target_yesterday}/NULLIF(${orders_target_yesterday},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2187,7 +2187,7 @@ view: spree_orders {
   measure: basket_target_week_to_date {
     label: "Target WTD"
     type: number
-    sql: ${revenue_target_week_to_date}/${orders_target_week_to_date} ;;
+    sql: ${revenue_target_week_to_date}/NULLIF(${orders_target_week_to_date},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
@@ -2195,7 +2195,7 @@ view: spree_orders {
   measure: basket_target_month_to_date {
     label: "Target MTD"
     type: number
-    sql: ${revenue_target_month_to_date}/${orders_target_month_to_date} ;;
+    sql: ${revenue_target_month_to_date}/NULLIF(${orders_target_month_to_date},0)::REAL ;;
     value_format_name: pounds
     group_label: "Basket Reporting Measures"
   }
