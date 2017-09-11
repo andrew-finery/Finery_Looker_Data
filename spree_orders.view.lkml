@@ -1717,7 +1717,7 @@ view: spree_orders {
     label: "Actual"
     type: number
     sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Revenue Reporting Measures"
   }
 

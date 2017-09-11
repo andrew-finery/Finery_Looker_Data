@@ -6,22 +6,35 @@
   elements:
 
   - name: revenue_all
-    title: Revenue By Country
+    title: Revenue By Location
     model: finery_data
     explore: spree_orders
     type: table
     fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.revenue_yesterday_last_week,
       spree_orders.revenue_yesterday_week_on_week, spree_orders.revenue_yesterday_last_year,
-      spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_week_to_date,
-      spree_orders.revenue_week_to_date_lw, spree_orders.revenue_week_to_date_week_on_week,
+      spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_month_to_date,
       spree_orders.revenue_month_to_date_last_month, spree_orders.revenue_month_to_date_month_on_month,
-      spree_orders.revenue_week_to_date_ly, spree_orders.revenue_week_to_date_year_on_year,
-      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_year,
-      spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_year_to_date,
-      spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
+      spree_orders.revenue_month_to_date_last_year, spree_orders.revenue_month_to_date_year_on_year,
+      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year,
+      spree_orders.revenue_year_to_date_year_on_year]
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
+    dynamic_fields:
+    - table_calculation: of_total_revenue_mtd
+      label: "% of Rev MTD"
+      expression: "${spree_orders.revenue_month_to_date}/sum(${spree_orders.revenue_month_to_date})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: of_total_revenue_mtd_lm
+      label: "% of Rev MTD LM"
+      expression: |-
+        ${spree_orders.revenue_month_to_date_last_month}/sum(${spree_orders.revenue_month_to_date_last_month}
+          )
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
     show_view_names: false
     show_row_numbers: true
     truncate_column_names: false
@@ -59,357 +72,23 @@
     left: 0
 
 
+##Average basket going here
 
-
-  - name: uk_performance_avg_basket
-    title: Uk Performance - Average Basket
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.basket_yesterday, spree_orders.basket_yesterday_last_week,
-      spree_orders.basket_week_to_date, spree_orders.basket_week_to_date_last_week,
-      spree_orders.basket_week_to_date_last_year, spree_orders.basket_month_to_date,
-      spree_orders.basket_month_to_date_last_month, spree_orders.basket_month_to_date_last_year,
-      spree_orders.basket_yesterday_last_year, spree_orders.basket_year_to_date, spree_orders.basket_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: UK
-    sorts: [spree_orders.basket_yesterday desc]
-    limit: 100
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    width: 6
-    height: 2
-    top: 4
-    left: -3
-
-
-
-  - name: ie_us_performance_avg_basket
-    title: Ireland & Us Performance - Average Basket
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.basket_yesterday, spree_orders.basket_yesterday_last_week,
-      spree_orders.basket_week_to_date, spree_orders.basket_week_to_date_last_week,
-      spree_orders.basket_week_to_date_last_year, spree_orders.basket_month_to_date,
-      spree_orders.basket_month_to_date_last_month, spree_orders.basket_month_to_date_last_year,
-      spree_orders.basket_yesterday_last_year, spree_orders.basket_year_to_date, spree_orders.basket_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: IE/US
-    sorts: [spree_orders.basket_yesterday desc]
-    limit: 100
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    width: 6
-    height: 2
-    top: 4
-    left: 3
-
-
-  - name: other_country_performance_avg_basket
-    title: Other Country Performance - Average Basket
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.basket_yesterday, spree_orders.basket_yesterday_last_week,
-      spree_orders.basket_week_to_date, spree_orders.basket_week_to_date_last_week,
-      spree_orders.basket_week_to_date_last_year, spree_orders.basket_month_to_date,
-      spree_orders.basket_month_to_date_last_month, spree_orders.basket_month_to_date_last_year,
-      spree_orders.basket_yesterday_last_year, spree_orders.basket_year_to_date, spree_orders.basket_year_to_date_last_year]
-    filters:
-      spree_addresses.country_group: Other
-    sorts: [spree_orders.basket_yesterday desc]
-    limit: 100
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    width: 6
-    height: 2
-    top: 4
-    left: 9
-
-
-  - name: uk_performance_gross_margin
-    title: UK Performance - Gross Margin
+  - name: gross_margin
+    title: Gross Margin By Location
     model: finery_data
     explore: spree_orders
     type: table
     fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.sum_gross_cogs_gbp]
     filters:
       calendar_weeks.calendar_date_date: 1 days ago for 1 days
-      spree_addresses.country_group: UK
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
     dynamic_fields:
     - table_calculation: gross_margin
-      label: Gross Margin
-      expression: "${spree_orders.revenue_yesterday}-${spree_orders.sum_gross_cogs_gbp}\n"
-      value_format:
-      value_format_name: pounds
-      _kind_hint: measure
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    hidden_fields:
-    width: 6
-    height: 1
-    top: 6
-    left: -3
-
-
-
-  - name: ie_us_performance_gross_margin
-    title: Ireland & US Performance - Gross Margin
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.sum_gross_cogs_gbp]
-    filters:
-      calendar_weeks.calendar_date_date: 1 days ago for 1 days
-      spree_addresses.country_group: IE/US
-    sorts: [spree_orders.revenue_yesterday desc]
-    limit: 100
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: gross_margin
-      label: Gross Margin
-      expression: "${spree_orders.revenue_yesterday}-${spree_orders.sum_gross_cogs_gbp}\n"
-      value_format:
-      value_format_name: pounds
-      _kind_hint: measure
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    hidden_fields:
-    width: 6
-    height: 1
-    top: 6
-    left: 3
-
-
-  - name: other_country_performance_gross_margin
-    title: Other Country Performance - Gross Margin
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_yesterday, spree_orders.sum_gross_cogs_gbp]
-    filters:
-      calendar_weeks.calendar_date_date: 1 days ago for 1 days
-      spree_addresses.country_group: Other
-    sorts: [spree_orders.revenue_yesterday desc]
-    limit: 100
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: gross_margin
-      label: Gross Margin
-      expression: "${spree_orders.revenue_yesterday}-${spree_orders.sum_gross_cogs_gbp}\n"
-      value_format:
-      value_format_name: pounds
-      _kind_hint: measure
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    query_timezone: Europe/London
-    series_types: {}
-    hidden_fields:
-    width: 6
-    height: 1
-    top: 6
-    left: 9
-
-
-
-  - name: revenue_mix
-    title: Percentage Of Total Revenue
-    model: finery_data
-    explore: spree_orders
-    type: table
-    fields: [spree_addresses.country_group, spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw]
-    sorts: [of_total_rev_wtd desc]
-    limit: 100
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: of_total_rev_wtd
-      label: "% of total rev WTD"
-      expression: "${spree_orders.revenue_week_to_date}/sum(${spree_orders.revenue_week_to_date})"
-      value_format:
-      value_format_name: percent_0
-      _kind_hint: measure
-    - table_calculation: of_total_rev_wtd_lw
-      label: "% of total rev WTD LW"
-      expression: "${spree_orders.revenue_week_to_date_lw}/sum(${spree_orders.revenue_week_to_date_lw})"
+      label: Gross Margin %
+      expression: "(${spree_orders.revenue_yesterday}-${spree_orders.sum_gross_cogs_gbp})/${spree_orders.revenue_yesterday}"
       value_format:
       value_format_name: percent_0
       _kind_hint: measure
@@ -445,10 +124,10 @@
     query_timezone: Europe/London
     series_types: {}
     hidden_fields:
-    width: 18
-    height: 2
-    top: 7
-    left: -3
+    width: 12
+    height: 3
+    top: 3
+    left: 0
 
 
   - name: uk_revenue_graph_last_30_days
