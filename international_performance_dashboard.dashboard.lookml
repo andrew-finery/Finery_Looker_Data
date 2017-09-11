@@ -14,10 +14,8 @@
       spree_orders.gross_cogs_year_to_date, spree_orders.revenue_yesterday_last_week,
       spree_orders.revenue_yesterday_week_on_week, spree_orders.revenue_yesterday_last_year,
       spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_month_to_date,
-      spree_orders.revenue_month_to_date_last_month, spree_orders.revenue_month_to_date_month_on_month,
-      spree_orders.revenue_month_to_date_last_year, spree_orders.revenue_month_to_date_year_on_year,
-      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year,
-      spree_orders.revenue_year_to_date_year_on_year]
+      spree_orders.revenue_month_to_date_month_on_month, spree_orders.revenue_year_to_date,
+      spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
