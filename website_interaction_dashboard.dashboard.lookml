@@ -318,7 +318,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 6
-    top: 20
+    top: 16
     left: 0
 
 
@@ -344,7 +344,7 @@
       _kind_hint: measure
     width: 12
     height: 4
-    top: 17
+    top: 22
     left: 0
 
 
@@ -371,7 +371,7 @@
       _kind_hint: measure
     width: 12
     height: 4
-    top: 21
+    top: 26
     left: 0
 
 
@@ -391,7 +391,7 @@
     column_limit: 50
     width: 12
     height: 4
-    top: 25
+    top: 30
     left: 0
 
 
@@ -410,5 +410,5 @@
     column_limit: 50
     width: 12
     height: 4
-    top: 29
+    top: 34
     left: 0
