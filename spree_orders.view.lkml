@@ -883,7 +883,7 @@ view: spree_orders {
     measure: gross_cogs_week_to_date {
       label: "WTD"
       type: number
-      sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then gross_cogs_week_to_date else 0 end) ;;
+      sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then gross_cogs_gbp else 0 end) ;;
       value_format_name: pounds_k
       group_label: "Gross Cogs Reporting Measures"
     }
@@ -891,7 +891,7 @@ view: spree_orders {
     measure: gross_cogs_week_to_date_lw {
       label: "WTD LW"
       type: number
-      sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ggross_cogs_week_to_date_lw 0 end) ;;
+      sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then gross_cogs_gbp else 0 end) ;;
       value_format_name: pounds_k
       group_label: "Gross Cogs Reporting Measures"
     }
