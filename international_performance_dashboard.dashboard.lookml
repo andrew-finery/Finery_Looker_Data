@@ -66,10 +66,10 @@
     interpolation: linear
     query_timezone: Europe/London
     series_types: {}
-    width: 13
+    width: 12
     height: 3
     top: 0
-    left: -1
+    left: 0
 
 
   - name: average_basket
@@ -117,10 +117,10 @@
     interpolation: linear
     query_timezone: Europe/London
     series_types: {}
-    width: 13
+    width: 12
     height: 3
     top: 3
-    left: -1
+    left: 0
 
 
   - name: gross_margin
@@ -201,10 +201,10 @@
     query_timezone: Europe/London
     series_types: {}
     hidden_fields: [spree_orders.gross_cogs_year_to_date, spree_orders.revenue_year_to_date]
-    width: 13
+    width: 12
     height: 3
     top: 6
-    left: -1
+    left: 0
 
 
 
@@ -268,10 +268,10 @@
         showLabels: true, showValues: true, tickDensity: default, tickDensityCustom: 5,
         type: linear, unpinAxis: false, valueFormat: '"£"###,"k"', series: [{id: spree_orders.sum_gross_revenue_ex_discount_in_gbp,
             name: Gross Revenue ex. Voucher}]}]
-    width: 13
+    width: 12
     height: 4
     top: 9
-    left: -1
+    left: 0
 
 
   - name: ie_us_revenue_graph_last_30_days
@@ -335,10 +335,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 437}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
         __LINE_NUM: 435}]
-    width: 13
+    width: 12
     height: 4
     top: 13
-    left: -1
+    left: 0
 
 
 
@@ -403,10 +403,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 634}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 632}]
-    width: 13
+    width: 12
     height: 4
     top: 17
-    left: -1
+    left: 0
 
 
 
@@ -471,10 +471,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 305}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
         __LINE_NUM: 303}]
-    width: 13
+    width: 12
     height: 4
     top: 21
-    left: -1
+    left: 0
 
 
 
@@ -537,10 +537,10 @@
         showLabels: true, showValues: true, tickDensity: default, tickDensityCustom: 5,
         type: linear, unpinAxis: false, valueFormat: '"£"###,"k"', series: [{id: spree_orders.sum_gross_revenue_ex_discount_in_gbp,
             name: Gross Revenue ex. Voucher}]}]
-    width: 13
+    width: 12
     height: 4
     top: 25
-    left: -1
+    left: 0
 
 
 
@@ -605,10 +605,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 700}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
         __LINE_NUM: 698}]
-    width: 13
+    width: 12
     height: 4
     top: 29
-    left: -1
+    left: 0
 
 
 
@@ -673,10 +673,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 371}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
         __LINE_NUM: 369}]
-    width: 13
+    width: 12
     height: 4
     top: 33
-    left: -1
+    left: 0
 
 
 
@@ -741,10 +741,10 @@
             name: Gross Revenue ex. Voucher, __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
             __LINE_NUM: 371}], __FILE: finery_data/international_performance_dashboard.dashboard.lookml,
         __LINE_NUM: 369}]
-    width: 13
+    width: 12
     height: 4
     top: 37
-    left: -1
+    left: 0
 
 
   - name: other_revenue_graph_last_24_months
@@ -806,7 +806,7 @@
         showLabels: true, showValues: true, tickDensity: default, tickDensityCustom: 5,
         type: linear, unpinAxis: false, valueFormat: '"£"###,"k"', series: [{id: spree_orders.sum_gross_revenue_ex_discount_in_gbp,
             name: Gross Revenue ex. Voucher}]}]
-    width: 13
+    width: 12
     height: 4
     top: 41
-    left: -1
+    left: 0
