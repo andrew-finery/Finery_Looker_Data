@@ -822,7 +822,7 @@ view: spree_orders {
     sql: ${gross_cogs_gbp} ;;
   }
 
-  measure: sum_net_cogs_gbp {
+   measure: sum_net_cogs_gbp {
     type: sum
     value_format_name: decimal_2
     sql: ${net_cogs_gbp} ;;
