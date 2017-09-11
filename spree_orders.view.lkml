@@ -824,7 +824,7 @@ view: spree_orders {
   }
 
   measure: gross_cogs_yesterday {
-    label: "Actual"
+    label: "Actual gross cogs"
     type: number
     sql: sum(case when ${completed_date} = current_date - 1 then ${gross_cogs_gbp} else 0 end) ;;
     value_format_name: pounds
@@ -1916,7 +1916,7 @@ view: spree_orders {
 ###### Meausres for time period reporting
 
   measure: revenue_yesterday {
-    label: "Actual"
+    label: "Actual rev yest"
     type: number
     sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds
