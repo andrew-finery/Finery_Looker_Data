@@ -1927,7 +1927,7 @@ view: spree_orders {
     label: "LW"
     type: number
     sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Revenue Reporting Measures"
   }
 
@@ -1951,7 +1951,7 @@ view: spree_orders {
     label: "LY"
     type: number
     sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
-    value_format_name: pounds_k
+    value_format_name: pounds
     group_label: "Revenue Reporting Measures"
   }
 

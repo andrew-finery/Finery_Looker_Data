@@ -195,7 +195,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 9
+    top: 6
     left: 0
 
 
@@ -262,7 +262,7 @@
         __LINE_NUM: 435}]
     width: 12
     height: 4
-    top: 13
+    top: 10
     left: 0
 
 
@@ -330,7 +330,7 @@
             __LINE_NUM: 632}]
     width: 12
     height: 4
-    top: 17
+    top: 14
     left: 0
 
 
@@ -398,7 +398,7 @@
         __LINE_NUM: 303}]
     width: 12
     height: 4
-    top: 21
+    top: 18
     left: 0
 
 
@@ -464,7 +464,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 25
+    top: 22
     left: 0
 
 
@@ -532,7 +532,7 @@
         __LINE_NUM: 698}]
     width: 12
     height: 4
-    top: 29
+    top: 26
     left: 0
 
 
@@ -600,7 +600,7 @@
         __LINE_NUM: 369}]
     width: 12
     height: 4
-    top: 33
+    top: 30
     left: 0
 
 
@@ -668,7 +668,7 @@
         __LINE_NUM: 369}]
     width: 12
     height: 4
-    top: 37
+    top: 34
     left: 0
 
 
@@ -733,5 +733,5 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 41
+    top: 38
     left: 0
