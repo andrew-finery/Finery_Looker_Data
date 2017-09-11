@@ -128,12 +128,14 @@
     left: 6
 
 
-  - name: website_bounce_rate
-    title: Website Bounce Rate
+
+  - name: engaged_visits_last_two_weeks
+    title: Engaged Website Visits - Last 2 Weeks
     model: finery_data
     explore: website_page_views
     type: table
-    fields: [visits.start_week, website_page_views.bounce_rate]
+    fields: [visits.start_week, visits.engagement_rate, visits.conversion_rate, visits.4_conversion_funnel_add_to_cart,
+      visits.bounce_rate]
     fill_fields: [visits.start_week]
     filters:
       visits.start_week: 2 weeks ago for 2 weeks
@@ -141,193 +143,30 @@
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - table_calculation: of_change
-      label: "% of change"
-      expression: "${website_page_views.bounce_rate}/offset(${website_page_views.bounce_rate},1)-1"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    show_null_points: true
-    point_style: circle
-    interpolation: linear
-    series_types: {}
-    width: 9
-    height: 2
-    top: 2
-    left: -3
-
-
-  - name: website_engagement_rate
-    title: Website Engagement Rate
-    model: finery_data
-    explore: website_page_views
-    type: table
-    fields: [visits.start_week, visits.engagement_rate]
-    fill_fields: [visits.start_week]
-    filters:
-      visits.start_week: 2 weeks ago for 2 weeks
-    sorts: [visits.start_week desc]
-    limit: 500
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: of_change
-      label: "% of change"
+    - table_calculation: engagement_diff
+      label: Engagement Diff %
       expression: "${visits.engagement_rate}/offset(${visits.engagement_rate},1)-1"
       value_format:
       value_format_name: percent_1
       _kind_hint: measure
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    show_null_points: true
-    point_style: circle
-    interpolation: linear
-    series_types: {}
-    width: 9
-    height: 2
-    top: 2
-    left: 6
-
-
-  - name: website_add_to_cart
-    title: Website Add To Cart
-    model: finery_data
-    explore: website_page_views
-    type: table
-    fields: [visits.start_week, visits.4_conversion_funnel_add_to_cart]
-    fill_fields: [visits.start_week]
-    filters:
-      visits.start_week: 2 weeks ago for 2 weeks
-    sorts: [visits.start_week desc]
-    limit: 500
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: of_change
-      label: "% of change"
-      expression: "${visits.4_conversion_funnel_add_to_cart}/offset(${visits.4_conversion_funnel_add_to_cart},1)-1\n"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    show_null_points: true
-    point_style: circle
-    interpolation: linear
-    series_types: {}
-    width: 9
-    height: 2
-    top: 4
-    left: -3
-
-
-
-  - name: website_conversion_rate
-    title: Website Conversion Rate
-    model: finery_data
-    explore: website_page_views
-    type: table
-    fields: [visits.start_week, visits.conversion_rate]
-    fill_fields: [visits.start_week]
-    filters:
-      visits.start_week: 2 weeks ago for 2 weeks
-    sorts: [visits.start_week desc]
-    limit: 500
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: of_change
-      label: "% of change"
+    - table_calculation: conversion_rate_diff
+      label: Conversion Rate Diff %
       expression: "${visits.conversion_rate}/offset(${visits.conversion_rate},1)-1"
       value_format:
       value_format_name: percent_1
       _kind_hint: measure
+    - table_calculation: add_to_cart_diff
+      label: Add To Cart Diff %
+      expression: "${visits.4_conversion_funnel_add_to_cart}/offset(${visits.4_conversion_funnel_add_to_cart},1)-1"
+      value_format:
+      value_format_name: percent_1
+      _kind_hint: measure
+    - table_calculation: bounce_rate_diff
+      label: Bounce Rate Diff %
+      expression: "${visits.bounce_rate}/offset(${visits.bounce_rate},1)-1"
+      value_format:
+      value_format_name: percent_1
+      _kind_hint: measure
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -363,10 +202,11 @@
     point_style: circle
     interpolation: linear
     series_types: {}
-    width: 9
+    width: 18
     height: 2
-    top: 4
-    left: 6
+    top: 2
+    left: -3
+
 
 
   - name: website_top_landing_page
@@ -419,7 +259,7 @@
     hidden_series: [website_page_views.bounce_rate]
     width: 9
     height: 3
-    top: 6
+    top: 4
     left: -3
 
 
@@ -473,7 +313,7 @@
     series_types: {}
     width: 9
     height: 3
-    top: 6
+    top: 4
     left: 6
 
 
@@ -493,7 +333,7 @@
     column_limit: 50
     width: 9
     height: 4
-    top: 9
+    top: 7
     left: -3
 
 
@@ -512,7 +352,7 @@
     column_limit: 50
     width: 9
     height: 4
-    top: 9
+    top: 7
     left: 6
 
 
@@ -538,7 +378,7 @@
       _kind_hint: measure
     width: 9
     height: 4
-    top: 13
+    top: 11
     left: -3
 
 
@@ -565,7 +405,7 @@
       _kind_hint: measure
     width: 9
     height: 4
-    top: 13
+    top: 11
     left: 6
 
 
@@ -585,7 +425,7 @@
     column_limit: 50
     width: 9
     height: 4
-    top: 17
+    top: 15
     left: -3
 
 
@@ -604,5 +444,5 @@
     column_limit: 50
     width: 9
     height: 4
-    top: 17
+    top: 15
     left: 6
