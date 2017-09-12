@@ -1198,9 +1198,35 @@ view: sessions {
   }
 
   measure: product_views_per_visit {
+    label: "Actual"
     type: number
     value_format_name: decimal_2
     sql: ${sum_product_views}/NULLIF(${count},0)::REAL ;;
+    group_label: "Product View Measures"
+  }
+
+  measure: product_views_lw {
+    label: "LW"
+    type: number
+    value_format_name: decimal_2
+    sql: case when (${start_date} = current_date - 8 then ${sum_product_views}/${count} else 0 end) ;;
+    group_label: "Product View Measures"
+  }
+
+  measure: product_views_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product View Measures"
+    sql: (${product_views_per_visit} - ${product_views_lw})/NULLIF(${product_views_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: product_conversion_rate {
@@ -2120,6 +2146,14 @@ view: sessions {
     label: "LW"
     type: number
     sql: ${orders_yesterday_last_week}/nullif(${visits_yesterday_last_week},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Reporting Measures"
+  }
+
+  measure: conversion_last_7_days {
+    label: "L7D"
+    type: number
+    sql: case when(${start_date} between current_date -1 and current_date -8 then ${orders_yesterday}/count(${visits_yesterday}/7)) else null end::REAL ;;
     value_format_name: percent_1
     group_label: "Conversion Reporting Measures"
   }
