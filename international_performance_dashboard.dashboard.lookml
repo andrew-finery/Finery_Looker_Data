@@ -19,6 +19,7 @@
     sorts: [spree_orders.revenue_yesterday desc]
     limit: 100
     column_limit: 50
+    total: true
     dynamic_fields:
     - table_calculation: of_total_revenue_yest
       label: "% of Total Revenue Yest."
@@ -82,7 +83,7 @@
     left: 0
 
 
-  - name: average_basket
+  - name: average_basket__by_location
     title: Average Basket Size By Location
     model: finery_data
     explore: spree_orders
@@ -96,6 +97,7 @@
     sorts: [spree_orders.basket_yesterday desc]
     limit: 100
     column_limit: 50
+    total: true
     show_view_names: false
     show_row_numbers: true
     truncate_column_names: false
