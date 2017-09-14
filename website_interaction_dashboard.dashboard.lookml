@@ -7,71 +7,45 @@
 
   elements:
 
-  - name: page_product_views_last_two_weeks
-    title: Page & Product Views - Last 2 Weeks
+  - name: page_views_per_visit
+    title: Page Views Per Visit
     model: finery_data
-    explore: website_page_views
+    explore: sessions
     type: table
-    fields: [visits.start_week, visits.page_views_per_visit, visits.product_views_per_visit]
-    fill_fields: [visits.start_week]
-    filters:
-      visits.start_week: 2 weeks ago for 2 weeks
-    sorts: [visits.start_week desc]
+    fields: [sessions.page_views_per_visit, sessions.page_views_lw, sessions.page_views_wow,
+      sessions.page_views_last_7_days, sessions.page_views_last_7_days_percentage]
     limit: 500
     column_limit: 50
-    dynamic_fields:
-    - table_calculation: page_views_per_visit_diff
-      label: Page views per visit diff %
-      expression: "${visits.page_views_per_visit}/offset(${visits.page_views_per_visit},1)-1"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
-    - table_calculation: product_views_per_visit_diff
-      label: Product views per visit diff %
-      expression: "${visits.product_views_per_visit}/offset(${visits.product_views_per_visit},1)-1\n"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
     show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
     show_row_numbers: true
     truncate_column_names: false
     hide_totals: false
     hide_row_totals: false
     table_theme: editable
+    limit_displayed_rows: false
     enable_conditional_formatting: false
     conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    show_null_points: true
-    point_style: circle
-    interpolation: linear
-    series_types: {}
     width: 12
-    height: 2
+    height: 1
     top: 0
     left: 0
 
+
+  - name: product_views_per_visit
+    title: Product Views Per Visit
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.product_views_per_visit, sessions.product_views_lw, sessions.product_views_wow,
+      sessions.product_views_last_7_days, sessions.product_views_last_7_days_percentage]
+    limit: 500
+    column_limit: 50
+    width: 12
+    height: 1
+    top: 1
+    left: 0
 
   - name: conversion_rate
     title: Conversion Rate
@@ -79,12 +53,87 @@
     explore: sessions
     type: table
     fields: [sessions.conversion_yesterday, sessions.conversion_yesterday_last_week,
-      sessions.conversion_yesterday_wow]
+      sessions.conversion_yesterday_wow, sessions.conversion_rate_last_7_days, sessions.conversion_last_7_days_percentage]
     limit: 500
     column_limit: 50
     width: 12
     height: 1
     top: 2
+    left: 0
+
+  - name: engagement_rate
+    title: Engagement Rate
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.engagement_rate_yesterday, sessions.engagement_rate_lw, sessions.engagement_rate_wow,
+      sessions.engagement_rate_last_7_days, sessions.engagement_rate_last_7_days_percentage]
+    limit: 500
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    width: 12
+    height: 1
+    top: 3
+    left: 0
+
+  - name: bounce_rate
+    title: Bounce Rate
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.bounce_rate_yesterday, sessions.bounce_rate_lw, sessions.bounce_rate_wow,
+      sessions.bounce_rate_last_7_days, sessions.bounce_rate_last_7_days_percentage]
+    limit: 500
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    width: 12
+    height: 1
+    top: 4
+    left: 0
+
+  - name: add_to_cart_rate
+    title: Add To Cart
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.add_to_cart_rate_yesterday, sessions.add_to_cart_rate_lw, sessions.add_to_cart_rate_wow,
+      sessions.add_to_cart_rate_last_7_days, sessions.add_to_cart_rate_last_7_days_percentage]
+    limit: 500
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    width: 12
+    height: 1
+    top: 5
     left: 0
 
 
@@ -138,7 +187,7 @@
     hidden_series: [website_page_views.bounce_rate]
     width: 12
     height: 3
-    top: 4
+    top: 6
     left: 0
 
 
@@ -191,7 +240,7 @@
     series_types: {}
     width: 12
     height: 3
-    top: 7
+    top: 9
     left: 0
 
 
@@ -223,7 +272,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 6
-    top: 10
+    top: 12
     left: 0
 
 
@@ -254,7 +303,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 6
-    top: 16
+    top: 18
     left: 0
 
 
@@ -292,7 +341,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 6
-    top: 22
+    top: 24
     left: 0
 
 
@@ -331,7 +380,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 6
-    top: 28
+    top: 30
     left: 0
 
 
@@ -351,7 +400,7 @@
     column_limit: 50
     width: 12
     height: 4
-    top: 34
+    top: 36
     left: 0
 
 
@@ -370,5 +419,5 @@
     column_limit: 50
     width: 12
     height: 4
-    top: 38
+    top: 40
     left: 0
