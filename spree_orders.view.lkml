@@ -823,6 +823,7 @@ view: spree_orders {
     group_label: "Gross Cogs Reporting Measures"
   }
 
+
   measure: gross_cogs_yesterday {
     label: "Actual gross cogs"
     type: number
@@ -1916,7 +1917,7 @@ view: spree_orders {
 ###### Meausres for time period reporting
 
   measure: revenue_yesterday {
-    label: "Actual rev yest"
+    label: "Actual"
     type: number
     sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds
@@ -2455,7 +2456,7 @@ view: spree_orders {
     type: number
     value_format_name: percent_0
     group_label: "Basket Reporting Measures"
-    sql: (${basket_yesterday} - ${basket_week_to_date_last_year})/NULLIF(${basket_week_to_date_last_year},0)::REAL ;;
+    sql: (${basket_week_to_date} - ${basket_week_to_date_last_year})/NULLIF(${basket_week_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2552,6 +2553,607 @@ view: spree_orders {
     value_format_name: percent_0
     group_label: "Basket Reporting Measures"
     sql: (${basket_month_to_date} - ${basket_target_month_to_date})/NULLIF(${basket_target_month_to_date},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_yesterday {
+    label: "Actual gross cogs"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 1 then ${gross_cogs_gbp} else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 8 then ${gross_cogs_gbp} else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_yesterday_week_on_week {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_yesterday} - ${gross_cogs_yesterday_last_week})/NULLIF(${gross_cogs_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ${gross_cogs_gbp} else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_yesterday_year_on_year {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_yesterday} - ${gross_cogs_yesterday_last_year})/NULLIF(${gross_cogs_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_week_to_date {
+    label: "WTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_week_to_date_lw {
+    label: "WTD LW"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_week_to_date_week_on_week {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_week_to_date} - ${gross_cogs_week_to_date_lw})/NULLIF(${gross_cogs_week_to_date_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_week_to_date_ly {
+    label: "WTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_week_to_date_year_on_year {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_week_to_date} - ${gross_cogs_week_to_date_ly})/NULLIF(${gross_cogs_week_to_date_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_month_to_date {
+    label: "MTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_month_to_date_month_on_month {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_month_to_date} - ${gross_cogs_month_to_date_last_month})/NULLIF(${gross_cogs_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_month_to_date_year_on_year {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_month_to_date} - ${gross_cogs_month_to_date_last_year})/NULLIF(${gross_cogs_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_cogs_year_to_date {
+    label: "YTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${TABLE}.gross_cogs else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Cogs Reporting Measures"
+  }
+
+  measure: gross_cogs_year_to_date_year_on_year {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Cogs Reporting Measures"
+    sql: (${gross_cogs_year_to_date} - ${gross_cogs_year_to_date_last_year})/NULLIF(${gross_cogs_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 1 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: sum(case when ${completed_date} = current_date - 8 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_yesterday_week_on_week {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_yesterday} - ${revenue_ex_vat_and_shipping_and_sc_yesterday_last_week})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_yesterday_year_on_year {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_yesterday} - ${revenue_ex_vat_and_shipping_and_sc_yesterday_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_week_to_date {
+    label: "WTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_week_to_date_lw {
+    label: "WTD LW"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_week_to_date_week_on_week {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_week_to_date} - ${revenue_ex_vat_and_shipping_and_sc_week_to_date_lw})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_week_to_date_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_week_to_date_ly {
+    label: "WTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_week_to_date_year_on_year {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_week_to_date} - ${revenue_ex_vat_and_shipping_and_sc_week_to_date_ly})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_week_to_date_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_month_to_date {
+    label: "MTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_month_to_date_month_on_month {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_month_to_date} - ${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_month})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_month_to_date_year_on_year {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_month_to_date} - ${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_year_to_date {
+    label: "YTD"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (((${TABLE}.item_total - ${TABLE}.store_credit_used - (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  / ${exchange_rate}) else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+  }
+
+  measure: revenue_ex_vat_and_shipping_and_sc_year_to_date_year_on_year {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue ex.VAT & Shipping Reporting Measures"
+    sql: (${revenue_ex_vat_and_shipping_and_sc_year_to_date} - ${revenue_ex_vat_and_shipping_and_sc_year_to_date_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_yesterday {
+
+    label: "Actual"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_yesterday}-${gross_cogs_yesterday})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_yesterday},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_yesterday_last_week {
+    label: "LW"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_yesterday_last_week}-${gross_cogs_yesterday_last_week})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_yesterday_last_week},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_yesterday_last_year}-${gross_cogs_yesterday_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_yesterday_last_year},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_week_to_date {
+    label: "WTD"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_week_to_date}-${gross_cogs_week_to_date})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_week_to_date},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_week_to_date_last_week {
+    label: "WTD LW"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_week_to_date_lw}-${gross_cogs_week_to_date_lw})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_week_to_date_lw},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_week_to_date_last_year {
+    label: "WTD LY"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_week_to_date_ly}-${gross_cogs_week_to_date_ly})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_week_to_date_ly},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_month_to_date {
+    label: "MTD"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_month_to_date}-${gross_cogs_month_to_date})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_month_to_date},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_month}-${gross_cogs_month_to_date_last_month})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_month},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_year}-${gross_cogs_month_to_date_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_month_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_year_to_date {
+    label: "YTD"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_year_to_date}-${gross_cogs_year_to_date})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_year_to_date},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: (${revenue_ex_vat_and_shipping_and_sc_year_to_date_last_year}-${gross_cogs_year_to_date_last_year})/NULLIF(${revenue_ex_vat_and_shipping_and_sc_year_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+  }
+
+  measure: trading_margin_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_yesterday} - ${trading_margin_yesterday_last_week})/NULLIF(${trading_margin_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_yesterday} - ${trading_margin_yesterday_last_year})/NULLIF(${trading_margin_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_week_to_date} - ${trading_margin_week_to_date_last_week})/NULLIF(${trading_margin_week_to_date_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_week_to_date_yoy {
+    label: "WTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_week_to_date} - ${trading_margin_week_to_date_last_year})/NULLIF(${trading_margin_week_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_month_to_date} - ${trading_margin_month_to_date_last_month})/NULLIF(${trading_margin_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_month_to_date} - ${trading_margin_month_to_date_last_year})/NULLIF(${trading_margin_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: trading_margin_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Trading Margin Reporting Measures"
+    sql: (${trading_margin_year_to_date} - ${trading_margin_year_to_date_last_year})/NULLIF(${trading_margin_year_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}

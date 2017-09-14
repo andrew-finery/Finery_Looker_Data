@@ -2085,7 +2085,7 @@ view: sessions {
     type: number
     value_format_name: percent_0
     group_label: "Traffic Reporting Measures"
-    sql: (${visits_yesterday} - ${visits_week_to_date_last_year})/NULLIF(${visits_week_to_date_last_year},0)::REAL ;;
+    sql: (${visits_week_to_date} - ${visits_week_to_date_last_year})/NULLIF(${visits_week_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2672,7 +2672,7 @@ view: sessions {
     type: number
     value_format_name: percent_0
     group_label: "Conversion Reporting Measures"
-    sql: (${conversion_yesterday} - ${conversion_week_to_date_last_year})/NULLIF(${conversion_week_to_date_last_year},0)::REAL ;;
+    sql: (${conversion_week_to_date} - ${conversion_week_to_date_last_year})/NULLIF(${conversion_week_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
