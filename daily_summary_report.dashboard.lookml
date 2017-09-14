@@ -254,6 +254,55 @@
     top: 4
     left: 0
 
+  - name: trading_margin_short_term
+    title: Trading Margin
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [spree_orders.trading_margin_yesterday, spree_orders.trading_margin_yesterday_last_week,
+      spree_orders.trading_margin_yesterday_wow, spree_orders.trading_margin_yesterday_last_year,
+      spree_orders.trading_margin_yesterday_yoy, spree_orders.trading_margin_week_to_date,
+      spree_orders.trading_margin_week_to_date_last_week, spree_orders.trading_margin_week_to_date_wow,
+      spree_orders.trading_margin_week_to_date_last_year, spree_orders.trading_margin_week_to_date_yoy]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    height: 1
+    width: 12
+    top: 5
+    left: 0
+
   - name: john_lewis_net_revenue
     title: John Lewis - Net Revenue
     model: finery_data
@@ -300,7 +349,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 5
+    top: 6
     left: 0
 
   - name: traffic_wow
@@ -355,7 +404,7 @@
             name: '201733'}, {id: '201734', name: '201734'}]}]
     height: 3
     width: 6
-    top: 6
+    top: 7
     left: 0
 
 
@@ -412,7 +461,7 @@
           {id: '201734', name: '201734'}]}]
     height: 3
     width: 6
-    top: 6
+    top: 7
     left: 6
 
 
@@ -469,7 +518,7 @@
             name: '201733'}, {id: '201734', name: '201734'}]}]
     height: 3
     width: 6
-    top: 9
+    top: 10
     left: 0
 
   - name: revenue_wow
@@ -525,7 +574,7 @@
             name: '201733'}, {id: '201734', name: '201734'}]}]
     height: 3
     width: 6
-    top: 9
+    top: 10
     left: 6
 
   - name: traffic_long_term
@@ -573,7 +622,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 12
+    top: 13
     left: 0
 
   - name: conversion_rate_long_term
@@ -622,7 +671,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 13
+    top: 14
     left: 0
 
   - name: basket_long_term
@@ -676,7 +725,7 @@
         __LINE_NUM: 55}]
     height: 1
     width: 12
-    top: 14
+    top: 15
     left: 0
 
   - name: revenue_long_term
@@ -730,7 +779,55 @@
         __LINE_NUM: 55}]
     height: 1
     width: 12
-    top: 15
+    top: 16
+    left: 0
+
+  - name: trading_margin_long_term
+    title: Trading Margin
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [spree_orders.trading_margin_month_to_date, spree_orders.trading_margin_month_to_date_last_month,
+      spree_orders.trading_margin_month_to_date_mom, spree_orders.trading_margin_month_to_date_last_year,
+      spree_orders.trading_margin_month_to_date_yoy, spree_orders.trading_margin_year_to_date,
+      spree_orders.trading_margin_year_to_date_last_year, spree_orders.trading_margin_year_to_date_yoy]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    height: 1
+    width: 12
+    top: 17
     left: 0
 
   - name: top_products_yesterday_ecom
@@ -764,7 +861,7 @@
       spree_order_items.total_items_sold: Units Sold
     height: 16
     width: 6
-    top: 16
+    top: 18
     left: 0
 
   - name: top_products_yesterday_jl
@@ -798,7 +895,7 @@
       john_lewis_sor.sum_gross_revenue: Revenue
     height: 16
     width: 6
-    top: 16
+    top: 18
     left: 6
 
   - name: revenue_short_term_by_channel
@@ -855,7 +952,7 @@
         __LINE_NUM: 850}]
     height: 3
     width: 12
-    top: 32
+    top: 34
     left: 0
 
   - name: revenue_short_term_by_device
@@ -912,7 +1009,7 @@
         __LINE_NUM: 850}]
     height: 2
     width: 12
-    top: 35
+    top: 37
     left: 0
 
   - name: revenue_short_term_by_country
@@ -969,5 +1066,5 @@
         __LINE_NUM: 850}]
     height: 2
     width: 12
-    top: 37
+    top: 39
     left: 0
