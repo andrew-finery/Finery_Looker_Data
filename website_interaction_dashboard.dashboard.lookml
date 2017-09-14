@@ -137,16 +137,15 @@
     left: 0
 
 
-  - name: website_top_landing_page
-    title: Website Top Landing Page - Last 2 Weeks
+  - name: landing_page_bounced_visits
+    title: Landing Page With Bounce Rate
     model: finery_data
-    explore: website_page_views
+    explore: sessions
     type: table
-    fields: [visits.start_week, visits.landing_page_path, website_page_views.count_lands,
-      website_page_views.bounce_rate]
-    filters:
-      visits.start_week: 2 weeks ago for 2 weeks
-    sorts: [website_page_views.count_lands desc]
+    fields: [sessions.visits_yesterday, sessions.bounce_rate_yesterday, sessions.bounce_rate_lw,
+      sessions.bounce_rate_wow, sessions.bounce_rate_last_7_days, sessions.bounce_rate_last_7_days_percentage,
+      sessions.landing_page_path]
+    sorts: [sessions.visits_yesterday desc]
     limit: 10
     column_limit: 50
     show_view_names: true
@@ -160,31 +159,9 @@
     conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: circle
-    interpolation: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    hidden_series: [website_page_views.bounce_rate]
+    series_labels:
+      sessions.visits_yesterday: Visits Yest.
+      sessions.bounce_rate_yesterday: Bounce Rate
     width: 12
     height: 3
     top: 6

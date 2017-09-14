@@ -1026,9 +1026,9 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Bounced Measures"
     sql: (${bounce_rate_yesterday} - ${bounce_rate_lw})/NULLIF(${bounce_rate_lw},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
+      {% elsif value < 0 %}
       <font color="#3CB371"> {{ rendered_value }} </font>
       {% else %}
       <font color="#000000"> {{ rendered_value }} </font>
@@ -1050,9 +1050,9 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Bounced Measures"
     sql: (${bounce_rate_yesterday} - ${bounce_rate_last_7_days})/NULLIF(${bounce_rate_last_7_days},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
+      {% elsif value < 0 %}
       <font color="#3CB371"> {{ rendered_value }} </font>
       {% else %}
       <font color="#000000"> {{ rendered_value }} </font>
@@ -1911,12 +1911,18 @@ view: sessions {
 
 ########################## MGMT Reporting
 
-  measure: visits_yesterday {
-    label: "Actual"
+  measure: visits_yesterday_k {
+    label: "Actual (k)"
     type: number
     sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_yesterday {
+    label: "Visits Yest. "
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
   }
 
   measure: visits_yesterday_last_week {
