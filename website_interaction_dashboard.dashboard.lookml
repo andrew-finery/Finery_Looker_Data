@@ -226,7 +226,6 @@
     left: 0
 
 
-
   - name: top_products_viewed_yesterday
     title: Top Products Viewed - Yesterday
     model: finery_data
@@ -282,7 +281,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 15
-    top: 42
+    top: 27
     left: 0
 
 
@@ -312,7 +311,7 @@
     conditional_formatting_include_nulls: false
     width: 12
     height: 15
-    top: 27
+    top: 42
     left: 0
 
 
