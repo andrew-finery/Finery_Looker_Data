@@ -754,6 +754,18 @@ view: spree_order_items {
     }
   }
 
+  measure: gross_rev_ex_discount_ex_vat_tw_ly {
+    type: number
+    value_format_name: decimal_2
+    sql: sum (
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${order_time_date} between current_date - 400 and current_date - 300
+      then ${gross_item_revenue_ex_discount_ex_vat_gbp} else null end
+      )
+      ;;
+  }
+
+
   measure: gross_rev_ex_discount_ex_vat_l4w {
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
@@ -832,6 +844,17 @@ view: spree_order_items {
     }
   }
 
+  measure: pc1_proit_tw_ly {
+    type: number
+    value_format_name: decimal_2
+    sql: sum (
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${order_time_date} between current_date - 400 and current_date - 300
+      then (${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}))  else null end
+      )
+      ;;
+  }
+
   measure: pc1_profit_mtd {
     type: sum
     value_format_name: decimal_2
@@ -884,6 +907,17 @@ view: spree_order_items {
       field: order_time_date
       value: "2 weeks ago"
     }
+  }
+
+  measure: items_sold_tw_ly {
+    type: number
+    value_format_name: integer
+    sql: sum (
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${order_time_date} between current_date - 400 and current_date - 300
+      then ${TABLE}.quantity  else null end
+      )
+      ;;
   }
 
   measure: items_sold_l4w {
