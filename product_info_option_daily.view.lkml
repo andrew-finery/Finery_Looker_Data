@@ -401,6 +401,17 @@ view: product_info_option_daily {
       value: "yes"
     }
   }
-}
 
+  measure: add_to_cart_rate {
+    type: number
+    value_format_name: percent_1
+    sql: ${add_to_carts}/nullif(${sum_product_page_views},0)::REAL ;;
+    label: "Add To Cart Rate"
+  }
+
+
+
+
+
+}
 #product_impressions: '>50'
