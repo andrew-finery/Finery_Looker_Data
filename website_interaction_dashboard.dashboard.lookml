@@ -112,7 +112,7 @@
     left: 0
 
   - name: add_to_cart_rate
-    title: Add To Cart
+    title: Add To Cart Rate
     model: finery_data
     explore: sessions
     type: table
@@ -227,17 +227,16 @@
 
 
 
-  - name: top_products_viewed_last_week
-    title: Top Products Viewed - Last Week
+  - name: top_products_viewed_yesterday
+    title: Top Products Viewed - Yesterday
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.sum_product_page_views,
-      product_info_option_daily.add_to_carts, product_info_option_daily.sum_items_sold,
-      option_info.option_image]
+    fields: [option_info.option, product_info_option_daily.sum_product_page_views, product_info_option_daily.add_to_carts,
+      product_info_option_daily.sum_items_sold, option_info.option_image, product_info_option_daily.conversion_rate,
+      product_info_option_daily.sum_gross_revenue_gbp]
     filters:
-      product_info_option_daily.calendar_date_week: 1 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
+      product_info_option_daily.calendar_date_week: 1 days ago for 1 days
     sorts: [product_info_option_daily.sum_product_page_views desc]
     limit: 10
     column_limit: 50
@@ -253,22 +252,50 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     width: 12
-    height: 6
+    height: 15
     top: 12
     left: 0
 
-
-  - name: top_products_viewed_2_weeks_ago
-    title: Top Products Viewed - 2 Weeks Ago
+  - name: top_products_sold_yesterday
+    title: Top Products Sold - Yesterday
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.sum_items_sold,
-      option_info.option_image]
+      product_info_option_daily.conversion_rate, product_info_option_daily.sum_gross_revenue_gbp]
     filters:
-      product_info_option_daily.calendar_date_week: 2 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
+      product_info_option_daily.calendar_date_week: 1 days ago for 1 days
+    sorts: [product_info_option_daily.sum_items_sold desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: true
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    width: 12
+    height: 15
+    top: 42
+    left: 0
+
+
+  - name: top_products_viewed_last_7_days
+    title: Top Products Viewed - Last 7 Days
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, product_info_option_daily.sum_product_page_views, product_info_option_daily.add_to_carts,
+      product_info_option_daily.sum_items_sold, option_info.option_image, product_info_option_daily.conversion_rate,
+      product_info_option_daily.sum_gross_revenue_gbp]
+    filters:
+      product_info_option_daily.calendar_date_week: 7 days ago for 7 days
     sorts: [product_info_option_daily.sum_product_page_views desc]
     limit: 10
     column_limit: 50
@@ -284,32 +311,24 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     width: 12
-    height: 6
-    top: 18
+    height: 15
+    top: 27
     left: 0
 
 
-  - name: add_a_unique_name_1505213099
-    title: Untitled Visualization
+  - name: top_products_sold_last_7_days
+    title: Top Products Sold Last 7 Days
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.add_to_carts,
-      product_info_option_daily.sum_items_sold, product_info_option_daily.sum_product_page_views,
-      option_info.option_image]
+    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+      product_info_option_daily.add_to_carts, product_info_option_daily.sum_items_sold,
+      product_info_option_daily.conversion_rate, product_info_option_daily.sum_gross_revenue_gbp]
     filters:
-      product_info_option_daily.calendar_date_week: 1 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
-    sorts: [product_info_option_daily.add_to_carts desc]
+      product_info_option_daily.calendar_date_week: 7 days ago for 7 days
+    sorts: [product_info_option_daily.sum_items_sold desc]
     limit: 10
     column_limit: 50
-    dynamic_fields:
-    - table_calculation: prod_cr
-      label: Prod. CR %
-      expression: "${product_info_option_daily.sum_items_sold}/${product_info_option_daily.sum_product_page_views}"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
     show_view_names: true
     show_row_numbers: true
     truncate_column_names: false
@@ -322,84 +341,6 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     width: 12
-    height: 6
-    top: 24
-    left: 0
-
-
-
-  - name: top_products_added_to_cart_2_weeks_ago
-    title: Top Products Added To Cart - 2 Weeks Ago
-    model: finery_data
-    explore: product_info_option_daily
-    type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.add_to_carts,
-      product_info_option_daily.sum_items_sold, product_info_option_daily.sum_product_page_views,
-      option_info.option_image]
-    filters:
-      product_info_option_daily.calendar_date_week: 2 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
-    sorts: [product_info_option_daily.add_to_carts desc]
-    limit: 10
-    column_limit: 50
-    dynamic_fields:
-    - table_calculation: prod_cr
-      label: Prod. CR %
-      expression: "${product_info_option_daily.sum_items_sold}/${product_info_option_daily.sum_product_page_views}"
-      value_format:
-      value_format_name: percent_1
-      _kind_hint: measure
-    show_view_names: true
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    width: 12
-    height: 6
-    top: 30
-    left: 0
-
-
-
-  - name: top_products_sold_last_week
-    title: Top Products Sold Last Week
-    model: finery_data
-    explore: product_info_option_daily
-    type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.sum_items_sold,
-      product_info_option_daily.add_to_carts, product_info_option_daily.sum_product_page_views]
-    filters:
-      product_info_option_daily.calendar_date_week: 1 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
-    sorts: [product_info_option_daily.sum_items_sold desc]
-    limit: 10
-    column_limit: 50
-    width: 12
-    height: 4
-    top: 36
-    left: 0
-
-
-  - name: top_products_sold_two_weeks_ago
-    title: Top Products Sold 2 Weeks Ago
-    model: finery_data
-    explore: product_info_option_daily
-    type: table
-    fields: [product_info_option_daily.calendar_date_week, option_info.option, product_info_option_daily.sum_items_sold,
-      product_info_option_daily.add_to_carts, product_info_option_daily.sum_product_page_views]
-    filters:
-      product_info_option_daily.calendar_date_week: 2 weeks ago for 1 weeks
-      product_info_option_daily.sum_product_page_views: not 0
-    sorts: [product_info_option_daily.sum_items_sold desc]
-    limit: 10
-    column_limit: 50
-    width: 12
-    height: 4
-    top: 40
+    height: 15
+    top: 57
     left: 0
