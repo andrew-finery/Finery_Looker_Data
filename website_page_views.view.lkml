@@ -336,6 +336,22 @@ view: website_page_views {
     group_label: "Total Page Views Reporting Measures"
   }
 
+  measure: percentage_total_page_views_lw {
+    label: "%"
+    type: number
+    value_format_name: percent_1
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_yesterday} - ${count_total_page_views_lw})/NULLIF(${count_total_page_views_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
   measure: count_total_page_views_l7d {
     type: count_distinct
     sql:  case when (${visits.start_date} between current_date - 8 and current_date - 1) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
@@ -343,10 +359,34 @@ view: website_page_views {
     group_label: "Total Page Views Reporting Measures"
   }
 
+  measure: count_total_page_views_l7d_average {
+    type: count_distinct
+    value_format_name: decimal_0
+    sql:  case when (${visits.start_date} between current_date - 8 and current_date - 1) then ((${domain_userid} || ${domain_sessionidx} || ${page_view_index})/7) else null end ::REAL ;;
+    label: "L7D Average"
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: percentage_total_page_views_l7d {
+    label: "L7D%"
+    type: number
+    value_format_name: percent_1
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_yesterday} - ${count_total_page_views_l7d_average})/NULLIF(${count_total_page_views_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
 
   measure: count_distinct_page_views {
     type: count_distinct
-    sql: ${domain_userid} || ${domain_sessionidx} || ${page_urlpath} ;;
+    sql: ${domain_userid} || ${domain_sessionidx} || ${page_view_index} ;;
   }
 
   measure: count_distinct_page_views_yesterday {

@@ -177,6 +177,68 @@
     top: 2
     left: 7
 
+  - name: top_page_visited
+    title: Top Pages Visited
+    model: finery_data
+    explore: website_page_views
+    type: table
+    fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
+      website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
+      visits.conversion_yesterday, visits.conversion_yesterday_last_week, visits.conversion_yesterday_wow]
+    sorts: [website_page_views.count_total_page_views_yesterday desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      website_page_views.exit_rate_yesterday: Exit Rate
+      website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
+      website_page_views.exit_rate_lw: LW
+      website_page_views.exit_rate_wow: "%"
+      website_page_views.exit_rate_l7d: Last 7 Days
+      website_page_views.exit_rate_l7d_percentage: L7D%
+      website_page_views.count_total_page_views_yesterday: Times Viewed Yest.
+      visits.conversion_yesterday: Conversion Rate
+      visits.conversion_yesterday_last_week: LW
+      visits.conversion_yesterday_wow: "%"
+      website_page_views.count_total_page_views_lw: LW
+      website_page_views.percentage_total_page_views_lw: "%"
+    width: 14
+    height: 3
+    top: 3
+    left: 0
+
+
 
   - name: landing_page_bounced_visits
     title: Landing Page With Bounce Rate
@@ -205,7 +267,7 @@
       sessions.bounce_rate_yesterday: Bounce Rate
     width: 14
     height: 3
-    top: 3
+    top: 6
     left: 0
 
 
@@ -263,7 +325,7 @@
       website_page_views.count_total_page_views_yesterday: Times Viewed
     width: 14
     height: 3
-    top: 6
+    top: 9
     left: 0
 
 
@@ -297,7 +359,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 9
+    top: 12
     left: 0
 
   - name: top_products_viewed_last_7_days
@@ -330,7 +392,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 9
+    top: 12
     left: 7
 
 
@@ -364,7 +426,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 24
+    top: 27
     left: 0
 
 
@@ -398,5 +460,5 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 24
+    top: 27
     left: 7
