@@ -282,6 +282,14 @@ view: product_info_options {
       ;;
   }
 
+  dimension: option_image_small {
+    label: "Option Image (Small)"
+    type: string
+    sql: ${TABLE}.option_image ;;
+    html: <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="42" width="28"/>
+      ;;
+  }
+
   dimension: image_model_name {
     sql: initcap(${TABLE}.model_name) ;;
   }
