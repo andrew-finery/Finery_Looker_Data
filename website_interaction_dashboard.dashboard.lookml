@@ -177,7 +177,39 @@
     top: 2
     left: 7
 
-  - name: top_page_visited
+  - name: landing_page_bounced_visits
+    title: Landing Page With Bounce Rate
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.visits_yesterday, sessions.bounce_rate_yesterday, sessions.bounce_rate_lw,
+      sessions.bounce_rate_wow, sessions.bounce_rate_last_7_days, sessions.bounce_rate_last_7_days_percentage,
+      sessions.landing_page_path]
+    sorts: [sessions.visits_yesterday desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      sessions.visits_yesterday: Visits Yest.
+      sessions.bounce_rate_yesterday: Bounce Rate
+    width: 14
+    height: 3
+    top: 3
+    left: 0
+
+
+
+  - name: top_pages_visited
     title: Top Pages Visited
     model: finery_data
     explore: website_page_views
@@ -233,38 +265,6 @@
       visits.conversion_yesterday_wow: "%"
       website_page_views.count_total_page_views_lw: LW
       website_page_views.percentage_total_page_views_lw: "%"
-    width: 14
-    height: 3
-    top: 3
-    left: 0
-
-
-
-  - name: landing_page_bounced_visits
-    title: Landing Page With Bounce Rate
-    model: finery_data
-    explore: sessions
-    type: table
-    fields: [sessions.visits_yesterday, sessions.bounce_rate_yesterday, sessions.bounce_rate_lw,
-      sessions.bounce_rate_wow, sessions.bounce_rate_last_7_days, sessions.bounce_rate_last_7_days_percentage,
-      sessions.landing_page_path]
-    sorts: [sessions.visits_yesterday desc]
-    limit: 10
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_labels:
-      sessions.visits_yesterday: Visits Yest.
-      sessions.bounce_rate_yesterday: Bounce Rate
     width: 14
     height: 3
     top: 6
