@@ -83,6 +83,86 @@
     left: 0
 
 
+  - name: other_revenue_breakdown
+    title: Revenue Breakdown - (Not UK/US/Ireland)
+    model: finery_data
+    explore: spree_orders
+    type: table
+    fields: [spree_orders.revenue_yesterday, spree_orders.gross_cogs_yesterday, spree_orders.gross_cogs_year_to_date,
+      spree_orders.revenue_yesterday_last_week, spree_orders.revenue_yesterday_week_on_week,
+      spree_orders.revenue_yesterday_last_year, spree_orders.revenue_yesterday_year_on_year,
+      spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_month_on_month,
+      spree_orders.revenue_year_to_date, spree_orders.revenue_year_to_date_last_year,
+      spree_orders.revenue_year_to_date_year_on_year, spree_addresses.country]
+    filters:
+      spree_addresses.country: "-United Kingdom,-United States,-Ireland"
+    sorts: [spree_orders.revenue_yesterday desc]
+    limit: 100
+    column_limit: 50
+    total: true
+    dynamic_fields:
+    - table_calculation: of_total_revenue_yest
+      label: "% of Total Revenue Yest."
+      expression: "${spree_orders.revenue_yesterday}/sum(${spree_orders.revenue_yesterday})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_margin_ytd
+      label: "% Gross Margin YTD"
+      expression: "(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})/${spree_orders.revenue_year_to_date}"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_revenue_mix_ytd
+      label: Gross Revenue mix YTD
+      expression: "${spree_orders.revenue_year_to_date}/sum(${spree_orders.revenue_year_to_date})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    - table_calculation: gross_profit_mix_ytd
+      label: Gross Profit Mix YTD %
+      expression: "(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})/sum(${spree_orders.revenue_year_to_date}-${spree_orders.gross_cogs_year_to_date})"
+      value_format:
+      value_format_name: percent_0
+      _kind_hint: measure
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    show_null_points: true
+    point_style: none
+    interpolation: linear
+    query_timezone: Europe/London
+    series_types: {}
+    hidden_fields: [spree_orders.gross_cogs_yesterday, spree_orders.gross_cogs_year_to_date]
+    width: 12
+    height: 7
+    top: 3
+    left: 0
+
+
   - name: average_basket__by_location
     title: Average Basket Size By Location
     model: finery_data
@@ -131,7 +211,7 @@
     series_types: {}
     width: 12
     height: 3
-    top: 3
+    top: 10
     left: 0
 
 
@@ -197,7 +277,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 6
+    top: 13
     left: 0
 
 
@@ -264,7 +344,7 @@
         __LINE_NUM: 435}]
     width: 12
     height: 4
-    top: 10
+    top: 17
     left: 0
 
 
@@ -332,7 +412,7 @@
             __LINE_NUM: 632}]
     width: 12
     height: 4
-    top: 14
+    top: 21
     left: 0
 
 
@@ -400,7 +480,7 @@
         __LINE_NUM: 303}]
     width: 12
     height: 4
-    top: 18
+    top: 25
     left: 0
 
 
@@ -466,7 +546,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 22
+    top: 31
     left: 0
 
 
@@ -534,7 +614,7 @@
         __LINE_NUM: 698}]
     width: 12
     height: 4
-    top: 26
+    top: 33
     left: 0
 
 
@@ -602,7 +682,7 @@
         __LINE_NUM: 369}]
     width: 12
     height: 4
-    top: 30
+    top: 37
     left: 0
 
 
@@ -670,7 +750,7 @@
         __LINE_NUM: 369}]
     width: 12
     height: 4
-    top: 34
+    top: 41
     left: 0
 
 
@@ -735,5 +815,5 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 38
+    top: 45
     left: 0
