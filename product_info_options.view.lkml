@@ -286,7 +286,7 @@ view: product_info_options {
     label: "Option Image (Small)"
     type: string
     sql: ${TABLE}.option_image ;;
-    html: <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="65" width="43"/>
+    html: <img src="https://assets.finerylondon.com/spree/products/{{value}}" height="42" width="28"/>
       ;;
   }
 

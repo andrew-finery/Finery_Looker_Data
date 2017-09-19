@@ -352,230 +352,110 @@
     top: 6
     left: 0
 
-  - name: traffic_wow
-    title: Traffic Week on Week
+
+
+  - name: top_products_yesterday_ecom
+    title: Top Products Yesterday - finerylondon.com
     model: finery_data
-    explore: sessions
-    type: looker_line
-    fields: [session_start_calendar.calendar_date_day_of_week, sessions.count, session_start_calendar.year_week_number]
-    pivots: [session_start_calendar.year_week_number]
-    fill_fields: [session_start_calendar.calendar_date_day_of_week]
+    explore: spree_order_items
+    type: table
+    fields: [option_info.style, option_info.colour, option_info.option_image_small, spree_order_items.total_items_sold,
+      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp]
     filters:
-      session_start_calendar.calendar_date_date: before 0 days ago
-      session_start_calendar.calendar_date_week: 2 weeks
-    sorts: [session_start_calendar.year_week_number 0, session_start_calendar.calendar_date_day_of_week]
-    limit: 500
+      calendar_weeks.calendar_date_date: 1 days ago for 1 days
+    sorts: [spree_order_items.total_items_sold desc]
+    limit: 10
     column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: right
-    x_axis_gridlines: false
-    y_axis_gridlines: true
     show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: false
-    point_style: none
-    interpolation: monotone
     show_row_numbers: true
     truncate_column_names: false
     hide_totals: false
     hide_row_totals: false
     table_theme: editable
+    limit_displayed_rows: false
     enable_conditional_formatting: false
     conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    series_types: {}
-    colors: ['palette: Santa Cruz']
-    series_colors: {}
-    y_axes: [{label: Traffic, maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: '#,"k"', series: [{id: '201733',
-            name: '201733'}, {id: '201734', name: '201734'}]}]
-    height: 3
+    series_labels:
+      option_info.style: Style
+      option_info.colour: Colour
+      option_info.option_image_small: Image
+      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp: Revenue
+      spree_order_items.total_items_sold: Units Sold
+    height: 8
     width: 6
     top: 7
     left: 0
 
-
-  - name: conversion_rate_week_on_week
-    title: Conversion Rate Week on Week
+  - name: top_products_yesterday_jl
+    title: Top Products Yesterday - John Lewis
     model: finery_data
-    explore: sessions
-    type: looker_line
-    fields: [session_start_calendar.calendar_date_day_of_week, session_start_calendar.year_week_number,
-      sessions.conversion_rate]
-    pivots: [session_start_calendar.year_week_number]
-    fill_fields: [session_start_calendar.calendar_date_day_of_week]
+    explore: john_lewis_sor
+    type: table
+    fields: [option_info.style, option_info.colour, john_lewis_sor.sum_sales_units,
+      john_lewis_sor.sum_gross_revenue, option_info.option_image_small]
     filters:
-      session_start_calendar.calendar_date_date: before 0 days ago
-      session_start_calendar.calendar_date_week: 2 weeks
-    sorts: [session_start_calendar.year_week_number 0, session_start_calendar.calendar_date_day_of_week]
-    limit: 500
+      john_lewis_sor.calendar_date: 1 days ago for 1 days
+    sorts: [john_lewis_sor.sum_sales_units desc]
+    limit: 10
     column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: right
-    x_axis_gridlines: false
-    y_axis_gridlines: true
     show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: false
-    point_style: none
-    interpolation: monotone
     show_row_numbers: true
     truncate_column_names: false
     hide_totals: false
     hide_row_totals: false
     table_theme: editable
+    limit_displayed_rows: false
     enable_conditional_formatting: false
     conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    series_types: {}
-    colors: ['palette: Santa Cruz']
-    series_colors: {}
-    y_axes: [{label: Traffic, maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: 0.0%, series: [{id: '201733', name: '201733'},
-          {id: '201734', name: '201734'}]}]
-    height: 3
+    series_labels:
+      option_info.style: Style
+      option_info.colour: Colour
+      option_info.option_image_small: Image
+      john_lewis_sor.sum_sales_units: Units
+      john_lewis_sor.sum_gross_revenue: Revenue
+    height: 8
     width: 6
     top: 7
     left: 6
 
 
-  - name: basket_size_week_on_week
-    title: Basket Size Week on Week
-    model: finery_data
-    explore: spree_orders
-    type: looker_line
-    fields: [calendar_weeks.calendar_date_day_of_week, calendar_weeks.year_week_number,
-      spree_orders.avg_gross_revenue_gbp_ex_voucher_and_shipping_and_store_credit]
-    pivots: [calendar_weeks.year_week_number]
-    fill_fields: [calendar_weeks.calendar_date_day_of_week]
-    filters:
-      calendar_weeks.calendar_date_date: before 0 days ago
-      calendar_weeks.calendar_date_week: 2 weeks
-    sorts: [calendar_weeks.year_week_number 0, calendar_weeks.calendar_date_day_of_week]
-    limit: 500
-    column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: right
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: false
-    point_style: none
-    interpolation: monotone
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_types: {}
-    colors: ['palette: Santa Cruz']
-    series_colors: {}
-    y_axes: [{label: '', maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: '"£"###0', series: [{id: '201733',
-            name: '201733'}, {id: '201734', name: '201734'}]}]
-    height: 3
-    width: 6
-    top: 10
-    left: 0
 
-  - name: revenue_wow
-    title: Revenue Week on Week
-    model: finery_data
-    explore: spree_orders
-    type: looker_line
-    fields: [calendar_weeks.calendar_date_day_of_week, calendar_weeks.year_week_number,
-      spree_orders.sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp]
-    pivots: [calendar_weeks.year_week_number]
-    fill_fields: [calendar_weeks.calendar_date_day_of_week]
-    filters:
-      calendar_weeks.calendar_date_date: before 0 days ago
-      calendar_weeks.calendar_date_week: 2 weeks
-    sorts: [calendar_weeks.year_week_number 0, calendar_weeks.calendar_date_day_of_week]
-    limit: 500
-    column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: right
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: false
-    point_style: none
-    interpolation: monotone
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_types: {}
-    colors: ['palette: Santa Cruz']
-    series_colors: {}
-    y_axes: [{label: '', maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: '"£"#,##0,"k"', series: [{id: '201733',
-            name: '201733'}, {id: '201734', name: '201734'}]}]
-    height: 3
-    width: 6
-    top: 10
-    left: 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   - name: traffic_long_term
     title: Traffic
@@ -622,7 +502,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 13
+    top: 15
     left: 0
 
   - name: conversion_rate_long_term
@@ -671,7 +551,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 14
+    top: 16
     left: 0
 
   - name: basket_long_term
@@ -725,7 +605,7 @@
         __LINE_NUM: 55}]
     height: 1
     width: 12
-    top: 15
+    top: 17
     left: 0
 
   - name: revenue_long_term
@@ -779,7 +659,7 @@
         __LINE_NUM: 55}]
     height: 1
     width: 12
-    top: 16
+    top: 18
     left: 0
 
   - name: trading_margin_long_term
@@ -827,76 +707,10 @@
     series_types: {}
     height: 1
     width: 12
-    top: 17
+    top: 19
     left: 0
 
-  - name: top_products_yesterday_ecom
-    title: Top Products Yesterday - finerylondon.com
-    model: finery_data
-    explore: spree_order_items
-    type: table
-    fields: [option_info.style, option_info.colour, option_info.option_image_small, spree_order_items.total_items_sold,
-      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp]
-    filters:
-      calendar_weeks.calendar_date_date: 1 days ago for 1 days
-    sorts: [spree_order_items.total_items_sold desc]
-    limit: 10
-    column_limit: 50
-    show_view_names: true
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_labels:
-      option_info.style: Style
-      option_info.colour: Colour
-      option_info.option_image_small: Image
-      spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp: Revenue
-      spree_order_items.total_items_sold: Units Sold
-    height: 16
-    width: 6
-    top: 18
-    left: 0
 
-  - name: top_products_yesterday_jl
-    title: Top Products Yesterday - John Lewis
-    model: finery_data
-    explore: john_lewis_sor
-    type: table
-    fields: [option_info.style, option_info.colour, john_lewis_sor.sum_sales_units,
-      john_lewis_sor.sum_gross_revenue, option_info.option_image_small]
-    filters:
-      john_lewis_sor.calendar_date: 1 days ago for 1 days
-    sorts: [john_lewis_sor.sum_sales_units desc]
-    limit: 10
-    column_limit: 50
-    show_view_names: true
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    series_labels:
-      option_info.style: Style
-      option_info.colour: Colour
-      option_info.option_image_small: Image
-      john_lewis_sor.sum_sales_units: Units
-      john_lewis_sor.sum_gross_revenue: Revenue
-    height: 16
-    width: 6
-    top: 18
-    left: 6
 
   - name: revenue_short_term_by_channel
     title: Revenue by Channel
@@ -952,7 +766,7 @@
         __LINE_NUM: 850}]
     height: 3
     width: 12
-    top: 34
+    top: 20
     left: 0
 
   - name: revenue_short_term_by_device
@@ -1009,7 +823,7 @@
         __LINE_NUM: 850}]
     height: 2
     width: 12
-    top: 37
+    top: 23
     left: 0
 
   - name: revenue_short_term_by_country
@@ -1066,5 +880,5 @@
         __LINE_NUM: 850}]
     height: 2
     width: 12
-    top: 39
+    top: 25
     left: 0
