@@ -149,6 +149,7 @@
     top: 2
     left: 0
 
+
   - name: engagement_rate
     title: Engagement Rate
     model: finery_data
@@ -176,6 +177,7 @@
     height: 1
     top: 2
     left: 7
+
 
   - name: landing_page_bounced_visits
     title: Landing Page With Bounce Rate
@@ -208,7 +210,6 @@
     left: 0
 
 
-
   - name: top_pages_visited
     title: Top Pages Visited
     model: finery_data
@@ -216,7 +217,9 @@
     type: table
     fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
       website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
-      visits.conversion_yesterday, visits.conversion_yesterday_last_week, visits.conversion_yesterday_wow]
+      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d,
+      visits.conversion_yesterday, visits.conversion_yesterday_last_week, visits.conversion_yesterday_wow,
+      visits.conversion_rate_last_7_days, visits.conversion_last_7_days_percentage]
     sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
@@ -265,6 +268,8 @@
       visits.conversion_yesterday_wow: "%"
       website_page_views.count_total_page_views_lw: LW
       website_page_views.percentage_total_page_views_lw: "%"
+      website_page_views.percentage_total_page_views_l7d: L7D%
+      visits.conversion_last_7_days_percentage: L7D%
     width: 14
     height: 3
     top: 6
@@ -361,6 +366,7 @@
     height: 15
     top: 12
     left: 0
+
 
   - name: top_products_viewed_last_7_days
     title: Top Products Viewed - Last 7 Days

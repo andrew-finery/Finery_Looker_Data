@@ -360,9 +360,8 @@ view: website_page_views {
   }
 
   measure: count_total_page_views_l7d_average {
-    type: count_distinct
-    value_format_name: decimal_0
-    sql:  case when (${visits.start_date} between current_date - 8 and current_date - 1) then ((${domain_userid} || ${domain_sessionidx} || ${page_view_index})/7) else null end ::REAL ;;
+    type: number
+    sql:  ${count_total_page_views_l7d}/7 ;;
     label: "L7D Average"
     group_label: "Total Page Views Reporting Measures"
   }
