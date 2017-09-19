@@ -835,7 +835,7 @@
     model: finery_data
     explore: spree_order_items
     type: table
-    fields: [option_info.style, option_info.colour, option_info.option_image, spree_order_items.total_items_sold,
+    fields: [option_info.style, option_info.colour, option_info.option_image_small, spree_order_items.total_items_sold,
       spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp]
     filters:
       calendar_weeks.calendar_date_date: 1 days ago for 1 days
@@ -856,7 +856,7 @@
     series_labels:
       option_info.style: Style
       option_info.colour: Colour
-      option_info.option_image: Image
+      option_info.option_image_small: Image
       spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp: Revenue
       spree_order_items.total_items_sold: Units Sold
     height: 16
@@ -870,7 +870,7 @@
     explore: john_lewis_sor
     type: table
     fields: [option_info.style, option_info.colour, john_lewis_sor.sum_sales_units,
-      john_lewis_sor.sum_gross_revenue, option_info.option_image]
+      john_lewis_sor.sum_gross_revenue, option_info.option_image_small]
     filters:
       john_lewis_sor.calendar_date: 1 days ago for 1 days
     sorts: [john_lewis_sor.sum_sales_units desc]
@@ -890,7 +890,7 @@
     series_labels:
       option_info.style: Style
       option_info.colour: Colour
-      option_info.option_image: Image
+      option_info.option_image_small: Image
       john_lewis_sor.sum_sales_units: Units
       john_lewis_sor.sum_gross_revenue: Revenue
     height: 16
