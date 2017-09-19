@@ -546,7 +546,7 @@
             name: Gross Revenue ex. Voucher}]}]
     width: 12
     height: 4
-    top: 31
+    top: 29
     left: 0
 
 
