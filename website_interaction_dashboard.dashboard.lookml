@@ -413,7 +413,7 @@
       product_info_option_daily.sum_gross_revenue_gbp]
     filters:
       product_info_option_daily.calendar_date_week: 1 days ago for 1 days
-    sorts: [product_info_option_daily.sum_product_page_views desc]
+    sorts: [product_info_option_daily.sum_items_sold desc]
     limit: 10
     column_limit: 50
     show_view_names: false

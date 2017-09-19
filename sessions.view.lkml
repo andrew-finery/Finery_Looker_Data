@@ -1551,7 +1551,7 @@ view: sessions {
 ########################## MGMT Reporting
 
   measure: visits_yesterday_k {
-    label: "Actual (k)"
+    label: "Actual"
     type: number
     sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
     value_format_name: thousands
@@ -1674,8 +1674,6 @@ view: sessions {
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
   }
-
-
 
   measure: visits_yesterday_wow {
     label: "%"
@@ -1840,12 +1838,10 @@ view: sessions {
 
 
 
-
-
   measure: orders_yesterday {
     label: "Actual"
     type: number
-    sql: sum(case when ${start_date} = current_date - 1 then (${orders}) else 0 end) ;;
+    sql: sum(case when ${start_date} = current_date - 1 then (${orders}) else 0 end)::REAL ;;
 
     group_label: "Orders Reporting Measures"
   }
@@ -1853,7 +1849,7 @@ view: sessions {
   measure: orders_yesterday_last_week {
     label: "LW"
     type: number
-    sql: sum(case when ${start_date} = current_date - 8 then (${orders}) else 0 end) ;;
+    sql: sum(case when ${start_date} = current_date - 8 then (${orders}) else 0 end)::REAL ;;
 
     group_label: "Orders Reporting Measures"
   }
@@ -2121,13 +2117,6 @@ view: sessions {
   }
 
 
-
-#  label: "Conversion Rate"
-#  type: number
-#  value_format_name: percent_2
-#  sql: ${sum_orders}/NULLIF(${count},0)::REAL ;;
-
-
   measure: conversion_yesterday {
     label: "Actual"
     type: number
@@ -2153,7 +2142,7 @@ view: sessions {
   }
 
   measure: conversion_last_7_days_percentage {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
     group_label: "Conversion Reporting Measures"
@@ -2424,12 +2413,14 @@ view: sessions {
       ;;
   }
 
+
+
   measure: bounced_visits_yesterday {
     label: "Bounced Visits Yesterday"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 1 and ${bounce}  then ${session_id} else null end)::REAL ;;
-    group_label: "Bounced Measures"
+    hidden: yes
   }
 
   measure: bounced_visits_lw {
@@ -2437,7 +2428,7 @@ view: sessions {
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 8 and ${bounce} then ${session_id} else null end)::REAL ;;
-    group_label: "Bounced Measures"
+    hidden: yes
   }
 
   measure:bounced_visits_last_7_days {
@@ -2445,7 +2436,7 @@ view: sessions {
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} between current_date - 7 and current_date - 1 and ${bounce} then ${session_id} else null end)::REAL ;;
-    group_label: "Bounced Measures"
+    hidden: yes
   }
 
   measure: bounce_rate_yesterday {
@@ -2453,7 +2444,7 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${bounced_visits_yesterday}/nullif(${visits_yesterday},0) ;;
-    group_label: "Bounced Measures"
+    group_label: "Bounce Rate Reporting Measures"
   }
 
   measure: bounce_rate_lw {
@@ -2461,14 +2452,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${bounced_visits_lw}/nullif(${visits_yesterday_last_week},0) ;;
-    group_label: "Bounced Measures"
+    group_label: "Bounce Rate Reporting Measures"
   }
 
   measure: bounce_rate_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Bounced Measures"
+    group_label: "Bounce Rate Reporting Measures"
     sql: (${bounce_rate_yesterday} - ${bounce_rate_lw})/NULLIF(${bounce_rate_lw},0)::REAL ;;
     html: {% if value > 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2485,14 +2476,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${bounced_visits_last_7_days}/Nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Bounced Measures"
+    group_label: "Bounce Rate Reporting Measures"
   }
 
   measure: bounce_rate_last_7_days_percentage {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Bounced Measures"
+    group_label: "Bounce Rate Reporting Measures"
     sql: (${bounce_rate_yesterday} - ${bounce_rate_last_7_days})/NULLIF(${bounce_rate_last_7_days},0)::REAL ;;
     html: {% if value > 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2503,6 +2494,8 @@ view: sessions {
       {% endif %}
       ;;
   }
+
+#############################################################################################################################################################################
 
   measure: engagement_rate {
     label: "Engagement Rate"

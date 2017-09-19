@@ -240,6 +240,11 @@ view: website_page_views {
     type: count
   }
 
+  measure: count_distinct_page_views {
+    type: count_distinct
+    sql: ${domain_userid} || ${domain_sessionidx} || ${page_view_index} ;;
+  }
+
   measure: count_sessions {
     type: count_distinct
     sql: ${domain_userid} || ${domain_sessionidx} ;;
@@ -270,12 +275,6 @@ view: website_page_views {
       field: landing_page_flag
       value: "yes"
     }
-  }
-
-  measure: landing_page_views_yesterday {
-    type: number
-    sql: count(distinct case when ${visits.start_date} = current_date - 1 and ${landing_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
-    label: "Landing Page Views Yesterday"
   }
 
   measure: count_urls {
@@ -322,16 +321,22 @@ view: website_page_views {
 
 ###################### Reporting Measures
 
+  measure: landing_page_views_yesterday {
+    type: number
+    sql: count(distinct case when ${visits.start_date} = current_date - 1 and ${landing_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
+    label: "Landing Page Views Yesterday"
+  }
+
   measure: count_total_page_views_yesterday {
     type: count_distinct
     sql:  case when ${visits.start_date} = current_date - 1 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
-    label: "Yest."
+    label: "Actual"
     group_label: "Total Page Views Reporting Measures"
   }
 
   measure: count_total_page_views_lw {
     type: count_distinct
-    sql:  case when ${visits.start_date} = current_date - 7 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
+    sql:  case when ${visits.start_date} = current_date - 8 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
     label: "LW"
     group_label: "Total Page Views Reporting Measures"
   }
@@ -354,7 +359,7 @@ view: website_page_views {
 
   measure: count_total_page_views_l7d {
     type: count_distinct
-    sql:  case when (${visits.start_date} between current_date - 8 and current_date - 1) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
+    sql:  case when (${visits.start_date} between current_date - 7 and current_date - 1) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end ;;
     label: "L7D"
     group_label: "Total Page Views Reporting Measures"
   }
@@ -367,7 +372,7 @@ view: website_page_views {
   }
 
   measure: percentage_total_page_views_l7d {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_1
     group_label: "Total Page Views Reporting Measures"
@@ -382,38 +387,35 @@ view: website_page_views {
         ;;
   }
 
-
-  measure: count_distinct_page_views {
-    type: count_distinct
-    sql: ${domain_userid} || ${domain_sessionidx} || ${page_view_index} ;;
-  }
-
-  measure: count_distinct_page_views_yesterday {
+  measure: page_exit_yesterday {
     type: number
     sql: count(distinct case when ${visits.start_date} = current_date - 1 and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
-    label: "Yest."
+    label: "Actual"
     group_label: "Count Exit Page Reporting Measures"
+    hidden: yes
   }
 
-  measure: count_distinct_page_views_lw {
+  measure: page_exit_lw {
     type: number
-    sql: count(distinct case when ${visits.start_date} = current_date - 7 and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
+    sql: count(distinct case when ${visits.start_date} = current_date - 8 and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
     label: "LW"
     group_label: "Count Exit Page Reporting Measures"
+    hidden: yes
   }
 
-  measure: count_distinct_page_views_l7d {
+  measure: page_exit_l7d {
     type: number
-    sql: count(distinct case when (${visits.start_date} between current_date - 8 and current_date - 1) and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
+    sql: count(distinct case when (${visits.start_date} between current_date - 7 and current_date - 1) and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
     label: "L7D"
     group_label: "Count Exit Page Reporting Measures"
+    hidden: yes
   }
 
   measure: exit_rate_yesterday {
     label: "Actual"
     type: number
     value_format_name: percent_1
-    sql: ${count_distinct_page_views_yesterday}/NULLIF(${count_total_page_views_yesterday},0)::REAL ;;
+    sql: ${page_exit_yesterday}/NULLIF(${count_total_page_views_yesterday},0)::REAL ;;
     group_label: "Exit Rate Reporting Measures"
   }
 
@@ -421,7 +423,7 @@ view: website_page_views {
     label: "LW"
     type: number
     value_format_name: percent_1
-    sql: ${count_distinct_page_views_lw}/NULLIF(${count_total_page_views_lw},0)::REAL ;;
+    sql: ${page_exit_lw}/NULLIF(${count_total_page_views_lw},0)::REAL ;;
     group_label: "Exit Rate Reporting Measures"
   }
 
@@ -445,12 +447,12 @@ view: website_page_views {
     label: "L7D"
     type: number
     value_format_name: percent_1
-    sql: ${count_distinct_page_views_l7d}/NULLIF(${count_total_page_views_l7d},0)::REAL ;;
+    sql: ${page_exit_l7d}/NULLIF(${count_total_page_views_l7d},0)::REAL ;;
     group_label: "Exit Rate Reporting Measures"
   }
 
   measure: exit_rate_l7d_percentage {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_1
     group_label: "Exit Rate Reporting Measures"
