@@ -12,8 +12,8 @@
     model: finery_data
     explore: sessions
     type: table
-    fields: [sessions.page_views_per_visit, sessions.page_views_lw, sessions.page_views_wow,
-      sessions.page_views_last_7_days, sessions.page_views_last_7_days_percentage]
+    fields: [sessions.page_views_per_visit, sessions.page_views_per_visit_lw, sessions.page_views_per_visit_wow,
+      sessions.page_views_per_visit_last_7_days, sessions.page_views_per_visit_last_7_days_percentage]
     sorts: [sessions.page_views_per_visit desc]
     limit: 500
     column_limit: 50
@@ -42,8 +42,9 @@
     model: finery_data
     explore: sessions
     type: table
-    fields: [sessions.product_views_per_visit, sessions.product_views_lw, sessions.product_views_wow,
-      sessions.product_views_last_7_days, sessions.product_views_last_7_days_percentage]
+    fields: [sessions.product_views_per_visit, sessions.product_views_per_visit_lw,
+      sessions.product_views_per_visit_wow, sessions.product_views__per_visit_last_7_days,
+      sessions.product_views__per_visit_last_7_days_percentage]
     limit: 500
     column_limit: 50
     show_view_names: false

@@ -1837,7 +1837,6 @@ view: sessions {
 
 
 
-
   measure: orders_yesterday {
     label: "Actual"
     type: number
@@ -2116,13 +2115,12 @@ view: sessions {
       ;;
   }
 
-
-  measure: conversion_yesterday {
+ measure: conversion_yesterday {
     label: "Actual"
     type: number
     sql: ${orders_yesterday}/nullif(${visits_yesterday},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_yesterday_last_week {
@@ -2130,7 +2128,7 @@ view: sessions {
     type: number
     sql: ${orders_yesterday_last_week}/nullif(${visits_yesterday_last_week},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_rate_last_7_days {
@@ -2138,14 +2136,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${orders_last_7_days}/nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_last_7_days_percentage {
     label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_yesterday} - ${conversion_rate_last_7_days})/NULLIF(${conversion_rate_last_7_days},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2162,7 +2160,7 @@ view: sessions {
     type: number
     sql: ${orders_yesterday_last_year}/nullif(${visits_yesterday_last_year},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_week_to_date {
@@ -2170,7 +2168,7 @@ view: sessions {
     type: number
     sql: ${orders_week_to_date}/nullif(${visits_week_to_date},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_week_to_date_last_week {
@@ -2178,7 +2176,7 @@ view: sessions {
     type: number
     sql: ${orders_week_to_date_lw}/nullif(${visits_week_to_date_last_week},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_week_to_date_last_year {
@@ -2186,7 +2184,7 @@ view: sessions {
     type: number
     sql: ${orders_week_to_date_ly}/nullif(${visits_week_to_date_last_year},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_month_to_date {
@@ -2194,7 +2192,7 @@ view: sessions {
     type: number
     sql: ${orders_month_to_date}/nullif(${visits_month_to_date},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_month_to_date_last_month {
@@ -2202,7 +2200,7 @@ view: sessions {
     type: number
     sql: ${orders_month_to_date_last_month}/nullif(${visits_month_to_date_last_month},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_month_to_date_last_year {
@@ -2210,7 +2208,7 @@ view: sessions {
     type: number
     sql: ${orders_month_to_date_last_year}/nullif(${visits_month_to_date_last_year},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_year_to_date {
@@ -2218,7 +2216,7 @@ view: sessions {
     type: number
     sql: ${orders_year_to_date}/nullif(${visits_year_to_date},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_year_to_date_last_year {
@@ -2226,7 +2224,7 @@ view: sessions {
     type: number
     sql: ${orders_year_to_date_last_year}/nullif(${visits_year_to_date_last_year},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_target_yesterday {
@@ -2234,7 +2232,7 @@ view: sessions {
     type: number
     sql: ${orders_target_yesterday}/nullif(${visits_target_yesterday},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_target_week_to_date {
@@ -2242,7 +2240,7 @@ view: sessions {
     type: number
     sql: ${orders_target_week_to_date}/nullif(${visits_target_week_to_date},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_target_month_to_date {
@@ -2250,14 +2248,14 @@ view: sessions {
     type: number
     sql: ${orders_target_month_to_date}/nullif(${visits_target_month_to_date},0)::REAL ;;
     value_format_name: percent_1
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
   }
 
   measure: conversion_yesterday_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_yesterday} - ${conversion_yesterday_last_week})/NULLIF(${conversion_yesterday_last_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2273,7 +2271,7 @@ view: sessions {
     label: "YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_yesterday} - ${conversion_yesterday_last_year})/NULLIF(${conversion_yesterday_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2289,7 +2287,7 @@ view: sessions {
     label: "WTD WoW"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_week_to_date} - ${conversion_week_to_date_last_week})/NULLIF(${conversion_week_to_date_last_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2305,7 +2303,7 @@ view: sessions {
     label: "WTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_week_to_date} - ${conversion_week_to_date_last_year})/NULLIF(${conversion_week_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2321,7 +2319,7 @@ view: sessions {
     label: "MTD MoM"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_month_to_date} - ${conversion_month_to_date_last_month})/NULLIF(${conversion_month_to_date_last_month},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2337,7 +2335,7 @@ view: sessions {
     label: "MTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_month_to_date} - ${conversion_month_to_date_last_year})/NULLIF(${conversion_month_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2353,7 +2351,7 @@ view: sessions {
     label: "YTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_year_to_date} - ${conversion_year_to_date_last_year})/NULLIF(${conversion_year_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2369,7 +2367,7 @@ view: sessions {
     label: "Yest vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_yesterday} - ${conversion_target_yesterday})/NULLIF(${conversion_target_yesterday},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2385,7 +2383,7 @@ view: sessions {
     label: "WTD vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_week_to_date} - ${conversion_target_week_to_date})/NULLIF(${conversion_target_week_to_date},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2401,7 +2399,7 @@ view: sessions {
     label: "MTD vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Conversion Reporting Measures"
+    group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_month_to_date} - ${conversion_target_month_to_date})/NULLIF(${conversion_target_month_to_date},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2414,28 +2412,30 @@ view: sessions {
   }
 
 
-
   measure: bounced_visits_yesterday {
-    label: "Bounced Visits Yesterday"
+    label: "Actual"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 1 and ${bounce}  then ${session_id} else null end)::REAL ;;
+    group_label: "Bounced Visits Reporting Measures"
     hidden: yes
   }
 
   measure: bounced_visits_lw {
-    label: "Bounced Visits LW"
+    label: "LW"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 8 and ${bounce} then ${session_id} else null end)::REAL ;;
+    group_label: "Bounced Visits Reporting Measures"
     hidden: yes
   }
 
   measure:bounced_visits_last_7_days {
-    label: "Bounced Visits L7D"
+    label: "L7D"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} between current_date - 7 and current_date - 1 and ${bounce} then ${session_id} else null end)::REAL ;;
+    group_label: "Bounced Visits Reporting Measures"
     hidden: yes
   }
 
@@ -2495,8 +2495,6 @@ view: sessions {
       ;;
   }
 
-#############################################################################################################################################################################
-
   measure: engagement_rate {
     label: "Engagement Rate"
     type: number
@@ -2505,27 +2503,30 @@ view: sessions {
   }
 
   measure: engaged_visits_yesterday {
-    label: "Engaged Visits Yesterday"
+    label: "Actual"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 1 and ${engaged_session}  then ${session_id} else null end)::REAL ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
+    hidden: yes
   }
 
   measure: engaged_visits_lw {
-    label: "Engaged Visits LW"
+    label: "LW"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 8 and ${engaged_session} then ${session_id} else null end)::REAL ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
+    hidden: yes
   }
 
-  measure:engaged_visit_last_7_days {
-    label: "Engaged Visits L7D"
+  measure: engaged_visit_last_7_days {
+    label: "L7D"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} between current_date - 7 and current_date - 1 and ${engaged_session} then ${session_id} else null end)::REAL ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
+    hidden: yes
   }
 
   measure: engagement_rate_yesterday {
@@ -2533,7 +2534,7 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${engaged_visits_yesterday}/nullif(${visits_yesterday},0) ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
   }
 
   measure: engagement_rate_lw {
@@ -2541,14 +2542,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${engaged_visits_lw}/nullif(${visits_yesterday_last_week},0) ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
   }
 
   measure: engagement_rate_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
     sql: (${engagement_rate_yesterday} - ${engagement_rate_lw})/NULLIF(${engagement_rate_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2565,14 +2566,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${engaged_visit_last_7_days}/Nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
   }
 
   measure: engagement_rate_last_7_days_percentage {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Engagement Measures"
+    group_label: "Engagement Rate Reporting Measures"
     sql: (${engagement_rate_yesterday} - ${engagement_rate_last_7_days})/NULLIF(${engagement_rate_last_7_days},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2589,23 +2590,23 @@ view: sessions {
     type: number
     value_format_name: decimal_2
     sql: ${sum_page_views}/NULLIF(${count},0)::REAL ;;
-    group_label: "Page View Measures"
+    group_label: "Page View Reporting Measures"
   }
 
-  measure: page_views_lw {
+  measure: page_views_per_visit_lw {
     label: "LW"
     type: number
     value_format_name: decimal_2
     sql: sum(case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
-    group_label: "Page View Measures"
+    group_label: "Page View Reporting Measures"
   }
 
-  measure: page_views_wow {
+  measure: page_views_per_visit_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Page View Measures"
-    sql: (${page_views_per_visit} - ${page_views_lw})/NULLIF(${page_views_lw},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit} - ${page_views_per_visit_lw})/NULLIF(${page_views_per_visit_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2616,20 +2617,20 @@ view: sessions {
       ;;
   }
 
-  measure: page_views_last_7_days {
+  measure: page_views_per_visit_last_7_days {
     label: "L7D"
     type: number
     value_format_name: decimal_2
     sql: sum(case when ${start_date} between current_date - 7 and current_date - 1 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Page View Measures"
+    group_label: "Page View Reporting Measures"
   }
 
-  measure: page_views_last_7_days_percentage {
-    label: "L7D%"
+  measure: page_views_per_visit_last_7_days_percentage {
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Page View Measures"
-    sql: (${page_views_per_visit} - ${page_views_last_7_days})/NULLIF(${page_views_last_7_days},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit} - ${page_views_per_visit_last_7_days})/NULLIF(${page_views_per_visit_last_7_days},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2645,23 +2646,23 @@ view: sessions {
     type: number
     value_format_name: decimal_2
     sql: ${sum_product_views}/NULLIF(${count},0)::REAL ;;
-    group_label: "Product View Measures"
+    group_label: "Product View Reporting Measures"
   }
 
-  measure: product_views_lw {
+  measure: product_views_per_visit_lw {
     label: "LW"
     type: number
     value_format_name: decimal_2
     sql: sum(case when ${start_date} = current_date - 8 then ${product_views} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
-    group_label: "Product View Measures"
+    group_label: "Product View Reporting Measures"
   }
 
-  measure: product_views_wow {
+  measure: product_views_per_visit_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Product View Measures"
-    sql: (${product_views_per_visit} - ${product_views_lw})/NULLIF(${product_views_lw},0)::REAL ;;
+    group_label: "Product View Reporting Measures"
+    sql: (${product_views_per_visit} - ${product_views_per_visit_lw})/NULLIF(${product_views_per_visit_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2672,20 +2673,20 @@ view: sessions {
       ;;
   }
 
-  measure: product_views_last_7_days {
+  measure: product_views__per_visit_last_7_days {
     label: "L7D"
     type: number
     value_format_name: decimal_2
     sql: sum(case when ${start_date} between current_date - 7 and current_date - 1 then ${product_views} else 0 end)/nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Product View Measures"
+    group_label: "Product View Reporting Measures"
   }
 
-  measure: product_views_last_7_days_percentage {
-    label: "L7D%"
+  measure: product_views__per_visit_last_7_days_percentage {
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Product View Measures"
-    sql: (${product_views_per_visit} - ${product_views_last_7_days})/NULLIF(${product_views_last_7_days},0)::REAL ;;
+    group_label: "Product View Reporting Measures"
+    sql: (${product_views_per_visit} - ${product_views__per_visit_last_7_days})/NULLIF(${product_views__per_visit_last_7_days},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2704,33 +2705,38 @@ view: sessions {
   }
 
   measure: cart_visits_yesterday {
-    label: "Cart Visits Yesterday"
+    label: "Actual"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 1 and ${add_to_cart} then ${session_id} else null end)::REAL ;;
+    group_label: "Cart Visits Reporting Measures"
+    hidden: yes
   }
 
   measure: cart_visits_lw {
-    label: "Cart Visits LW"
+    label: "LW"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} = current_date - 8 and ${add_to_cart} then ${session_id} else null end)::REAL ;;
+    group_label: "Cart Visits Reporting Measures"
+    hidden: yes
   }
 
   measure: cart_visit_last_7_days {
-    label: "Cart Visits L7D"
+    label: "L7D"
     type: number
     value_format_name: decimal_0
     sql: count(distinct case when ${start_date} between current_date - 7 and current_date - 1 and ${add_to_cart} then ${session_id} else null end)::REAL ;;
+    group_label: "Cart Visits Reporting Measures"
+    hidden: yes
   }
 
   measure: add_to_cart_rate_yesterday {
-
     label: "Actual"
     type: number
     value_format_name: percent_1
     sql: ${cart_visits_yesterday}/nullif(${visits_yesterday},0) ;;
-    group_label: "Add To Cart Measures"
+    group_label: "Add To Cart Reporting Measures"
   }
 
   measure: add_to_cart_rate_lw {
@@ -2738,14 +2744,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${cart_visits_lw}/nullif(${visits_yesterday_last_week},0) ;;
-    group_label: "Add To Cart Measures"
+    group_label: "Add To Cart Reporting Measures"
   }
 
   measure: add_to_cart_rate_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Add To Cart Measures"
+    group_label: "Add To Cart Reporting Measures"
     sql: (${add_to_cart_rate_yesterday} - ${add_to_cart_rate_lw})/NULLIF(${add_to_cart_rate_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2762,14 +2768,14 @@ view: sessions {
     type: number
     value_format_name: percent_1
     sql: ${cart_visit_last_7_days}/Nullif(${visits_last_7_days},0)::REAL ;;
-    group_label: "Add To Cart Measures"
+    group_label: "Add To Cart Reporting Measures"
   }
 
   measure: add_to_cart_rate_last_7_days_percentage {
-    label: "L7D%"
+    label: "vs L7D"
     type: number
     value_format_name: percent_0
-    group_label: "Add To Cart Measures"
+    group_label: "Add To Cart Reporting Measures"
     sql: (${add_to_cart_rate_yesterday} - ${add_to_cart_rate_last_7_days})/NULLIF(${add_to_cart_rate_last_7_days},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2782,6 +2788,11 @@ view: sessions {
   }
 
 
-
+#### test
+  measure: add_to_cart_rate_1 {
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL ;;
+  }
 
 }
