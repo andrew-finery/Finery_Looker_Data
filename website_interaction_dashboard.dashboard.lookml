@@ -218,9 +218,7 @@
     type: table
     fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
       website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
-      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d,
-      visits.conversion_yesterday, visits.conversion_yesterday_last_week, visits.conversion_yesterday_wow,
-      visits.conversion_rate_last_7_days, visits.conversion_last_7_days_percentage]
+      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d]
     sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
