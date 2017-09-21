@@ -2787,12 +2787,97 @@ view: sessions {
       ;;
   }
 
-
-#### test
-  measure: add_to_cart_rate_1 {
+  measure: product_add_to_cart_rate {
     type: number
     value_format_name: percent_2
     sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL ;;
   }
+
+  measure: sum_product_views_yesterday {
+    label: "Actual"
+    type: sum
+    sql: case when ${start_date} = current_date - 1 then ${product_views} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: sum_product_views_lw {
+    label: "LW"
+    type: sum
+    sql: case when ${start_date} = current_date - 8 then ${product_views} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: sum_product_views_l7d {
+    label: "LW"
+    type: sum
+    sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${product_views} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: sum_products_add_to_cart_yesterday {
+    label: "Actual"
+    type: sum
+    sql: case when ${start_date} = current_date - 1 then ${products_added_to_cart} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: sum_products_add_to_cart_lw {
+    label: "LW"
+    type: sum
+    sql: case when ${start_date} = current_date - 8 then ${products_added_to_cart} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: sum_products_add_to_cart_l7d {
+    label: "L7D"
+    type: sum
+    sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${products_added_to_cart} else 0 end ;;
+    hidden: yes
+  }
+
+  measure: product_add_to_cart_rate_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_add_to_cart_yesterday}/NULLIF(${sum_product_views_yesterday},0)::REAL ;;
+    group_label: "Product Add To Cart Rate Reporting Measures"
+  }
+
+  measure: product_add_to_cart_rate_lw {#
+    label: "LW"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_add_to_cart_lw}/NULLIF(${sum_product_views_lw},0)::REAL ;;
+  }
+
+  measure: product_add_to_cart_rate_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Add To Cart Reporting Measures"
+    sql: (${add_to_cart_rate_yesterday} - ${add_to_cart_rate_lw})/NULLIF(${add_to_cart_rate_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_add_to_cart_rate_l7d {
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_add_to_cart_l7d}/NULLIF(${sum_product_views_l7d},0)::REAL ;;
+  }
+
+
+
+
+
+
+
+
 
 }
