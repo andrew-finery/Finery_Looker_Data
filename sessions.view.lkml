@@ -1178,6 +1178,12 @@ view: sessions {
     sql: ${product_impressions} ;;
   }
 
+  measure: product_add_to_cart_rate {
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL ;;
+  }
+
   measure: products_impressions_per_visit {
     type: number
     value_format_name: decimal_2
@@ -2787,16 +2793,11 @@ view: sessions {
       ;;
   }
 
-  measure: product_add_to_cart_rate {
-    type: number
-    value_format_name: percent_2
-    sql: ${sum_products_added_to_cart}/NULLIF(${sum_product_views},0)::REAL ;;
-  }
-
   measure: sum_product_views_yesterday {
     label: "Actual"
     type: sum
     sql: case when ${start_date} = current_date - 1 then ${product_views} else 0 end ;;
+    group_label: "Product Views Reporting Measures"
     hidden: yes
   }
 
@@ -2804,13 +2805,15 @@ view: sessions {
     label: "LW"
     type: sum
     sql: case when ${start_date} = current_date - 8 then ${product_views} else 0 end ;;
+    group_label: "Product Views Reporting Measures"
     hidden: yes
   }
 
   measure: sum_product_views_l7d {
-    label: "LW"
+    label: "L7D"
     type: sum
     sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${product_views} else 0 end ;;
+    group_label: "Product Views Reporting Measures"
     hidden: yes
   }
 
@@ -2818,6 +2821,7 @@ view: sessions {
     label: "Actual"
     type: sum
     sql: case when ${start_date} = current_date - 1 then ${products_added_to_cart} else 0 end ;;
+    group_label: "Product Count Added To Cart Reporting Measures"
     hidden: yes
   }
 
@@ -2825,6 +2829,7 @@ view: sessions {
     label: "LW"
     type: sum
     sql: case when ${start_date} = current_date - 8 then ${products_added_to_cart} else 0 end ;;
+    group_label: "Product Count Added To Cart Reporting Measures"
     hidden: yes
   }
 
@@ -2832,6 +2837,7 @@ view: sessions {
     label: "L7D"
     type: sum
     sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${products_added_to_cart} else 0 end ;;
+    group_label: "Product Count Added To Cart Reporting Measures"
     hidden: yes
   }
 
@@ -2843,19 +2849,20 @@ view: sessions {
     group_label: "Product Add To Cart Rate Reporting Measures"
   }
 
-  measure: product_add_to_cart_rate_lw {#
+  measure: product_add_to_cart_rate_lw {
     label: "LW"
     type: number
     value_format_name: percent_2
     sql: ${sum_products_add_to_cart_lw}/NULLIF(${sum_product_views_lw},0)::REAL ;;
+    group_label: "Product Add To Cart Rate Reporting Measures"
   }
 
   measure: product_add_to_cart_rate_wow {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Add To Cart Reporting Measures"
-    sql: (${add_to_cart_rate_yesterday} - ${add_to_cart_rate_lw})/NULLIF(${add_to_cart_rate_lw},0)::REAL ;;
+    group_label: "Product Add To Cart Rate Reporting Measures"
+    sql: (${product_add_to_cart_rate_yesterday} - ${product_add_to_cart_rate_lw})/NULLIF(${product_add_to_cart_rate_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2867,16 +2874,108 @@ view: sessions {
   }
 
   measure: product_add_to_cart_rate_l7d {
+    label: "L7D"
     type: number
     value_format_name: percent_2
     sql: ${sum_products_add_to_cart_l7d}/NULLIF(${sum_product_views_l7d},0)::REAL ;;
+    group_label: "Product Add To Cart Rate Reporting Measures"
   }
 
+  measure: product_add_to_cart_rate_l7d_percentage {
+    label: "vs L7D"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Add To Cart Rate Reporting Measures"
+    sql: (${product_add_to_cart_rate_yesterday} - ${product_add_to_cart_rate_l7d})/NULLIF(${product_add_to_cart_rate_l7d},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
 
+  measure: sum_products_purchased_yesterday {
+    label: "Actual"
+    type: sum
+    sql: case when ${start_date} = current_date - 1 then ${products_purchased} else 0 end ;;
+    group_label: "Products Purchased Yesterday Reporting Measures"
+    hidden: yes
+  }
 
+  measure: sum_products_purchased_lw {
+    label: "LW"
+    type: sum
+    sql: case when ${start_date} = current_date - 8 then ${products_purchased} else 0 end ;;
+    group_label: "Products Purchased Yesterday Reporting Measures"
+    hidden: yes
+  }
 
+  measure: sum_products_purchased_l7d {
+    label: "L7D"
+    type: sum
+    sql: case when ${start_date} between current_date - 7 and current_date -1 then ${products_purchased} else 0 end ;;
+    group_label: "Products Purchased Yesterday Reporting Measures"
+    hidden: yes
+  }
 
+  measure: product_conversion_rate_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_yesterday}/NULLIF(${sum_product_views_yesterday},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
 
+  measure: product_conversion_rate_lw {
+    label: "LW"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_lw}/NULLIF(${sum_product_views_lw},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_rate_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_yesterday} - ${product_conversion_rate_lw})/NULLIF(${product_conversion_rate_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_conversion_rate_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_l7d}/NULLIF(${sum_product_views_l7d},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_l7d_percentage {
+    label: "vs L7D"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_yesterday} - ${product_conversion_rate_l7d})/NULLIF(${product_conversion_rate_l7d},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
 
 
 

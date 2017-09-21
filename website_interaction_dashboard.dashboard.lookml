@@ -332,6 +332,36 @@
     top: 9
     left: 0
 
+  - name: add_to_cart_rate_by_session
+    title: Add To Cart Rate By Products Viewed
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.product_add_to_cart_rate_yesterday, sessions.product_add_to_cart_rate_lw,
+      sessions.product_add_to_cart_rate_wow, sessions.product_add_to_cart_rate_l7d,
+      sessions.product_add_to_cart_rate_l7d_percentage]
+    show_row_numbers: false
+    limit: 500
+    column_limit: 50
+    width: 7
+    height: 1
+    top: 12
+    left: 0
+
+  - name: product_conversion_rate
+    title: Product Conversion Rate By Products Viewed
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.product_conversion_rate_yesterday, sessions.product_conversion_rate_lw,
+      sessions.product_conversion_rate_wow, sessions.product_conversion_rate_l7d, sessions.product_conversion_l7d_percentage]
+    show_row_numbers: false
+    limit: 500
+    column_limit: 50
+    width: 7
+    height: 1
+    top: 12
+    left: 7
 
   - name: top_products_viewed_yesterday
     title: Top Products Viewed - Yesterday
@@ -363,7 +393,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 12
+    top: 13
     left: 0
 
 
@@ -397,7 +427,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 12
+    top: 13
     left: 7
 
 
@@ -431,7 +461,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 27
+    top: 28
     left: 0
 
 
@@ -465,5 +495,5 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 15
-    top: 27
+    top: 28
     left: 7
