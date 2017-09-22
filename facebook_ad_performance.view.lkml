@@ -1291,4 +1291,42 @@ view: facebook_api_ad_performance {
       ;;
   }
 
+  measure: total_add_to_cart_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} = current_date - 1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_add_to_cart_l3d {
+    label: "L3D"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_add_to_cart_l7d {
+    label: "L7D"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_add_to_cart_lw {
+    label: "LW"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} = current_date - 7 then ${1d_total_action_add_to_cart} else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+
+
 }

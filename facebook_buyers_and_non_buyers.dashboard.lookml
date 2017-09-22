@@ -52,4 +52,7 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-
+    top: 0
+    left: 0
+    height: 1
+    width: 7
