@@ -1189,4 +1189,106 @@ view: facebook_api_ad_performance {
     sql: ${total_spend}/ NULLIF(${28d_total_action_initate_checkout},0) ::REAL ;;
     value_format: "#,##0.00"
   }
+
+
+  ######################################################## Reporting Measures ######################################################
+
+  measure: total_spend_including_smartly_commission_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} = current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_l3d {
+    label: "L3D"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_spend_including_smartly_commission_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: decimal_1
+    sql: ${total_spend_including_smartly_commission_l3d}/3 ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Spend Reporting Measures"
+    sql: (${total_spend_including_smartly_commission_yesterday} - ${total_spend_including_smartly_commission_l3d_average})/NULLIF(${total_spend_including_smartly_commission_l3d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: total_spend_including_smartly_commission_l7d {
+    label: "L7D"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_spend_including_smartly_commission_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: decimal_1
+    sql: ${total_spend_including_smartly_commission_l7d}/7 ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Spend Reporting Measures"
+    sql: (${total_spend_including_smartly_commission_yesterday} - ${total_spend_including_smartly_commission_l7d_average})/NULLIF(${total_spend_including_smartly_commission_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: total_spend_including_smartly_commission_lw {
+    label: "LW"
+    type: sum
+    value_format_name: decimal_1
+    sql: case when ${calendar_date} = current_date - 7 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Spend Reporting Measures"
+    sql: (${total_spend_including_smartly_commission_yesterday} - ${total_spend_including_smartly_commission_lw})/NULLIF(${total_spend_including_smartly_commission_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
 }
