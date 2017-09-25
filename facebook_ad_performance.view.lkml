@@ -1196,7 +1196,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_yesterday {
     label: "Actual"
     type: sum
-    value_format_name: decimal_1
+    value_format_name: pounds
     sql: case when ${calendar_date} = current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1204,7 +1204,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l3d {
     label: "L3D"
     type: sum
-    value_format_name: decimal_1
+    value_format_name:pounds
     sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
@@ -1213,7 +1213,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: decimal_1
+    value_format_name: pounds
     sql: ${total_spend_including_smartly_commission_l3d}/3 ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1237,7 +1237,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l7d {
     label: "L7D"
     type: sum
-    value_format_name: decimal_1
+    value_format_name: pounds
     sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
@@ -1246,7 +1246,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: decimal_1
+    value_format_name: pounds
     sql: ${total_spend_including_smartly_commission_l7d}/7 ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1270,7 +1270,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_lw {
     label: "LW"
     type: sum
-    value_format_name: decimal_1
+    value_format_name: pounds
     sql: case when ${calendar_date} = current_date - 7 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1294,8 +1294,8 @@ view: facebook_api_ad_performance {
   measure: total_add_to_cart_yesterday {
     label: "Actual"
     type: sum
-    value_format_name: decimal_1
-    sql: case when ${calendar_date} = current_date - 1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} = current_date - 1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end::REAL ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1303,8 +1303,17 @@ view: facebook_api_ad_performance {
   measure: total_add_to_cart_l3d {
     label: "L3D"
     type: sum
-    value_format_name: decimal_1
-    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_add_to_cart_l3d_average {
+    label: "L3D Avg"
+    type: sum
+    value_format_name: decimal_0
+    sql: ${total_add_to_cart_l3d}/3 ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1312,8 +1321,17 @@ view: facebook_api_ad_performance {
   measure: total_add_to_cart_l7d {
     label: "L7D"
     type: sum
-    value_format_name: decimal_1
-    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then ${1d_total_action_add_to_cart} else 0 end ;;
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Total Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: total_add_to_cart_l7d_average {
+    label: "L7D Avg"
+    type: sum
+    value_format_name: decimal_0
+    sql: ${total_add_to_cart_l7d}/7 ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1321,10 +1339,266 @@ view: facebook_api_ad_performance {
   measure: total_add_to_cart_lw {
     label: "LW"
     type: sum
-    value_format_name: decimal_1
-    sql: case when ${calendar_date} = current_date - 7 then ${1d_total_action_add_to_cart} else 0 end ;;
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} = current_date - 7 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
+  }
+
+#####################################################################################################
+#####################################################################################################
+
+  measure: cost_per_add_to_cart_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_yesterday}/${total_add_to_cart_yesterday} ;;
+    group_label: "Cost Per Add To Cart Reporting Measures"
+  }
+
+  measure: cost_per_add_to_cart_l3d {
+    label: "L3D"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_l3d}/${total_add_to_cart_l3d} ;;
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: cost_per_add_to_cart_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: pounds
+    sql: (${cost_per_add_to_cart_l3d})/3 ;;
+    group_label: "Cost Per Add To Cart Reporting Measures"
+  }
+
+  measure: cost_per_add_to_cart_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_l3d_average})/NULLIF(${cost_per_add_to_cart_l3d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_add_to_cart_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_l7d}/${total_add_to_cart_l7d} ;;
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: cost_per_add_to_cart_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: pounds
+    sql: ${cost_per_add_to_cart_l7d}/7 ;;
+    group_label: "Cost Per Add To Cart Reporting Measures"
+  }
+
+  measure: cost_per_add_to_cart_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_l7d_average})/NULLIF(${cost_per_add_to_cart_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_add_to_cart_lw {
+    label: "LW"
+    type: number
+    value_format_name: pounds
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    sql: ${total_spend_including_smartly_commission_lw}/${total_add_to_cart_lw} ;;
+  }
+
+  measure: cost_per_add_to_cart_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Add To Cart Reporting Measures"
+    sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_lw})/NULLIF(${cost_per_add_to_cart_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  #####################################################################################################################
+  ######################################################################################################################
+
+  measure: orders_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} = current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: orders_l3d {
+    label: "L3D"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: orders_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: decimal_0
+    sql: ${cost_per_order_l3d}/3 ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: orders_l7d {
+    label: "L7D"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: orders_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: decimal_1
+    sql: ${cost_per_order_l7d}/7 ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: orders_lw {
+    label: "LW"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when ${calendar_date} = current_date - 7 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+    hidden: yes
+  }
+
+  measure: cost_per_order_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_yesterday}/${orders_yesterday} ;;
+    group_label: "Cost Per Order Reporting Measures"
+  }
+
+  measure: cost_per_order_l3d {
+    label: "L3D"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_l3d}/${orders_l3d} ;;
+    group_label: "Cost Per Order Reporting Measures"
+    hidden: yes
+  }
+
+  measure: cost_per_order_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: pounds
+    sql: (${cost_per_order_l3d})/3 ;;
+    group_label: "Cost Per Order Reporting Measures"
+  }
+
+  measure: cost_per_order_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Order Reporting Measures"
+    sql: (${cost_per_order_yesterday} - ${cost_per_order_l3d_average})/NULLIF(${cost_per_order_l3d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_order_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: pounds
+    sql: ${total_spend_including_smartly_commission_l7d}/${orders_l7d} ;;
+    group_label: "Cost Per Order Reporting Measures"
+    hidden: yes
+  }
+
+  measure: cost_per_order_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: pounds
+    sql: ${cost_per_order_l7d}/7 ;;
+    group_label: "Cost Per Order Reporting Measures"
+  }
+
+  measure: cost_per_order_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Order Reporting Measures"
+    sql: (${cost_per_order_yesterday} - ${cost_per_order_l7d_average})/NULLIF(${cost_per_order_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_order_lw {
+    label: "LW"
+    type: number
+    value_format_name: pounds
+    group_label: "Cost Per Order Reporting Measures"
+    sql: ${total_spend_including_smartly_commission_lw}/${orders_lw} ;;
+  }
+
+  measure: cost_per_order_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Order Reporting Measures"
+    sql: (${cost_per_order_yesterday} - ${cost_per_order_lw})/NULLIF(${cost_per_order_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
   }
 
 
