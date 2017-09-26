@@ -491,7 +491,7 @@
 
 
   - name: facebook_spend_dpa_campaigns_by_type
-    title: Facebook Spend By DPA Type
+    title: DPA Type - Facebook Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -540,11 +540,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-
+    top: 12
+    left: 7
+    height: 3
+    width: 7
 
 
   - name: add_to_cart_cost_by_dpa
-    title: Add To Cart Cost By DPA
+    title: DPA - Add To Cart Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -588,11 +591,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-
+    top: 15
+    left: 0
+    height: 3
+    width: 7
 
 
   - name: cost_per_order_by_dpa_type
-    title: Cost Per Orders By DPA Type
+    title: DPA Type - Cost Per Order
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -636,8 +642,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 12
-    left: 0
+    top: 15
+    left: 7
     height: 3
     width: 7
 
@@ -691,9 +697,13 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    top: 18
+    left: 0
+    height: 3
+    width: 7
 
   - name: add_to_cart_cost_non_dpa
-    title: Add To Cart Cost By Non DPA
+    title: Non DPA - Add To Cart Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -737,6 +747,10 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    top: 18
+    left: 7
+    height: 3
+    width: 7
 
 
   - name: cost_per_order_non_dpa_campaigns
@@ -784,6 +798,10 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    top: 21
+    left: 0
+    height: 3
+    width: 7
 
 
   - name: advert_facebook_spend
@@ -837,6 +855,10 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    top: 24
+    left: 0
+    height: 5
+    width: 9
 
 
 

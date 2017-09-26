@@ -156,6 +156,11 @@ view: facebook_api_ad_performance {
     sql: ${TABLE}.advert_name ;;
   }
 
+  dimension: advert_name_short {
+    type: string
+    sql: extract(left,35 from ${advert_name}) ;;
+  }
+
   dimension: advert_type {
     type: string
     sql: case
@@ -1450,7 +1455,7 @@ view: facebook_api_ad_performance {
     label: "L3D Avg"
     type: number
     value_format_name: decimal_0
-    sql: ${cost_per_order_l3d}/3 ;;
+    sql: ${orders_l3d}/3 ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
   }
@@ -1468,7 +1473,7 @@ view: facebook_api_ad_performance {
     label: "L7D Avg"
     type: number
     value_format_name: decimal_0
-    sql: ${cost_per_order_l7d}/7 ;;
+    sql: ${orders_l7d}/7 ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
   }
