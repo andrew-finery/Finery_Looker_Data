@@ -158,7 +158,7 @@ view: facebook_api_ad_performance {
 
   dimension: advert_name_short {
     type: string
-    sql: extract(left,35 from ${advert_name}) ;;
+    sql: substring(${advert_name},42,len(${advert_name})-73) ;;
   }
 
   dimension: advert_type {
