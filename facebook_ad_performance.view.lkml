@@ -1196,7 +1196,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_yesterday {
     label: "Actual"
     type: sum
-    value_format_name: pounds
+    value_format_name:gbp
     sql: case when ${calendar_date} = current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1204,7 +1204,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l3d {
     label: "L3D"
     type: sum
-    value_format_name:pounds
+    value_format_name:gbp
     sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
@@ -1213,7 +1213,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     sql: ${total_spend_including_smartly_commission_l3d}/3 ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1237,7 +1237,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l7d {
     label: "L7D"
     type: sum
-    value_format_name: pounds
+    value_format_name: gbp
     sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
@@ -1246,7 +1246,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     sql: ${total_spend_including_smartly_commission_l7d}/7 ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1270,7 +1270,7 @@ view: facebook_api_ad_performance {
   measure: total_spend_including_smartly_commission_lw {
     label: "LW"
     type: sum
-    value_format_name: pounds
+    value_format_name: gbp
     sql: case when ${calendar_date} = current_date - 7 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
   }
@@ -1345,31 +1345,20 @@ view: facebook_api_ad_performance {
     hidden: yes
   }
 
-#####################################################################################################
-#####################################################################################################
 
   measure: cost_per_add_to_cart_yesterday {
     label: "Actual"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     sql: ${total_spend_including_smartly_commission_yesterday}/NULLIF(${total_add_to_cart_yesterday},0) ;;
     group_label: "Cost Per Add To Cart Reporting Measures"
-  }
-
-  measure: cost_per_add_to_cart_l3d {
-    label: "L3D"
-    type: number
-    value_format_name: pounds
-    sql: ${total_spend_including_smartly_commission_l3d}/NULLIF(${total_add_to_cart_l3d},0) ;;
-    group_label: "Cost Per Add To Cart Reporting Measures"
-    hidden: yes
   }
 
   measure: cost_per_add_to_cart_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: pounds
-    sql: (${cost_per_add_to_cart_l3d})/3 ;;
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l3d}/NULLIF(${total_add_to_cart_l3d},0) ;;
     group_label: "Cost Per Add To Cart Reporting Measures"
   }
 
@@ -1389,20 +1378,11 @@ view: facebook_api_ad_performance {
         ;;
   }
 
-  measure: cost_per_add_to_cart_l7d {
-    label: "L7D"
-    type: number
-    value_format_name: pounds
-    sql: ${total_spend_including_smartly_commission_l7d}/NULLIF(${total_add_to_cart_l7d},0)::REAL ;;
-    group_label: "Cost Per Add To Cart Reporting Measures"
-    hidden: yes
-  }
-
   measure: cost_per_add_to_cart_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: pounds
-    sql: ${cost_per_add_to_cart_l7d}/7 ;;
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l7d}/NULLIF(${total_add_to_cart_l7d},0)::REAL ;;
     group_label: "Cost Per Add To Cart Reporting Measures"
   }
 
@@ -1425,7 +1405,7 @@ view: facebook_api_ad_performance {
   measure: cost_per_add_to_cart_lw {
     label: "LW"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     group_label: "Cost Per Add To Cart Reporting Measures"
     sql: ${total_spend_including_smartly_commission_lw}/NULLIF(${total_add_to_cart_lw},0)::REAL ;;
   }
@@ -1446,8 +1426,7 @@ view: facebook_api_ad_performance {
         ;;
   }
 
-  #####################################################################################################################
-  ######################################################################################################################
+
 
   measure: orders_yesterday {
     label: "Actual"
@@ -1488,7 +1467,7 @@ view: facebook_api_ad_performance {
   measure: orders_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: decimal_1
+    value_format_name: decimal_0
     sql: ${cost_per_order_l7d}/7 ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
@@ -1503,28 +1482,20 @@ view: facebook_api_ad_performance {
     hidden: yes
   }
 
+
   measure: cost_per_order_yesterday {
     label: "Actual"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     sql: ${total_spend_including_smartly_commission_yesterday}/NULLIF(${orders_yesterday},0)::REAL ;;
     group_label: "Cost Per Order Reporting Measures"
-  }
-
-  measure: cost_per_order_l3d {
-    label: "L3D"
-    type: number
-    value_format_name: pounds
-    sql: ${total_spend_including_smartly_commission_l3d}/NULLIF(${orders_l3d},0)::REAL ;;
-    group_label: "Cost Per Order Reporting Measures"
-    hidden: yes
   }
 
   measure: cost_per_order_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: pounds
-    sql: (${cost_per_order_l3d})/3 ;;
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l3d}/NULLIF(${orders_l3d},0)::REAL ;;
     group_label: "Cost Per Order Reporting Measures"
   }
 
@@ -1544,20 +1515,11 @@ view: facebook_api_ad_performance {
         ;;
   }
 
-  measure: cost_per_order_l7d {
-    label: "L7D"
-    type: number
-    value_format_name: pounds
-    sql: ${total_spend_including_smartly_commission_l7d}/NULLIF(${orders_l7d},0)::REAL ;;
-    group_label: "Cost Per Order Reporting Measures"
-    hidden: yes
-  }
-
   measure: cost_per_order_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: pounds
-    sql: ${cost_per_order_l7d}/7 ;;
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l7d}/NULLIF(${orders_l7d},0)::REAL ;;
     group_label: "Cost Per Order Reporting Measures"
   }
 
@@ -1580,7 +1542,7 @@ view: facebook_api_ad_performance {
   measure: cost_per_order_lw {
     label: "LW"
     type: number
-    value_format_name: pounds
+    value_format_name: gbp
     group_label: "Cost Per Order Reporting Measures"
     sql: ${total_spend_including_smartly_commission_lw}/NULLIF(${orders_lw},0)::REAL ;;
   }
