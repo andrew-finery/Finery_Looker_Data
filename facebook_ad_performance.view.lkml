@@ -4,7 +4,8 @@ view: facebook_api_ad_performance {
   dimension: dpa_type {
     sql: case when ${TABLE}.campaign_name like '%AddToCart%' then 'AddToCart'
       when ${TABLE}.campaign_name like '%Addtocart%' then 'AddToCart'
-      when ${TABLE}.campaign_name like '%ProductViewed%' then 'ProductViewed' end
+      when ${TABLE}.campaign_name like '%ProductViewed%' then 'ProductViewed'
+      when ${TABLE}.campaign_name like '%productviewed%' then 'ProductViewed'end
        ;;
   }
 

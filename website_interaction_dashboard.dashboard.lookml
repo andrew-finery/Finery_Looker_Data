@@ -29,7 +29,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.page_views_per_visit: Page Views Per Visit
+      sessions.page_views_per_visit: Actual
       sessions.page_views_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -59,7 +59,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.product_views_per_visit: Product Views Per Visit
+      sessions.product_views_per_visit: Actual
       sessions.product_views_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -87,7 +87,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.add_to_cart_rate_yesterday: Add To Cart Rate
+      sessions.add_to_cart_rate_yesterday: Actual
       sessions.add_to_cart_rate_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -115,7 +115,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.conversion_yesterday: C.R
+      sessions.conversion_yesterday: Actual
       sessions.conversion_rate_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -143,7 +143,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.bounce_rate_yesterday: Bounce Rate
+      sessions.bounce_rate_yesterday: Actual
       sessions.bounce_rate_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -172,7 +172,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.engagement_rate_yesterday: Engagement Rate
+      sessions.engagement_rate_yesterday: Actual
       sessions.engagement_rate_last_7_days: Last 7 Days
     width: 7
     height: 1
@@ -203,7 +203,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      sessions.visits_yesterday: Visits Yest.
+      sessions.visits_yesterday: Actual
       sessions.bounce_rate_yesterday: Bounce Rate
     width: 14
     height: 3
