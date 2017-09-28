@@ -2977,6 +2977,12 @@ view: sessions {
       ;;
   }
 
+  measure: distinct_conversion_rate {
+    type: number
+    value_format_name: percent_1
+    sql: ${conversion_funnel_10}/${session_id} ;;
+  }
+
 
 
 }

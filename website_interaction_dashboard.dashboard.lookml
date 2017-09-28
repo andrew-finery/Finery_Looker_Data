@@ -67,7 +67,7 @@
     left: 7
 
   - name: add_to_cart
-    title: Add To Cart Rate
+    title: Add To Cart (Site)
     model: finery_data
     explore: sessions
     type: table
@@ -95,7 +95,7 @@
     left: 0
 
   - name: conversion_rate
-    title: Conversion Rate
+    title: Conversion Rate (Site)
     model: finery_data
     explore: sessions
     type: table
@@ -333,7 +333,7 @@
     left: 0
 
   - name: add_to_cart_rate_by_session
-    title: Add To Cart Rate By Products Viewed
+    title: Add To Cart (Product)
     model: finery_data
     explore: sessions
     type: table
@@ -341,6 +341,7 @@
       sessions.product_add_to_cart_rate_wow, sessions.product_add_to_cart_rate_l7d,
       sessions.product_add_to_cart_rate_l7d_percentage]
     show_row_numbers: false
+    show_view_names: false
     limit: 500
     column_limit: 50
     width: 7
@@ -349,13 +350,14 @@
     left: 0
 
   - name: product_conversion_rate
-    title: Product Conversion Rate By Products Viewed
+    title: Conversion Rate (Product)
     model: finery_data
     explore: sessions
     type: table
     fields: [sessions.product_conversion_rate_yesterday, sessions.product_conversion_rate_lw,
       sessions.product_conversion_rate_wow, sessions.product_conversion_rate_l7d, sessions.product_conversion_l7d_percentage]
     show_row_numbers: false
+    show_view_names: false
     limit: 500
     column_limit: 50
     width: 7
@@ -368,7 +370,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -402,7 +404,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -436,7 +438,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -470,7 +472,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]

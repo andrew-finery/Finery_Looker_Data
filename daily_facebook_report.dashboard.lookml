@@ -1,5 +1,5 @@
-- dashboard: facebook_spend
-  title: Facebook Spend
+- dashboard: daily_facebook_report
+  title: Daily Facebook Report
   layout: static
   tile_size: 100
 
@@ -8,7 +8,7 @@
   elements:
 
   - name: facebook_spend
-    title: Facebook Spend
+    title: Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -61,8 +61,9 @@
     height: 2
     width: 7
 
+
   - name: revenue_1_day_after_clicking
-    title: Revenue 1 Day After Clicking Advert
+    title: Revenue
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -73,6 +74,7 @@
     sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
     limit: 500
     column_limit: 50
+    total: true
     show_view_names: false
     show_row_numbers: false
     truncate_column_names: false
@@ -101,7 +103,7 @@
     y_axis_scale_mode: linear
     ordering: none
     show_null_labels: false
-    show_totals_labels: false
+    show_totals_labels: true
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
@@ -112,7 +114,7 @@
 
 
   - name: return_on_investment
-    title: Return On Investment
+    title: ROI
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -123,6 +125,7 @@
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
+    total: true
     show_view_names: false
     show_row_numbers: false
     truncate_column_names: false
@@ -151,7 +154,7 @@
     y_axis_scale_mode: linear
     ordering: none
     show_null_labels: false
-    show_totals_labels: false
+    show_totals_labels: true
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
@@ -163,7 +166,7 @@
 
 
   - name: cost_per_order
-    title: Cost Per Order
+    title: CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -214,7 +217,7 @@
 
 
   - name: cost_per_add_to_cart
-    title: Cost Per Add To Cart
+    title: Cost Per ATC
     model: finery_data
     explore: facebook_api_ad_performance
     type: table

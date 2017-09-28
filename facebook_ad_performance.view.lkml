@@ -1670,16 +1670,16 @@ view: facebook_api_ad_performance {
   measure: return_on_investment_yesterday {
     label: "Actual"
     type: number
-    value_format_name: gbp
-    sql: ${revenue_1_day_after_clicking_yesterday}-${total_spend_including_smartly_commission_yesterday} ;;
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_yesterday}-${total_spend_including_smartly_commission_yesterday})/NULLIF(${total_spend_including_smartly_commission_yesterday},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
   measure: return_on_investment_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: gbp
-    sql: ${revenue_1_day_after_clicking_l3d_average}-${total_spend_including_smartly_commission_l3d_average} ;;
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_l3d_average}-${total_spend_including_smartly_commission_l3d_average})/NULLIF(${total_spend_including_smartly_commission_l3d_average},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
@@ -1702,8 +1702,8 @@ view: facebook_api_ad_performance {
   measure: return_on_investment_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: gbp
-    sql: ${revenue_1_day_after_clicking_l7d_average}-${total_spend_including_smartly_commission_l7d_average} ;;
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_l7d_average}-${total_spend_including_smartly_commission_l7d_average})/NULLIF(${total_spend_including_smartly_commission_l7d_average},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
@@ -1726,9 +1726,9 @@ view: facebook_api_ad_performance {
   measure: return_on_investment_lw {
     label: "LW"
     type: number
-    value_format_name: gbp
+    value_format_name: decimal_0
     group_label: "ROI Reporting Measures"
-    sql: ${revenue_1_day_after_clicking_lw}-${total_spend_including_smartly_commission_lw} ;;
+    sql: (${revenue_1_day_after_clicking_lw}-${total_spend_including_smartly_commission_lw})/NULLIF(${total_spend_including_smartly_commission_lw},0);;
   }
 
   measure: return_on_investment_wow {
