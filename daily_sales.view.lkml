@@ -857,6 +857,84 @@ view: daily_sales {
     group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
+  measure: gross_item_revenue_gbp_ex_discount_yesterday {
+    label: "Yesterday"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "1 day ago for 1 day"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_week {
+    label: "Last Week"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_week_before {
+    label: "Week Before Last"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_7_days {
+    label: "Last 7 Days"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "7 days ago for 7 days"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_week_to_date {
+    label: "Week to Date"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "this week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_week_last_year {
+    label: "Last Week LY"
+    type: number
+    value_format_name: decimal_2
+    sql: sum (
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${calendar_date_date} between current_date - 400 and current_date - 300
+      then ${TABLE}.gross_revenue_gbp_ex_discount else null end
+      )
+       ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+  }
+
   measure: sales_mix_last_7_days {
     label: "Sales Mix - Last 7 Days"
     type: percent_of_total
