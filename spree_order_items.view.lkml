@@ -378,6 +378,7 @@ view: spree_order_items {
     label: "Items Sold"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
   }
 
   ########################################### Returns Measures #################################################################################################################
@@ -386,6 +387,7 @@ view: spree_order_items {
     label: "Items Returned"
     type: sum
     sql: coalesce(${items_returned}, 0) ;;
+    group_label: "Items Returned Measures"
   }
 
   measure: total_items_returned_size {
@@ -556,6 +558,7 @@ view: spree_order_items {
   measure: items_sold_after_returns {
     type: sum
     sql: ${quantity} - ${items_returned} ;;
+    group_label: "Items Sold Measures"
   }
 
   measure: return_rate {
@@ -733,8 +736,10 @@ view: spree_order_items {
   # Revenue
 
   measure: gross_rev_ex_discount_ex_vat_tw {
+    label: "TW"
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     value_format_name: decimal_2
 
     filters: {
@@ -744,8 +749,10 @@ view: spree_order_items {
   }
 
   measure: gross_rev_ex_discount_ex_vat_lw {
+    label: "LW"
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     value_format_name: decimal_2
 
     filters: {
@@ -755,8 +762,10 @@ view: spree_order_items {
   }
 
   measure: gross_rev_ex_discount_ex_vat_tw_ly {
+    label: "TW - LY"
     type: number
     value_format_name: decimal_2
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     sql: sum (
       case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
       and ${order_time_date} between current_date - 400 and current_date - 300
@@ -767,8 +776,10 @@ view: spree_order_items {
 
 
   measure: gross_rev_ex_discount_ex_vat_l4w {
+    label: "L4W"
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     value_format_name: decimal_2
 
     filters: {
@@ -778,8 +789,10 @@ view: spree_order_items {
   }
 
   measure: gross_rev_ex_discount_ex_vat_mtd {
+    label: "MTD"
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     value_format_name: decimal_2
 
     filters: {
@@ -794,8 +807,10 @@ view: spree_order_items {
   }
 
   measure: gross_rev_ex_discount_ex_vat_std {
+    label: "STD"
     type: sum
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
     value_format_name: decimal_2
 
     filters: {
@@ -812,9 +827,11 @@ view: spree_order_items {
   # Profit
 
   measure: pc1_profit_tw {
+    label: "TW"
     type: sum
     value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}) ;;
+    group_label: "PC1 Profit Measures"
 
     filters: {
       field: order_time_date
@@ -823,9 +840,11 @@ view: spree_order_items {
   }
 
   measure: pc1_profit_lw {
+    label: "LW"
     type: sum
     value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}) ;;
+    group_label: "PC1 Profit Measures"
 
     filters: {
       field: order_time_date
@@ -834,9 +853,11 @@ view: spree_order_items {
   }
 
   measure: pc1_profit_l4w {
+    label: "L4W"
     type: sum
     value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}) ;;
+    group_label: "PC1 Profit Measures"
 
     filters: {
       field: order_time_date
@@ -845,6 +866,7 @@ view: spree_order_items {
   }
 
   measure: pc1_proit_tw_ly {
+    label: "TW - LY"
     type: number
     value_format_name: decimal_2
     sql: sum (
@@ -853,12 +875,15 @@ view: spree_order_items {
       then (${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}))  else null end
       )
       ;;
+    group_label: "PC1 Profit Measures"
   }
 
   measure: pc1_profit_mtd {
+    label: "MTD"
     type: sum
     value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}) ;;
+    group_label: "PC1 Profit Measures"
 
     filters: {
       field: order_time_date
@@ -872,9 +897,11 @@ view: spree_order_items {
   }
 
   measure: pc1_profit_std {
+    label: "STD"
     type: sum
     value_format_name: decimal_2
     sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}) ;;
+    group_label: "PC1 Profit Measures"
 
     filters: {
       field: order_time_date
@@ -890,8 +917,10 @@ view: spree_order_items {
   # Units Sold
 
   measure: items_sold_tw {
+    label: "TW"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
 
     filters: {
       field: order_time_date
@@ -900,8 +929,10 @@ view: spree_order_items {
   }
 
   measure: items_sold_lw {
+    label: "LW"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
 
     filters: {
       field: order_time_date
@@ -910,8 +941,10 @@ view: spree_order_items {
   }
 
   measure: items_sold_tw_ly {
+    label: "TW - LY"
     type: number
     value_format_name: integer
+    group_label: "Items Sold Measures"
     sql: sum (
       case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
       and ${order_time_date} between current_date - 400 and current_date - 300
@@ -921,8 +954,10 @@ view: spree_order_items {
   }
 
   measure: items_sold_l4w {
+    label: "L4W"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
 
     filters: {
       field: order_time_date
@@ -931,8 +966,10 @@ view: spree_order_items {
   }
 
   measure: items_sold_mtd {
+    label: "MTD"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
 
     filters: {
       field: order_time_date
@@ -946,8 +983,10 @@ view: spree_order_items {
   }
 
   measure: items_sold_std {
+    label: "STD"
     type: sum
     sql: ${TABLE}.quantity ;;
+    group_label: "Items Sold Measures"
 
     filters: {
       field: order_time_date
