@@ -140,12 +140,14 @@ view: daily_sales {
     label: "Gross Units Sold"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: sum_items_sold_as_percent {
     label: "Units Sold Mix"
     type: percent_of_total
     sql: ${sum_items_sold} ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: sum_items_returned {
@@ -164,6 +166,7 @@ view: daily_sales {
     label: "Net Units Sold"
     type: sum
     sql: ${TABLE}.items_sold_after_returns ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: return_rate {
@@ -223,6 +226,7 @@ view: daily_sales {
     label: "Revenue Mix"
     type: percent_of_total
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: net_item_revenue_gbp {
@@ -511,6 +515,7 @@ view: daily_sales {
     label: "Stock Retail Value Mix - Yesterday"
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday} ;;
+    group_label: "Clsoing Stock Value @ Retail Measures"
     value_format: "#,##0.00"
   }
 
@@ -1079,6 +1084,7 @@ view: daily_sales {
     label: "Sales Mix - Last 7 Days"
     type: percent_of_total
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days} ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: weeks_cover_yesterday {

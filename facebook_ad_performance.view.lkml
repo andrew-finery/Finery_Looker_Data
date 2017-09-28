@@ -873,12 +873,6 @@ view: facebook_api_ad_performance {
     sql: ${clicks_all} ;;
   }
 
-  measure: revenue_1_day_after_clicking {
-    type: sum
-    value_format_name: decimal_2
-    sql: ${conversion_value_1_day_after_clicking} ;;
-  }
-
   measure: revenue_7_days_after_clicking {
     type: sum
     value_format_name: decimal_2
@@ -910,12 +904,6 @@ view: facebook_api_ad_performance {
     type: sum
     value_format_name: decimal_2
     sql: ${amount_spent_gbp} ;;
-  }
-
-  measure: total_spend_including_smartly_commission {
-    type: sum
-    value_format_name: decimal_2
-    sql: ${amount_spent_including_smartly_commission} ;;
   }
 
   measure: click_through_rate {
@@ -1198,6 +1186,13 @@ view: facebook_api_ad_performance {
 
 
   ######################################################## Reporting Measures ######################################################
+
+  measure: total_spend_including_smartly_commission {
+    type: sum
+    value_format_name: decimal_2
+    sql: ${amount_spent_including_smartly_commission} ;;
+    group_label: "Total Spend Reporting Measures"
+  }
 
   measure: total_spend_including_smartly_commission_yesterday {
     label: "Actual"
@@ -1567,6 +1562,13 @@ view: facebook_api_ad_performance {
         <font color="#000000"> {{ rendered_value }} </font>
         {% endif %}
         ;;
+  }
+
+  measure: revenue_1_day_after_clicking {
+    type: sum
+    value_format_name: decimal_2
+    sql: ${conversion_value_1_day_after_clicking} ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
   }
 
   measure: revenue_1_day_after_clicking_yesterday {
