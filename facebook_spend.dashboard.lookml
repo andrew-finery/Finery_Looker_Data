@@ -1,5 +1,5 @@
-- dashboard: facebook_buyers_and_non_buyers
-  title: Facebook Buyers and Non Buyers
+- dashboard: facebook_spend
+  title: Facebook Spend
   layout: static
   tile_size: 100
 
@@ -155,6 +155,10 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    top: 2
+    left: 0
+    height: 2
+    width: 7
 
 
 
@@ -254,7 +258,7 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 2
+    top: 4
     left: 0
     height: 2
     width: 7
@@ -312,7 +316,7 @@
     totals_color: "#808080"
     series_types: {}
     top: 4
-    left: 0
+    left: 7
     height: 2
     width: 7
 
@@ -364,8 +368,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 4
-    left: 7
+    top: 6
+    left: 0
     height: 2
     width: 7
 
@@ -419,7 +423,7 @@
     totals_color: "#808080"
     series_types: {}
     top: 6
-    left: 3
+    left: 7
     height: 2
     width: 7
 

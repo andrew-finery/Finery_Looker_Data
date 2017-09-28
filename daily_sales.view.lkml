@@ -780,10 +780,11 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_yesterday {
-    label: "Gross Revenue ex. VAT & Discount - Yesterday"
+    label: "Yesterday"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -792,10 +793,11 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week {
-    label: "Gross Revenue ex. VAT & Discount - Last Week"
+    label: "Last Week"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -804,10 +806,11 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_before {
-    label: "Gross Revenue ex. VAT & Discount - Week Before Last"
+    label: "Week Before Last"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -816,10 +819,11 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days {
-    label: "Gross Revenue ex. VAT & Discount - Last 7 Days"
+    label: "Last 7 Days"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -828,10 +832,11 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_to_date {
-    label: "Gross Revenue ex. VAT & Discount - Week to Date"
+    label: "Week to Date"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -840,7 +845,7 @@ view: daily_sales {
   }
 
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year {
-    label: "Gross Revenue ex. VAT & Discount - Last Week LY"
+    label: "Last Week LY"
     type: number
     value_format_name: decimal_2
     sql: sum (
@@ -849,6 +854,7 @@ view: daily_sales {
       then ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount else null end
       )
        ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: sales_mix_last_7_days {
