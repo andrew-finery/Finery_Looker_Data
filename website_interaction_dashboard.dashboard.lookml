@@ -94,6 +94,7 @@
     top: 1
     left: 0
 
+
   - name: conversion_rate
     title: Conversion Rate (Site)
     model: finery_data
@@ -121,6 +122,7 @@
     height: 1
     top: 1
     left: 7
+
 
   - name: bounce_rate
     title: Bounce Rate
@@ -218,7 +220,9 @@
     type: table
     fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
       website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
-      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d]
+      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d,
+      visits.distinct_conversion_rate_yesterday, visits.distinct_conversion_rate_lw,
+      visits.distinct_conversion_rate_wow, visits.distinct_conversion_rate_l7d, visits.distinct_conversion_rate_l7d_percentage]
     sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
@@ -267,8 +271,14 @@
       visits.conversion_yesterday_wow: "%"
       website_page_views.count_total_page_views_lw: LW
       website_page_views.percentage_total_page_views_lw: "%"
-      website_page_views.percentage_total_page_views_l7d: L7D%
+      website_page_views.percentage_total_page_views_l7d: vs L7D
       visits.conversion_last_7_days_percentage: L7D%
+      visits.distinct_conversion_rate_yesterday: C.R
+      visits.distinct_conversion_rate_lw: LW
+      visits.distinct_conversion_rate_wow: "%"
+      visits.distinct_conversion_rate_l7d: L7D
+      visits.distinct_conversion_rate_l7d_percentage: vs L7D
+      website_page_views.count_total_page_views_l7d_average: L7D Avg
     width: 14
     height: 3
     top: 6
