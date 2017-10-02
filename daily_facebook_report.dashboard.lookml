@@ -217,7 +217,7 @@
 
 
   - name: cost_per_add_to_cart
-    title: Cost Per ATC
+    title: ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -268,7 +268,7 @@
 
 
   - name: audience_segment_facebook_spend
-    title: Buyers Audience - Facebook Spend
+    title: Buyers Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -325,7 +325,7 @@
 
 
   - name: cost_per_order_buyers
-    title: Buyers Audience - Cost Per Order
+    title: Buyers CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -378,7 +378,7 @@
 
 
   - name: cost_per_add_to_cart_buyers
-    title: Buyers Audience - Cost Per Add To Cart
+    title: Buyers ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -433,7 +433,7 @@
 
 
   - name: non_buyers_facebook_spend
-    title: Non Buyers Audience - Facebook Spend
+    title: Non Buyers Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -491,7 +491,7 @@
 
 
   - name: cost_per_order_non_buyers
-    title: Non Buyers Audience - Cost Per Order
+    title: Non Buyers CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -544,7 +544,7 @@
 
 
   - name: cost_per_add_to_cart_non_buyers
-    title: Non Buyers Audience - Cost Per Add To Cart
+    title: Non Buyers ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -598,7 +598,7 @@
 
 
   - name: facebook_spend_dpa_campaigns_by_type
-    title: DPA Type - Facebook Spend
+    title: DPA Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -655,7 +655,7 @@
 
 
   - name: cost_per_order_by_dpa_type
-    title: DPA Type - Cost Per Order
+    title: DPA CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -708,7 +708,7 @@
 
 
   - name: add_to_cart_cost_by_dpa
-    title: DPA Type - Add To Cart Cost
+    title: DPA ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -761,7 +761,7 @@
 
 
   - name: non_dpa_campaigns_facebook_spend
-    title: Non DPA Campaigns - Facebook Spend
+    title: Non DPA Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -819,7 +819,7 @@
 
 
   - name: cost_per_order_non_dpa_campaigns
-    title: Non DPA - Cost Per Order
+    title: Non DPA CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -873,7 +873,7 @@
 
 
   - name: add_to_cart_cost_non_dpa
-    title: Non DPA - Add To Cart Cost
+    title: Non DPA ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -927,7 +927,7 @@
 
 
   - name: facebook_advert_cost
-    title: Facebook Advert Cost
+    title: Advert Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -985,7 +985,7 @@
 
 
   - name: advert_cost_per_order
-    title: Advert Cost Per Order
+    title: Advert CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -1040,7 +1040,7 @@
     width: 9
 
   - name: add_to_cart_advert_cost
-    title: Advert Cost Per Add To Cart
+    title: Advert ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
