@@ -404,7 +404,7 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
+    height: 7
     top: 13
     left: 0
 
@@ -438,7 +438,7 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
+    height: 7
     top: 13
     left: 7
 
@@ -472,8 +472,8 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
-    top: 28
+    height: 7
+    top: 20
     left: 0
 
 
@@ -506,6 +506,6 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
-    top: 28
+    height: 7
+    top: 20
     left: 7
