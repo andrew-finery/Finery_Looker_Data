@@ -323,7 +323,7 @@ view: daily_sales {
   }
 
   measure: closing_stock_yesterday {
-    label: "Closing Stock Unit Yesterday"
+    label: "Closing Stock Units - Yesterday"
     type: sum
     sql: ${TABLE}.closing_stock ;;
     group_label: "Closing Stock Unit Measures"
