@@ -1,4 +1,4 @@
-view: profiles {
+view: ometria_profiles {
   sql_table_name: ometria_data.profiles ;;
 
   dimension: id {
