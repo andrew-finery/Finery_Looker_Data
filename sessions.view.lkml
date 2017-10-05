@@ -936,7 +936,7 @@ view: sessions {
     label: "Landing Page Visits Yest."
     type: number
     value_format_name: decimal_0
-    sql: count(distinct case when ${start_date} = current_date - 1 and ${landing_page_path} then ${visits_yesterday} else null end)::REAL ;;
+    sql: count(distinct case when ${start_date} = current_date - 1 and ${landing_page_path} then ${session_id} else null end)::REAL ;;
   }
 
   measure: count {
@@ -2817,6 +2817,14 @@ view: sessions {
     hidden: yes
   }
 
+  measure: sum_product_views_l14d {
+    label: "L14D"
+    type: sum
+    sql: case when ${start_date} between current_date - 14 and current_date - 1 then ${product_views} else 0 end ;;
+    group_label: "Product Views Reporting Measures"
+    hidden: yes
+  }
+
   measure: sum_products_add_to_cart_yesterday {
     label: "Actual"
     type: sum
@@ -2837,6 +2845,14 @@ view: sessions {
     label: "L7D"
     type: sum
     sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${products_added_to_cart} else 0 end ;;
+    group_label: "Product Count Added To Cart Reporting Measures"
+    hidden: yes
+  }
+
+  measure: sum_products_add_to_cart_l14d {
+    label: "L14D"
+    type: sum
+    sql: case when ${start_date} between current_date - 14 and current_date - 1 then ${products_added_to_cart} else 0 end ;;
     group_label: "Product Count Added To Cart Reporting Measures"
     hidden: yes
   }
@@ -2897,6 +2913,14 @@ view: sessions {
       ;;
   }
 
+  measure: product_add_to_cart_rate_l14d {
+    label: "L14D"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_add_to_cart_l14d}/NULLIF(${sum_product_views_l14d},0)::REAL ;;
+    group_label: "Product Add To Cart Rate Reporting Measures"
+  }
+
   measure: sum_products_purchased_yesterday {
     label: "Actual"
     type: sum
@@ -2917,6 +2941,14 @@ view: sessions {
     label: "L7D"
     type: sum
     sql: case when ${start_date} between current_date - 7 and current_date -1 then ${products_purchased} else 0 end ;;
+    group_label: "Products Purchased Yesterday Reporting Measures"
+    hidden: yes
+  }
+
+  measure: sum_products_purchased_l14d {
+    label: "L14D"
+    type: sum
+    sql: case when ${start_date} between current_date - 14 and current_date -1 then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Yesterday Reporting Measures"
     hidden: yes
   }
@@ -2967,6 +2999,124 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Product Conversion Rate Reporting Measures"
     sql: (${product_conversion_rate_yesterday} - ${product_conversion_rate_l7d})/NULLIF(${product_conversion_rate_l7d},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_conversion_rate_l14d {
+    label: "L14D"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_l14d}/NULLIF(${sum_product_views_l14d},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: number_of_converted_customers_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: decimal_0
+    sql: count(distinct case when ${start_date} = current_date - 1 and ${orders}>0 then ${session_id} else null end)::REAL  ;;
+    group_label: "Converted Customers"
+    hidden: yes
+  }
+
+  measure: number_of_converted_customers_lw {
+    label: "LW"
+    type: number
+    value_format_name: decimal_0
+    sql: count(distinct case when ${start_date} = current_date - 8 and ${orders}>0 then ${session_id} else null end)::REAL  ;;
+    group_label: "Converted Customers"
+    hidden: yes
+  }
+
+  measure: number_of_converted_customers_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: decimal_0
+    sql: count(distinct case when ${start_date} between current_date - 7 and current_date - 1  and ${orders}>0 then ${session_id} else null end)::REAL  ;;
+    group_label: "Converted Customers"
+    hidden: yes
+  }
+
+  measure: count_distinct_sessions_yesterday {
+    label: "Actual"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: case when ${start_date} = current_date - 1 then ${session_id} else null end ;;
+    group_label: "Count Distinct Sessions"
+    hidden: yes
+  }
+
+  measure: count_distinct_sessions_LW {
+    label: "LW"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: case when ${start_date} = current_date - 8 then ${session_id} else null end ;;
+    group_label: "Count Distinct Sessions"
+    hidden: yes
+  }
+
+  measure: count_distinct_sessions_l7d {
+    label: "L7D"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${session_id} else null end ;;
+    group_label: "Count Distinct Sessions"
+    hidden: yes
+  }
+
+  measure: distinct_conversion_rate_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: percent_1
+    sql: ${number_of_converted_customers_yesterday}/NULLIF(${count_distinct_sessions_yesterday},0) ;;
+    group_label: "Distinct Conversion Rate"
+  }
+
+  measure: distinct_conversion_rate_lw {
+    label: "LW"
+    type: number
+    value_format_name: percent_1
+    sql: ${number_of_converted_customers_lw}/NULLIF(${count_distinct_sessions_LW},0);;
+    group_label: "Distinct Conversion Rate"
+  }
+
+  measure: distinct_conversion_rate_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Distinct Conversion Rate"
+    sql: (${distinct_conversion_rate_yesterday} - ${distinct_conversion_rate_lw})/NULLIF(${distinct_conversion_rate_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: distinct_conversion_rate_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: percent_1
+    sql: ${number_of_converted_customers_l7d}/NULLIF(${count_distinct_sessions_l7d},0);;
+    group_label: "Distinct Conversion Rate"
+  }
+
+  measure:distinct_conversion_rate_l7d_percentage {
+    label: "vs L7D"
+    type: number
+    value_format_name: percent_0
+    group_label: "Distinct Conversion Rate"
+    sql: (${distinct_conversion_rate_yesterday} - ${distinct_conversion_rate_l7d})/NULLIF(${distinct_conversion_rate_l7d},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}

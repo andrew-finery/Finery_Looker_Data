@@ -67,7 +67,7 @@
     left: 7
 
   - name: add_to_cart
-    title: Add To Cart Rate
+    title: Add To Cart (Site)
     model: finery_data
     explore: sessions
     type: table
@@ -94,8 +94,9 @@
     top: 1
     left: 0
 
+
   - name: conversion_rate
-    title: Conversion Rate
+    title: Conversion Rate (Site)
     model: finery_data
     explore: sessions
     type: table
@@ -121,6 +122,7 @@
     height: 1
     top: 1
     left: 7
+
 
   - name: bounce_rate
     title: Bounce Rate
@@ -218,7 +220,9 @@
     type: table
     fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
       website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
-      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d]
+      website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d,
+      visits.distinct_conversion_rate_yesterday, visits.distinct_conversion_rate_lw,
+      visits.distinct_conversion_rate_wow, visits.distinct_conversion_rate_l7d, visits.distinct_conversion_rate_l7d_percentage]
     sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
@@ -267,8 +271,14 @@
       visits.conversion_yesterday_wow: "%"
       website_page_views.count_total_page_views_lw: LW
       website_page_views.percentage_total_page_views_lw: "%"
-      website_page_views.percentage_total_page_views_l7d: L7D%
+      website_page_views.percentage_total_page_views_l7d: vs L7D
       visits.conversion_last_7_days_percentage: L7D%
+      visits.distinct_conversion_rate_yesterday: C.R
+      visits.distinct_conversion_rate_lw: LW
+      visits.distinct_conversion_rate_wow: "%"
+      visits.distinct_conversion_rate_l7d: L7D
+      visits.distinct_conversion_rate_l7d_percentage: vs L7D
+      website_page_views.count_total_page_views_l7d_average: L7D Avg
     width: 14
     height: 3
     top: 6
@@ -333,7 +343,7 @@
     left: 0
 
   - name: add_to_cart_rate_by_session
-    title: Add To Cart Rate By Products Viewed
+    title: Add To Cart (Product)
     model: finery_data
     explore: sessions
     type: table
@@ -341,6 +351,7 @@
       sessions.product_add_to_cart_rate_wow, sessions.product_add_to_cart_rate_l7d,
       sessions.product_add_to_cart_rate_l7d_percentage]
     show_row_numbers: false
+    show_view_names: false
     limit: 500
     column_limit: 50
     width: 7
@@ -349,13 +360,14 @@
     left: 0
 
   - name: product_conversion_rate
-    title: Product Conversion Rate By Products Viewed
+    title: Conversion Rate (Product)
     model: finery_data
     explore: sessions
     type: table
     fields: [sessions.product_conversion_rate_yesterday, sessions.product_conversion_rate_lw,
       sessions.product_conversion_rate_wow, sessions.product_conversion_rate_l7d, sessions.product_conversion_l7d_percentage]
     show_row_numbers: false
+    show_view_names: false
     limit: 500
     column_limit: 50
     width: 7
@@ -368,7 +380,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -392,7 +404,7 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
+    height: 7
     top: 13
     left: 0
 
@@ -402,7 +414,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -426,7 +438,7 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
+    height: 7
     top: 13
     left: 7
 
@@ -436,7 +448,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -460,8 +472,8 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
-    top: 28
+    height: 7
+    top: 20
     left: 0
 
 
@@ -470,7 +482,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image, product_info_option_daily.sum_product_page_views,
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
       product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
       product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
       product_info_option_daily.sum_gross_revenue_gbp]
@@ -494,6 +506,6 @@
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
-    height: 15
-    top: 28
+    height: 7
+    top: 20
     left: 7

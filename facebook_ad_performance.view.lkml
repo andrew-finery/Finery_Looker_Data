@@ -873,19 +873,13 @@ view: facebook_api_ad_performance {
     sql: ${clicks_all} ;;
   }
 
-  measure: total_conversion_value_1_day_after_clicking {
-    type: sum
-    value_format_name: decimal_2
-    sql: ${conversion_value_1_day_after_clicking} ;;
-  }
-
-  measure: total_conversion_value_7_days_after_clicking {
+  measure: revenue_7_days_after_clicking {
     type: sum
     value_format_name: decimal_2
     sql: ${conversion_value_7_days_after_clicking} ;;
   }
 
-  measure: total_conversion_value_28_days_after_clicking {
+  measure: revenue_28_days_after_clicking {
     type: sum
     value_format_name: decimal_2
     sql: ${conversion_value_28_days_after_clicking} ;;
@@ -893,29 +887,23 @@ view: facebook_api_ad_performance {
 
   measure: 1d_average_basket {
     type: number
-    sql: ${total_conversion_value_1_day_after_clicking}/ NULLIF(${1d_total_action_purchase},0) ::REAL ;;
+    sql: ${revenue_1_day_after_clicking}/ NULLIF(${1d_total_action_purchase},0) ::REAL ;;
   }
 
   measure: 7d_average_basket {
     type: number
-    sql: ${total_conversion_value_7_days_after_clicking}/ NULLIF(${7d_total_action_purchase},0) ::REAL ;;
+    sql: ${revenue_7_days_after_clicking}/ NULLIF(${7d_total_action_purchase},0) ::REAL ;;
   }
 
   measure: 28d_average_basket {
     type: number
-    sql: ${total_conversion_value_28_days_after_clicking}/ NULLIF(${28d_total_action_purchase},0) ::REAL ;;
+    sql: ${revenue_28_days_after_clicking}/ NULLIF(${28d_total_action_purchase},0) ::REAL ;;
   }
 
   measure: total_spend {
     type: sum
     value_format_name: decimal_2
     sql: ${amount_spent_gbp} ;;
-  }
-
-  measure: total_spend_including_smartly_commission {
-    type: sum
-    value_format_name: decimal_2
-    sql: ${amount_spent_including_smartly_commission} ;;
   }
 
   measure: click_through_rate {
@@ -1198,6 +1186,13 @@ view: facebook_api_ad_performance {
 
 
   ######################################################## Reporting Measures ######################################################
+
+  measure: total_spend_including_smartly_commission {
+    type: sum
+    value_format_name: decimal_2
+    sql: ${amount_spent_including_smartly_commission} ;;
+    group_label: "Total Spend Reporting Measures"
+  }
 
   measure: total_spend_including_smartly_commission_yesterday {
     label: "Actual"
@@ -1568,6 +1563,190 @@ view: facebook_api_ad_performance {
         {% endif %}
         ;;
   }
+
+  measure: revenue_1_day_after_clicking {
+    type: sum
+    value_format_name: decimal_2
+    sql: ${conversion_value_1_day_after_clicking} ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: decimal_2
+    sql: case when ${calendar_date} = current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_l3d {
+    label: "L3D"
+    type: sum
+    value_format_name: decimal_2
+    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: decimal_2
+    sql: ${revenue_1_day_after_clicking_l3d}/3  ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue 1 Day Click Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_yesterday} - ${revenue_1_day_after_clicking_l3d_average})/NULLIF(${revenue_1_day_after_clicking_l3d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: revenue_1_day_after_clicking_l7d {
+    label: "L7D"
+    type: sum
+    value_format_name: decimal_2
+    sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: decimal_2
+    sql: ${revenue_1_day_after_clicking_l7d}/7  ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue 1 Day Click Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_yesterday} - ${revenue_1_day_after_clicking_l7d_average})/NULLIF(${revenue_1_day_after_clicking_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: revenue_1_day_after_clicking_lw {
+    label: "LW"
+    type: sum
+    value_format_name: decimal_2
+    sql: case when ${calendar_date} = current_date - 7 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue 1 Day Click Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_yesterday} - ${revenue_1_day_after_clicking_lw})/NULLIF(${revenue_1_day_after_clicking_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: return_on_investment_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_yesterday}-${total_spend_including_smartly_commission_yesterday})/NULLIF(${total_spend_including_smartly_commission_yesterday},0) ;;
+    group_label: "ROI Reporting Measures"
+  }
+
+  measure: return_on_investment_l3d_average {
+    label: "L3D Avg"
+    type: number
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_l3d_average}-${total_spend_including_smartly_commission_l3d_average})/NULLIF(${total_spend_including_smartly_commission_l3d_average},0) ;;
+    group_label: "ROI Reporting Measures"
+  }
+
+  measure: return_on_investment_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "ROI Reporting Measures"
+    sql: (${return_on_investment_yesterday} - ${return_on_investment_l3d_average})/NULLIF(${return_on_investment_l3d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: return_on_investment_l7d_average {
+    label: "L7D Avg"
+    type: number
+    value_format_name: decimal_0
+    sql: (${revenue_1_day_after_clicking_l7d_average}-${total_spend_including_smartly_commission_l7d_average})/NULLIF(${total_spend_including_smartly_commission_l7d_average},0) ;;
+    group_label: "ROI Reporting Measures"
+  }
+
+  measure: return_on_investment_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "ROI Reporting Measures"
+    sql: (${return_on_investment_yesterday} - ${return_on_investment_l7d_average})/NULLIF(${return_on_investment_l7d_average},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: return_on_investment_lw {
+    label: "LW"
+    type: number
+    value_format_name: decimal_0
+    group_label: "ROI Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_lw}-${total_spend_including_smartly_commission_lw})/NULLIF(${total_spend_including_smartly_commission_lw},0);;
+  }
+
+  measure: return_on_investment_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "ROI Reporting Measures"
+    sql: (${return_on_investment_yesterday} - ${return_on_investment_lw})/NULLIF(${return_on_investment_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
 
 
 

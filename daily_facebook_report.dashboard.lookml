@@ -1,5 +1,5 @@
-- dashboard: facebook_buyers_and_non_buyers
-  title: Facebook Buyers and Non Buyers
+- dashboard: daily_facebook_report
+  title: Daily Facebook Report
   layout: static
   tile_size: 100
 
@@ -8,7 +8,7 @@
   elements:
 
   - name: facebook_spend
-    title: Facebook Spend
+    title: Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -62,8 +62,111 @@
     width: 7
 
 
+  - name: revenue_1_day_after_clicking
+    title: Revenue
+    model: finery_data
+    explore: facebook_api_ad_performance
+    type: table
+    fields: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_lw,
+      facebook_api_ad_performance.revenue_1_day_after_clicking_wow, facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_average,
+      facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average,
+      facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_nonbuyers]
+    sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
+    limit: 500
+    column_limit: 50
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    top: 0
+    left: 7
+    height: 2
+    width: 7
+
+
+  - name: return_on_investment
+    title: ROI
+    model: finery_data
+    explore: facebook_api_ad_performance
+    type: table
+    fields: [facebook_api_ad_performance.return_on_investment_yesterday, facebook_api_ad_performance.return_on_investment_lw,
+      facebook_api_ad_performance.return_on_investment_wow, facebook_api_ad_performance.return_on_investment_l3d_average,
+      facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday, facebook_api_ad_performance.return_on_investment_l7d_average,
+      facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_nonbuyers]
+    sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
+    limit: 500
+    column_limit: 50
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    top: 2
+    left: 0
+    height: 2
+    width: 7
+
+
+
   - name: cost_per_order
-    title: Cost Per Order
+    title: CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -107,14 +210,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 0
+    top: 2
     left: 7
     height: 2
     width: 7
 
 
   - name: cost_per_add_to_cart
-    title: Cost Per Add To Cart
+    title: ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -158,14 +261,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 2
-    left: 3
+    top: 4
+    left: 0
     height: 2
     width: 7
 
 
   - name: audience_segment_facebook_spend
-    title: Buyers Audience - Facebook Spend
+    title: Buyers Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -216,13 +319,13 @@
     totals_color: "#808080"
     series_types: {}
     top: 4
-    left: 0
+    left: 7
     height: 2
     width: 7
 
 
   - name: cost_per_order_buyers
-    title: Buyers Audience - Cost Per Order
+    title: Buyers CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -268,14 +371,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 4
-    left: 7
+    top: 6
+    left: 0
     height: 2
     width: 7
 
 
   - name: cost_per_add_to_cart_buyers
-    title: Buyers Audience - Cost Per Add To Cart
+    title: Buyers ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -323,14 +426,14 @@
     totals_color: "#808080"
     series_types: {}
     top: 6
-    left: 3
+    left: 7
     height: 2
     width: 7
 
 
 
   - name: non_buyers_facebook_spend
-    title: Non Buyers Audience - Facebook Spend
+    title: Non Buyers Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -388,7 +491,7 @@
 
 
   - name: cost_per_order_non_buyers
-    title: Non Buyers Audience - Cost Per Order
+    title: Non Buyers CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -441,7 +544,7 @@
 
 
   - name: cost_per_add_to_cart_non_buyers
-    title: Non Buyers Audience - Cost Per Add To Cart
+    title: Non Buyers ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -495,7 +598,7 @@
 
 
   - name: facebook_spend_dpa_campaigns_by_type
-    title: DPA Type - Facebook Spend
+    title: DPA Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -552,7 +655,7 @@
 
 
   - name: cost_per_order_by_dpa_type
-    title: DPA Type - Cost Per Order
+    title: DPA CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -605,7 +708,7 @@
 
 
   - name: add_to_cart_cost_by_dpa
-    title: DPA Type - Add To Cart Cost
+    title: DPA ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -658,7 +761,7 @@
 
 
   - name: non_dpa_campaigns_facebook_spend
-    title: Non DPA Campaigns - Facebook Spend
+    title: Non DPA Spend
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -716,7 +819,7 @@
 
 
   - name: cost_per_order_non_dpa_campaigns
-    title: Non DPA - Cost Per Order
+    title: Non DPA CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -770,7 +873,7 @@
 
 
   - name: add_to_cart_cost_non_dpa
-    title: Non DPA - Add To Cart Cost
+    title: Non DPA ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -824,7 +927,7 @@
 
 
   - name: facebook_advert_cost
-    title: Facebook Advert Cost
+    title: Advert Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -882,7 +985,7 @@
 
 
   - name: advert_cost_per_order
-    title: Advert Cost Per Order
+    title: Advert CPO
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
@@ -937,7 +1040,7 @@
     width: 9
 
   - name: add_to_cart_advert_cost
-    title: Advert Cost Per Add To Cart
+    title: Advert ATC Cost
     model: finery_data
     explore: facebook_api_ad_performance
     type: table

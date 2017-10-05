@@ -13,6 +13,11 @@ view: spree_users {
     sql: ${user_id} is not null ;;
   }
 
+  dimension: has_store_credit {
+    type: yesno
+    sql: coalesce(${}credit_balance_gbp},0)>0 ;;
+  }
+
   dimension: email_address {
     sql: ${TABLE}.email_address ;;
   }
@@ -49,37 +54,23 @@ view: spree_users {
     sql: ${TABLE}.role ;;
   }
 
-  dimension: newsletter_opt_in {
+  dimension: has_sent_referral {
     type: yesno
-    sql: ${TABLE}.newsletter_opt_in = 1 ;;
-    hidden: yes
+    sql: coalesce(${TABLE}.referrals_sent,0)>0 ;;
   }
 
-  dimension: sign_in_count {
-    sql: ${TABLE}.sign_in_count ;;
-    hidden: yes
+  dimension: credit_currency {
+    sql: ${TABLE}.credit_currency ;;
   }
 
-  dimension_group: birth_date {
-    type: time
-    timeframes: [date, month, year]
-    sql: ${TABLE}.birth_date ;;
-    hidden: yes
+  dimension: credit_balance {
+    value_format_name: decimal_2
+    sql: ${TABLE}.credit_balance ;;
   }
 
-  dimension: age {
-    type: number
-    sql: case when floor((current_date - ${birth_date_date})/ 365) > 100 then null
-           when floor((current_date - ${birth_date_date})/ 365) < 10 then null
-          else floor((current_date - ${birth_date_date})/ 365) end
-       ;;
-  }
-
-  dimension_group: last_sign_in_at {
-    type: time
-    timeframes: [time, date, hour, week, month]
-    sql: ${TABLE}.last_sign_in_at ;;
-    hidden: yes
+  dimension: credit_balance_gbp {
+    value_format_name: decimal_2
+    sql: ${TABLE}.credit_balance_gbp ;;
   }
 
   ##############################################################################################################################################################################
@@ -91,8 +82,21 @@ view: spree_users {
     sql: ${customer_id} ;;
   }
 
-  measure: sum_referrals_sent {
+  measure: referrals_sent {
     type: sum
     sql: ${TABLE}.referrals_sent ;;
   }
+
+  measure: sum_credit_balance_gbp {
+    value_format_name: decimal_2
+    type:  sum
+    sql: ${TABLE}.credit_balance_gbp ;;
+  }
+
+  measure: sum_credit_balance {
+    value_format_name: decimal_2
+    type:  sum
+    sql: ${TABLE}.credit_balance ;;
+  }
+
 }

@@ -140,12 +140,14 @@ view: daily_sales {
     label: "Gross Units Sold"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: sum_items_sold_as_percent {
     label: "Units Sold Mix"
     type: percent_of_total
     sql: ${sum_items_sold} ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: sum_items_returned {
@@ -164,6 +166,7 @@ view: daily_sales {
     label: "Net Units Sold"
     type: sum
     sql: ${TABLE}.items_sold_after_returns ;;
+    group_label: "Units Sold Measures"
   }
 
   measure: return_rate {
@@ -208,6 +211,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: gross_item_revenue_gbp_ex_discount {
@@ -215,12 +219,14 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
   }
 
   measure: sales_mix {
     label: "Revenue Mix"
     type: percent_of_total
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: net_item_revenue_gbp {
@@ -265,6 +271,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: ${gross_item_revenue_gbp}/NULLIF(${sum_items_sold},0)::REAL ;;
+    group_label: "Average Selling Price Measures"
   }
 
   measure: asp_ex_vat {
@@ -272,6 +279,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: ${gross_item_revenue_gbp_ex_vat}/NULLIF(${sum_items_sold},0)::REAL ;;
+    group_label: "Average Selling Price Measures"
   }
 
   measure: asp_ex_vat_ex_discount {
@@ -279,6 +287,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: ${gross_item_revenue_gbp_ex_vat_ex_discount}/NULLIF(${sum_items_sold},0)::REAL ;;
+    group_label: "Average Selling Price Measures"
   }
 
   # Margin Measures
@@ -310,12 +319,14 @@ view: daily_sales {
     label: "Closing Stock Units"
     type: sum
     sql: ${TABLE}.closing_stock ;;
+    group_label: "Closing Stock Unit Measures"
   }
 
   measure: closing_stock_yesterday {
     label: "Closing Stock Units - Yesterday"
     type: sum
     sql: ${TABLE}.closing_stock ;;
+    group_label: "Closing Stock Unit Measures"
 
     filters: {
       field: calendar_date_date
@@ -324,9 +335,10 @@ view: daily_sales {
   }
 
   measure: closing_stock_last_week {
-    label: "Closing Stock Units - Last Week"
+    label: "Closing Stock Unit Last Week"
     type: sum
     sql: ${TABLE}.closing_stock ;;
+    group_label: "Closing Stock Unit Measures"
 
     filters: {
       field: calendar_date_date
@@ -340,9 +352,10 @@ view: daily_sales {
   }
 
   measure: closing_stock_week_before_last {
-    label: "Closing Stock Units - 2 Weeks Ago"
+    label: "Closing Stock Unit 2 Weeks Ago"
     type: sum
     sql: ${TABLE}.closing_stock ;;
+    group_label: "Closing Stock Unit Measures"
 
     filters: {
       field: calendar_date_date
@@ -356,9 +369,10 @@ view: daily_sales {
   }
 
   measure: closing_stock_end_of_week {
-    label: "Closing Stock Units - End of Week"
+    label: "Closing Stock Unit End of Week"
     type: sum
     sql: ${TABLE}.closing_stock ;;
+    group_label: "Closing Stock Unit Measures"
 
     filters: {
       field: calendar_date_day_of_week_index
@@ -367,7 +381,7 @@ view: daily_sales {
   }
 
   measure: closing_stock_end_of_week_last_year {
-    label: "Closing Stock Units - Last Week - LY"
+    label: "Closing Stock Unit Last Week - LY"
     type: number
     sql: sum (
       case when ${calendar_date_day_of_week_index} = 6
@@ -376,7 +390,16 @@ view: daily_sales {
       then ${TABLE}.closing_stock else 0 end
       )
        ;;
+    group_label: "Closing Stock Unit Measures"
     value_format: "#,##0"
+  }
+
+  measure: closing_stock_yesterday_yoy {
+    label: "Closing Stock Unit Last Week - YoY"
+    type: number
+    value_format_name: percent_2
+    sql: (${closing_stock_last_week} - ${closing_stock_end_of_week_last_year})/NULLIF(${closing_stock_end_of_week_last_year},0)::REAL ;;
+    group_label: "Closing Stock Unit Measures"
   }
 
   # stock value @ cost
@@ -386,6 +409,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    group_label: "Closing Stock Value @ Cost Measures"
   }
 
   measure: closing_stock_value_cost_yesterday {
@@ -393,6 +417,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
       field: calendar_date_date
@@ -405,6 +430,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
       field: calendar_date_date
@@ -422,6 +448,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
       field: calendar_date_date
@@ -439,6 +466,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
       field: calendar_date_day_of_week_index
@@ -456,6 +484,7 @@ view: daily_sales {
       then ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) else 0 end
       )
        ;;
+    group_label: "Closing Stock Value @ Cost Measures"
     value_format: "#,##0"
   }
 
@@ -466,6 +495,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: CASE WHEN ${count_on_hand} = 0 THEN 0 ELSE (${count_on_hand} * ${price}) END ;;
+    group_label: "Closing Stock Value @ Retail Measures"
   }
 
   measure: closing_stock_value_retail_yesterday {
@@ -473,6 +503,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock * ${price} ;;
+    group_label: "Closing Stock Value @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -484,6 +515,7 @@ view: daily_sales {
     label: "Stock Retail Value Mix - Yesterday"
     type: percent_of_total
     sql: ${closing_stock_value_retail_yesterday} ;;
+    group_label: "Clsoing Stock Value @ Retail Measures"
     value_format: "#,##0.00"
   }
 
@@ -492,6 +524,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock * ${price} ;;
+    group_label: "Closing Stock Value @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -509,6 +542,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock * ${price} ;;
+    group_label: "Closing Stock Value @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -526,6 +560,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock * ${price} ;;
+    group_label: "Closing Stock Value @ Retail Measures"
 
     filters: {
       field: calendar_date_day_of_week_index
@@ -543,6 +578,7 @@ view: daily_sales {
       then ${TABLE}.closing_stock * ${price} else 0 end
       )
        ;;
+    group_label: "Closing Stock Value @ Retail Measures"
     value_format: "#,##0"
   }
 
@@ -553,13 +589,15 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*${original_price} ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
   }
 
   measure: closing_stock_value_retail_yesterday_full_price {
-    label: "Closing Stock Value @ Retail - Yesterday (Full Price)"
+    label: "Closing Stock Value Full - Yesterday (Full Price)"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*${original_price} ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -568,10 +606,11 @@ view: daily_sales {
   }
 
   measure: closing_stock_value_retail_last_week_full_price {
-    label: "Closing Stock Value @ Retail - Last Week (Full Price)"
+    label: "Closing Stock Value Full - Last Week (Full Price)"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*${original_price} ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -585,10 +624,11 @@ view: daily_sales {
   }
 
   measure: closing_stock_value_retail_week_before_last_full_price {
-    label: "Closing Stock Value @ Retail - 2 Weeks Ago (Full Price)"
+    label: "Closing Stock Value Full - 2 Weeks Ago (Full Price)"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*${original_price} ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
 
     filters: {
       field: calendar_date_date
@@ -602,10 +642,11 @@ view: daily_sales {
   }
 
   measure: closing_stock_value_retail_end_of_week_full_price {
-    label: "Closing Stock Value @ Retail - End of Week (Full Price)"
+    label: "Closing Stock Value Full - End of Week (Full Price)"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.closing_stock*${original_price} ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
 
     filters: {
       field: calendar_date_day_of_week_index
@@ -614,7 +655,7 @@ view: daily_sales {
   }
 
   measure: closing_stock_value_retail_end_of_week_full_price_last_year {
-    label: "Closing Stock Value @ Retail - End of Week (Full Price) - LY"
+    label: "Closing Stock Value Full - End of Week (Full Price) - LY"
     type: number
     sql: sum (
       case when ${calendar_date_day_of_week_index} = 6
@@ -623,15 +664,17 @@ view: daily_sales {
       then ${TABLE}.closing_stock*${original_price} else 0 end
       )
        ;;
+    group_label: "Closing Stock Value Full Price @ Retail Measures"
     value_format: "#,##0"
   }
 
   ### Number of sku's in stock measures
 
   measure: skus_in_stock_last_week {
-    label: "Sizes in Stock - Last Week"
+    label: "Sizes In Stock - Last Week"
     type: count_distinct
     sql: ${sku} ;;
+    group_label: "Sizes In Stock Measures"
 
     filters: {
       field: count_on_hand
@@ -650,9 +693,10 @@ view: daily_sales {
   }
 
   measure: skus_in_stock_week_before {
-    label: "Sizes in Stock - 2 Weeks Ago"
+    label: "Sizes In Stock - 2 Weeks Ago"
     type: count_distinct
     sql: ${sku} ;;
+    group_label: "Sizes In Stock Measures"
 
     filters: {
       field: count_on_hand
@@ -671,9 +715,10 @@ view: daily_sales {
   }
 
   measure: skus_in_stock_yesterday {
-    label: "Sizes in Stock - Yesterday"
+    label: "Sizes In Stock - Yesterday"
     type: count_distinct
     sql: ${sku} ;;
+    group_label: "Sizes In Stock Measures"
 
     filters: {
       field: count_on_hand
@@ -687,7 +732,7 @@ view: daily_sales {
   }
 
   measure: skus_in_stock_last_year {
-    label: "Sizes in Stock - Last Year"
+    label: "Sizes In Stock - Last Year"
     type: number
     sql: count (distinct
       case when ${calendar_date_day_of_week_index} = MOD(EXTRACT(DOW FROM current_date - 1)::integer - 1 + 7, 7)
@@ -696,7 +741,20 @@ view: daily_sales {
       then ${sku} else null end
       )
        ;;
+    group_label: "Sizes In Stock Measures"
     value_format: "#,##0"
+  }
+
+  measure: variants_online {
+    type: count_distinct
+    sql: ${sku} ;;
+    group_label: "Sizes In Stock Measures"
+
+
+    filters: {
+      field: option_info.online_flag
+      value: "Yes"
+    }
   }
 
   ####################### Weekly/Monthly Measures
@@ -705,6 +763,7 @@ view: daily_sales {
     label: "Units Sold - Yesterday"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
@@ -716,6 +775,7 @@ view: daily_sales {
     label: "Units Sold - Same Day Last Week"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
@@ -727,6 +787,7 @@ view: daily_sales {
     label: "Units Sold - Last Week"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
@@ -738,6 +799,7 @@ view: daily_sales {
     label: "Units Sold - Week Before Last"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
@@ -749,6 +811,7 @@ view: daily_sales {
     label: "Units Sold - Last 7 Days"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
@@ -760,11 +823,60 @@ view: daily_sales {
     label: "Units Sold - Week to Date"
     type: sum
     sql: ${TABLE}.items_sold ;;
+    group_label: "Units Sold Measures"
 
     filters: {
       field: calendar_date_date
       value: "this week"
     }
+  }
+
+  measure: units_sold_wow {
+    label: "Units Sold - Last Week - WoW"
+    type: number
+    value_format_name: percent_2
+    group_label: "Units Sold Measures"
+    sql: (${sum_items_sold_last_week} - ${sum_items_sold_week_before})/NULLIF(${sum_items_sold_week_before},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: units_sold_yest_vs_lw {
+    label: "Units Sold - Yesterday vs Last Week"
+    type: number
+    value_format_name: percent_2
+    group_label: "Units Sold Measures"
+    sql: (${sum_items_sold_yesterday} - ${sum_items_sold_same_day_last_week})/NULLIF(${sum_items_sold_same_day_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: units_sold_yoy {
+    label: "Units Sold - YoY"
+    type: number
+    value_format_name: percent_2
+    group_label: "Units Sold Measures"
+    sql: (${sum_items_sold_last_week} - ${sum_items_sold_last_week_last_year})/NULLIF(${sum_items_sold_last_week_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: sum_items_sold_last_week_last_year {
@@ -776,6 +888,7 @@ view: daily_sales {
       then ${TABLE}.items_sold else null end
       )
        ;;
+    group_label: "Units Sold Measures"
     value_format: "#,##0"
   }
 
@@ -784,6 +897,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -796,6 +910,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -803,11 +918,28 @@ view: daily_sales {
     }
   }
 
+  measure: gross_item_revenue_gbp_ex_vat_ex_discount_wow {
+    label: "Gross Revenue ex. VAT & Discount - Last Week - WoW"
+    type: number
+    value_format_name: percent_2
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
+    sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: gross_item_revenue_gbp_ex_vat_ex_discount_week_before {
     label: "Gross Revenue ex. VAT & Discount - Week Before Last"
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -820,6 +952,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -832,6 +965,7 @@ view: daily_sales {
     type: sum
     value_format_name: decimal_2
     sql: ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
 
     filters: {
       field: calendar_date_date
@@ -849,103 +983,14 @@ view: daily_sales {
       then ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount else null end
       )
        ;;
-  }
-
-  measure: sales_mix_last_7_days {
-    label: "Sales Mix - Last 7 Days"
-    type: percent_of_total
-    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days} ;;
-  }
-
-  measure: weeks_cover_yesterday {
-    label: "Weeks Cover - Yesterday"
-    type: number
-    value_format_name: decimal_2
-    sql: ${closing_stock_yesterday}/NULLIF(${sum_items_sold_last_7_days},0)::REAL ;;
-  }
-
-  measure: weeks_cover_last_week {
-    label: "Weeks Cover - Last Week"
-    type: number
-    value_format_name: decimal_2
-    sql: ${closing_stock_last_week}/NULLIF(${sum_items_sold_last_week},0)::REAL ;;
-  }
-
-  measure: weeks_cover_week_before_last {
-    label: "Weeks Cover - Week Before Last"
-    type: number
-    value_format_name: decimal_2
-    sql: ${closing_stock_week_before_last}/NULLIF(${sum_items_sold_week_before},0)::REAL ;;
-  }
-
-  ########################################################################################################################
-  ########################################## REPORTING MEASURES ##########################################################
-  ########################################################################################################################
-
-  measure: units_sold_wow {
-    label: "Units Sold Last Week - WoW"
-    type: number
-    value_format_name: percent_2
-    sql: (${sum_items_sold_last_week} - ${sum_items_sold_week_before})/NULLIF(${sum_items_sold_week_before},0)::REAL ;;
-    html: {% if value < 0 %}
-      <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
-      <font color="#3CB371"> {{ rendered_value }} </font>
-      {% else %}
-      <font color="#000000"> {{ rendered_value }} </font>
-      {% endif %}
-      ;;
-  }
-
-  measure: units_sold_yest_vs_lw {
-    label: "Units Sold - Yesterday vs Last Week"
-    type: number
-    value_format_name: percent_2
-    sql: (${sum_items_sold_yesterday} - ${sum_items_sold_same_day_last_week})/NULLIF(${sum_items_sold_same_day_last_week},0)::REAL ;;
-    html: {% if value < 0 %}
-      <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
-      <font color="#3CB371"> {{ rendered_value }} </font>
-      {% else %}
-      <font color="#000000"> {{ rendered_value }} </font>
-      {% endif %}
-      ;;
-  }
-
-  measure: gross_revenue_wow {
-    label: "Gross Revenue Last Week - WoW"
-    type: number
-    value_format_name: percent_2
-    sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_week_before},0)::REAL ;;
-    html: {% if value < 0 %}
-      <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
-      <font color="#3CB371"> {{ rendered_value }} </font>
-      {% else %}
-      <font color="#000000"> {{ rendered_value }} </font>
-      {% endif %}
-      ;;
-  }
-
-  measure: units_sold_yoy {
-    label: "Units Sold Last Week - YoY"
-    type: number
-    value_format_name: percent_2
-    sql: (${sum_items_sold_last_week} - ${sum_items_sold_last_week_last_year})/NULLIF(${sum_items_sold_last_week_last_year},0)::REAL ;;
-    html: {% if value < 0 %}
-      <font color="#D77070"> {{ rendered_value }} </font>
-      {% elsif value > 0 %}
-      <font color="#3CB371"> {{ rendered_value }} </font>
-      {% else %}
-      <font color="#000000"> {{ rendered_value }} </font>
-      {% endif %}
-      ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
   }
 
   measure: gross_revenue_yoy {
-    label: "Revenue Last Week - YoY"
+    label: "Gross Revenue ex. VAT & Discount - Last Week - YoY"
     type: number
     value_format_name: percent_2
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
     sql: (${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year})/NULLIF(${gross_item_revenue_gbp_ex_vat_ex_discount_last_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -957,16 +1002,124 @@ view: daily_sales {
       ;;
   }
 
-  measure: closing_stock_yesterday_yoy {
-    label: "Closing Stock Units Last Week - YoY"
-    type: number
-    value_format_name: percent_2
-    sql: (${closing_stock_last_week} - ${closing_stock_end_of_week_last_year})/NULLIF(${closing_stock_end_of_week_last_year},0)::REAL ;;
+  measure: gross_item_revenue_gbp_ex_discount_yesterday {
+    label: "Gross Revenue ex. Discount - Yesterday"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "1 day ago for 1 day"
+    }
   }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_week {
+    label: "Gross Revenue ex. Discount - Last Week"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_week_before {
+    label: "Gross Revenue ex. Discount - Week Before Last"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_7_days {
+    label: "Gross Revenue ex. Discount - Last 7 Days"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "7 days ago for 7 days"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_week_to_date {
+    label: "Gross Revenue ex. Discount - Week to Date"
+    type: sum
+    value_format_name: decimal_2
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+
+    filters: {
+      field: calendar_date_date
+      value: "this week"
+    }
+  }
+
+  measure: gross_item_revenue_gbp_ex_discount_last_week_last_year {
+    label: "Gross Revenue ex. Discount - Last Week LY"
+    type: number
+    value_format_name: decimal_2
+    sql: sum (
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${calendar_date_date} between current_date - 400 and current_date - 300
+      then ${TABLE}.gross_revenue_gbp_ex_discount else null end
+      )
+       ;;
+    group_label: "Gross Revenue ex. Discount Measures"
+  }
+
+  measure: sales_mix_last_7_days {
+    label: "Sales Mix - Last 7 Days"
+    type: percent_of_total
+    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_7_days} ;;
+    group_label: "Gross Revenue ex. VAT & Discount Measures"
+  }
+
+  measure: weeks_cover_yesterday {
+    label: "Weeks Cover - Yesterday"
+    type: number
+    value_format_name: decimal_2
+    sql: ${closing_stock_yesterday}/NULLIF(${sum_items_sold_last_7_days},0)::REAL ;;
+    group_label: "Weeks Cover Measures"
+  }
+
+  measure: weeks_cover_last_week {
+    label: "Weeks Cover - Last Week"
+    type: number
+    value_format_name: decimal_2
+    sql: ${closing_stock_last_week}/NULLIF(${sum_items_sold_last_week},0)::REAL ;;
+    group_label: "Weeks Cover Measures"
+  }
+
+  measure: weeks_cover_week_before_last {
+    label: "Weeks Cover - Week Before Last"
+    type: number
+    value_format_name: decimal_2
+    sql: ${closing_stock_week_before_last}/NULLIF(${sum_items_sold_week_before},0)::REAL ;;
+    group_label: "Weeks Cover Measures"
+  }
+
+  ########################################################################################################################
+  ########################################## REPORTING MEASURES ##########################################################
+  ########################################################################################################################
+
 
   measure: units_sold_l4w {
     type: sum
     sql: ${TABLE}.items_sold ;;
+
 
     filters: {
       field: calendar_date_date
@@ -1177,13 +1330,5 @@ view: daily_sales {
     hidden: yes
   }
 
-  measure: variants_online {
-    type: count_distinct
-    sql: ${sku} ;;
 
-    filters: {
-      field: option_info.online_flag
-      value: "Yes"
-    }
-  }
 }
