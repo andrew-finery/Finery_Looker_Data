@@ -604,5 +604,30 @@ dimension: ean {
     }
   }
 
+  measure: stock_units_last_week_end_of_week {
+    type: sum
+    sql: ${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: stock_units_week_before_last_end_of_week {
+    type: sum
+    sql: ${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
 
 }
