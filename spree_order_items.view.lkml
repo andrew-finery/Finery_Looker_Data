@@ -824,6 +824,97 @@ view: spree_order_items {
     }
   }
 
+
+
+  measure: gross_rev_ex_discount_tw {
+    label: "TW"
+    type: sum
+    sql:  ${gross_item_revenue_ex_voucher_discount_gbp} ;;
+    group_label: "Gross Revenue ex Discount & VAT Measures"
+    value_format_name: decimal_2
+
+    filters: {
+      field: order_time_date
+      value: "last week"
+    }
+  }
+
+  measure: gross_rev_ex_discount_lw {
+    label: "LW"
+    type: sum
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp} ;;
+    group_label: "Gross Revenue ex Discount Measures"
+    value_format_name: decimal_2
+
+    filters: {
+      field: order_time_date
+      value: "2 weeks ago"
+    }
+  }
+
+  measure: gross_rev_ex_discount_tw_ly {
+    label: "TW - LY"
+    type: number
+    value_format_name: decimal_2
+    group_label: "Gross Revenue ex Discount Measures"
+    sql: sum (
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      and ${order_time_date} between current_date - 400 and current_date - 300
+      then ${gross_item_revenue_ex_voucher_discount_gbp} else null end
+      )
+      ;;
+  }
+
+
+  measure: gross_rev_ex_discount_l4w {
+    label: "L4W"
+    type: sum
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp} ;;
+    group_label: "Gross Revenue ex Discount Measures"
+    value_format_name: decimal_2
+
+    filters: {
+      field: order_time_date
+      value: "5 weeks ago for 4 weeks"
+    }
+  }
+
+  measure: gross_rev_ex_discount_mtd {
+    label: "MTD"
+    type: sum
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp} ;;
+    group_label: "Gross Revenue ex Discount Measures"
+    value_format_name: decimal_2
+
+    filters: {
+      field: order_time_date
+      value: "this month"
+    }
+
+    filters: {
+      field: order_time_time
+      value: "before this week"
+    }
+  }
+
+  measure: gross_rev_ex_discount_std {
+    label: "STD"
+    type: sum
+    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    group_label: "Gross Revenue ex Discount Measures"
+    value_format_name: decimal_2
+
+    filters: {
+      field: order_time_date
+      value: "after 2015/02/01"
+    }
+
+    filters: {
+      field: order_time_time
+      value: "before this week"
+    }
+  }
+
   # Profit
 
   measure: pc1_profit_tw {
