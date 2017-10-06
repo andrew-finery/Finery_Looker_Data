@@ -15,7 +15,7 @@ view: spree_users {
 
   dimension: has_store_credit {
     type: yesno
-    sql: coalesce(${}credit_balance_gbp},0)>0 ;;
+    sql: coalesce(${credit_balance_gbp},0)>0 ;;
   }
 
   dimension: email_address {
