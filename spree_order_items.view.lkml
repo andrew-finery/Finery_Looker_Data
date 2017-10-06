@@ -830,7 +830,7 @@ view: spree_order_items {
     label: "TW"
     type: sum
     sql:  ${gross_item_revenue_ex_voucher_discount_gbp} ;;
-    group_label: "Gross Revenue ex Discount & VAT Measures"
+    group_label: "Gross Revenue ex Discount Measures"
     value_format_name: decimal_2
 
     filters: {
