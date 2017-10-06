@@ -900,7 +900,7 @@ view: spree_order_items {
   measure: gross_rev_ex_discount_std {
     label: "STD"
     type: sum
-    sql: ${gross_item_revenue_ex_discount_ex_vat_gbp} ;;
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp} ;;
     group_label: "Gross Revenue ex Discount Measures"
     value_format_name: decimal_2
 
