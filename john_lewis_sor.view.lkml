@@ -606,6 +606,7 @@ dimension: ean {
 
   measure: stock_units_last_week_end_of_week {
     type: sum
+    hidden: yes
     sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_date
@@ -619,6 +620,7 @@ dimension: ean {
 
   measure: stock_units_week_before_last_end_of_week {
     type: sum
+    hidden: yes
     sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_date
