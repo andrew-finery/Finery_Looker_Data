@@ -147,11 +147,13 @@ dimension: ean {
 
   measure: stock_cost {
       type: sum
+      value_format_name: pounds
       sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.derived_closing_stock;;
     }
 
   measure: stock_retail {
       type: sum
+      value_format_name: pounds
       sql: ${price}*${TABLE}.derived_closing_stock;;
     }
 
