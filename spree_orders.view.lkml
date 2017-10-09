@@ -170,6 +170,19 @@ view: spree_orders {
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id ;;
   }
 
+
+  dimension: days_since_previous_order {
+    type:  number
+    sql: date(${TABLE}.completed_at) - date(${TABLE}.previous_order_tstamp) ;;
+  }
+
+  dimension: customer_bucket_when_placing_order {
+    sql: case when ${days_since_previous_order} is null then '1. New Customer'
+         when ${days_since_previous_order} between 0 and 182 then '2. Active Customer'
+         when ${days_since_previous_order} between 183 and 365 then '3. At Risk Customer'
+         ELSE '4. Lapsed Customer' end ;;
+  }
+
   dimension: multiple_size_flag {
     type: yesno
     sql: ${TABLE}.number_of_skus != ${TABLE}.number_of_products ;;
