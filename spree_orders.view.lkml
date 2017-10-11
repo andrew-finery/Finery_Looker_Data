@@ -301,11 +301,19 @@ view: spree_orders {
   }
 
   dimension: shipping_total {
+    label: "Shipping Revenue (Local Currency)"
     type: number
     value_format_name: decimal_2
     sql: ${TABLE}.shipment_total ;;
-    hidden: yes
   }
+
+  dimension: gross_revenue_local_currency {
+    label: "Gross Revenue (Local Currency)"
+    type: number
+    value_format_name: decimal_2
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) ;;
+  }
+
 
   dimension: discount {
     type: number
