@@ -1206,7 +1206,7 @@ view: facebook_api_ad_performance {
     label: "L3D"
     type: sum
     value_format_name:gbp
-    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
   }
@@ -1239,7 +1239,7 @@ view: facebook_api_ad_performance {
     label: "L7D"
     type: sum
     value_format_name: gbp
-    sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 7 and current_date - 1 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
     hidden: yes
   }
@@ -1272,7 +1272,7 @@ view: facebook_api_ad_performance {
     label: "LW"
     type: sum
     value_format_name: gbp
-    sql: case when ${calendar_date} = current_date - 7 then ${amount_spent_including_smartly_commission} else 0 end ;;
+    sql: case when ${calendar_date} = current_date - 8 then ${amount_spent_including_smartly_commission} else 0 end ;;
     group_label: "Total Spend Reporting Measures"
   }
 
@@ -1305,7 +1305,7 @@ view: facebook_api_ad_performance {
     label: "L3D"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1323,7 +1323,7 @@ view: facebook_api_ad_performance {
     label: "L7D"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 7 and current_date -1 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1341,7 +1341,7 @@ view: facebook_api_ad_performance {
     label: "LW"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} = current_date - 7 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} = current_date - 8 then cast(coalesce(nullif(${add_to_basket_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Total Add To Cart Reporting Measures"
     hidden: yes
   }
@@ -1442,7 +1442,7 @@ view: facebook_api_ad_performance {
     label: "L3D"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
   }
@@ -1460,7 +1460,7 @@ view: facebook_api_ad_performance {
     label: "L7D"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} between current_date - 8 and current_date -1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} between current_date - 7 and current_date -1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
   }
@@ -1478,7 +1478,7 @@ view: facebook_api_ad_performance {
     label: "LW"
     type: sum
     value_format_name: decimal_0
-    sql: case when ${calendar_date} = current_date - 7 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    sql: case when ${calendar_date} = current_date - 8 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
     hidden: yes
   }
@@ -1583,7 +1583,7 @@ view: facebook_api_ad_performance {
     label: "L3D"
     type: sum
     value_format_name: decimal_2
-    sql: case when ${calendar_date} between current_date - 4 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
 
@@ -1615,7 +1615,7 @@ view: facebook_api_ad_performance {
     label: "L7D"
     type: sum
     value_format_name: decimal_2
-    sql: case when ${calendar_date} between current_date - 8 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    sql: case when ${calendar_date} between current_date - 7 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
 
@@ -1647,7 +1647,7 @@ view: facebook_api_ad_performance {
     label: "LW"
     type: sum
     value_format_name: decimal_2
-    sql: case when ${calendar_date} = current_date - 7 then ${conversion_value_1_day_after_clicking} else 0 end;;
+    sql: case when ${calendar_date} = current_date - 8 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
 
