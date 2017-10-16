@@ -688,6 +688,10 @@ view: product_info_options {
     sql: ${TABLE}.related_products_string ;;
   }
 
+  dimension: facebook_landing_page_url {
+    sql: ${TABLE}.facebook_landing_page_url ;;
+  }
+
   dimension: size_availability {
     type: number
     value_format_name: percent_0

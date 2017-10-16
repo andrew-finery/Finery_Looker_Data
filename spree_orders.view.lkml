@@ -1,6 +1,25 @@
 view: spree_orders {
   derived_table: {
-    sql: select * from sales.orders where reason_to_strip_out is null ;;
+    sql:  with orders as (select * from sales.orders where reason_to_strip_out is null)
+
+          , step_1 as (
+          select
+          a.email_address,
+          first_value(b.order_id) over (partition by a.email_address order by b.completed_at desc rows between unbounded preceding and unbounded following) as vip_qual_order
+          from sales.users a
+          left join orders b on a.email_address = b.blended_email
+          where a.role = 'vip'
+          and vip_order_flag= 0
+          )
+
+          , step_2 as (
+          select email_address as e_add, vip_qual_order from step_1 group by 1,2
+          )
+
+          select * from orders a
+          left join step_2 b
+          on a.order_id = b.vip_qual_order
+          ;;
   }
 
   #################################################################################################################################################################################
@@ -63,6 +82,11 @@ view: spree_orders {
   dimension: order_contains_sale_items {
     type: yesno
     sql: ${sale_item_count} > 0 ;;
+  }
+
+  dimension: vip_qualification_order {
+    type: yesno
+    sql: ${TABLE}.vip_qual_order is not null ;;
   }
 
   dimension: RM_order_flag {
@@ -144,6 +168,19 @@ view: spree_orders {
   dimension: latest_order_flag {
     type: yesno
     sql: ${TABLE}.order_id = ${TABLE}.latest_order_id ;;
+  }
+
+
+  dimension: days_since_previous_order {
+    type:  number
+    sql: date(${TABLE}.completed_at) - date(${TABLE}.previous_order_tstamp) ;;
+  }
+
+  dimension: customer_bucket_when_placing_order {
+    sql: case when ${days_since_previous_order} is null then '1. New Customer'
+         when ${days_since_previous_order} between 0 and 182 then '2. Active Customer'
+         when ${days_since_previous_order} between 183 and 365 then '3. At Risk Customer'
+         ELSE '4. Lapsed Customer' end ;;
   }
 
   dimension: multiple_size_flag {
@@ -264,11 +301,19 @@ view: spree_orders {
   }
 
   dimension: shipping_total {
+    label: "Shipping Revenue (Local Currency)"
     type: number
     value_format_name: decimal_2
     sql: ${TABLE}.shipment_total ;;
-    hidden: yes
   }
+
+  dimension: gross_revenue_local_currency {
+    label: "Gross Revenue (Local Currency)"
+    type: number
+    value_format_name: decimal_2
+    sql: ((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )) ;;
+  }
+
 
   dimension: discount {
     type: number

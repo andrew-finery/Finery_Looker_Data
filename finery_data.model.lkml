@@ -682,6 +682,14 @@ explore: missed_revenues {
 }
 
 explore: john_lewis_sor {
+  always_join: [variant_info, option_info, option_info_daily]
+  fields: [ALL_FIELDS*, -option_info.option_for_returns_report]
+
+  join: calendar_weeks {
+    sql_on: ${john_lewis_sor.calendar_date} = ${calendar_weeks.calendar_date_date} ;;
+    relationship: many_to_one
+  }
+
   join: variant_info {
     from: product_info_variants
     sql_on: ${john_lewis_sor.ean} = ${variant_info.ean} ;;
@@ -693,4 +701,11 @@ explore: john_lewis_sor {
     sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
     relationship: many_to_one
   }
+
+  join: option_info_daily {
+    from: product_info_option_daily
+    sql_on: ${john_lewis_sor.calendar_date} = ${option_info_daily.calendar_date_date} and ${variant_info.option_id} = ${option_info_daily.option_id} ;;
+    relationship: many_to_one
+  }
+
 }

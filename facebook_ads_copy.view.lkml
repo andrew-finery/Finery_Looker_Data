@@ -470,4 +470,24 @@ view: facebook_ads_copy {
     type: string
     sql: ${TABLE}.uk_sale_buyers_dpa ;;
   }
+
+  dimension: uk_lapsedbuyers_ca_mobile_nfm {
+    type: string
+    sql: ${TABLE}.uk_lapsedbuyers_ca_mobile_nfm ;;
+  }
+
+  dimension: uk_lapsedbuyers_ca_mobile_instagram {
+    type: string
+    sql: ${TABLE}.uk_lapsedbuyers_ca_mobile_instagram ;;
+  }
+
+  dimension: uk_lapsedbuyers_ca_desktop_nfd {
+    type: string
+    sql: ${TABLE}.uk_lapsedbuyers_ca_desktop_nfd ;;
+  }
+
+  dimension: uk_lapsedbuyers_ca_desktop_rhs {
+    type: string
+    sql: ${TABLE}.uk_lapsedbuyers_ca_desktop_rhs ;;
+  }
 }

@@ -63,6 +63,13 @@ dimension: ean {
     hidden: yes
   }
 
+  dimension: price {
+    type: number
+    value_format_name: decimal_2
+    sql: coalesce(${option_info_daily.price}, ${option_info.current_price_gbp}) ;;
+    hidden:  yes
+  }
+
 # Measures
 
   measure: sum_sales_units {
@@ -90,6 +97,23 @@ dimension: ean {
     sql: ${units_delivered} ;;
   }
 
+  measure: intake_units{
+    type: sum
+    sql: ${units_delivered} ;;
+  }
+
+  measure: intake_cost {
+    type: sum
+    value_format_name: pounds
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${units_delivered} ;;
+  }
+
+  measure: intake_retail {
+    type: sum
+    value_format_name: pounds
+    sql: ${price}*${units_delivered} ;;
+  }
+
   measure: sum_net_sales_units {
     type: number
     sql: ${sum_sales_units} - ${sum_returns_units} ;;
@@ -103,18 +127,64 @@ dimension: ean {
   measure: derived_stock_units {
     type: sum
     sql: ${TABLE}.derived_closing_stock;;
+    hidden: yes
   }
 
   measure: derived_stock_units_closing_yesterday {
     type: sum
     sql: ${TABLE}.derived_closing_stock;;
-
+    hidden: yes
     filters: {
       field: calendar_date
       value: "yesterday"
     }
   }
 
+  measure: stock_units {
+      type: sum
+      sql: ${TABLE}.derived_closing_stock;;
+    }
+
+  measure: stock_cost {
+      type: sum
+      value_format_name: pounds
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.derived_closing_stock;;
+    }
+
+  measure: stock_retail {
+      type: sum
+      value_format_name: pounds
+      sql: ${price}*${TABLE}.derived_closing_stock;;
+    }
+
+  measure: stock_units_yesterday {
+      type: sum
+      sql: ${TABLE}.derived_closing_stock;;
+      filters: {
+        field: calendar_date
+        value: "yesterday"
+      }
+    }
+
+    measure: stock_cost_yesterday {
+      type: sum
+      value_format_name: pounds
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.derived_closing_stock;;
+      filters: {
+        field: calendar_date
+        value: "yesterday"
+      }
+    }
+
+    measure: stock_retail_yesterday {
+      type: sum
+      value_format_name: pounds
+      sql: ${price}*${TABLE}.derived_closing_stock;;
+      filters: {
+        field: calendar_date
+        value: "yesterday"
+      }
+    }
 
   measure: net_revenue_yesterday {
     label: "Actual"
@@ -333,6 +403,233 @@ dimension: ean {
       <font color="#000000"> {{ rendered_value }} </font>
       {% endif %}
       ;;
+  }
+
+
+### Buying Report Measures
+
+  measure: gross_revenue_last_week {
+    type: sum
+    sql: ${gross_revenue} ;;
+    value_format_name: pounds
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: gross_revenue_week_before_last {
+    type: sum
+    sql: ${gross_revenue} ;;
+    value_format_name: pounds
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: gross_revenue_last_week_wow {
+    type: number
+    value_format_name: percent_0
+    group_label: "Buying Report Measures"
+    sql: (${gross_revenue_last_week} - ${gross_revenue_week_before_last})/NULLIF(${gross_revenue_week_before_last},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: net_revenue_last_week {
+    type: sum
+    sql: ${gross_revenue} - ${refunds} ;;
+    value_format_name: pounds
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: net_revenue_week_before_last {
+    type: sum
+    sql: ${gross_revenue} - ${refunds} ;;
+    value_format_name: pounds
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: net_revenue_last_week_wow {
+    type: number
+    value_format_name: percent_0
+    group_label: "Buying Report Measures"
+    sql: (${net_revenue_last_week} - ${net_revenue_week_before_last})/NULLIF(${net_revenue_week_before_last},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: units_gross_last_week {
+    type: sum
+    sql: ${sales_units} ;;
+    value_format_name: integer
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: units_gross_week_before_last {
+    type: sum
+    sql: ${sales_units} ;;
+    value_format_name: integer
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: units_gross_revenue_last_week_wow {
+    type: number
+    value_format_name: percent_0
+    group_label: "Buying Report Measures"
+    sql: (${units_gross_last_week} - ${units_gross_week_before_last})/NULLIF(${units_gross_week_before_last},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: units_net_last_week {
+    type: sum
+    sql: ${sales_units} - ${returns_units} ;;
+    value_format_name: integer
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: units_net_week_before_last {
+    type: sum
+    sql: ${sales_units} - ${returns_units} ;;
+    value_format_name: integer
+
+    group_label: "Buying Report Measures"
+
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: units_net_last_week_wow {
+    type: number
+    value_format_name: percent_0
+    group_label: "Buying Report Measures"
+    sql: (${units_net_last_week} - ${units_net_week_before_last})/NULLIF(${units_net_week_before_last},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: intake_units_last_week{
+    type: sum
+    group_label: "Buying Report Measures"
+    sql: ${units_delivered} ;;
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: intake_cost_last_week {
+    type: sum
+    value_format_name: pounds
+    group_label: "Buying Report Measures"
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${units_delivered} ;;
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: intake_retail_last_week {
+    type: sum
+    value_format_name: pounds
+    group_label: "Buying Report Measures"
+    sql: ${price}*${units_delivered} ;;
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: stock_units_last_week_end_of_week {
+    type: sum
+    hidden: yes
+    sql: ${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_date
+      value: "1 week ago for 1 week"
+    }
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: stock_units_week_before_last_end_of_week {
+    type: sum
+    hidden: yes
+    sql: ${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_date
+      value: "2 weeks ago for 1 week"
+    }
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
   }
 
 }
