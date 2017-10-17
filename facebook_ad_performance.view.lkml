@@ -1346,7 +1346,6 @@ view: facebook_api_ad_performance {
     hidden: yes
   }
 
-
   measure: cost_per_add_to_cart_yesterday {
     label: "Actual"
     type: number
