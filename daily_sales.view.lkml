@@ -883,7 +883,7 @@ view: daily_sales {
     label: "Units Sold - Last Week LY"
     type: number
     sql: sum (
-      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${calendar_date_date} between current_date - 400 and current_date - 300
       then ${TABLE}.items_sold else null end
       )
@@ -978,7 +978,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: sum (
-      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${calendar_date_date} between current_date - 400 and current_date - 300
       then ${TABLE}.gross_revenue_gbp_ex_vat_ex_discount else null end
       )
@@ -1072,7 +1072,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: sum (
-      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${calendar_date_date} between current_date - 400 and current_date - 300
       then ${TABLE}.gross_revenue_gbp_ex_discount else null end
       )
@@ -1210,7 +1210,7 @@ view: daily_sales {
     type: number
     value_format_name: decimal_2
     sql: sum (
-      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${calendar_date_date} between current_date - 400 and current_date - 300
       then (coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold) else null end
       )
