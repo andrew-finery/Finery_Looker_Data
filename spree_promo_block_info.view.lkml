@@ -12,6 +12,7 @@ view: spree_promo_block_info {
   }
 
   dimension: cta_link {
+    label: "Links To"
     type: string
     sql: ${TABLE}.cta_link ;;
   }
@@ -48,6 +49,11 @@ view: spree_promo_block_info {
     sql: ${TABLE}.name ;;
   }
 
+  dimension: taxons {
+    type: string
+    sql: ${TABLE}.taxons_used_in ;;
+  }
+
   dimension: pin_to_end_of_results {
     type: number
     sql: ${TABLE}.pin_to_end_of_results ;;
@@ -59,11 +65,13 @@ view: spree_promo_block_info {
   }
 
   dimension: promo_block_id {
+    label: "ID"
     type: string
     sql: ${TABLE}.promo_block_id ;;
   }
 
   dimension: promo_block_position {
+    label: "Position"
     type: number
     sql: ${TABLE}.promo_block_position ;;
   }
@@ -81,5 +89,12 @@ view: spree_promo_block_info {
   dimension: viewport_image_mobile {
     type: string
     sql: ${TABLE}.viewport_image_mobile ;;
+  }
+
+  dimension: link_to_edit {
+    type: string
+    sql: 'https://www.finerylondon.com/cms/cms_promotion_blocks/' || ${promo_block_id} || '/edit' ;;
+    html: <a href="{{value}}">LINK</a>
+    ;;
   }
 }
