@@ -1578,12 +1578,6 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
-  measure: visits_yesterday_last_week {
-    label: "Visits LW"
-    type: number
-    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
-  }
-
   measure: visits_last_7_days {
     label: "L7D"
     type: number
@@ -1616,12 +1610,6 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
-  measure: visits_week_to_date_last_week {
-    label: "Visits WTD LW"
-    type: number
-    sql: count(distinct case when ${start_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${session_id} else null end) ;;
-  }
-
   measure: visits_week_to_date_last_year {
     label: "WTD LY"
     type: number
@@ -1644,12 +1632,6 @@ view: sessions {
     sql: count(distinct case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
-  }
-
-  measure: visits_month_to_date_last_month {
-    label: "Visits MTD LM"
-    type: number
-    sql: count(distinct case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
   }
 
   measure: visits_month_to_date_last_year {
