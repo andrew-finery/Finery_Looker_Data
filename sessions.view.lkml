@@ -1570,7 +1570,7 @@ view: sessions {
     sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
   }
 
-  measure: visits_yesterday_last_week_k {
+  measure: visits_yesterday_last_week {
     label: "LW"
     type: number
     sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
@@ -1602,7 +1602,7 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
-  measure: visits_week_to_date_last_week_k {
+  measure: visits_week_to_date_last_week {
     label: "WTD LW"
     type: number
     sql: count(distinct case when ${start_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${session_id} else null end) ;;
@@ -1626,7 +1626,7 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
-  measure: visits_month_to_date_last_month_k {
+  measure: visits_month_to_date_last_month {
     label: "MTD LM"
     type: number
     sql: count(distinct case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
@@ -2121,7 +2121,7 @@ view: sessions {
       ;;
   }
 
- measure: conversion_yesterday {
+  measure: conversion_yesterday {
     label: "Actual"
     type: number
     sql: ${orders_yesterday}/nullif(${visits_yesterday},0)::REAL ;;
