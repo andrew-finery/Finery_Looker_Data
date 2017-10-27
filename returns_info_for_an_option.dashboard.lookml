@@ -163,7 +163,7 @@
     dynamic_fields:
     - table_calculation: size
       label: Size
-      expression: if(${variant_info.size}="6", 6, if(${variant_info.size}="8", 8, if(${variant_info.size}="10", 10, if(${variant_info.size}="12", 12, if(${variant_info.size}="14", 14, if(${variant_info.size}="16", 16, if(${variant_info.size}="36", 36, if(${variant_info.size}="37", 37, if(${variant_info.size}="38", 38, if(${variant_info.size}="39", 39, if(${variant_info.size}="40", 40, if(${variant_info.size}="41", 41, if(${variant_info.size}="42", 42, 0)))))))))))))
+      expression: if(${variant_info.size}="6", 6, if(${variant_info.size}="8", 8, if(${variant_info.size}="10", 10, if(${variant_info.size}="12", 12, if(${variant_info.size}="14", 14, if(${variant_info.size}="16", if(${variant_info.size}="18", 18, if(${variant_info.size}="36", 36, if(${variant_info.size}="37", 37, if(${variant_info.size}="38", 38, if(${variant_info.size}="39", 39, if(${variant_info.size}="40", 40, if(${variant_info.size}="41", 41, if(${variant_info.size}="42", 42, 0)))))))))))))
     hidden_fields: [variant_info.size]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
