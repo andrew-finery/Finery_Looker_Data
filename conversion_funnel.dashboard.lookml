@@ -153,7 +153,7 @@
       sessions.9_conversion_funnel_checkout_payment, sessions.10_conversion_funnel_order,
       session_start_calendar.calendar_date_date]
     filters:
-      session_start_calendar.calendar_date_date: 8 days ago for 1 day
+      session_start_calendar.calendar_date_date: yesterday
       sessions.device_type: Desktop
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
@@ -221,7 +221,7 @@
       sessions.9_conversion_funnel_checkout_payment, sessions.10_conversion_funnel_order,
       session_start_calendar.calendar_date_date]
     filters:
-      session_start_calendar.calendar_date_date: 8 days ago for 1 day
+      session_start_calendar.calendar_date_date: yesterday
       sessions.device_type: Tablet
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
@@ -289,7 +289,7 @@
       sessions.9_conversion_funnel_checkout_payment, sessions.10_conversion_funnel_order,
       session_start_calendar.calendar_date_date]
     filters:
-      session_start_calendar.calendar_date_date: 8 days ago for 1 day
+      session_start_calendar.calendar_date_date: yesterday
       sessions.device_type: Mobile
     sorts: [session_start_calendar.calendar_date_date desc]
     limit: 500
