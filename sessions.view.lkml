@@ -2595,7 +2595,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: ${sum_page_views}/NULLIF(${count},0)::REAL ;;
+    sql: ${sum_page_views}/NULLIF(${visits_yesterday},0)::REAL ;;
     group_label: "Page View Reporting Measures"
   }
 
@@ -2603,7 +2603,7 @@ view: sessions {
     label: "LW"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
+    sql: sum(case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_yesterday_last_week_k},0)::REAL  ;;
     group_label: "Page View Reporting Measures"
   }
 
@@ -2659,7 +2659,7 @@ view: sessions {
     label: "LW"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 8 then ${product_views} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
+    sql: sum(case when ${start_date} = current_date - 8 then ${product_views} else 0 end)/nullif(${visits_yesterday_last_week_k},0)::REAL  ;;
     group_label: "Product View Reporting Measures"
   }
 
@@ -2749,7 +2749,7 @@ view: sessions {
     label: "LW"
     type: number
     value_format_name: percent_1
-    sql: ${cart_visits_lw}/nullif(${visits_yesterday_last_week},0) ;;
+    sql: ${cart_visits_lw}/nullif(${visits_yesterday_last_week_k},0) ;;
     group_label: "Add To Cart Reporting Measures"
   }
 
