@@ -1166,6 +1166,30 @@ view: sessions {
     sql: ${distinct_pages_viewed} ;;
   }
 
+  measure: sum_page_views_yesterday {
+    label: "Actual"
+    type: sum
+    sql: case when ${start_date} = current_date - 1 then ${distinct_pages_viewed} else 0 end ;;
+    group_label: "Page Views"
+    hidden: yes
+  }
+
+  measure: sum_page_views_lw {
+    label: "LW"
+    type: sum
+    sql: case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end ;;
+    group_label: "Page Views"
+    hidden: yes
+  }
+
+  measure: sum_page_views_l7d {
+    label: "Actual"
+    type: sum
+    sql: case when ${start_date} between current_date - 7 and current_date - 1 then ${distinct_pages_viewed} else 0 end ;;
+    group_label: "Page Views"
+    hidden: yes
+  }
+
   measure: sum_referrals_sent {
     label: "Referrals Sent"
     type: sum
@@ -2601,7 +2625,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: ${sum_page_views}/NULLIF(${visits_yesterday},0)::REAL ;;
+    sql: sum(case when ${start_date} = current_date - 1 then ${distinct_pages_viewed} else 0 end)/NULLIF(${count},0)::REAL ;;
     group_label: "Page View Reporting Measures"
   }
 
@@ -2657,7 +2681,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: ${sum_product_views}/NULLIF(${visits_yesterday},0)::REAL ;;
+    sql: sum(case when ${start_date} = current_date - 1 then ${product_views} else 0 end)/NULLIF(${count},0)::REAL ;;
     group_label: "Product View Reporting Measures"
   }
 
