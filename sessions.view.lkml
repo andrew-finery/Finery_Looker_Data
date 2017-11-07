@@ -1565,17 +1565,23 @@ view: sessions {
   }
 
   measure: visits_yesterday {
-    label: "Visits Yest. "
+    label: "Visits Yesterday "
     type: number
     sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
   }
 
-  measure: visits_yesterday_last_week {
+  measure: visits_yesterday_last_week_k {
     label: "LW"
     type: number
     sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_yesterday_last_week {
+    label: "Visits LW"
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
   }
 
   measure: visits_last_7_days {
@@ -2603,7 +2609,7 @@ view: sessions {
     label: "LW"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_yesterday_last_week_k},0)::REAL  ;;
+    sql: sum(case when ${start_date} = current_date - 8 then ${distinct_pages_viewed} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
     group_label: "Page View Reporting Measures"
   }
 
@@ -2651,7 +2657,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: ${sum_product_views}/NULLIF(${count},0)::REAL ;;
+    sql: ${sum_product_views}/NULLIF(${visits_yesterday},0)::REAL ;;
     group_label: "Product View Reporting Measures"
   }
 
@@ -2659,7 +2665,7 @@ view: sessions {
     label: "LW"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 8 then ${product_views} else 0 end)/nullif(${visits_yesterday_last_week_k},0)::REAL  ;;
+    sql: sum(case when ${start_date} = current_date - 8 then ${product_views} else 0 end)/nullif(${visits_yesterday_last_week},0)::REAL  ;;
     group_label: "Product View Reporting Measures"
   }
 
