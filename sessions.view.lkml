@@ -2625,7 +2625,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 1 then ${distinct_pages_viewed} else 0 end)/NULLIF(${count},0)::REAL ;;
+    sql: sum(case when ${start_date} = current_date - 1 then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_yesterday},0)::REAL ;;
     group_label: "Page View Reporting Measures"
   }
 
@@ -2681,7 +2681,7 @@ view: sessions {
     label: "Actual"
     type: number
     value_format_name: decimal_2
-    sql: sum(case when ${start_date} = current_date - 1 then ${product_views} else 0 end)/NULLIF(${count},0)::REAL ;;
+    sql: sum(case when ${start_date} = current_date - 1 then ${product_views} else 0 end)/NULLIF(${visits_yesterday},0)::REAL ;;
     group_label: "Product View Reporting Measures"
   }
 
