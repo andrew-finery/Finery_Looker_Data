@@ -1979,7 +1979,7 @@ view: sessions {
     label: "WTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Reporting Measures"
+    group_label: "Orders Reporting Measures"
     sql: (${orders_week_to_date} - ${orders_week_to_date_ly})/NULLIF(${orders_week_to_date_ly},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
