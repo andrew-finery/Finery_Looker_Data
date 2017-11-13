@@ -150,7 +150,7 @@
     left: 0
 
   - name: basket_short_term
-    title: Basket Size
+    title: Basket Size (ex. Store Credit)
     model: finery_data
     explore: spree_orders
     type: table
@@ -201,7 +201,7 @@
     left: 0
 
   - name: revenue_short_term
-    title: Revenue
+    title: Revenue (ex. Store Credit)
     model: finery_data
     explore: spree_orders
     type: table
@@ -555,7 +555,7 @@
     left: 0
 
   - name: basket_long_term
-    title: Basket Size
+    title: Basket Size (ex. Store Credit)
     model: finery_data
     explore: spree_orders
     type: table
@@ -609,7 +609,7 @@
     left: 0
 
   - name: revenue_long_term
-    title: Revenue
+    title: Revenue (ex. Store Credit)
     model: finery_data
     explore: spree_orders
     type: table
