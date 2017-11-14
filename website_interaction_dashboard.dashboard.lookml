@@ -30,7 +30,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.page_views_per_visit: Actual
-      sessions.page_views_last_7_days: Last 7 Days
+      sessions.page_views_last_7_days: L7D
     width: 7
     height: 1
     top: 0
@@ -60,7 +60,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.product_views_per_visit: Actual
-      sessions.product_views_last_7_days: Last 7 Days
+      sessions.product_views_last_7_days: L7D
     width: 7
     height: 1
     top: 0
@@ -88,7 +88,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.add_to_cart_rate_yesterday: Actual
-      sessions.add_to_cart_rate_last_7_days: Last 7 Days
+      sessions.add_to_cart_rate_last_7_days: L7D
     width: 7
     height: 1
     top: 1
@@ -117,7 +117,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.conversion_yesterday: Actual
-      sessions.conversion_rate_last_7_days: Last 7 Days
+      sessions.conversion_rate_last_7_days: L7D
     width: 7
     height: 1
     top: 1
@@ -146,7 +146,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.bounce_rate_yesterday: Actual
-      sessions.bounce_rate_last_7_days: Last 7 Days
+      sessions.bounce_rate_last_7_days: L7D
     width: 7
     height: 1
     top: 2
@@ -175,7 +175,7 @@
     conditional_formatting_include_nulls: false
     series_labels:
       sessions.engagement_rate_yesterday: Actual
-      sessions.engagement_rate_last_7_days: Last 7 Days
+      sessions.engagement_rate_last_7_days: L7D
     width: 7
     height: 1
     top: 2
@@ -263,7 +263,7 @@
       website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
       website_page_views.exit_rate_lw: LW
       website_page_views.exit_rate_wow: "%"
-      website_page_views.exit_rate_l7d: Last 7 Days
+      website_page_views.exit_rate_l7d: L7D
       website_page_views.exit_rate_l7d_percentage: L7D%
       website_page_views.count_total_page_views_yesterday: Times Viewed Yest.
       visits.conversion_yesterday: Conversion Rate
@@ -334,7 +334,7 @@
       website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
       website_page_views.exit_rate_lw: LW
       website_page_views.exit_rate_wow: "%"
-      website_page_views.exit_rate_l7d: Last 7 Days
+      website_page_views.exit_rate_l7d: L7D
       website_page_views.exit_rate_l7d_percentage: L7D%
       website_page_views.count_total_page_views_yesterday: Times Viewed
     width: 14
