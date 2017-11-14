@@ -92,6 +92,11 @@ dimension: ean {
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*(${sales_units} - ${returns_units}) ;;
   }
 
+  measure: return_cogs{
+    type: sum
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*(${returns_units}) ;;
+  }
+
   measure: sum_gross_revenue {
     type: sum
     sql: ${gross_revenue} ;;
@@ -195,6 +200,27 @@ dimension: ean {
         value: "yesterday"
       }
     }
+
+  measure: stock_cost_eow {
+    type: sum
+    value_format_name: pounds
+    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: stock_retail_eow {
+    type: sum
+    value_format_name: pounds
+    sql: ${price}*${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
 
   measure: net_revenue_yesterday {
     label: "Actual"
