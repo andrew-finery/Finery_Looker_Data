@@ -657,6 +657,10 @@ explore: website_leads {
 
 explore: website_performance_checks {}
 
+
+explore: rakuten_orders {}
+
+
 explore: affiliate_daily_spend {}
 
 explore: spree_import_notifications {}
