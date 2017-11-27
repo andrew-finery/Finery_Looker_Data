@@ -767,7 +767,7 @@ view: spree_order_items {
     value_format_name: decimal_2
     group_label: "Gross Revenue ex Discount & VAT Measures"
     sql: sum (
-      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${order_time_date} between current_date - 400 and current_date - 300
       then ${gross_item_revenue_ex_discount_ex_vat_gbp} else null end
       )
@@ -858,7 +858,7 @@ view: spree_order_items {
     value_format_name: decimal_2
     group_label: "Gross Revenue ex Discount Measures"
     sql: sum (
-      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${order_time_date} between current_date - 400 and current_date - 300
       then ${gross_item_revenue_ex_voucher_discount_gbp} else null end
       )
@@ -961,7 +961,7 @@ view: spree_order_items {
     type: number
     value_format_name: decimal_2
     sql: sum (
-      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${order_time_date} between current_date - 400 and current_date - 300
       then (${gross_item_revenue_ex_discount_ex_vat_gbp} - (${variant_info.total_landed_cost_gbp} * ${quantity}))  else null end
       )
@@ -1037,7 +1037,7 @@ view: spree_order_items {
     value_format_name: integer
     group_label: "Items Sold Measures"
     sql: sum (
-      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 8)
+      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${order_time_date} between current_date - 400 and current_date - 300
       then ${TABLE}.quantity  else null end
       )
