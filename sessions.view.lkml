@@ -468,6 +468,22 @@ view: sessions {
     sql: ${TABLE}.acquisition_channel ;;
   }
 
+  dimension: acquisition_channel_group {
+    label: "Acquisition Channel Group"
+    sql: case
+      when ${acquisition_channel} = 'CRM' then 'CRM'
+      when ${acquisition_channel} = 'Other Marketing Source' then 'CRM'
+      when ${acquisition_channel} = 'Email' then 'CRM'
+      when ${acquisition_channel} = 'Affiliates' then 'Affiliates'
+      when ${acquisition_channel} = 'Social' then 'Organic Social'
+      when ${acquisition_channel} = 'Facebook - Paid Marketing' then 'Paid Social'
+      when ${acquisition_channel} = 'Direct' then 'Direct'
+      when ${acquisition_channel} = 'SEM Brand' then 'SEO & SEM'
+      when ${acquisition_channel} = 'SEM Non-Brand' then 'SEO & SEM'
+      when ${acquisition_channel} = 'Search' then ''
+      when ${acquisition_channel} = 'Referrals' then 'Referrals' ;;
+  }
+
   dimension: crm_sub_channel {
     sql: case
       when ${acquisition_channel} <> 'CRM' then null
