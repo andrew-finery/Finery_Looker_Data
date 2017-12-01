@@ -468,22 +468,6 @@ view: sessions {
     sql: ${TABLE}.acquisition_channel ;;
   }
 
-  dimension: acquisition_channel_group {
-    label: "Acquisition Channel Group"
-    sql: case
-      when ${acquisition_channel} = 'CRM' then 'CRM'
-      when ${acquisition_channel} = 'Other Marketing Source' then 'CRM'
-      when ${acquisition_channel} = 'Email' then 'CRM'
-      when ${acquisition_channel} = 'Affiliates' then 'Affiliates'
-      when ${acquisition_channel} = 'Social' then 'Organic Social'
-      when ${acquisition_channel} = 'Facebook - Paid Marketing' then 'Paid Social'
-      when ${acquisition_channel} = 'Direct' then 'Direct'
-      when ${acquisition_channel} = 'SEM Brand' then 'SEO & SEM'
-      when ${acquisition_channel} = 'SEM Non-Brand' then 'SEO & SEM'
-      when ${acquisition_channel} = 'Search' then ''
-      when ${acquisition_channel} = 'Referrals' then 'Referrals' ;;
-  }
-
   dimension: crm_sub_channel {
     sql: case
       when ${acquisition_channel} <> 'CRM' then null
@@ -3172,6 +3156,249 @@ view: sessions {
       {% endif %}
       ;;
   }
+
+  measure: gross_revenue_ex_discount_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: pounds
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql:  case when ${start_date} = current_date - 1 then ${gross_revenue_ex_discount} else 0 end ;;
+  }
+
+  measure: gross_revenue_ex_discount_lw {
+    label: "LW"
+    type: sum
+    value_format_name: pounds
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql:  case when ${start_date} = current_date - 8 then ${gross_revenue_ex_discount} else 0 end ;;
+  }
+
+  measure: gross_Revenue_ex_discount_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_yesterday} - ${gross_revenue_ex_discount_lw})/NULLIF(${gross_revenue_ex_discount_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_discount_yesterday_last_year {
+    label: "LY"
+    type: sum
+    sql: case when ${start_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name: pounds
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_yesterday} - ${gross_revenue_ex_discount_yesterday_last_year})/NULLIF(${gross_revenue_ex_discount_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_discount_month_to_date {
+    label: "MTD"
+    type: sum
+    sql: case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_month_to_date_last_month {
+    label: "MTD LM"
+    type: sum
+    sql: case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_month_to_date} - ${gross_revenue_ex_discount_month_to_date_last_month})/NULLIF(${gross_revenue_ex_discount_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_discount_year_to_date {
+    label: "YTD"
+    type: sum
+    sql: case when ${start_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name:  pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_year_to_date_last_year {
+    label: "YTD LY"
+    type: sum
+    sql: case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_year_to_date} - ${gross_revenue_ex_discount_year_to_date_last_year})/NULLIF(${gross_revenue_ex_discount_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql:  ${gross_revenue_ex_discount_yesterday}/NULLIF(${orders_yesterday},0)::REAL ;;
+  }
+
+
+  measure: average_basket_ex_discount_lw {
+    label: "LW"
+    type: number
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql:  ${gross_revenue_ex_discount_lw}/NULLIF(${orders_yesterday_last_week},0)::REAL ;;
+  }
+
+  measure: gross_revenue_ex_discount_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_yesterday} - ${average_basket_ex_discount_lw})/NULLIF(${average_basket_ex_discount_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_yesterday_last_year {
+    label: "LY"
+    type: number
+    sql: ${gross_revenue_ex_discount_yesterday_last_year}/NULLIF(${orders_yesterday_last_year},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_yesterday_yoy {
+    label: "YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_yesterday} - ${average_basket_ex_discount_yesterday_last_year})/NULLIF(${average_basket_ex_discount_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_month_to_date {
+    label: "MTD"
+    type: number
+    sql: ${gross_revenue_ex_discount_month_to_date}/NULLIF(${orders_month_to_date},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: ${gross_revenue_ex_discount_month_to_date_last_month}/NULLIF(${orders_month_to_date_last_month},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_month_to_date} - ${average_basket_ex_discount_month_to_date_last_month})/NULLIF(${average_basket_ex_discount_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_year_to_date {
+    label: "YTD"
+    type: number
+    sql: ${gross_revenue_ex_discount_year_to_date}/NULLIF(${orders_year_to_date},0)::REAL ;;
+    value_format_name:  pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: ${gross_revenue_ex_discount_year_to_date_last_year}/NULLIF(${orders_year_to_date_last_year},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_year_to_date} - ${average_basket_ex_discount_year_to_date_last_year})/NULLIF(${average_basket_ex_discount_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
 
 
 
