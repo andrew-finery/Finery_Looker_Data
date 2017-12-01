@@ -309,6 +309,12 @@ view: spree_order_items {
     sql: case when ${TABLE}.order_total = 0 then 0 else ${net_item_revenue_in_gbp} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end ;;
   }
 
+  dimension: net_item_revenue_ex_discount_local_currency {
+    type: number
+    value_format_name: decimal_2
+    sql: case when ${TABLE}.order_total = 0 then 0 else ${net_item_revenue} * ((${TABLE}.order_total + ${TABLE}.adjustment_total)/${TABLE}.order_total) end ;;
+  }
+
   dimension: net_item_revenue_ex_discount_ex_vat_gbp {
     type: number
     value_format_name: decimal_2
@@ -635,6 +641,12 @@ view: spree_order_items {
   measure: sum_net_item_revenue_ex_discount_ex_vat_gbp {
     type: sum
     sql: ${net_item_revenue_ex_discount_ex_vat_gbp} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: sum_net_item_revenue_ex_discount_local_currency {
+    type: sum
+    sql: ${net_item_revenue_ex_discount_local_currency} ;;
     value_format_name: decimal_2
   }
 
