@@ -671,6 +671,8 @@ explore: daily_kpis {}
 
 explore: daily_chapters_stats {}
 
+explore: item_inventory_by_location {}
+
 explore: missed_revenues {
   join: variant_info {
     from: product_info_variants
