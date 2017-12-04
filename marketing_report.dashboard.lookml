@@ -757,7 +757,7 @@
     left: 0
 
   - name: search_26_week_graph
-    title: Search (26 Weeks)
+    title: Search Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -822,7 +822,7 @@
     left: 0
 
   - name: paid_social_26_week_graph
-    title: Paid Social (26 Weeks)
+    title: Paid Social Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -887,7 +887,7 @@
     left: 6
 
   - name: crm_revenue_26_week_graph
-    title: CRM (26 Weeks)
+    title: CRM Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -952,7 +952,7 @@
     left: 0
 
   - name: organic_social_26_week_graph
-    title: Organic Social (26 Weeks)
+    title: Organic Social Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -1017,7 +1017,7 @@
     left: 6
 
   - name: referrals_26_week_graph
-    title: Referrals (26 Weeks)
+    title: Referrals Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -1082,7 +1082,7 @@
     left: 0
 
   - name: affiliates_26_week_graph
-    title: Affiliates (26 Weeks)
+    title: Affiliates Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
@@ -1147,7 +1147,7 @@
     left: 6
 
   - name: direct_26_week_graph
-    title: Direct (26 Weeks)
+    title: Direct Revenue (26 Weeks)
     model: finery_data
     explore: sessions
     type: looker_area
