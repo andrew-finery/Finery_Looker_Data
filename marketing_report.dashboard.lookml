@@ -248,15 +248,13 @@
   - name: affiliate_spend_last_30_days
     title: Affiliate Spend Last 30 Days
     model: finery_data
-    explore: affiliate_daily_spend
+    explore: rakuten_orders
     type: looker_area
-    fields: [affiliate_daily_spend.calendar_date, affiliate_daily_spend.sum_affiliate_spend]
-    fill_fields: [affiliate_daily_spend.calendar_date]
+    fields: [rakuten_orders.sum_commission, rakuten_orders.order_placed_date]
     filters:
-      affiliate_daily_spend.calendar_date: 30 days ago for 30 days
-    sorts: [affiliate_daily_spend.calendar_date desc]
+      rakuten_orders.order_placed_date: 30 days ago for 30 days
+    sorts: [rakuten_orders.order_placed_date desc]
     limit: 500
-    column_limit: 50
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -266,7 +264,7 @@
     show_view_names: true
     limit_displayed_rows: false
     y_axis_combined: true
-    show_y_axis_labels: false
+    show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
@@ -274,7 +272,7 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    show_null_points: true
+    show_null_points: false
     point_style: none
     interpolation: linear
     show_totals_labels: false
@@ -283,16 +281,12 @@
     ordering: none
     show_null_labels: false
     series_types: {}
-    x_axis_label: Calendar Date
-    y_axes: [{label: Affiliate Spend, maxValue: !!null '', minValue: !!null '', orientation: left,
+    y_axes: [{label: '', maxValue: !!null '', minValue: !!null '', orientation: left,
         showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: '', series: [{id: affiliate_daily_spend.sum_affiliate_spend,
-            name: Affiliate Daily Spend Sum Affiliate Spend, axisId: affiliate_daily_spend.sum_affiliate_spend}]}]
-    label_value_format: ''
-    colors: ["#62bad4", "#a9c574", "#929292", "#9fdee0", "#1f3e5a", "#90c8ae", "#c72095",
-      "#c5c6a6", "#82c2ca", "#cee0a0", "#928fb4", "#9fc190"]
-    series_colors:
-      affiliate_daily_spend.sum_affiliate_spend: "#6207d9"
+        type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: rakuten_orders.sum_commission,
+            name: Rakuten Orders Sum Commission, axisId: rakuten_orders.sum_commission}]}]
+    colors: ['palette: Santa Cruz']
+    series_colors: {}
     width: 6
     height: 3
     top: 6
