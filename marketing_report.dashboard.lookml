@@ -405,8 +405,8 @@
     model: finery_data
     explore: sessions
     type: table
-    fields: [affiliate_lookup.affiliate_name, sessions.count, sessions.sum_orders, sessions.conversion_rate,
-      sessions.sum_gross_revenue_ex_discount, sessions.average_basket_size]
+    fields: [affiliate_lookup.affiliate_name, sessions.sum_gross_revenue_ex_discount, sessions.count, sessions.sum_orders, sessions.conversion_rate,
+       sessions.average_basket_size]
     filters:
       affiliate_lookup.affiliate_name: "-EMPTY"
       session_start_calendar.calendar_date_date: 30 days ago for 30 days
