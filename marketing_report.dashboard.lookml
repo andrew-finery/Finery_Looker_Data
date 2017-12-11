@@ -405,7 +405,7 @@
     model: finery_data
     explore: sessions
     type: table
-    fields: [affiliate_lookup.affiliate_name, sessions.sum_gross_revenue_ex_discount, sessions.count, sessions.sum_orders, sessions.conversion_rate,
+    fields: [affiliate_lookup.affiliate_name, sessions.count, sessions.sum_gross_revenue_ex_discount, sessions.sum_orders, sessions.conversion_rate,
        sessions.average_basket_size]
     filters:
       affiliate_lookup.affiliate_name: "-EMPTY"
