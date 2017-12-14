@@ -240,21 +240,23 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: facebook_api_ad_performance.total_spend,
             name: Facebook API Ad Performance Total Spend, axisId: facebook_api_ad_performance.total_spend}]}]
     x_axis_label: Calendar Date
-    width: 7
+    width: 12
     height: 4
     top: 15
     left: 0
 
-  - name: facebook_buyers_non_buyers
-    title: Facebook Breakdown
+  - name: facebook_roi
+    title: Facebook ROI
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday,
-      facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday, facebook_api_ad_performance.return_on_investment_yesterday]
+    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.return_on_investment_yesterday,
+      facebook_api_ad_performance.return_on_investment_lw, facebook_api_ad_performance.return_on_investment_wow,
+      facebook_api_ad_performance.return_on_investment_l3d_average, facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday,
+      facebook_api_ad_performance.return_on_investment_l7d_average, facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday]
     filters:
       facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
-    sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
+    sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
     total: true
@@ -266,6 +268,7 @@
     table_theme: editable
     limit_displayed_rows: false
     enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     stacking: ''
@@ -285,19 +288,17 @@
     y_axis_scale_mode: linear
     ordering: none
     show_null_labels: false
-    show_totals_labels: false
+    show_totals_labels: true
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
     series_labels:
       facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday: Revenue
-      facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: Spend
-      facebook_api_ad_performance.return_on_investment_yesterday: ROI
-      facebook_api_ad_performance.cost_per_order_yesterday: CPO
-    width: 5
+      facebook_api_ad_performance.return_on_investment_yesterday: Actual
+    width: 12
     height: 2
-    top: 15
-    left: 7
+    top: 19
+    left: 0
 
   - name: facebook_cpo
     title: Facebook CPO
@@ -305,7 +306,9 @@
     explore: facebook_api_ad_performance
     type: table
     fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.cost_per_order_yesterday,
-      facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow]
+      facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow,
+      facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
+      facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
     filters:
       facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
@@ -320,6 +323,7 @@
     table_theme: editable
     limit_displayed_rows: false
     enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     stacking: ''
@@ -339,19 +343,14 @@
     y_axis_scale_mode: linear
     ordering: none
     show_null_labels: false
-    show_totals_labels: false
+    show_totals_labels: true
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday: Revenue
-      facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: Spend
-      facebook_api_ad_performance.return_on_investment_yesterday: ROI
-      facebook_api_ad_performance.cost_per_order_yesterday: CPO
-    width: 5
+    width: 12
     height: 2
-    top: 17
-    left: 7
+    top: 21
+    left: 0
 
   - name: affiliate_spend_last_30_days
     title: Affiliate Spend Last 30 Days
@@ -397,7 +396,7 @@
     series_colors: {}
     width: 12
     height: 3
-    top: 19
+    top: 23
     left: 0
 
   - name: top_affiliates_table
@@ -449,7 +448,7 @@
     series_types: {}
     width: 12
     height: 4
-    top: 22
+    top: 26
     left: 0
 
 
@@ -510,7 +509,7 @@
       sessions.visits_yesterday_last_week: LW
     width: 12
     height: 3
-    top: 26
+    top: 30
     left: 0
 
   - name: revenue_per_channel
@@ -571,7 +570,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 29
+    top: 33
     left: 0
 
   - name: orders_per_channel
@@ -630,7 +629,7 @@
       sessions.conversion_yesterday: Conversion Rate
     width: 12
     height: 3
-    top: 32
+    top: 36
     left: 0
 
   - name: conversion_per_channel
@@ -690,7 +689,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 35
+    top: 39
     left: 0
 
   - name: average_basket_per_channel
@@ -751,7 +750,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 38
+    top: 42
     left: 0
 
   - name: crm_revenue_26_week_graph
@@ -816,7 +815,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 41
+    top: 45
     left: 0
 
   - name: search_26_week_graph
@@ -881,7 +880,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 41
+    top: 45
     left: 6
 
   - name: paid_social_26_week_graph
@@ -946,7 +945,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 44
+    top: 48
     left: 0
 
   - name: affiliates_26_week_graph
@@ -1011,7 +1010,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 44
+    top: 48
     left: 6
 
   - name: direct_26_week_graph
@@ -1076,7 +1075,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 47
+    top: 51
     left: 0
 
   - name: organic_social_26_week_graph
@@ -1141,7 +1140,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 47
+    top: 51
     left: 6
 
   - name: referrals_26_week_graph
@@ -1206,5 +1205,5 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 50
+    top: 54
     left: 3

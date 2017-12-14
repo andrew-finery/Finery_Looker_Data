@@ -1368,9 +1368,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Add To Cart Reporting Measures"
     sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_l3d_average})/NULLIF(${cost_per_add_to_cart_l3d_average},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
@@ -1392,9 +1392,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Add To Cart Reporting Measures"
     sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_l7d_average})/NULLIF(${cost_per_add_to_cart_l7d_average},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
@@ -1416,9 +1416,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Add To Cart Reporting Measures"
     sql: (${cost_per_add_to_cart_yesterday} - ${cost_per_add_to_cart_lw})/NULLIF(${cost_per_add_to_cart_lw},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
@@ -1505,9 +1505,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Order Reporting Measures"
     sql: (${cost_per_order_yesterday} - ${cost_per_order_l3d_average})/NULLIF(${cost_per_order_l3d_average},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
@@ -1529,9 +1529,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Order Reporting Measures"
     sql: (${cost_per_order_yesterday} - ${cost_per_order_l7d_average})/NULLIF(${cost_per_order_l7d_average},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
@@ -1553,9 +1553,9 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "Cost Per Order Reporting Measures"
     sql: (${cost_per_order_yesterday} - ${cost_per_order_lw})/NULLIF(${cost_per_order_lw},0)::REAL ;;
-    html: {% if value < 0 %}
+    html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
-        {% elsif value > 0 %}
+        {% elsif value < 0 %}
         <font color="#3CB371"> {{ rendered_value }} </font>
         {% else %}
         <font color="#000000"> {{ rendered_value }} </font>
