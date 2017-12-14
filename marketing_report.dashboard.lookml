@@ -399,59 +399,6 @@
     top: 23
     left: 0
 
-  - name: top_affiliates_table
-    title: Top 10 Affiliates (30 Days)
-    model: finery_data
-    explore: sessions
-    type: table
-    fields: [affiliate_lookup.affiliate_name, sessions.count, sessions.sum_gross_revenue_ex_discount, sessions.sum_orders, sessions.conversion_rate,
-       sessions.average_basket_size]
-    filters:
-      affiliate_lookup.affiliate_name: "-EMPTY"
-      session_start_calendar.calendar_date_date: 30 days ago for 30 days
-    sorts: [sessions.sum_gross_revenue_ex_discount desc]
-    limit: 10
-    total: true
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    width: 12
-    height: 4
-    top: 26
-    left: 0
-
-
   - name: traffic_per_channel
     title: Traffic
     model: finery_data
@@ -509,7 +456,7 @@
       sessions.visits_yesterday_last_week: LW
     width: 12
     height: 3
-    top: 30
+    top: 26
     left: 0
 
   - name: revenue_per_channel
@@ -570,7 +517,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 33
+    top: 29
     left: 0
 
   - name: orders_per_channel
@@ -629,7 +576,7 @@
       sessions.conversion_yesterday: Conversion Rate
     width: 12
     height: 3
-    top: 36
+    top: 32
     left: 0
 
   - name: conversion_per_channel
@@ -689,7 +636,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 39
+    top: 35
     left: 0
 
   - name: average_basket_per_channel
@@ -750,7 +697,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 42
+    top: 38
     left: 0
 
   - name: crm_revenue_26_week_graph
@@ -815,7 +762,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 45
+    top: 41
     left: 0
 
   - name: search_26_week_graph
@@ -880,7 +827,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 45
+    top: 41
     left: 6
 
   - name: paid_social_26_week_graph
@@ -945,7 +892,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 48
+    top: 44
     left: 0
 
   - name: affiliates_26_week_graph
@@ -1010,7 +957,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 48
+    top: 44
     left: 6
 
   - name: direct_26_week_graph
@@ -1075,7 +1022,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 51
+    top: 47
     left: 0
 
   - name: organic_social_26_week_graph
@@ -1140,7 +1087,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 51
+    top: 47
     left: 6
 
   - name: referrals_26_week_graph
@@ -1205,5 +1152,5 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 54
+    top: 50
     left: 3
