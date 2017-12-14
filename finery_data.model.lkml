@@ -715,3 +715,20 @@ explore: john_lewis_sor {
   }
 
 }
+
+explore: john_lewis_replenishment_model {
+  always_join: [variant_info, option_info]
+  fields: [ALL_FIELDS*, -option_info.option_for_returns_report]
+
+  join: variant_info {
+    from: product_info_variants
+    sql_on: ${john_lewis_replenishment_model.ean} = ${variant_info.ean} ;;
+    relationship: many_to_one
+  }
+
+  join: option_info {
+    from: product_info_options
+    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    relationship: many_to_one
+  }
+}
