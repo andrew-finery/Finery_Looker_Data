@@ -19,6 +19,8 @@
       facebook_api_ad_performance.total_spend_including_smartly_commission_l7d_average,
       facebook_api_ad_performance.total_spend_including_smartly_commission_l7d_vs_yesterday,
       facebook_api_ad_performance.buyers_vs_nonbuyers]
+    filters:
+      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday
         desc]
     limit: 500
@@ -71,6 +73,8 @@
       facebook_api_ad_performance.revenue_1_day_after_clicking_wow, facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_average,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_nonbuyers]
+    filters:
+      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
     limit: 500
     column_limit: 50
@@ -122,6 +126,8 @@
       facebook_api_ad_performance.return_on_investment_wow, facebook_api_ad_performance.return_on_investment_l3d_average,
       facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday, facebook_api_ad_performance.return_on_investment_l7d_average,
       facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_nonbuyers]
+    filters:
+      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
@@ -174,6 +180,8 @@
       facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow,
       facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
       facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
+    filters:
+      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
     limit: 500
     column_limit: 50
@@ -225,6 +233,8 @@
       facebook_api_ad_performance.cost_per_add_to_cart_wow, facebook_api_ad_performance.cost_per_add_to_cart_l3d_average,
       facebook_api_ad_performance.cost_per_add_to_cart_l3d_vs_yesterday, facebook_api_ad_performance.cost_per_add_to_cart_l7d_average,
       facebook_api_ad_performance.cost_per_add_to_cart_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_nonbuyers]
+    filters:
+      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday desc]
     limit: 500
     column_limit: 50
@@ -1052,7 +1062,7 @@
     filters:
       facebook_api_ad_performance.aa_vs_custom: Custom
       facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: ">0"
-    sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday]
+    sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday desc]
     limit: 1000
     column_limit: 50
     total: true
