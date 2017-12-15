@@ -8,7 +8,23 @@ view: product_info_option_daily {
     type: time
     label: "Calendar"
     sql: ${TABLE}.calendar_date ;;
-    timeframes: [date, week, month]
+    timeframes: [
+      time,
+      date,
+      hour_of_day,
+      hour,
+      time_of_day,
+      day_of_week_index,
+      day_of_week,
+      week,
+      week_of_year,
+      day_of_month,
+      month,
+      month_num,
+      year,
+      quarter,
+      quarter_of_year
+    ]
   }
 
   dimension: product_id {
@@ -41,6 +57,11 @@ view: product_info_option_daily {
     hidden: yes
   }
 
+  dimension: return_intake_units {
+    sql: ${TABLE}.return_intake_units ;;
+    hidden: yes
+  }
+
   dimension: gross_revenue_gbp {
     sql: ${TABLE}.gross_revenue_gbp ;;
     hidden: yes
@@ -48,6 +69,21 @@ view: product_info_option_daily {
 
   dimension: gross_revenue_gbp_ex_vat {
     sql: ${TABLE}.gross_revenue_gbp_ex_vat ;;
+    hidden: yes
+  }
+
+  dimension: gross_revenue_gbp_ex_discount {
+    sql: ${TABLE}.gross_revenue_gbp_ex_discount ;;
+    hidden: yes
+  }
+
+  dimension: gross_revenue_pre_retail_md {
+    sql: ${TABLE}.gross_revenue_pre_retail_md ;;
+    hidden: yes
+  }
+
+  dimension: total_discount_md_voucher {
+    sql: ${gross_revenue_pre_retail_md} - ${gross_revenue_gbp_ex_discount} ;;
     hidden: yes
   }
 
@@ -127,6 +163,12 @@ view: product_info_option_daily {
     label: "Price"
     type: number
     sql: ${TABLE}.price ;;
+  }
+
+  dimension: cost_of_goods_sold{
+    type: number
+    sql: ${TABLE}.total_cost ;;
+    hidden: yes
   }
 
   dimension: on_sale_flag {
@@ -246,6 +288,13 @@ view: product_info_option_daily {
     value_format_name: decimal_2
     label: "Gross Revenue ex. VAT"
     sql: ${gross_revenue_gbp_ex_vat} ;;
+  }
+
+  measure: sum_gross_revenue_gbp_ex_vdiscount {
+    type: sum
+    value_format_name: decimal_2
+    label: "Gross Revenue ex. Discount"
+    sql: ${gross_revenue_gbp_ex_discount} ;;
   }
 
   measure: sum_gross_revenue_gbp_ex_vat_ex_discount {
@@ -409,8 +458,313 @@ view: product_info_option_daily {
     label: "Add To Cart Rate"
   }
 
+############################# BYUING REPORT MEASURES
+
+  measure: gross_revenue_lw {
+    label: "Gross Revenue LW"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: pounds_k
+    sql: ${gross_revenue_gbp_ex_discount} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: gross_revenue_pw {
+    label: "Gross Revenue PW"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: pounds_k
+    sql: ${gross_revenue_gbp_ex_discount} ;;
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: gross_revenue_wow {
+    label: "Gross Revenue WoW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${gross_revenue_lw} - ${gross_revenue_pw})/NULLIF(${gross_revenue_pw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ly {
+    label: "Gross Revenue LY"
+    group_label: "Buying Report Measures"
+    type: number
+    sql: sum (
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
+      and ${calendar_date_date} between current_date - 400 and current_date - 300
+      then ${gross_revenue_gbp_ex_discount} else null end
+      )
+       ;;
+    value_format_name: pounds_k
+  }
+
+  measure: gross_revenue_yoy {
+    label: "Gross Revenue YoY"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${gross_revenue_lw} - ${gross_revenue_ly})/NULLIF(${gross_revenue_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_vat_lw {
+    hidden: yes
+    type: sum
+    sql: ${gross_revenue_gbp_ex_vat_ex_discount} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: gross_revenue_ex_vat_ly {
+    hidden: yes
+    type: number
+    sql: sum (
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
+      and ${calendar_date_date} between current_date - 400 and current_date - 300
+      then ${gross_revenue_gbp_ex_vat_ex_discount} else null end
+      )
+       ;;
+  }
+
+  measure: cogs_lw {
+    hidden: yes
+    type: sum
+    sql: ${cost_of_goods_sold} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: cogs_ly {
+    hidden: yes
+    type: number
+    sql: sum (
+      case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
+      and ${calendar_date_date} between current_date - 400 and current_date - 300
+      then ${cost_of_goods_sold} else null end
+      )
+       ;;
+  }
+
+  measure: margin_lw {
+    label: "Margin LW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${gross_revenue_ex_vat_lw} - ${cogs_lw})/NULLIF(${gross_revenue_ex_vat_lw},0)::REAL ;;
+  }
+
+  measure: margin_ly {
+    label: "Margin LY"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${gross_revenue_ex_vat_ly} - ${cogs_ly})/NULLIF(${gross_revenue_ex_vat_ly},0)::REAL ;;
+  }
+
+  measure: gross_revenue_pre_retail_md_lw {
+    hidden: yes
+    type: sum
+    sql: ${gross_revenue_pre_retail_md} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: total_discount_md_voucher_lw {
+    hidden: yes
+    type: sum
+    sql: ${total_discount_md_voucher} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: total_discount_lw {
+    label: "Discount LW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${total_discount_md_voucher_lw})/NULLIF(${gross_revenue_pre_retail_md_lw},0)::REAL ;;
+  }
+
+  measure: items_sold_28d {
+    type: sum
+    hidden:  yes
+    sql: ${items_sold} ;;
+    filters: {
+      field: calendar_date_date
+      value: "before 28 days ago"
+    }
+  }
+
+  measure: items_returned_28d {
+    type: sum
+    hidden:  yes
+    sql: ${items_returned} ;;
+    filters: {
+      field: calendar_date_date
+      value: "before 28 days ago"
+    }
+  }
+
+  measure: avg_return_rate {
+    label: "Avg. Return rate"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${items_returned_28d})/NULLIF(${items_sold_28d},0)::REAL ;;
+  }
+
+  measure: sales_mix {
+    label: "Sales Mix"
+    group_label: "Buying Report Measures"
+    type: percent_of_total
+    sql: ${gross_revenue_lw} ;;
+  }
+
+  measure: items_sold_lw {
+    label: "Units Sold LW"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: integer
+    sql: ${items_sold} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: items_sold_pw {
+    label: "Units Sold PW"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: integer
+    sql: ${items_sold} ;;
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+  }
+
+  measure: items_sold_wow {
+    label: "Units Sold WoW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: percent_0
+    sql: (${items_sold_lw} - ${items_sold_pw})/NULLIF(${items_sold_pw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
 
 
+  measure: return_intake_lw {
+    label: "Returns Intake LW"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: integer
+    sql: ${return_intake_units} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
+  measure: closing_stock_units_lw {
+    type: sum
+    label: "Stock Units LW"
+    value_format_name: thousands
+    sql: ${closing_stock} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: closing_stock_value_lw {
+    type: sum
+    label: "Stock Value LW"
+    value_format_name: pounds_k
+    sql: ${closing_stock}*NULLIF(${price},0) ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: closing_stock_units_pw {
+    type: sum
+    label: "Stock Units PW"
+    value_format_name: thousands
+    sql: ${closing_stock} ;;
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: closing_stock_value_pw {
+    type: sum
+    label: "Stock Value PW"
+    value_format_name: pounds_k
+    sql: ${closing_stock}*NULLIF(${price},0) ;;
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
 
 }
-#product_impressions: '>50'
