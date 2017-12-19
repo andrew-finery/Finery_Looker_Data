@@ -981,4 +981,54 @@ view: product_info_option_daily {
 
   }
 
+  measure: gross_cover_lw {
+    label: "Gross Cover LW"
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name:decimal_1
+    sql:  ${closing_stock_units_lw}/NULLIF(${items_sold_lw},0)::REAL ;;
+  }
+
+  measure: product_views_last_wk {
+    type: sum
+    label: "Product Views Last Week"
+    group_label: "Buying Report Measures"
+    value_format_name: integer
+    sql: ${product_page_views} ;;
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+  }
+
+  measure: closing_stock_units_last_week {
+    type: sum
+    group_label: "Buying Report Measures"
+    label: "Stock Units Last Week"
+    value_format_name: integer
+    sql: ${closing_stock} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: gross_revenue_last_week {
+    label: "Gross Revenue Last Week"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: pounds
+    sql: ${gross_revenue_gbp_ex_discount} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
+    }
+  }
+
 }
