@@ -636,7 +636,7 @@ view: product_info_option_daily {
   }
 
   measure: avg_return_rate {
-    label: "Avg. Return rate"
+    label: "Avg. Return Rate"
     group_label: "Buying Report Measures"
     type: number
     value_format_name: percent_0
@@ -706,6 +706,7 @@ view: product_info_option_daily {
   measure: closing_stock_units_lw {
     type: sum
     label: "Stock Units LW"
+    group_label: "Buying Report Measures"
     value_format_name: thousands
     sql: ${closing_stock} ;;
     filters: {
@@ -721,6 +722,7 @@ view: product_info_option_daily {
 
   measure: closing_stock_value_lw {
     type: sum
+    group_label: "Buying Report Measures"
     label: "Stock Value LW"
     value_format_name: pounds_k
     sql: ${closing_stock}*NULLIF(${price},0) ;;
@@ -737,6 +739,7 @@ view: product_info_option_daily {
 
   measure: closing_stock_units_pw {
     type: sum
+    group_label: "Buying Report Measures"
     label: "Stock Units PW"
     value_format_name: thousands
     sql: ${closing_stock} ;;
@@ -753,6 +756,7 @@ view: product_info_option_daily {
 
   measure: closing_stock_value_pw {
     type: sum
+    group_label: "Buying Report Measures"
     label: "Stock Value PW"
     value_format_name: pounds_k
     sql: ${closing_stock}*NULLIF(${price},0) ;;
@@ -764,6 +768,266 @@ view: product_info_option_daily {
     filters: {
       field: calendar_date_day_of_week_index
       value: "6"
+    }
+  }
+
+  measure: stock_mix {
+    label: "Stock Mix"
+    group_label: "Buying Report Measures"
+    type: percent_of_total
+    sql: ${closing_stock_value_lw} ;;
+  }
+
+  measure: net_cover_lw {
+    label: "Net Cover LW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: decimal_0
+    sql: ((${closing_stock_units_lw})/NULLIF(${items_sold_lw},0))/(1-${avg_return_rate}) ;;
+  }
+
+  measure: net_cover_pw {
+    label: "Net Cover PW"
+    group_label: "Buying Report Measures"
+    type: number
+    value_format_name: decimal_0
+    sql: ((${closing_stock_units_pw})/NULLIF(${items_sold_pw},0))/(1-${avg_return_rate}) ;;
+  }
+
+
+
+  measure: options_online_last_week {
+    label: "Options Online LW"
+    group_label: "Buying Report Measures"
+    type:  count_distinct
+    sql: ${option_id}  ;;
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+    filters: {
+      field: on_site_flag
+      value: "yes"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: options_online_pw {
+    label: "Options Online PW"
+    group_label: "Buying Report Measures"
+    type:  count_distinct
+    sql: ${option_id}  ;;
+
+    filters: {
+      field: calendar_date_date
+      value: "2 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: on_site_flag
+      value: "yes"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: options_with_under_70_size_availability_number {
+    group_label: "Buying Report Measures"
+    hidden:  yes
+    type:  count_distinct
+    sql: ${option_id}  ;;
+
+    filters: {
+      field: size_availability
+      value: "<0.7"
+    }
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+    filters: {
+      field: on_site_flag
+      value: "yes"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: options_with_under_70_size_availability_percent {
+    label: "<70% Size Avail."
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name: percent_0
+    sql:  ${options_with_under_70_size_availability_number}/NULLIF(${options_online_lw},0)::REAL ;;
+  }
+
+  measure: zero_selling_options_lw {
+    group_label: "Buying Report Measures"
+    hidden:  yes
+    type:  count_distinct
+    sql: ${option_id}  ;;
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+    filters: {
+      field: on_site_flag
+      value: "yes"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+
+    filters: {
+      field: option_info.items_sold_lw
+      value: "0"
+    }
+
+  }
+
+  measure: zero_selling_options_lw_percent {
+    label: "Zero Selling Options LW"
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name: percent_0
+    sql:  ${zero_selling_options_lw}/NULLIF(${options_online_lw},0)::REAL ;;
+    }
+
+  measure: options_12wks_lw {
+    group_label: "Buying Report Measures"
+    hidden:  yes
+    type:  count_distinct
+    sql: ${option_id}  ;;
+
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+    filters: {
+      field: on_site_flag
+      value: "yes"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+
+    filters: {
+      field: option_info.cover_lw
+      value: ">12"
+    }
+
+  }
+
+  measure: options_12kwks_lw_percent {
+    label: "Options >12Wks Cover"
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name: percent_0
+    sql:  ${options_12wks_lw}/NULLIF(${options_online_lw},0)::REAL ;;
+  }
+
+  measure: product_views_lw {
+    type: sum
+    label: "Product Views LW"
+    group_label: "Buying Report Measures"
+    value_format_name: thousands
+    sql: ${product_page_views} ;;
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+  }
+
+  measure: product_conversion_lw {
+    label: "Product Conversion LW"
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name: percent_1
+    sql:  ${items_sold_lw}/NULLIF(${product_views_lw},0)::REAL ;;
+  }
+
+  measure: product_impressions_lw {
+    type: sum
+    label: "Product Impressions LW"
+    group_label: "Buying Report Measures"
+    value_format_name: thousands
+    sql: ${product_impressions} ;;
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+  }
+
+  measure: gross_cover_lw {
+    label: "Gross Cover LW"
+    group_label: "Buying Report Measures"
+    type:  number
+    value_format_name:decimal_1
+    sql:  ${closing_stock_units_lw}/NULLIF(${items_sold_lw},0)::REAL ;;
+  }
+
+  measure: product_views_last_wk {
+    type: sum
+    label: "Product Views Last Week"
+    group_label: "Buying Report Measures"
+    value_format_name: integer
+    sql: ${product_page_views} ;;
+    filters: {
+      field: calendar_date_date
+      value: "last week"
+    }
+
+  }
+
+  measure: closing_stock_units_last_week {
+    type: sum
+    group_label: "Buying Report Measures"
+    label: "Stock Units Last Week"
+    value_format_name: integer
+    sql: ${closing_stock} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 weeks ago for 1 week"
+    }
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: gross_revenue_last_week {
+    label: "Gross Revenue Last Week"
+    group_label: "Buying Report Measures"
+    type: sum
+    value_format_name: pounds
+    sql: ${gross_revenue_gbp_ex_discount} ;;
+    filters: {
+      field: calendar_date_date
+      value: "1 week ago for 1 week"
     }
   }
 

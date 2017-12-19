@@ -448,7 +448,7 @@ dimension: ean {
     type: sum
     sql: ${gross_revenue} ;;
     value_format_name: pounds
-
+    label: "Gross Revenue LW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -461,7 +461,7 @@ dimension: ean {
     type: sum
     sql: ${gross_revenue} ;;
     value_format_name: pounds
-
+    label: "Gross Revenue PW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -473,6 +473,7 @@ dimension: ean {
   measure: gross_revenue_last_week_wow {
     type: number
     value_format_name: percent_0
+    label: "Gross Revenue WoW"
     group_label: "Buying Report Measures"
     sql: (${gross_revenue_last_week} - ${gross_revenue_week_before_last})/NULLIF(${gross_revenue_week_before_last},0)::REAL ;;
     html: {% if value < 0 %}
@@ -487,6 +488,7 @@ dimension: ean {
 
   measure: net_revenue_last_week {
     type: sum
+    label: "Net Revenue LW"
     sql: ${gross_revenue} - ${refunds} ;;
     value_format_name: pounds
 
@@ -500,6 +502,7 @@ dimension: ean {
 
   measure: net_revenue_week_before_last {
     type: sum
+    label: "Net Revenue PW"
     sql: ${gross_revenue} - ${refunds} ;;
     value_format_name: pounds
 
@@ -513,6 +516,7 @@ dimension: ean {
 
   measure: net_revenue_last_week_wow {
     type: number
+    label: "Net Revenue WoW"
     value_format_name: percent_0
     group_label: "Buying Report Measures"
     sql: (${net_revenue_last_week} - ${net_revenue_week_before_last})/NULLIF(${net_revenue_week_before_last},0)::REAL ;;
@@ -530,7 +534,7 @@ dimension: ean {
     type: sum
     sql: ${sales_units} ;;
     value_format_name: integer
-
+    label: "Gross Units LW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -543,7 +547,7 @@ dimension: ean {
     type: sum
     sql: ${sales_units} ;;
     value_format_name: integer
-
+    label: "Gross Units PW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -556,6 +560,7 @@ dimension: ean {
     type: number
     value_format_name: percent_0
     group_label: "Buying Report Measures"
+    label: "Gross Units WoW"
     sql: (${units_gross_last_week} - ${units_gross_week_before_last})/NULLIF(${units_gross_week_before_last},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -571,7 +576,7 @@ dimension: ean {
     type: sum
     sql: ${sales_units} - ${returns_units} ;;
     value_format_name: integer
-
+    label: "Net Units LW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -584,7 +589,7 @@ dimension: ean {
     type: sum
     sql: ${sales_units} - ${returns_units} ;;
     value_format_name: integer
-
+    label: "Net Units PW"
     group_label: "Buying Report Measures"
 
     filters: {
@@ -595,6 +600,7 @@ dimension: ean {
 
   measure: units_net_last_week_wow {
     type: number
+    label: "Net Units WoW"
     value_format_name: percent_0
     group_label: "Buying Report Measures"
     sql: (${units_net_last_week} - ${units_net_week_before_last})/NULLIF(${units_net_week_before_last},0)::REAL ;;
@@ -610,6 +616,7 @@ dimension: ean {
 
   measure: intake_units_last_week{
     type: sum
+    label: "Intake Units LW"
     group_label: "Buying Report Measures"
     sql: ${units_delivered} ;;
     filters: {
@@ -632,6 +639,7 @@ dimension: ean {
   measure: intake_retail_last_week {
     type: sum
     value_format_name: pounds
+    label: "Intake Value LW"
     group_label: "Buying Report Measures"
     sql: ${price}*${units_delivered} ;;
     filters: {
@@ -642,7 +650,8 @@ dimension: ean {
 
   measure: stock_units_last_week_end_of_week {
     type: sum
-    hidden: yes
+    label: "Stock Units LW"
+    group_label: "Buying Report Measures"
     sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_date
@@ -656,7 +665,8 @@ dimension: ean {
 
   measure: stock_units_week_before_last_end_of_week {
     type: sum
-    hidden: yes
+    label: "Stock Units PW"
+    group_label: "Buying Report Measures"
     sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_date
@@ -667,5 +677,38 @@ dimension: ean {
       value: "6"
     }
   }
+
+  measure: stock_value_last_week_end_of_week {
+    type: sum
+    label: "Stock Value LW"
+    value_format_name: pounds
+    group_label: "Buying Report Measures"
+    sql: ${price}*${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_date
+      value: "1 weeks ago for 1 week"
+    }
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: net_cover_lw {
+    type: number
+    value_format_name: decimal_0
+    label: "Net Cover LW"
+    group_label: "Buying Report Measures"
+    sql: ${stock_units_last_week_end_of_week}/NULLIF(${units_net_last_week},0)::REAL ;;
+  }
+
+  measure: net_cover_pw {
+    type: number
+    value_format_name: decimal_0
+    label: "Net Cover PW"
+    group_label: "Buying Report Measures"
+    sql: ${stock_units_week_before_last_end_of_week}/NULLIF(${units_net_week_before_last},0)::REAL ;;
+  }
+
 
 }
