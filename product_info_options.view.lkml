@@ -262,6 +262,24 @@ view: product_info_options {
     hidden: yes
   }
 
+  dimension: items_sold_lw {
+    type:  number
+    sql: ${TABLE}.items_sold_lw ;;
+    hidden: yes
+  }
+
+  dimension: closing_stock_lw {
+    type:  number
+    sql: ${TABLE}.closing_stock_lw ;;
+    hidden: yes
+  }
+
+  dimension: cover_lw {
+    type:  number
+    sql: ${closing_stock_lw}/NULLIF(${items_sold_lw},0)::REAL ;;
+    hidden: yes
+  }
+
   dimension: online_flag {
     label: "Online Flag"
     type: yesno
