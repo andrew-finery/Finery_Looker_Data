@@ -1580,18 +1580,24 @@ view: sessions {
 
 ########################## MGMT Reporting
 
+  measure: visits_yesterday {
+    label: "Visits Yesterday"
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
+  }
+
+  measure: visits_yesterday_last_week {
+    label: "Visits LW"
+    type: number
+    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
+  }
+
   measure: visits_yesterday_k {
     label: "Actual"
     type: number
     sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
-  }
-
-  measure: visits_yesterday {
-    label: "Visits Yesterday "
-    type: number
-    sql: count(distinct case when ${start_date} = current_date - 1 then ${session_id} else null end) ;;
   }
 
   measure: visits_yesterday_last_week_k {
@@ -1602,10 +1608,20 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
-  measure: visits_yesterday_last_week {
-    label: "Visits LW"
+  measure: visits_last_complete_week {
+    label: "LCW"
     type: number
-    sql: count(distinct case when ${start_date} = current_date - 8 then ${session_id} else null end) ;;
+    sql: count(distinct case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+  measure: visits_previous_complete_week {
+    label: "PCW"
+    type:  number
+    sql: count(distinct case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
   }
 
   measure: visits_last_7_days {
@@ -1717,6 +1733,22 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Traffic Reporting Measures"
     sql: (${visits_yesterday} - ${visits_yesterday_last_week})/NULLIF(${visits_yesterday_last_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_last_complete_week_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_last_complete_week} - ${visits_previous_complete_week})/NULLIF(${visits_previous_complete_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -1877,7 +1909,6 @@ view: sessions {
     label: "Actual"
     type: number
     sql: sum(case when ${start_date} = current_date - 1 then (${orders}) else 0 end)::REAL ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -1885,7 +1916,6 @@ view: sessions {
     label: "LW"
     type: number
     sql: sum(case when ${start_date} = current_date - 8 then (${orders}) else 0 end)::REAL ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -1939,15 +1969,43 @@ view: sessions {
     label: "WTD"
     type: number
     sql: sum(case when ${start_date} between date_trunc('week', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_last_complete_week {
+    label: "LCW"
+    type: number
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${orders} else 0 end) ;;
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_previous_complete_week {
+    label: "PCW"
+    type:  number
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${orders} else 0 end) ;;
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_last_complete_week_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_last_complete_week} - ${orders_previous_complete_week})/NULLIF(${orders_previous_complete_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: orders_week_to_date_lw {
     label: "WTD LW"
     type: number
     sql: sum(case when ${start_date} between date_trunc('week', current_date - 8) and current_date - 8 then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -1971,7 +2029,6 @@ view: sessions {
     label: "WTD LY"
     type: number
     sql: sum(case when ${start_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -1995,7 +2052,6 @@ view: sessions {
     label: "MTD"
     type: number
     sql: sum(case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2003,7 +2059,6 @@ view: sessions {
     label: "MTD LM"
     type: number
     sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2027,7 +2082,6 @@ view: sessions {
     label: "MTD LY"
     type: number
     sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2051,7 +2105,6 @@ view: sessions {
     label: "YTD"
     type: number
     sql: sum(case when ${start_date} between date_trunc('year', current_date - 1) and current_date - 1 then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2059,7 +2112,6 @@ view: sessions {
     label: "YTD LY"
     type: number
     sql: sum(case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then (${orders}) else 0 end) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2083,7 +2135,6 @@ view: sessions {
     label: "Target Yest"
     type: number
     sql: avg((select sum(Case when calendar_date = current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2107,7 +2158,6 @@ view: sessions {
     label: "Target WTD"
     type: number
     sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2131,7 +2181,6 @@ view: sessions {
     label: "Target MTD"
     type: number
     sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then Orders else 0 end) from finery.targets_2017)) ;;
-
     group_label: "Orders Reporting Measures"
   }
 
@@ -2219,6 +2268,22 @@ view: sessions {
     label: "WTD LY"
     type: number
     sql: ${orders_week_to_date_ly}/nullif(${visits_week_to_date_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Rate Reporting Measures"
+  }
+
+  measure: conversion_last_complete_week {
+    label: "LCW"
+    type: number
+    sql: ${orders_last_complete_week}/nullif(${visits_last_complete_week},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Rate Reporting Measures"
+  }
+
+  measure: conversion_previous_complete_week {
+    label: "PCW"
+    type: number
+    sql: ${orders_previous_complete_week}/nullif(${visits_previous_complete_week},0)::REAL ;;
     value_format_name: percent_1
     group_label: "Conversion Rate Reporting Measures"
   }
@@ -2373,6 +2438,22 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_month_to_date} - ${conversion_month_to_date_last_year})/NULLIF(${conversion_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_last_complete_week_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Rate Reporting Measures"
+    sql: (${conversion_last_complete_week} - ${conversion_previous_complete_week})/NULLIF(${conversion_previous_complete_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -3173,7 +3254,7 @@ view: sessions {
     sql:  case when ${start_date} = current_date - 8 then ${gross_revenue_ex_discount} else 0 end ;;
   }
 
-  measure: gross_Revenue_ex_discount_wow {
+  measure: gross_revenue_ex_discount_wow {
     label: "%"
     type: number
     value_format_name: percent_0
@@ -3203,6 +3284,38 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
     sql: (${gross_revenue_ex_discount_yesterday} - ${gross_revenue_ex_discount_yesterday_last_year})/NULLIF(${gross_revenue_ex_discount_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_discount_last_complete_week {
+    label: "LCW"
+    type: number
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${gross_revenue_ex_discount} else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_previous_complete_week {
+    label: "PCW"
+    type:  number
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${gross_revenue_ex_discount} else 0 end) ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_last_complete_week_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_last_complete_week} - ${gross_revenue_ex_discount_previous_complete_week})/NULLIF(${gross_revenue_ex_discount_previous_complete_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -3285,7 +3398,6 @@ view: sessions {
     sql:  ${gross_revenue_ex_discount_yesterday}/NULLIF(${orders_yesterday},0)::REAL ;;
   }
 
-
   measure: average_basket_ex_discount_lw {
     label: "LW"
     type: number
@@ -3294,7 +3406,7 @@ view: sessions {
     sql:  ${gross_revenue_ex_discount_lw}/NULLIF(${orders_yesterday_last_week},0)::REAL ;;
   }
 
-  measure: gross_revenue_ex_discount_wow {
+  measure: average_basket_ex_discount_year_to_date_yoy {
     label: "%"
     type: number
     value_format_name: percent_0
@@ -3356,6 +3468,38 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Average Basket Ex. Discount Reporting Measures"
     sql: (${average_basket_ex_discount_month_to_date} - ${average_basket_ex_discount_month_to_date_last_month})/NULLIF(${average_basket_ex_discount_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_last_complete_week {
+    label: "LCW"
+    type: number
+    sql: ${gross_revenue_ex_discount_last_complete_week}/nullif(${orders_last_complete_week},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_previous_complete_week {
+    label: "PCW"
+    type:  number
+    sql: ${gross_revenue_ex_discount_previous_complete_week}/nullif(${orders_previous_complete_week},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: average_basket_ex_discount_last_complete_week_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_last_complete_week} - ${average_basket_ex_discount_previous_complete_week})/NULLIF(${average_basket_ex_discount_previous_complete_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
