@@ -567,7 +567,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image_small, option_info.current_price_gbp,
+    fields: [option_info.option, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -587,7 +587,7 @@
     conditional_formatting_include_nulls: false
     top: 41
     left: 0
-    height: 7
+    height: 4
     width: 22
 
   - name: top_10_units
@@ -595,7 +595,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image_small, option_info.current_price_gbp,
+    fields: [option_info.option, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -613,9 +613,9 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 48
+    top: 45
     left: 0
-    height: 7
+    height: 4
     width: 22
 
   - name: top_10_lowest_cover
@@ -623,7 +623,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image_small, option_info.current_price_gbp,
+    fields: [option_info.option, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -644,9 +644,9 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 55
+    top: 49
     left: 0
-    height: 7
+    height: 4
     width: 22
 
   - name: top_10_highest_cover
@@ -654,7 +654,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image_small, option_info.current_price_gbp,
+    fields: [option_info.option, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -675,9 +675,9 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 62
+    top: 53
     left: 0
-    height: 7
+    height: 4
     width: 22
 
   - name: zero_selling_options
@@ -685,7 +685,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.option_image_small, option_info.current_price_gbp,
+    fields: [option_info.option, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -706,7 +706,7 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 69
+    top: 57
     left: 0
-    height: 14
+    height: 7
     width: 22

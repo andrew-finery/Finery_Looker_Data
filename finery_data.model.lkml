@@ -131,7 +131,7 @@ explore: ometria_email_data {}
 
 explore: facebook_api_ad_performance_breakdown {}
 
-explore: facebook_carousel_breakdown {}
+#explore: facebook_carousel_breakdown {}
 
 explore: fb_automated_ads_creatives {
   join: option_info {
@@ -450,7 +450,7 @@ explore: visitors {
   }
 }
 
-explore: spree_cms_product_information {}
+#explore: spree_cms_product_information {}
 
 explore: website_page_views {
   join: visits {
@@ -617,13 +617,13 @@ explore: redshift_load_errors {}
 
 explore: redshift_snowplow_loads {}
 
-explore: warehouse_consumables_yesterday {}
+#explore: warehouse_consumables_yesterday {}
 
-explore: warehouse_stock_yesterday {}
+#explore: warehouse_stock_yesterday {}
 
-explore: cml_orders {}
+#explore: cml_orders {}
 
-explore: parcel_tracking {}
+#explore: parcel_tracking {}
 
 explore: website_promo_block_click_through_daily {
   label: "Promo Block Click-Through"

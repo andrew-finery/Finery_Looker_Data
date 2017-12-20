@@ -1312,7 +1312,7 @@ view: facebook_api_ad_performance {
 
   measure: total_add_to_cart_l3d_average {
     label: "L3D Avg"
-    type: sum
+    type: number
     value_format_name: decimal_0
     sql: ${total_add_to_cart_l3d}/3 ;;
     group_label: "Total Add To Cart Reporting Measures"
@@ -1330,7 +1330,7 @@ view: facebook_api_ad_performance {
 
   measure: total_add_to_cart_l7d_average {
     label: "L7D Avg"
-    type: sum
+    type: number
     value_format_name: decimal_0
     sql: ${total_add_to_cart_l7d}/7 ;;
     group_label: "Total Add To Cart Reporting Measures"
