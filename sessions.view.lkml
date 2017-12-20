@@ -3526,7 +3526,7 @@ view: sessions {
     group_label: "Average Basket Ex. Discount Reporting Measures"
   }
 
-  measure: average_basket_ex_discount_year_to_date_yoy {
+  measure: average_basket_ex_discount_year_to_date_yoy_2 {
     label: "YTD YoY"
     type: number
     value_format_name: percent_0
