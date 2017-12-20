@@ -588,7 +588,7 @@
     top: 41
     left: 0
     height: 7
-    width: 12
+    width: 22
 
   - name: top_10_units
     title: Top 10 Products - Units
@@ -616,7 +616,7 @@
     top: 48
     left: 0
     height: 7
-    width: 12
+    width: 22
 
   - name: top_10_lowest_cover
     title: Top 10 Products - Lowest Cover
@@ -647,7 +647,7 @@
     top: 55
     left: 0
     height: 7
-    width: 12
+    width: 22
 
   - name: top_10_highest_cover
     title: Top 10 Products - Highest Cover
@@ -678,7 +678,7 @@
     top: 62
     left: 0
     height: 7
-    width: 12
+    width: 22
 
   - name: zero_selling_options
     title: Zero Selling Options (Top 20 Stock Units)
@@ -709,4 +709,4 @@
     top: 69
     left: 0
     height: 14
-    width: 12
+    width: 22
