@@ -567,7 +567,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.current_price_gbp,
+    fields: [option_info.shorthand_name, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -595,7 +595,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.current_price_gbp,
+    fields: [option_info.shorthand_name, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -623,7 +623,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.current_price_gbp,
+    fields: [option_info.shorthand_name, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -654,7 +654,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.current_price_gbp,
+    fields: [option_info.shorthand_name, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
@@ -685,7 +685,7 @@
     model: finery_data
     explore: product_info_option_daily
     type: table
-    fields: [option_info.option, option_info.current_price_gbp,
+    fields: [option_info.shorthand_name, option_info.current_price_gbp,
       option_info.category, option_info.weeks_online, option_info.size_availability,
       option_info.on_sale_flag, product_info_option_daily.gross_revenue_last_week, product_info_option_daily.margin_lw,
       product_info_option_daily.items_sold_lw, product_info_option_daily.closing_stock_units_last_week,
