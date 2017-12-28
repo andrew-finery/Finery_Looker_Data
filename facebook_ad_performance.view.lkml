@@ -1292,6 +1292,40 @@ view: facebook_api_ad_performance {
       ;;
   }
 
+  measure: total_spend_including_smartly_commission_lcw {
+    label: "LCW"
+    type: sum
+    value_format_name: gbp
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_pcw {
+    label: "PCW"
+    type: sum
+    value_format_name: gbp
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${calendar_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${amount_spent_including_smartly_commission} else 0 end ;;
+    group_label: "Total Spend Reporting Measures"
+  }
+
+  measure: total_spend_including_smartly_commission_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Spend Reporting Measures"
+    sql: (${total_spend_including_smartly_commission_lcw} - ${total_spend_including_smartly_commission_pcw})/NULLIF(${total_spend_including_smartly_commission_pcw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
+
   measure: total_add_to_cart_yesterday {
     label: "Actual"
     type: sum
@@ -1434,7 +1468,6 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: case when ${calendar_date} = current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
   }
 
   measure: orders_l3d {
@@ -1443,7 +1476,6 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
   }
 
   measure: orders_l3d_average {
@@ -1452,7 +1484,6 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: ${orders_l3d}/3 ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
   }
 
   measure: orders_l7d {
@@ -1461,7 +1492,6 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: case when ${calendar_date} between current_date - 7 and current_date -1 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
   }
 
   measure: orders_l7d_average {
@@ -1470,7 +1500,6 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: ${orders_l7d}/7 ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
   }
 
   measure: orders_lw {
@@ -1479,7 +1508,38 @@ view: facebook_api_ad_performance {
     value_format_name: decimal_0
     sql: case when ${calendar_date} = current_date - 8 then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
     group_label: "Orders Reporting Measures"
-    hidden: yes
+  }
+
+  measure: orders_lcw {
+    label: "LCW"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${calendar_date}) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_pcw {
+    label: "PCW"
+    type: sum
+    value_format_name: decimal_0
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${calendar_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then cast(coalesce(nullif(${purchase_facebook_pixel_1_day_after_clicking}, ''),'0') as integer) else 0 end ;;
+    group_label: "Orders Reporting Measures"
+  }
+
+  measure: orders_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_lcw} - ${orders_pcw})/NULLIF(${orders_pcw},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
   }
 
 
@@ -1563,9 +1623,41 @@ view: facebook_api_ad_performance {
         ;;
   }
 
+  measure: cost_per_order_lcw {
+    label: "LCW"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_lcw}/NULLIF(${orders_lcw},0)::REAL ;;
+    group_label: "Cost Per Order Reporting Measures"
+  }
+
+  measure: cost_per_order_pcw {
+    label: "PCW"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_pcw}/NULLIF(${orders_pcw},0)::REAL ;;
+    group_label: "Cost Per Order Reporting Measures"
+  }
+
+  measure: cost_per_order_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Cost Per Order Reporting Measures"
+    sql: (${cost_per_order_lcw} - ${cost_per_order_pcw})/NULLIF(${cost_per_order_pcw},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
   measure: revenue_1_day_after_clicking {
     type: sum
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: ${conversion_value_1_day_after_clicking} ;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1573,7 +1665,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_yesterday {
     label: "Actual"
     type: sum
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: case when ${calendar_date} = current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1581,7 +1673,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_l3d {
     label: "L3D"
     type: sum
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1589,7 +1681,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_l3d_average {
     label: "L3D Avg"
     type: number
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: ${revenue_1_day_after_clicking_l3d}/3  ;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1613,7 +1705,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_l7d {
     label: "L7D"
     type: sum
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: case when ${calendar_date} between current_date - 7 and current_date - 1 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1621,7 +1713,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_l7d_average {
     label: "L7D Avg"
     type: number
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: ${revenue_1_day_after_clicking_l7d}/7  ;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1645,7 +1737,7 @@ view: facebook_api_ad_performance {
   measure: revenue_1_day_after_clicking_lw {
     label: "LW"
     type: sum
-    value_format_name: decimal_2
+    value_format_name: pounds
     sql: case when ${calendar_date} = current_date - 8 then ${conversion_value_1_day_after_clicking} else 0 end;;
     group_label: "Revenue 1 Day Click Reporting Measures"
   }
@@ -1665,6 +1757,39 @@ view: facebook_api_ad_performance {
         {% endif %}
         ;;
   }
+
+  measure: revenue_1_day_after_clicking_lcw {
+    label: "LCW"
+    type: sum
+    value_format_name: pounds
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${calendar_date}) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${conversion_value_1_day_after_clicking} else 0 end ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_pcw {
+    label: "PCW"
+    type: sum
+    value_format_name: pounds
+    sql: case when (((${calendar_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${calendar_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${conversion_value_1_day_after_clicking} else 0 end ;;
+    group_label: "Revenue 1 Day Click Reporting Measures"
+  }
+
+  measure: revenue_1_day_after_clicking_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Revenue 1 Day Click Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_lcw} - ${revenue_1_day_after_clicking_pcw})/NULLIF(${revenue_1_day_after_clicking_pcw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
 
   measure: return_on_investment_yesterday {
     label: "Actual"
@@ -1736,6 +1861,38 @@ view: facebook_api_ad_performance {
     value_format_name: percent_0
     group_label: "ROI Reporting Measures"
     sql: (${return_on_investment_yesterday} - ${return_on_investment_lw})/NULLIF(${return_on_investment_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value > 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: return_on_investment_lcw {
+    label: "LCW"
+    type: number
+    value_format_name: decimal_0
+    group_label: "ROI Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_lcw}-${total_spend_including_smartly_commission_lcw})/NULLIF(${total_spend_including_smartly_commission_lcw},0);;
+  }
+
+  measure: return_on_investment_pcw {
+    label: "PCW"
+    type: number
+    value_format_name: decimal_0
+    group_label: "ROI Reporting Measures"
+    sql: (${revenue_1_day_after_clicking_pcw}-${total_spend_including_smartly_commission_pcw})/NULLIF(${total_spend_including_smartly_commission_pcw},0);;
+  }
+
+  measure: return_on_investment_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "ROI Reporting Measures"
+    sql: (${return_on_investment_lcw} - ${return_on_investment_pcw})/NULLIF(${return_on_investment_pcw},0)::REAL ;;
     html: {% if value < 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value > 0 %}

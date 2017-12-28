@@ -3296,16 +3296,16 @@ view: sessions {
 
   measure: gross_revenue_ex_discount_last_complete_week {
     label: "LCW"
-    type: number
-    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${gross_revenue_ex_discount} else 0 end) ;;
+    type: sum
+    sql: case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${gross_revenue_ex_discount} else 0 end ;;
     value_format_name: pounds_k
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
   }
 
   measure: gross_revenue_ex_discount_previous_complete_week {
     label: "PCW"
-    type:  number
-    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${gross_revenue_ex_discount} else 0 end) ;;
+    type:  sum
+    sql: case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${gross_revenue_ex_discount} else 0 end ;;
     value_format_name: pounds_k
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
   }
