@@ -423,7 +423,6 @@
       sessions.visits_last_complete_week_wow, sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
       sessions.visits_month_to_date_mom, sessions.visits_year_to_date, sessions.visits_year_to_date_last_year,
       sessions.visits_year_to_date_yoy]
-    fill_fields: [sessions.channel_grouping_3]
     sorts: [sessions.visits_last_complete_week desc]
     limit: 500
     column_limit: 50
@@ -640,11 +639,10 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.average_basket_ex_discount_last_complete_week,
-      sessions.average_basket_ex_discount_previous_complete_week, sessions.average_basket_ex_discount_last_complete_week_wow,
-      sessions.average_basket_ex_discount_month_to_date, sessions.average_basket_ex_discount_month_to_date_last_month,
-      sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
-      sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy_2]
-    fill_fields: [sessions.channel_grouping_4]
+    sessions.average_basket_ex_discount_previous_complete_week, sessions.average_basket_ex_discount_last_complete_week_wow,
+    sessions.average_basket_ex_discount_month_to_date, sessions.average_basket_ex_discount_month_to_date_last_month,
+    sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
+    sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy]
     sorts: [sessions.average_basket_ex_discount_last_complete_week desc]
     limit: 500
     column_limit: 50
