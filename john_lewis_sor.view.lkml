@@ -148,7 +148,7 @@ dimension: ean {
   measure: derived_stock_units_closing_yesterday {
     type: sum
     sql: ${TABLE}.derived_closing_stock;;
-    hidden: yes
+    hidden: no
     filters: {
       field: calendar_date
       value: "yesterday"
@@ -215,6 +215,16 @@ dimension: ean {
     type: sum
     value_format_name: pounds
     sql: ${price}*${TABLE}.derived_closing_stock;;
+    filters: {
+      field: calendar_day_of_week_index
+      value: "6"
+    }
+  }
+
+  measure: stock_units_eow {
+    type: sum
+    value_format_name: number
+    sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_day_of_week_index
       value: "6"
