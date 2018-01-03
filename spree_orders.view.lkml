@@ -74,6 +74,15 @@ view: spree_orders {
        ;;
   }
 
+  dimension: item_count_tier_up_to_3 {
+    label: "Items in Order Tier 3+"
+    sql: case
+      when ${TABLE}.item_count = 1 then '1'
+      when ${TABLE}.item_count = 2 then '2'
+      else '3+' end
+       ;;
+  }
+
   dimension: sale_item_count {
     type: number
     sql: ${TABLE}.on_sale_items ;;
