@@ -3361,7 +3361,7 @@ view: sessions {
   measure: gross_revenue_ex_discount_year_to_date {
     label: "YTD"
     type: sum
-    sql: case when ${start_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${gross_revenue_ex_discount} else 0 end ;;
+    sql: case when ${start_date} between date_trunc('year', current_date - 1) and current_date - 1 then ${gross_revenue_ex_discount} else 0 end ;;
     value_format_name:  pounds_k
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
   }

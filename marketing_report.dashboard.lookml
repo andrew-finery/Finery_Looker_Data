@@ -465,7 +465,7 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.gross_revenue_ex_discount_yesterday,
-      sessions.gross_revenue_ex_discount_lw, sessions.gross_Revenue_ex_discount_wow,
+      sessions.gross_revenue_ex_discount_lw, sessions.gross_revenue_ex_discount_wow,
       sessions.gross_revenue_ex_discount_yesterday_last_year, sessions.gross_revenue_ex_discount_yesterday_yoy,
       sessions.gross_revenue_ex_discount_month_to_date, sessions.gross_revenue_ex_discount_month_to_date_last_month,
       sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
@@ -473,7 +473,6 @@
     fill_fields: [sessions.channel_grouping_3]
     sorts: [sessions.gross_revenue_ex_discount_yesterday desc]
     limit: 500
-    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: false
@@ -485,8 +484,6 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    value_labels: legend
-    label_type: labPer
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -502,19 +499,12 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      sessions.orders_yesterday: Actual
-      sessions.visits_yesterday: Visits
-      sessions.conversion_yesterday: Actual
     width: 12
     height: 3
     top: 29
@@ -645,15 +635,14 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.average_basket_ex_discount_yesterday,
-      sessions.average_basket_ex_discount_lw, sessions.gross_revenue_ex_discount_wow,
+      sessions.average_basket_ex_discount_lw, sessions.average_basket_ex_discount_year_to_date_yoy,
       sessions.average_basket_ex_discount_yesterday_last_year, sessions.average_basket_ex_discount_yesterday_yoy,
       sessions.average_basket_ex_discount_month_to_date, sessions.average_basket_ex_discount_month_to_date_last_month,
       sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
-      sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy]
+      sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy_2]
     fill_fields: [sessions.channel_grouping_3]
     sorts: [sessions.average_basket_ex_discount_yesterday desc]
     limit: 500
-    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: false
@@ -665,8 +654,6 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    value_labels: legend
-    label_type: labPer
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -682,19 +669,12 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      sessions.orders_yesterday: Actual
-      sessions.visits_yesterday: Visits
-      sessions.conversion_yesterday: Actual
     width: 12
     height: 3
     top: 38
