@@ -1691,7 +1691,7 @@ view: sessions {
   measure: visits_year_to_date {
     label: "YTD"
     type: number
-    sql: count(distinct case when ${start_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${session_id} else null end) ;;
+    sql: count(distinct case when ${start_date} between date_trunc('year',current_date) and current_date-1  then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
   }
