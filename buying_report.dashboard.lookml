@@ -26,9 +26,10 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: Full Price
+      product_info_option_daily.on_sale_flag: 'No'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
+    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: true
@@ -86,7 +87,7 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: Full Price
+      product_info_option_daily.on_sale_flag: 'No'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
     total: true
@@ -146,7 +147,7 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: Full Price
+      product_info_option_daily.on_sale_flag: 'No'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
     total: true
@@ -206,7 +207,7 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: On Sale
+      product_info_option_daily.on_sale_flag: 'Yes'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
     total: true
@@ -266,7 +267,7 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: On Sale
+      product_info_option_daily.on_sale_flag: 'Yes'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
     total: true
@@ -326,7 +327,7 @@
       product_info_option_daily.product_views_lw, product_info_option_daily.product_conversion_lw,
       product_info_option_daily.product_impressions_lw]
     filters:
-      option_info.on_sale_flag: On Sale
+      product_info_option_daily.on_sale_flag: 'Yes'
     sorts: [product_info_option_daily.gross_revenue_lw desc]
     limit: 500
     total: true
