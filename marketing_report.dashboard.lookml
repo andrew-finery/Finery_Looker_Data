@@ -50,6 +50,9 @@
       Direct: "#2545aa"
       Search: "#ec8080"
       Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -100,6 +103,9 @@
       Direct: "#2545aa"
       Search: "#ec8080"
       Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -151,6 +157,9 @@
       Direct: "#2545aa"
       Search: "#ec8080"
       Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 6

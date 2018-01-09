@@ -10,10 +10,10 @@
     model: finery_data
     explore: sessions
     type: looker_pie
-    fields: [sessions.count, sessions.channel_grouping_3]
+    fields: [sessions.channel_grouping_3, sessions.count]
     fill_fields: [sessions.channel_grouping_3]
     filters:
-      session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
     sorts: [sessions.count desc]
     limit: 500
     column_limit: 50
@@ -36,16 +36,23 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
+    show_null_points: true
+    point_style: none
+    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    inner_radius: 0
-    colors: ["#62bad4", "#a9c574", "#929292", "#9fdee0", "#1f3e5a", "#90c8ae", "#875876",
-      "#c5c6a6", "#82c2ca", "#cee0a0", "#928fb4", "#9fc190"]
-    series_colors: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -60,7 +67,7 @@
     fields: [sessions.channel_grouping_3, sessions.sum_gross_revenue_ex_discount]
     fill_fields: [sessions.channel_grouping_3]
     filters:
-      session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
     sorts: [sessions.sum_gross_revenue_ex_discount desc]
     limit: 500
     column_limit: 50
@@ -83,16 +90,23 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
+    show_null_points: true
+    point_style: none
+    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    inner_radius: 0
-    colors: ["#62bad4", "#a9c574", "#929292", "#9fdee0", "#1f3e5a", "#90c8ae", "#875876",
-      "#c5c6a6", "#82c2ca", "#cee0a0", "#928fb4", "#9fc190"]
-    series_colors: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -107,7 +121,7 @@
     fields: [sessions.channel_grouping_3, sessions.sum_orders]
     fill_fields: [sessions.channel_grouping_3]
     filters:
-      session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
     sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: 50
@@ -130,16 +144,23 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
+    show_null_points: true
+    point_style: none
+    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    inner_radius: 0
-    colors: ["#62bad4", "#a9c574", "#929292", "#9fdee0", "#1f3e5a", "#90c8ae", "#875876",
-      "#c5c6a6", "#82c2ca", "#cee0a0", "#928fb4", "#9fc190"]
-    series_colors: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 6
