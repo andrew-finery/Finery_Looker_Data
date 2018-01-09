@@ -10,9 +10,11 @@
     model: finery_data
     explore: sessions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.visits_yesterday]
+    fields: [sessions.channel_grouping_3, sessions.count]
     fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.visits_yesterday desc]
+    filters:
+      session_start_calendar.calendar_date_date: 1 days ago for 1 days
+    sorts: [sessions.count desc]
     limit: 500
     column_limit: 50
     value_labels: labels
@@ -43,6 +45,11 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
     width: 6
     height: 6
     top: 0
@@ -88,6 +95,11 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
     width: 6
     height: 6
     top: 0
@@ -99,9 +111,11 @@
     model: finery_data
     explore: sessions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.orders_yesterday]
+    fields: [sessions.channel_grouping_3, sessions.sum_orders]
     fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.orders_yesterday desc]
+    filters:
+      session_start_calendar.calendar_date_date: 1 days ago for 1 days
+    sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: 50
     value_labels: labels
@@ -132,6 +146,11 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
     width: 6
     height: 6
     top: 6
