@@ -55,10 +55,8 @@
     explore: sessions
     type: table
     fields: [sessions.visits_yesterday, sessions.visits_yesterday_last_week, sessions.visits_yesterday_wow,
-      sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy, sessions.visits_target_yesterday,
-      sessions.visits_yeaterday_vs_target, sessions.visits_week_to_date, sessions.visits_week_to_date_last_week,
-      sessions.visits_week_to_date_wow, sessions.visits_week_to_date_last_year, sessions.visits_week_to_date_yoy,
-      sessions.visits_target_week_to_date, sessions.visits_week_to_date_vs_target]
+      sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy, sessions.visits_week_to_date, sessions.visits_week_to_date_last_week,
+      sessions.visits_week_to_date_wow, sessions.visits_week_to_date_last_year, sessions.visits_week_to_date_yoy]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -105,11 +103,9 @@
     type: table
     fields: [sessions.conversion_yesterday, sessions.conversion_yesterday_last_week,
       sessions.conversion_yesterday_wow, sessions.conversion_yesterday_last_year, sessions.conversion_yesterday_yoy,
-      sessions.conversion_target_yesterday, sessions.conversion_yeaterday_vs_target,
       sessions.conversion_week_to_date, sessions.conversion_week_to_date_last_week,
       sessions.conversion_week_to_date_wow, sessions.conversion_week_to_date_last_year,
-      sessions.conversion_week_to_date_yoy, sessions.conversion_target_week_to_date,
-      sessions.conversion_week_to_date_vs_target]
+      sessions.conversion_week_to_date_yoy]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -156,11 +152,9 @@
     type: table
     fields: [spree_orders.basket_yesterday, spree_orders.basket_yesterday_last_week,
       spree_orders.basket_yesterday_wow, spree_orders.basket_yesterday_last_year, spree_orders.basket_yesterday_yoy,
-      spree_orders.basket_target_yesterday, spree_orders.basket_yeaterday_vs_target,
       spree_orders.basket_week_to_date, spree_orders.basket_week_to_date_last_week,
       spree_orders.basket_week_to_date_wow, spree_orders.basket_week_to_date_last_year,
-      spree_orders.basket_week_to_date_yoy, spree_orders.basket_target_week_to_date,
-      spree_orders.basket_week_to_date_vs_target]
+      spree_orders.basket_week_to_date_yoy]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -207,11 +201,9 @@
     type: table
     fields: [spree_orders.revenue_yesterday, spree_orders.revenue_yesterday_last_week,
       spree_orders.revenue_yesterday_week_on_week, spree_orders.revenue_yesterday_last_year,
-      spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_target_yesterday,
-      spree_orders.revenue_yesterday_vs_target, spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw,
+      spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw,
       spree_orders.revenue_week_to_date_week_on_week, spree_orders.revenue_week_to_date_ly,
-      spree_orders.revenue_week_to_date_year_on_year, spree_orders.revenue_target_week_to_date,
-      spree_orders.revenue_week_to_date_vs_target]
+      spree_orders.revenue_week_to_date_year_on_year]
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -423,40 +415,6 @@
     left: 6
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   - name: traffic_long_term
     title: Traffic
     model: finery_data
@@ -464,7 +422,6 @@
     type: table
     fields: [sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
       sessions.visits_month_to_date_mom, sessions.visits_month_to_date_last_year, sessions.visits_month_to_date_yoy,
-      sessions.visits_target_month_to_date, sessions.visits_month_to_date_vs_target,
       sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
     limit: 500
     column_limit: 50
@@ -512,8 +469,7 @@
     type: table
     fields: [sessions.conversion_month_to_date, sessions.conversion_month_to_date_last_month,
       sessions.conversion_month_to_date_mom, sessions.conversion_month_to_date_last_year,
-      sessions.conversion_month_to_date_yoy, sessions.conversion_target_month_to_date,
-      sessions.conversion_month_to_date_vs_target, sessions.conversion_year_to_date,
+      sessions.conversion_month_to_date_yoy, sessions.conversion_year_to_date,
       sessions.conversion_year_to_date_last_year, sessions.conversion_year_to_date_yoy]
     limit: 500
     column_limit: 50
@@ -561,8 +517,7 @@
     type: table
     fields: [spree_orders.basket_month_to_date, spree_orders.basket_month_to_date_last_month,
       spree_orders.basket_month_to_date_mom, spree_orders.basket_month_to_date_last_year,
-      spree_orders.basket_month_to_date_yoy, spree_orders.basket_target_month_to_date,
-      spree_orders.basket_month_to_date_vs_target, spree_orders.basket_year_to_date,
+      spree_orders.basket_month_to_date_yoy, spree_orders.basket_year_to_date,
       spree_orders.basket_year_to_date_last_year, spree_orders.basket_year_to_date_yoy]
     limit: 500
     column_limit: 50
@@ -615,8 +570,7 @@
     type: table
     fields: [spree_orders.revenue_month_to_date, spree_orders.revenue_month_to_date_last_month,
       spree_orders.revenue_month_to_date_month_on_month, spree_orders.revenue_month_to_date_last_year,
-      spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_target_month_to_date,
-      spree_orders.revenue_month_to_date_vs_target, spree_orders.revenue_year_to_date,
+      spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_year_to_date,
       spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
     limit: 500
     column_limit: 50
