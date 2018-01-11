@@ -91,6 +91,9 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_labels:
+      sessions.visits_yesterday: Actual
+      sessions.visits_yesterday_last_week: LW
     height: 1
     width: 12
     top: 1

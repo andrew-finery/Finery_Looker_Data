@@ -2107,7 +2107,7 @@ view: spree_orders {
   measure: orders_year_to_date {
     label: "YTD"
     type: number
-    sql: count(distinct case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${order_id} else 0 end) ;;
+    sql: count(distinct case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ${order_id} else 0 end) ;;
     value_format_name: thousands
     group_label: "Order Reporting Measures"
   }

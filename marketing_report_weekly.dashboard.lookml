@@ -441,7 +441,8 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.visits_last_complete_week, sessions.visits_previous_complete_week,
-      sessions.visits_last_complete_week_wow, sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
+      sessions.visits_last_complete_week_wow, sessions.visits_last_complete_week_last_year, sessions.visits_last_complete_week_last_year_yoy,
+      sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
       sessions.visits_month_to_date_mom, sessions.visits_year_to_date, sessions.visits_year_to_date_last_year,
       sessions.visits_year_to_date_yoy]
     sorts: [sessions.visits_last_complete_week desc]
@@ -494,6 +495,7 @@
     type: table
     fields: [sessions.channel_grouping_3, sessions.gross_revenue_ex_discount_last_complete_week,
       sessions.gross_revenue_ex_discount_previous_complete_week, sessions.gross_revenue_ex_discount_last_complete_week_wow,
+      sessions.gross_revenue_ex_discount_last_complete_week_last_year, sessions.gross_revenue_ex_discount_last_complete_week_last_year_yoy
       sessions.gross_revenue_ex_discount_month_to_date, sessions.gross_revenue_ex_discount_month_to_date_last_month,
       sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
       sessions.gross_revenue_ex_discount_year_to_date_last_year, sessions.gross_revenue_ex_discount_year_to_date_yoy]
@@ -548,7 +550,8 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.orders_last_complete_week, sessions.orders_previous_complete_week,
-      sessions.orders_last_complete_week_wow, sessions.orders_month_to_date, sessions.orders_month_to_date_last_month,
+      sessions.orders_last_complete_week_wow, sessions.orders_last_complete_week_last_year, sessions.orders_last_complete_week_last_year_yoy,
+      sessions.orders_month_to_date, sessions.orders_month_to_date_last_month,
       sessions.orders_month_to_date_month_on_month, sessions.orders_year_to_date, sessions.orders_year_to_date_last_year,
       sessions.orders_year_to_date_year_on_year]
     fill_fields: [sessions.channel_grouping_3]
@@ -603,7 +606,7 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.conversion_last_complete_week, sessions.conversion_previous_complete_week,
-      sessions.conversion_last_complete_week_wow, sessions.conversion_month_to_date,
+      sessions.conversion_last_complete_week_wow, sessions.conversion_last_complete_week_last_year, sessions.conversion_last_complete_week_last_year_yoy, sessions.conversion_month_to_date,
       sessions.conversion_month_to_date_last_month, sessions.conversion_month_to_date_mom,
       sessions.conversion_year_to_date, sessions.conversion_year_to_date_last_year,
       sessions.conversion_year_to_date_yoy]
@@ -661,6 +664,7 @@
     type: table
     fields: [sessions.channel_grouping_3, sessions.average_basket_ex_discount_last_complete_week,
     sessions.average_basket_ex_discount_previous_complete_week, sessions.average_basket_ex_discount_last_complete_week_wow,
+    sessions.average_basket_ex_discount_last_complete_week_last_year, sessions.average_basket_ex_discount_last_complete_week_last_year_yoy,
     sessions.average_basket_ex_discount_month_to_date, sessions.average_basket_ex_discount_month_to_date_last_month,
     sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
     sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy]

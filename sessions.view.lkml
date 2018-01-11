@@ -1640,6 +1640,14 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
+  measure: visits_last_complete_week_last_year {
+    label: "LCW - LY"
+    type:  number
+    sql: count(distinct case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${session_id} else null end);;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+    }
+
   measure: visits_week_to_date {
     label: "WTD"
     type: number
@@ -1765,6 +1773,22 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Traffic Reporting Measures"
     sql: (${visits_yesterday} - ${visits_yesterday_last_year})/NULLIF(${visits_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: visits_last_complete_week_last_year_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Traffic Reporting Measures"
+    sql: (${visits_last_complete_week} - ${visits_last_complete_week_last_year})/NULLIF(${visits_last_complete_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -1949,12 +1973,35 @@ view: sessions {
     group_label: "Orders Reporting Measures"
   }
 
+  measure: orders_last_complete_week_last_year {
+    label: "LCW - LY"
+    type:  number
+    sql: sum(case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${orders} else 0 end);;
+    group_label: "Orders Reporting Measures"
+  }
+
   measure: orders_yesterday_year_on_year {
     label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Orders Reporting Measures"
     sql: (${orders_yesterday} - ${orders_yesterday_last_year})/NULLIF(${orders_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: orders_last_complete_week_last_year_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Orders Reporting Measures"
+    sql: (${orders_last_complete_week} - ${orders_last_complete_week_last_year})/NULLIF(${orders_last_complete_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -2248,6 +2295,14 @@ view: sessions {
     group_label: "Conversion Rate Reporting Measures"
   }
 
+  measure: conversion_last_complete_week_last_year {
+    label: "LCW - LY"
+    type: number
+    sql: ${orders_last_complete_week_last_year}/NULLIF(${visits_last_complete_week_last_year},0)::REAL ;;
+    value_format_name: percent_1
+    group_label: "Conversion Rate Reporting Measures"
+  }
+
   measure: conversion_week_to_date {
     label: "WTD"
     type: number
@@ -2454,6 +2509,22 @@ view: sessions {
     value_format_name: percent_0
     group_label: "Conversion Rate Reporting Measures"
     sql: (${conversion_last_complete_week} - ${conversion_previous_complete_week})/NULLIF(${conversion_previous_complete_week},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: conversion_last_complete_week_last_year_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Rate Reporting Measures"
+    sql: (${conversion_last_complete_week} - ${conversion_last_complete_week_last_year})/NULLIF(${conversion_last_complete_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -3278,12 +3349,36 @@ view: sessions {
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
   }
 
+  measure: gross_revenue_ex_discount_last_complete_week_last_year {
+    label: "LCW - LY"
+    type:  number
+    sql: sum(case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${gross_revenue_ex_discount} else 0 end);;
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    value_format_name: pounds_k
+  }
+
   measure: gross_revenue_ex_discount_yesterday_yoy {
     label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
     sql: (${gross_revenue_ex_discount_yesterday} - ${gross_revenue_ex_discount_yesterday_last_year})/NULLIF(${gross_revenue_ex_discount_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: gross_revenue_ex_discount_last_complete_week_last_year_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_last_complete_week} - ${gross_revenue_ex_discount_last_complete_week_last_year})/NULLIF(${gross_revenue_ex_discount_last_complete_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
@@ -3430,12 +3525,36 @@ view: sessions {
     group_label: "Average Basket Ex. Discount Reporting Measures"
   }
 
+  measure: average_basket_ex_discount_last_complete_week_last_year {
+    label: "LCW - LY"
+    type: number
+    sql: ${gross_revenue_ex_discount_last_complete_week_last_year}/NULLIF(${orders_last_complete_week_last_year},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
   measure: average_basket_ex_discount_yesterday_yoy {
     label: "YoY"
     type: number
     value_format_name: percent_0
     group_label: "Average Basket Ex. Discount Reporting Measures"
     sql: (${average_basket_ex_discount_yesterday} - ${average_basket_ex_discount_yesterday_last_year})/NULLIF(${average_basket_ex_discount_yesterday_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: average_basket_ex_discount_last_complete_week_last_year_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_last_complete_week} - ${average_basket_ex_discount_last_complete_week_last_year})/NULLIF(${average_basket_ex_discount_last_complete_week_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
