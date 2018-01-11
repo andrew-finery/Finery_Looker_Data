@@ -778,12 +778,7 @@ view: spree_order_items {
     type: number
     value_format_name: decimal_2
     group_label: "Gross Revenue ex Discount & VAT Measures"
-    sql: sum (
-      case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
-      and ${order_time_date} between current_date - 400 and current_date - 300
-      then ${gross_item_revenue_ex_discount_ex_vat_gbp} else null end
-      )
-      ;;
+    sql: sum (case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${order_time_date} between current_date - 400 and current_date - 300 then ${gross_item_revenue_ex_discount_ex_vat_gbp} else null end) ;;
   }
 
 

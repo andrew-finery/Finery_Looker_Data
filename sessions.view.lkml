@@ -58,6 +58,7 @@ view: sessions {
       hour_of_day,
       day_of_week,
       week,
+      week_of_year,
       month,
       year
     ]
@@ -1643,7 +1644,7 @@ view: sessions {
   measure: visits_last_complete_week_last_year {
     label: "LCW - LY"
     type:  number
-    sql: count(distinct case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${session_id} else null end);;
+    sql: count(distinct case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${session_id} else null end);;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
     }
@@ -1976,7 +1977,7 @@ view: sessions {
   measure: orders_last_complete_week_last_year {
     label: "LCW - LY"
     type:  number
-    sql: sum(case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${orders} else 0 end);;
+    sql: sum(case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${orders} else 0 end);;
     group_label: "Orders Reporting Measures"
   }
 
@@ -3352,7 +3353,7 @@ view: sessions {
   measure: gross_revenue_ex_discount_last_complete_week_last_year {
     label: "LCW - LY"
     type:  number
-    sql: sum(case when ${start_date} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${gross_revenue_ex_discount} else 0 end);;
+    sql: sum(case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${gross_revenue_ex_discount} else 0 end);;
     group_label: "Gross Revenue Ex. Discount Reporting Measures"
     value_format_name: pounds_k
   }
