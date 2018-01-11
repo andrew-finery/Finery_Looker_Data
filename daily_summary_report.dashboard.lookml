@@ -674,12 +674,11 @@
     model: finery_data
     explore: transactions
     type: table
-    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+    fields: [website_visits.channel_grouping_3, transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
       transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
       transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
       transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
-      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
-      transactions.conversion_channel]
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year]
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
@@ -731,12 +730,11 @@
     model: finery_data
     explore: transactions
     type: table
-    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+    fields: [website_visits.device_type, transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
       transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
       transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
       transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
-      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
-      transactions.conversion_device]
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year]
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
@@ -788,12 +786,11 @@
     model: finery_data
     explore: transactions
     type: table
-    fields: [transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+    fields: [order_address_info.country_group, transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
       transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
       transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
       transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
-      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year,
-      transactions.conversion_country]
+      transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year]
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
