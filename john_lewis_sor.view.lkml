@@ -543,7 +543,7 @@ dimension: ean {
   measure: units_gross_last_week {
     type: sum
     sql: ${sales_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Gross Units LW"
     group_label: "Buying Report Measures"
 
@@ -556,7 +556,7 @@ dimension: ean {
   measure: units_gross_week_before_last {
     type: sum
     sql: ${sales_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Gross Units PW"
     group_label: "Buying Report Measures"
 

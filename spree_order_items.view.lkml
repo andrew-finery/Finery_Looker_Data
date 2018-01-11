@@ -1041,7 +1041,7 @@ view: spree_order_items {
   measure: items_sold_tw_ly {
     label: "TW - LY"
     type: number
-    value_format_name: integer
+    value_format_name: decimal_0
     group_label: "Items Sold Measures"
     sql: sum (
       case when ${order_time_week_of_year} = EXTRACT(WEEK FROM current_date - 7)

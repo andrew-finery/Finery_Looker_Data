@@ -18,18 +18,6 @@ view: transactions {
     hidden: yes
   }
 
-  dimension: conversion_channel {
-    sql: case when ${domain_userid} is null then 'Untracked' else ${website_visits.channel_grouping_3} end ;;
-  }
-
-  dimension: conversion_device {
-    sql: case when ${domain_userid} is null then 'Untracked' else ${website_visits.device_type} end ;;
-  }
-
-  dimension: conversion_country {
-    sql: case when ${domain_userid} is null then 'Untracked' else ${website_visits.geography_country_uk_flag} end ;;
-  }
-
   dimension: order_id {
     primary_key: yes
     type: number

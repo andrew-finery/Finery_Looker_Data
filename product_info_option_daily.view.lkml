@@ -654,7 +654,7 @@ view: product_info_option_daily {
     label: "Units Sold LW"
     group_label: "Buying Report Measures"
     type: sum
-    value_format_name: integer
+    value_format_name: decimal_0
     sql: ${items_sold} ;;
     filters: {
       field: calendar_date_date
@@ -666,7 +666,7 @@ view: product_info_option_daily {
     label: "Units Sold PW"
     group_label: "Buying Report Measures"
     type: sum
-    value_format_name: integer
+    value_format_name: decimal_0
     sql: ${items_sold} ;;
     filters: {
       field: calendar_date_date
@@ -695,7 +695,7 @@ view: product_info_option_daily {
     label: "Returns Intake LW"
     group_label: "Buying Report Measures"
     type: sum
-    value_format_name: integer
+    value_format_name: decimal_0
     sql: ${return_intake_units} ;;
     filters: {
       field: calendar_date_date
@@ -993,7 +993,7 @@ view: product_info_option_daily {
     type: sum
     label: "Product Views Last Week"
     group_label: "Buying Report Measures"
-    value_format_name: integer
+    value_format_name: decimal_0
     sql: ${product_page_views} ;;
     filters: {
       field: calendar_date_date
@@ -1006,7 +1006,7 @@ view: product_info_option_daily {
     type: sum
     group_label: "Buying Report Measures"
     label: "Stock Units Last Week"
-    value_format_name: integer
+    value_format_name: decimal_0
     sql: ${closing_stock} ;;
     filters: {
       field: calendar_date_date
