@@ -495,7 +495,7 @@
     type: table
     fields: [sessions.channel_grouping_3, sessions.gross_revenue_ex_discount_last_complete_week,
       sessions.gross_revenue_ex_discount_previous_complete_week, sessions.gross_revenue_ex_discount_last_complete_week_wow,
-      sessions.gross_revenue_ex_discount_last_complete_week_last_year, sessions.gross_revenue_ex_discount_last_complete_week_last_year_yoy
+      sessions.gross_revenue_ex_discount_last_complete_week_last_year, sessions.gross_revenue_ex_discount_last_complete_week_last_year_yoy,
       sessions.gross_revenue_ex_discount_month_to_date, sessions.gross_revenue_ex_discount_month_to_date_last_month,
       sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
       sessions.gross_revenue_ex_discount_year_to_date_last_year, sessions.gross_revenue_ex_discount_year_to_date_yoy]
