@@ -383,6 +383,11 @@ view: sessions {
         label: "Canada"
       }
 
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'CN' ;;
+        label: "China"
+      }
+
       else: "Other"
     }
   }
