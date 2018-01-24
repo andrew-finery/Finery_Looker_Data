@@ -757,6 +757,11 @@ view: spree_orders {
     }
   }
 
+  measure: all_items_discounted {
+    type: yesno
+    sql: ${sale_item_count} = ${total_items} ;;
+  }
+
   measure: new_customers_with_discount {
     label: "New Customers with Discount"
     type: count_distinct
