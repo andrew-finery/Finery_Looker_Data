@@ -831,7 +831,12 @@ view: spree_order_items {
     }
   }
 
-
+  measure: gross_rev_ex_discount {
+    label: "Gross Revenue ex Discount"
+    type: sum
+    sql: ${gross_item_revenue_ex_voucher_discount_gbp} ;;
+    value_format_name: decimal_2
+  }
 
   measure: gross_rev_ex_discount_tw {
     label: "TW"
