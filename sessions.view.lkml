@@ -1625,7 +1625,7 @@ view: sessions {
   measure: visits_previous_complete_week {
     label: "PCW"
     type:  number
-    sql: count(distinct case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND (${start_date}) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ) ))))) then ${session_id} else null end) ;;
+    sql: count(distinct case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${session_id} else null end) ;;
     value_format_name: thousands
     group_label: "Traffic Reporting Measures"
   }
