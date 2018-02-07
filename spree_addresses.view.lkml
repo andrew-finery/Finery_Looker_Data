@@ -34,8 +34,34 @@ view: spree_addresses {
     sql: case when ${country} = 'United Kingdom' then 'UK'
     when ${country} = 'Ireland' then 'Ireland'
     when  ${country} = 'United States' then 'United States' else 'Other' end  ;;
-
   }
+
+  dimension: geography_continent {
+    label: "Geo - Continent"
+    sql: case when ${country} = 'United Kingdom' then 'Europe'
+    when ${country} = 'Ireland' then 'Europe'
+    when ${country} = 'United States' then 'North America'
+    when ${country} = 'Australia' then 'Austrailia'
+    when ${country} = 'Canada' then 'North America'
+    when ${country} = 'Germany' then 'Europe'
+    when ${country} = 'France' then 'Europe'
+    when ${country} = 'Hong Kong' then 'Asia'
+    when ${country} = 'Spain' then 'Europe'
+    when ${country} = 'Italy' then 'Europe'
+    when ${country} = 'Singapore' then 'Asia'
+    when ${country} = 'Netherlands' then 'Europe'
+    when ${country} = 'Belgium' then 'Europe'
+    when ${country} = 'Denmark' then 'Europe'
+    when ${country} = 'Sweden' then 'Europe'
+    when ${country} = 'United Arab Emirates' then 'Asia'
+    when ${country} = 'New Zealand' then 'Australia'
+    when ${country} = 'Austria' then 'Europe'
+    when ${country} = 'Switzerland' then 'Europe'
+    when ${country} = 'Philippines' then 'Asia'
+    when ${country} = 'Luxembourg' then 'Europe'
+    when ${country} = 'Norway' then 'Europe' else 'Other' end ;;
+  }
+
 
   dimension: london_flag {
     sql: case when ${TABLE}.map_postcode in ('E', 'EC', 'N', 'NW', 'SE', 'SW', 'W', 'WC') then 'London' else 'Non-London' end ;;
