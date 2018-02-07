@@ -41,7 +41,7 @@ view: spree_addresses {
     sql: case when ${country} = 'United Kingdom' then 'Europe'
     when ${country} = 'Ireland' then 'Europe'
     when ${country} = 'United States' then 'North America'
-    when ${country} = 'Australia' then 'Austrailia'
+    when ${country} = 'Australia' then 'Australia'
     when ${country} = 'Canada' then 'North America'
     when ${country} = 'Germany' then 'Europe'
     when ${country} = 'France' then 'Europe'

@@ -1617,6 +1617,18 @@ view: spree_orders {
     }
   }
 
+  measure: sum_net_revenue_gbp_ex_vat_ex_shipping {
+    label: "Net Revenue ex. VAT & Shipping"
+    type: sum
+    sql: (((${item_total} - ${return_item_total})*(1/(1+${tax_rate}))) - ${shipping_total}) / ${exchange_rate} ;;
+    value_format_name: decimal_2
+
+    filters: {
+      field: state
+      value: "-canceled"
+    }
+  }
+
   measure: sum_net_revenue_ex_discount {
     type: sum
     sql: ${item_total} - ${discount} - ${amount_refunded} + ${shipping_total} ;;
