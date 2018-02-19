@@ -33,6 +33,10 @@ view: facebook_api_ad_performance {
        ;;
   }
 
+  dimension: dpa_vs_non_dpa {
+    sql: case when ${TABLE}.campaign_name like '%_DPA' then 'DPA' else 'Non DPA' end ;;
+  }
+
   dimension: country {
     sql: case when ${TABLE}.campaign_name like '%UK%' then 'UK'
       when ${TABLE}.campaign_name like '%USA%' then 'US'
@@ -753,25 +757,21 @@ view: facebook_api_ad_performance {
   dimension: view_content_facebook_pixel {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_1_day_after_clicking {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_1_day_after_clicking ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_28_days_after_clicking {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_28_days_after_clicking ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_7_days_after_clicking {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_7_days_after_clicking ;;
-    hidden: yes
   }
 
   dimension: website_actions_all {
