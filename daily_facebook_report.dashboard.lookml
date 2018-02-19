@@ -816,7 +816,7 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 20
+    top: 16
     left: 2
     height: 2
     width: 9
@@ -872,7 +872,7 @@
     totals_color: "#808080"
     series_types: {}
     hidden_fields: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday]
-    top: 22
+    top: 18
     left: 2
     height: 2
     width: 9
@@ -927,7 +927,7 @@
     totals_color: "#808080"
     series_types: {}
     hidden_fields: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday]
-    top: 24
+    top: 20
     left: 2
     height: 2
     width: 9
