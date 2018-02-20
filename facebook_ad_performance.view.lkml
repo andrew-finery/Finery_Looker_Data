@@ -27,6 +27,15 @@ view: facebook_api_ad_performance {
        ;;
   }
 
+  dimension: buyer_type {
+    sql: case when ${TABLE}.campaign_name like '%_LapsedBuyers%' then 'Lapsed Buyers'
+      when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
+      when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
+      when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers'
+      when ${TABLE}.capmaign_name like '%Retention%' then 'Buyers' else null end
+       ;;
+  }
+
   dimension: aa_vs_custom {
     sql: case when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' then 'Custom'
       else 'AA' end
