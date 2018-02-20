@@ -1,14 +1,6 @@
 view: facebook_api_ad_performance {
   sql_table_name: facebook_data.facebook_ad_performance ;;
 
-  dimension: dpa_type {
-    sql: case when ${TABLE}.campaign_name like '%AddToCart%' then 'AddToCart'
-      when ${TABLE}.campaign_name like '%Addtocart%' then 'AddToCart'
-      when ${TABLE}.campaign_name like '%ProductViewed%' then 'ProductViewed'
-      when ${TABLE}.campaign_name like '%productviewed%' then 'ProductViewed'end
-       ;;
-  }
-
   dimension: audience_segment {
     sql: case when ${TABLE}.campaign_name like '%Acquisition%' then 'NonBuyers - Acquisition'
       when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
@@ -32,7 +24,7 @@ view: facebook_api_ad_performance {
       when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
       when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
       when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers'
-      when ${TABLE}.capmaign_name like '%Retention%' then 'Buyers' else null end
+      when ${TABLE}.campaign_name like '%Retention%' then 'Buyers' else null end
        ;;
   }
 
