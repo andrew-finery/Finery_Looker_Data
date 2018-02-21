@@ -5,26 +5,17 @@ view: facebook_api_ad_performance {
     sql: case when ${TABLE}.campaign_name like '%Acquisition%' then 'NonBuyers - Acquisition'
       when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
       when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
-      when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_NonBuyers%'then 'NonBuyers - DPA'
       when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - CA'
-      when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - DPA' end
+      when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_LapsedBuyers%'  then 'Lapsed Buyers' end
        ;;
   }
 
-  dimension: buyers_vs_nonbuyers {
+  dimension: cpa_buyer_type {
     sql: case when ${TABLE}.campaign_name like '%Retention%' then 'Buyers'
       when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
       when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else null end
-       ;;
-  }
-
-  dimension: buyer_type {
-    sql: case when ${TABLE}.campaign_name like '%_LapsedBuyers%' then 'Lapsed Buyers'
-      when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
-      when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
       when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%Retention%' then 'Buyers' else null end
+      when ${TABLE}.campaign_name like '%_LapsedBuyers%' then 'Lapsed Buyers' else null end
        ;;
   }
 
@@ -914,6 +905,9 @@ view: facebook_api_ad_performance {
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL ;;
   }
 
+
+######################################################################################### COST PER MEASURES ######################################################################
+
   measure: cost_per_click {
     label: "CPC"
     type: number
@@ -926,6 +920,14 @@ view: facebook_api_ad_performance {
     type: number
     value_format_name: decimal_2
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL ;;
+  }
+
+  measure: cost_per_mille_yesterday {
+    label: "Actual"
+    type: sum
+    value_format_name: decimal_2
+    sql: case when ${calendar_date} = current_date - 1 then ${cost_per_mille} else 0 end ::REAL ;;
+    group_label: "CPM Reporting Measures"
   }
 
   measure: unique_users {
