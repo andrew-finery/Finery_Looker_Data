@@ -1142,7 +1142,7 @@ view: facebook_api_ad_performance {
   measure: cost_per_mille_yesterday {
     label: "Actual"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_yesterday_1000}/NULLIF(${total_impressions_yesterday},0)::REAL ;;
     group_label: "CPM Reporting Measures"
   }
@@ -1150,15 +1150,31 @@ view: facebook_api_ad_performance {
   measure: cost_per_mille_lw {
     label: "LW"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_lw_1000}/ NULLIF(${total_impressions_lw},0) ::REAL ;;
     group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_lw})/NULLIF(${cost_per_mille_lw},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: cost_per_mille_l3d {
     label: "L3D"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_l3d_1000}/ NULLIF(${total_impressions_l3d},0) ::REAL ;;
     group_label: "CPM Reporting Measures"
   }
@@ -1166,15 +1182,31 @@ view: facebook_api_ad_performance {
   measure: cost_per_mille_l3d_avg {
     label: "L3D Avg"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_l3d_avg_1000}/ NULLIF(${total_impressions_l3d_avg},0) ::REAL ;;
     group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_vs_l3d_avg {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_l3d_avg})/NULLIF(${cost_per_mille_l3d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: cost_per_mille_l7d {
     label: "L7D"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_l7d_1000}/ NULLIF(${total_impressions_l7d},0) ::REAL ;;
     group_label: "CPM Reporting Measures"
   }
@@ -1182,9 +1214,105 @@ view: facebook_api_ad_performance {
   measure: cost_per_mille_l7d_avg {
     label: "L7D Avg"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${total_spend_l7d_avg_1000}/ NULLIF(${total_impressions_l7d_avg},0) ::REAL ;;
     group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_vs_l7d_avg {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_l7d_avg})/NULLIF(${cost_per_mille_l7d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: percent_2
+    sql: ${total_clicks_yesterday}/ NULLIF(${total_impressions_yesterday},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_lw {
+    label: "LW"
+    type:  number
+    value_format_name: percent_2
+    sql: ${total_clicks_lw}/ NULLIF(${total_impressions_lw},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_lw})/NULLIF(${click_through_rate_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    value_format_name: percent_2
+    sql: ${total_clicks_l3d_avg}/ NULLIF(${total_impressions_l3d_avg},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_vs_l3d_avg {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_l3d_avg})/NULLIF(${click_through_rate_l3d_avg},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_l7d_avg {
+    label: "L7D Avg"
+    type:  number
+    value_format_name: percent_2
+    sql: ${total_clicks_l7d_avg}/ NULLIF(${total_impressions_l7d_avg},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_vs_l7d_avg {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_l7d_avg})/NULLIF(${click_through_rate_l7d_avg},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: unique_users {
