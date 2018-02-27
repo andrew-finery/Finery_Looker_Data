@@ -351,7 +351,7 @@ explore: spree_order_items {
 }
 
 explore: daily_sales {
-  always_join: [variant_info, option_info, option_info_daily]
+  always_join: [product_info_variants, option_info, product_info_option_daily]
   fields: [ALL_FIELDS*, -option_info.option_for_returns_report]
 
   join: calendar_weeks {
@@ -359,21 +359,21 @@ explore: daily_sales {
     relationship: many_to_one
   }
 
-  join: variant_info {
-    from: product_info_variants
-    sql_on: ${daily_sales.sku} = ${variant_info.ean} ;;
+  join: product_info_variants {
+    view_label: "Variant Info"
+    sql_on: ${daily_sales.sku} = ${product_info_variants.ean} ;;
     relationship: many_to_one
   }
 
   join: option_info {
     from: product_info_options
-    sql_on: ${option_info.option_id} = ${variant_info.option_id} ;;
+    sql_on: ${option_info.option_id} = ${product_info_variants.option_id} ;;
     relationship: many_to_one
   }
 
-  join: option_info_daily {
-    from: product_info_option_daily
-    sql_on: ${daily_sales.calendar_date_date} = ${option_info_daily.calendar_date_date} and ${variant_info.option_id} = ${option_info_daily.option_id} ;;
+  join: product_info_option_daily {
+    view_label: "Option Info Daily"
+    sql_on: ${daily_sales.calendar_date_date} = ${product_info_option_daily.calendar_date_date} and ${product_info_variants.option_id} = ${product_info_option_daily.option_id} ;;
     relationship: many_to_one
   }
 
@@ -440,6 +440,17 @@ explore: product_info_option_daily {
     sql_on: ${option_info.option_id} = ${product_info_option_daily.option_id} ;;
     relationship: many_to_one
   }
+
+  join: daily_sales {
+    from: daily_sales
+    required_joins: [option_info]
+    sql_on: ${product_info_option_daily.calendar_date_date} = ${daily_sales.calendar_date_date} ;;
+#     and ${option_info.option_id} = ${product_info_option_daily.option_id}  ;;
+    relationship: one_to_one
+  }
+
+  join: product_info_variants {}
+
 }
 
 explore: visitors {

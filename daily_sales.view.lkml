@@ -60,16 +60,16 @@ view: daily_sales {
   dimension: price {
     type: number
     value_format_name: decimal_2
-    sql: coalesce(${option_info_daily.price}, ${option_info.current_price_gbp}) ;;
+    sql: coalesce(${product_info_option_daily.price}, ${option_info.current_price_gbp}) ;;
   }
 
   dimension: original_price {
     type: number
     value_format_name: decimal_2
     sql: case
-      when ${option_info_daily.pre_sale_price} is null then ${price}
-      when ${price} >= ${option_info_daily.pre_sale_price} then ${price}
-      else coalesce(${option_info_daily.pre_sale_price}, ${option_info.current_price_gbp}) end
+      when ${product_info_option_daily.pre_sale_price} is null then ${price}
+      when ${price} >= ${product_info_option_daily.pre_sale_price} then ${price}
+      else coalesce(${product_info_option_daily.pre_sale_price}, ${option_info.current_price_gbp}) end
        ;;
   }
 
@@ -159,7 +159,7 @@ view: daily_sales {
   measure: sum_returns_value_cost {
     label: "Returns Value @ Cost"
     type: sum
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${TABLE}.items_returned ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0)*${TABLE}.items_returned ;;
   }
 
   measure: sum_items_sold_after_returns {
@@ -296,14 +296,14 @@ view: daily_sales {
     label: "Gross Cost of Goods Sold"
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
   }
 
   measure: sum_net_cost_gbp {
     label: "Net Cost of Goods Sold"
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold_after_returns ;;
   }
 
   measure: gross_margin_percent {
@@ -408,7 +408,7 @@ view: daily_sales {
     label: "Closing Stock Value @ Cost"
     type: sum
     value_format_name: decimal_2
-    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    sql: ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) ;;
     group_label: "Closing Stock Value @ Cost Measures"
   }
 
@@ -416,7 +416,7 @@ view: daily_sales {
     label: "Closing Stock Value @ Cost - Yesterday"
     type: sum
     value_format_name: decimal_2
-    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    sql: ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) ;;
     group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
@@ -429,7 +429,7 @@ view: daily_sales {
     label: "Closing Stock Value @ Cost - Last Week"
     type: sum
     value_format_name: decimal_2
-    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    sql: ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) ;;
     group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
@@ -447,7 +447,7 @@ view: daily_sales {
     label: "Closing Stock Value @ Cost - 2 Weeks Ago"
     type: sum
     value_format_name: decimal_2
-    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    sql: ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) ;;
     group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
@@ -465,7 +465,7 @@ view: daily_sales {
     label: "Closing Stock Value @ Cost - End of Week"
     type: sum
     value_format_name: decimal_2
-    sql: ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) ;;
+    sql: ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) ;;
     group_label: "Closing Stock Value @ Cost Measures"
 
     filters: {
@@ -481,7 +481,7 @@ view: daily_sales {
       case when ${calendar_date_day_of_week_index} = 6
       and ${calendar_date_week_of_year} = EXTRACT(WEEK FROM dateadd(week, -1, current_date))
       and ${calendar_date_date} between current_date - 400 and current_date - 300
-      then ${TABLE}.closing_stock*coalesce(${variant_info.total_landed_cost_gbp}, 0) else 0 end
+      then ${TABLE}.closing_stock*coalesce(${product_info_variants.total_landed_cost_gbp}, 0) else 0 end
       )
        ;;
     group_label: "Closing Stock Value @ Cost Measures"
@@ -1195,7 +1195,7 @@ view: daily_sales {
   measure: cost_tw {
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
     filters: {
       field: calendar_date_date
@@ -1212,7 +1212,7 @@ view: daily_sales {
     sql: sum (
       case when ${calendar_date_week_of_year} = EXTRACT(WEEK FROM current_date - 7)
       and ${calendar_date_date} between current_date - 400 and current_date - 300
-      then (coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold) else null end
+      then (coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold) else null end
       )
       ;;
 
@@ -1222,7 +1222,7 @@ view: daily_sales {
   measure: cost_lw {
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
     filters: {
       field: calendar_date_date
@@ -1235,7 +1235,7 @@ view: daily_sales {
   measure: cost_l4w {
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
     filters: {
       field: calendar_date_date
@@ -1248,7 +1248,7 @@ view: daily_sales {
   measure: cost_mtd {
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
     filters: {
       field: calendar_date_date
@@ -1261,7 +1261,7 @@ view: daily_sales {
   measure: cost_std {
     type: sum
     value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    sql: coalesce(${product_info_variants.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
     filters: {
       field: calendar_date_date
