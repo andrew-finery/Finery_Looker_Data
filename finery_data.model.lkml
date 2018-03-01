@@ -441,15 +441,18 @@ explore: product_info_option_daily {
     relationship: many_to_one
   }
 
-  join: daily_sales {
-    from: daily_sales
-    required_joins: [option_info]
-    sql_on: ${product_info_option_daily.calendar_date_date} = ${daily_sales.calendar_date_date} ;;
-#     and ${option_info.option_id} = ${product_info_option_daily.option_id}  ;;
-    relationship: one_to_one
-  }
+ # join: daily_sales {
+  #  from: daily_sales
+   # sql_on: ${daily_sales.sku} = ${product_info_variants.ean} ;;
+    ## and ${option_info.option_id} = ${product_info_variants.option_id}
+    #relationship: many_to_one
+  #}
 
-  join: product_info_variants {}
+  #join: product_info_variants {
+   # from: product_info_variants
+    #sql_on: ${product_info_variants.option_id} = ${option_info.option_id} ;;
+    #relationship: many_to_one
+  #}
 
 }
 
