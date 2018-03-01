@@ -278,12 +278,10 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.return_on_investment_yesterday,
+    fields: [ facebook_api_ad_performance.return_on_investment_yesterday,
       facebook_api_ad_performance.return_on_investment_lw, facebook_api_ad_performance.return_on_investment_wow,
       facebook_api_ad_performance.return_on_investment_l3d_average, facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday,
       facebook_api_ad_performance.return_on_investment_l7d_average, facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday]
-    filters:
-      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
@@ -333,12 +331,10 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.cost_per_order_yesterday,
+    fields: [facebook_api_ad_performance.cost_per_order_yesterday,
       facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow,
       facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
       facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
-    filters:
-      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
     limit: 500
     column_limit: 50
