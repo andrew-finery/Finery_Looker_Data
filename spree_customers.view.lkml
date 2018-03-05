@@ -268,6 +268,12 @@ view: spree_customers {
     group_label: "Repurchase Period Info"
   }
 
+  dimension: days_between_second_and_last_order {
+    type: number
+    sql: ${last_order_date} - ${second_order_date} ;;
+    group_label: "Repurchase Period Info"
+  }
+
   dimension: average_days_between_orders {
     type: number
     sql: case
@@ -632,6 +638,11 @@ view: spree_customers {
   measure: sum_orders {
     type: sum
     sql: ${number_of_orders} ;;
+  }
+
+  measure: repeat_customers {
+    type: number
+    sql: case when ${sum_orders} >0 then 1 else 0 end ;;
   }
 
   measure: orders_per_customer {

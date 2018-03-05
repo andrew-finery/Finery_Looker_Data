@@ -10,9 +10,11 @@
     model: finery_data
     explore: sessions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.visits_yesterday]
+    fields: [sessions.channel_grouping_3, sessions.count]
     fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.visits_yesterday desc]
+    filters:
+      session_start_calendar.calendar_date_date: 1 days ago for 1 days
+    sorts: [sessions.count desc]
     limit: 500
     column_limit: 50
     value_labels: labels
@@ -43,6 +45,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -88,6 +98,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 0
@@ -99,9 +117,11 @@
     model: finery_data
     explore: sessions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.orders_yesterday]
+    fields: [sessions.channel_grouping_3, sessions.sum_orders]
     fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.orders_yesterday desc]
+    filters:
+      session_start_calendar.calendar_date_date: 1 days ago for 1 days
+    sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: 50
     value_labels: labels
@@ -132,6 +152,14 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    series_colors:
+      CRM (Email): "#04c49c"
+      Direct: "#2545aa"
+      Search: "#ec8080"
+      Referrals: "#f1cd52"
+      Paid Social: "#9fdee0"
+      Affiliates: "#1f3e5a"
+      Organic Social: "#92818d"
     width: 6
     height: 6
     top: 6
@@ -250,12 +278,10 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.return_on_investment_yesterday,
+    fields: [ facebook_api_ad_performance.return_on_investment_yesterday,
       facebook_api_ad_performance.return_on_investment_lw, facebook_api_ad_performance.return_on_investment_wow,
       facebook_api_ad_performance.return_on_investment_l3d_average, facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday,
       facebook_api_ad_performance.return_on_investment_l7d_average, facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday]
-    filters:
-      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
@@ -305,12 +331,10 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.buyers_vs_nonbuyers, facebook_api_ad_performance.cost_per_order_yesterday,
+    fields: [facebook_api_ad_performance.cost_per_order_yesterday,
       facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow,
       facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
       facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
-    filters:
-      facebook_api_ad_performance.buyers_vs_nonbuyers: "-EMPTY"
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
     limit: 500
     column_limit: 50
@@ -465,7 +489,7 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.gross_revenue_ex_discount_yesterday,
-      sessions.gross_revenue_ex_discount_lw, sessions.gross_Revenue_ex_discount_wow,
+      sessions.gross_revenue_ex_discount_lw, sessions.gross_revenue_ex_discount_wow,
       sessions.gross_revenue_ex_discount_yesterday_last_year, sessions.gross_revenue_ex_discount_yesterday_yoy,
       sessions.gross_revenue_ex_discount_month_to_date, sessions.gross_revenue_ex_discount_month_to_date_last_month,
       sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
@@ -473,7 +497,6 @@
     fill_fields: [sessions.channel_grouping_3]
     sorts: [sessions.gross_revenue_ex_discount_yesterday desc]
     limit: 500
-    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: false
@@ -485,8 +508,6 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    value_labels: legend
-    label_type: labPer
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -502,19 +523,12 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      sessions.orders_yesterday: Actual
-      sessions.visits_yesterday: Visits
-      sessions.conversion_yesterday: Actual
     width: 12
     height: 3
     top: 29
@@ -645,15 +659,14 @@
     explore: sessions
     type: table
     fields: [sessions.channel_grouping_3, sessions.average_basket_ex_discount_yesterday,
-      sessions.average_basket_ex_discount_lw, sessions.gross_revenue_ex_discount_wow,
+      sessions.average_basket_ex_discount_lw, sessions.average_basket_ex_discount_year_to_date_yoy,
       sessions.average_basket_ex_discount_yesterday_last_year, sessions.average_basket_ex_discount_yesterday_yoy,
       sessions.average_basket_ex_discount_month_to_date, sessions.average_basket_ex_discount_month_to_date_last_month,
       sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
-      sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy]
+      sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy_2]
     fill_fields: [sessions.channel_grouping_3]
     sorts: [sessions.average_basket_ex_discount_yesterday desc]
     limit: 500
-    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: false
@@ -665,8 +678,6 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    value_labels: legend
-    label_type: labPer
     stacking: ''
     show_value_labels: false
     label_density: 25
@@ -682,19 +693,12 @@
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    series_labels:
-      sessions.orders_yesterday: Actual
-      sessions.visits_yesterday: Visits
-      sessions.conversion_yesterday: Actual
     width: 12
     height: 3
     top: 38

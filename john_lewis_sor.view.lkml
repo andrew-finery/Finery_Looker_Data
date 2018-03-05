@@ -223,7 +223,7 @@ dimension: ean {
 
   measure: stock_units_eow {
     type: sum
-    value_format_name: number
+    value_format_name: decimal_0
     sql: ${TABLE}.derived_closing_stock;;
     filters: {
       field: calendar_day_of_week_index
@@ -543,7 +543,7 @@ dimension: ean {
   measure: units_gross_last_week {
     type: sum
     sql: ${sales_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Gross Units LW"
     group_label: "Buying Report Measures"
 
@@ -556,7 +556,7 @@ dimension: ean {
   measure: units_gross_week_before_last {
     type: sum
     sql: ${sales_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Gross Units PW"
     group_label: "Buying Report Measures"
 
@@ -585,7 +585,7 @@ dimension: ean {
   measure: units_net_last_week {
     type: sum
     sql: ${sales_units} - ${returns_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Net Units LW"
     group_label: "Buying Report Measures"
 
@@ -598,7 +598,7 @@ dimension: ean {
   measure: units_net_week_before_last {
     type: sum
     sql: ${sales_units} - ${returns_units} ;;
-    value_format_name: integer
+    value_format_name: decimal_0
     label: "Net Units PW"
     group_label: "Buying Report Measures"
 

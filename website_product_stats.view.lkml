@@ -96,13 +96,13 @@ view: website_product_stats {
 
   measure: product_conversion_rate {
     type: number
-    value_format_name: decimal_4
+    value_format_name: percent_2
     sql: ${sum_products_purchased}/NULLIF(${sum_product_views},0)::REAL ;;
   }
 
   measure: product_click_through_rate {
     type: number
-    value_format_name: decimal_4
+    value_format_name: percent_2
     sql: ${sum_clicks}/NULLIF(${sum_impressions},0)::REAL ;;
   }
 

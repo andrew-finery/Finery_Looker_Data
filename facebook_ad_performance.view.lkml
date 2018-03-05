@@ -1,29 +1,21 @@
 view: facebook_api_ad_performance {
   sql_table_name: facebook_data.facebook_ad_performance ;;
 
-  dimension: dpa_type {
-    sql: case when ${TABLE}.campaign_name like '%AddToCart%' then 'AddToCart'
-      when ${TABLE}.campaign_name like '%Addtocart%' then 'AddToCart'
-      when ${TABLE}.campaign_name like '%ProductViewed%' then 'ProductViewed'
-      when ${TABLE}.campaign_name like '%productviewed%' then 'ProductViewed'end
-       ;;
-  }
-
   dimension: audience_segment {
     sql: case when ${TABLE}.campaign_name like '%Acquisition%' then 'NonBuyers - Acquisition'
       when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
       when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
-      when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_NonBuyers%'then 'NonBuyers - DPA'
       when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - CA'
-      when ${TABLE}.campaign_name like '%_DPA%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - DPA' end
+      when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_LapsedBuyers%'  then 'Lapsed Buyers' end
        ;;
   }
 
-  dimension: buyers_vs_nonbuyers {
+  dimension: cpa_buyer_type {
     sql: case when ${TABLE}.campaign_name like '%Retention%' then 'Buyers'
       when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
       when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers' else null end
+      when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers'
+      when ${TABLE}.campaign_name like '%_LapsedBuyers%' then 'Lapsed Buyers' else null end
        ;;
   }
 
@@ -31,6 +23,10 @@ view: facebook_api_ad_performance {
     sql: case when ${TABLE}.advert_name like '%#Fb Automated Ads Creatives Creative ID#%' then 'Custom'
       else 'AA' end
        ;;
+  }
+
+  dimension: dpa_vs_non_dpa {
+    sql: case when ${TABLE}.campaign_name like '%_DPA' then 'DPA' else 'Non DPA' end ;;
   }
 
   dimension: country {
@@ -277,9 +273,9 @@ view: facebook_api_ad_performance {
   }
 
   dimension: clicks_all {
-    type: string
+    type: number
     hidden: yes
-    sql: ${TABLE}.clicks_all ;;
+    sql: CAST(${TABLE}.clicks_all AS INTEGER) ;;
   }
 
   #- dimension: clicks_to_play_video
@@ -753,25 +749,21 @@ view: facebook_api_ad_performance {
   dimension: view_content_facebook_pixel {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_1_day_after_clicking {
-    type: string
+    type: number
     sql: ${TABLE}.view_content_facebook_pixel_1_day_after_clicking ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_28_days_after_clicking {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_28_days_after_clicking ;;
-    hidden: yes
   }
 
   dimension: view_content_facebook_pixel_7_days_after_clicking {
     type: string
     sql: ${TABLE}.view_content_facebook_pixel_7_days_after_clicking ;;
-    hidden: yes
   }
 
   dimension: website_actions_all {
@@ -913,6 +905,9 @@ view: facebook_api_ad_performance {
     sql: ${total_clicks}/ NULLIF(${total_impressions},0) ::REAL ;;
   }
 
+
+######################################################################################### COST PER MEASURES ######################################################################
+
   measure: cost_per_click {
     label: "CPC"
     type: number
@@ -925,6 +920,399 @@ view: facebook_api_ad_performance {
     type: number
     value_format_name: decimal_2
     sql: ${total_spend}*1000/ NULLIF(${total_impressions},0) ::REAL ;;
+  }
+
+  measure: cost_per_click_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_yesterday}/ NULLIF(${total_clicks_yesterday},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_lw {
+    label: "LW"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_lw}/ NULLIF(${total_clicks_lw},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPC Reporting Measures"
+    sql: (${cost_per_click_yesterday} - ${cost_per_click_lw})/NULLIF(${cost_per_click_lw},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: cost_per_click_l3d {
+    label: "L3D"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l3d}/ NULLIF(${total_clicks_l3d},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l3d_average}/ NULLIF(${total_clicks_l3d_avg},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_vs_l3d_avg {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPC Reporting Measures"
+    sql: (${cost_per_click_yesterday} - ${cost_per_click_l3d_avg})/NULLIF(${cost_per_click_l3d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: cost_per_click_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l7d}/ NULLIF(${total_clicks_l7d},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_including_smartly_commission_l7d_average}/ NULLIF(${total_clicks_l7d_avg},0) ::REAL ;;
+    group_label: "CPC Reporting Measures"
+  }
+
+  measure: cost_per_click_vs_l7d_avg {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPC Reporting Measures"
+    sql: (${cost_per_click_yesterday} - ${cost_per_click_l7d_avg})/NULLIF(${cost_per_click_l7d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: total_clicks_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${calendar_date} = current_date - 1 then ${clicks_all} else 0 end) ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_clicks_lw {
+    label: "LW"
+    type: number
+    sql: sum(case when ${calendar_date} = current_date - 8 then ${clicks_all} else 0 end) ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_clicks_l3d {
+    label: "L3D"
+    type: number
+    sql: sum(case when ${calendar_date} between current_date - 3 and current_date - 1 then ${clicks_all} else 0 end) ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_clicks_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    sql: ${total_clicks_l3d}/3 ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_clicks_l7d {
+    label: "L7D"
+    type: number
+    sql: sum(case when ${calendar_date} between current_date - 7 and current_date - 1 then ${clicks_all} else 0 end) ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_clicks_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    sql: ${total_clicks_l7d}/7 ;;
+    group_label: "Click Reporting Measures"
+  }
+
+  measure: total_impressions_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${calendar_date} = current_date - 1 then ${impressions} else 0 end) ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+  measure: total_impressions_lw {
+    label: "LW"
+    type: number
+    sql: sum(case when ${calendar_date} = current_date - 8 then ${impressions} else 0 end) ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+  measure: total_impressions_l3d {
+    label: "L3D"
+    type: number
+    sql: sum(case when ${calendar_date} between current_date - 3 and current_date - 1 then ${impressions} else 0 end) ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+  measure: total_impressions_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    sql: ${total_impressions_l3d}/3 ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+  measure: total_impressions_l7d {
+    label: "L7D"
+    type: number
+    sql: sum(case when ${calendar_date} between current_date - 7 and current_date - 1 then ${impressions} else 0 end) ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+  measure: total_impressions_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    sql: ${total_impressions_l7d}/7 ;;
+    group_label: "Impressions Reporting Measures"
+  }
+
+
+  measure: total_spend_yesterday_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_yesterday}*1000 ;;
+  }
+
+  measure: total_spend_lw_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_lw}*1000 ;;
+  }
+
+  measure: total_spend_l3d_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_l3d}*1000 ;;
+  }
+
+  measure: total_spend_l3d_avg_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_l3d_average}*1000 ;;
+  }
+
+  measure: total_spend_l7d_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_l7d}*1000 ;;
+  }
+
+  measure: total_spend_l7d_avg_1000 {
+    hidden: yes
+    type: number
+    sql: ${total_spend_including_smartly_commission_l7d_average}*1000 ;;
+  }
+
+  measure: cost_per_mille_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_yesterday_1000}/NULLIF(${total_impressions_yesterday},0)::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_lw {
+    label: "LW"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_lw_1000}/ NULLIF(${total_impressions_lw},0) ::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_lw})/NULLIF(${cost_per_mille_lw},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: cost_per_mille_l3d {
+    label: "L3D"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_l3d_1000}/ NULLIF(${total_impressions_l3d},0) ::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_l3d_avg_1000}/ NULLIF(${total_impressions_l3d_avg},0) ::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_vs_l3d_avg {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_l3d_avg})/NULLIF(${cost_per_mille_l3d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: cost_per_mille_l7d {
+    label: "L7D"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_l7d_1000}/ NULLIF(${total_impressions_l7d},0) ::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    value_format_name: gbp
+    sql: ${total_spend_l7d_avg_1000}/ NULLIF(${total_impressions_l7d_avg},0) ::REAL ;;
+    group_label: "CPM Reporting Measures"
+  }
+
+  measure: cost_per_mille_vs_l7d_avg {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPM Reporting Measures"
+    sql: (${cost_per_mille_yesterday} - ${cost_per_mille_l7d_avg})/NULLIF(${cost_per_mille_l7d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value < 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_yesterday {
+    label: "Actual"
+    type: number
+    value_format_name: percent_2
+    sql: ${total_clicks_yesterday}/ NULLIF(${total_impressions_yesterday},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_lw {
+    label: "LW"
+    type:  number
+    value_format_name: percent_2
+    sql: ${total_clicks_lw}/ NULLIF(${total_impressions_lw},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_yesterday_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_lw})/NULLIF(${click_through_rate_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    value_format_name: percent_2
+    sql: ${total_clicks_l3d_avg}/ NULLIF(${total_impressions_l3d_avg},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_vs_l3d_avg {
+    label: "vs L3D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_l3d_avg})/NULLIF(${click_through_rate_l3d_avg},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: click_through_rate_l7d_avg {
+    label: "L7D Avg"
+    type:  number
+    value_format_name: percent_2
+    sql: ${total_clicks_l7d_avg}/ NULLIF(${total_impressions_l7d_avg},0) ::REAL ;;
+    group_label: "CTR Reporting Measures"
+  }
+
+  measure: click_through_rate_vs_l7d_avg {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CTR Reporting Measures"
+    sql: (${click_through_rate_yesterday} - ${click_through_rate_l7d_avg})/NULLIF(${click_through_rate_l7d_avg},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: unique_users {
@@ -1461,6 +1849,143 @@ view: facebook_api_ad_performance {
   }
 
 
+  ######################################################################################################################################################
+  ######################################################################################################################################################
+  ######################################################## FIX FROM HERE ###############################################################################
+  ######################################################################################################################################################
+  ######################################################################################################################################################
+
+
+  measure: total_action_views_yesterday {
+    label: "Actual"
+    type: number
+    sql: sum(case when ${calendar_date} = current_date - 1 then ${view_content_facebook_pixel_1_day_after_clicking} else 0 end) ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: total_action_views_lw {
+    label: "LW"
+    type: number
+    sql: case when ${calendar_date} = current_date - 8 then ${1d_total_action_view_content} else null end ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: total_action_views_l3d {
+    label: "L3D"
+    type: number
+    sql: case when ${calendar_date} between current_date - 3 and current_date - 1 then ${1d_total_action_view_content} else null end ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: total_action_views_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    sql: ${total_action_views_l3d}/3 ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: total_action_views_l7d {
+    label: "L7D"
+    type: number
+    sql: case when ${calendar_date} between current_date - 7 and current_date - 1 then ${1d_total_action_view_content} else null end ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: total_action_views_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    sql: ${total_action_views_l7d}/7 ;;
+    group_label: "Total Action View Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_yesterday {
+    label: "Active"
+    type: number
+    sql: ${total_spend_including_smartly_commission_yesterday}/NULLIF(${total_action_views_yesterday},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_lw {
+    label: "LW"
+    type: number
+    sql: ${total_spend_including_smartly_commission_lw}/NULLIF(${total_action_views_lw},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_wow {
+    label: "%"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPV Content Reporting Measures"
+    sql: (${cost_per_total_action_views_yesterday} - ${cost_per_total_action_views_lw})/NULLIF(${cost_per_total_action_views_lw},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_total_action_views_l3d {
+    label: "L3D"
+    type: number
+    sql: ${total_spend_including_smartly_commission_l3d}/NULLIF(${total_action_views_l3d},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_l3d_avg {
+    label: "L3D Avg"
+    type: number
+    sql: ${total_spend_including_smartly_commission_l3d_average}/NULLIF(${total_action_views_l3d_avg},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_l3d_vs_yesterday {
+    label: "vs L3D Avg"
+    type: number
+    group_label: "CPV Content Reporting Measures"
+    sql: (${cost_per_total_action_views_yesterday} - ${cost_per_total_action_views_l3d_avg})/NULLIF(${cost_per_total_action_views_l3d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: cost_per_total_action_views_l7d {
+    label: "L7D"
+    type: number
+    sql: ${total_spend_including_smartly_commission_l7d}/NULLIF(${total_action_views_l7d},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_l7d_avg {
+    label: "L7D Avg"
+    type: number
+    sql: ${total_spend_including_smartly_commission_l7d_average}/NULLIF(${total_action_views_l7d_avg},0)::REAL ;;
+    group_label: "CPV Content Reporting Measures"
+  }
+
+  measure: cost_per_total_action_views_l7d_vs_yesterday {
+    label: "vs L7D Avg"
+    type: number
+    value_format_name: percent_0
+    group_label: "CPV Content Reporting Measures"
+    sql: (${cost_per_total_action_views_yesterday} - ${cost_per_total_action_views_l7d_avg})/NULLIF(${cost_per_total_action_views_l7d_avg},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
 
   measure: orders_yesterday {
     label: "Actual"

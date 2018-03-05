@@ -291,10 +291,10 @@
     explore: website_page_views
     type: table
     fields: [visits.exit_page_path, website_page_views.count_total_page_views_yesterday,
-      website_page_views.count_distinct_page_views_yesterday, website_page_views.exit_rate_yesterday,
+      website_page_views.count_total_page_views_yesterday, website_page_views.exit_rate_yesterday,
       website_page_views.exit_rate_lw, website_page_views.exit_rate_wow, website_page_views.exit_rate_l7d,
       website_page_views.exit_rate_l7d_percentage]
-    sorts: [website_page_views.count_distinct_page_views_yesterday desc]
+    sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
     show_view_names: false
