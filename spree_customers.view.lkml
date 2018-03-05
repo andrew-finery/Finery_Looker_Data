@@ -640,6 +640,11 @@ view: spree_customers {
     sql: ${number_of_orders} ;;
   }
 
+  measure: repeat_customers {
+    type: number
+    sql: case when ${sum_orders} >0 then 1 else 0 end ;;
+  }
+
   measure: orders_per_customer {
     type: number
     sql: ${sum_orders}/NULLIF(${count_customers},0)::REAL ;;

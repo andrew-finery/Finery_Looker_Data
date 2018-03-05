@@ -1790,7 +1790,7 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} = current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_yesterday_last_week {
@@ -1798,14 +1798,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} = current_date - 8 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_yesterday_week_on_week {
     label: "%"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_yesterday} - ${revenue_yesterday_last_week})/NULLIF(${revenue_yesterday_last_week},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1822,14 +1822,14 @@ view: spree_orders {
     type: number
     sql: sum(case when (${completed_date} = (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_yesterday_year_on_year {
     label: "YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_yesterday} - ${revenue_yesterday_last_year})/NULLIF(${revenue_yesterday_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1846,7 +1846,7 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('week', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_week_to_date_lw {
@@ -1854,14 +1854,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('week', current_date - 8) and current_date - 8 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_week_to_date_week_on_week {
     label: "WTD WoW"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_week_to_date} - ${revenue_week_to_date_lw})/NULLIF(${revenue_week_to_date_lw},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1878,14 +1878,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('week', (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1))) and (select calendar_date from finery.calendar where week_number = (select week_number from finery.calendar where calendar_date = current_date - 1) and dow = (select dow from finery.calendar where calendar_date = current_date - 1) and year = (select year - 1 from finery.calendar where calendar_date = current_date - 1)) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_week_to_date_year_on_year {
     label: "WTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_week_to_date} - ${revenue_week_to_date_ly})/NULLIF(${revenue_week_to_date_ly},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1902,7 +1902,7 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('month', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_month_to_date_last_month {
@@ -1910,14 +1910,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_month_to_date_month_on_month {
     label: "MTD MoM"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_month_to_date} - ${revenue_month_to_date_last_month})/NULLIF(${revenue_month_to_date_last_month},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1934,14 +1934,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_month_to_date_year_on_year {
     label: "MTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_month_to_date} - ${revenue_month_to_date_last_year})/NULLIF(${revenue_month_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1958,7 +1958,7 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_year_to_date_last_year {
@@ -1966,14 +1966,14 @@ view: spree_orders {
     type: number
     sql: sum(case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ((${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate}) else 0 end) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_year_to_date_year_on_year {
     label: "YTD YoY"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_year_to_date} - ${revenue_year_to_date_last_year})/NULLIF(${revenue_year_to_date_last_year},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -1990,14 +1990,14 @@ view: spree_orders {
     type: number
     sql: avg((select sum(Case when calendar_date = current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_yesterday_vs_target {
     label: "Yest vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_yesterday} - ${revenue_target_yesterday})/NULLIF(${revenue_target_yesterday},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2014,14 +2014,14 @@ view: spree_orders {
     type: number
     sql: avg((select sum(Case when calendar_date between date_trunc('week', current_date - 1) and current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_week_to_date_vs_target {
     label: "WTD vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_week_to_date} - ${revenue_target_week_to_date})/NULLIF(${revenue_target_week_to_date},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
@@ -2038,14 +2038,14 @@ view: spree_orders {
     type: number
     sql: avg((select sum(Case when calendar_date between date_trunc('month', current_date - 1) and current_date - 1 then revenue else 0 end) from finery.targets_2017)) ;;
     value_format_name: pounds_k
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
   }
 
   measure: revenue_month_to_date_vs_target {
     label: "MTD vs Target"
     type: number
     value_format_name: percent_0
-    group_label: "Revenue Reporting Measures"
+    group_label: "Revenue Ex. Voucher & Store Credit Reporting Measures"
     sql: (${revenue_month_to_date} - ${revenue_target_month_to_date})/NULLIF(${revenue_target_month_to_date},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
