@@ -1216,119 +1216,119 @@ view: daily_sales {
       )
       ;;
 
-  }
-
-
-  measure: cost_lw {
-    type: sum
-    value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
-
-    filters: {
-      field: calendar_date_date
-      value: "2 weeks ago for 1 week"
     }
 
-    hidden: yes
-  }
 
-  measure: cost_l4w {
-    type: sum
-    value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+    measure: cost_lw {
+      type: sum
+      value_format_name: decimal_2
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
-    filters: {
-      field: calendar_date_date
-      value: "5 weeks ago for 4 weeks"
+      filters: {
+        field: calendar_date_date
+        value: "2 weeks ago for 1 week"
+      }
+
+      hidden: yes
     }
 
-    hidden: yes
-  }
+    measure: cost_l4w {
+      type: sum
+      value_format_name: decimal_2
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
-  measure: cost_mtd {
-    type: sum
-    value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+      filters: {
+        field: calendar_date_date
+        value: "5 weeks ago for 4 weeks"
+      }
 
-    filters: {
-      field: calendar_date_date
-      value: "this month"
+      hidden: yes
     }
 
-    hidden: yes
-  }
+    measure: cost_mtd {
+      type: sum
+      value_format_name: decimal_2
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
-  measure: cost_std {
-    type: sum
-    value_format_name: decimal_2
-    sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
+      filters: {
+        field: calendar_date_date
+        value: "this month"
+      }
 
-    filters: {
-      field: calendar_date_date
-      value: "after 2015/02/01"
+      hidden: yes
     }
 
-    hidden: yes
-  }
+    measure: cost_std {
+      type: sum
+      value_format_name: decimal_2
+      sql: coalesce(${variant_info.total_landed_cost_gbp}, 0) * ${TABLE}.items_sold ;;
 
-  measure: pc1_tw {
-    type: number
-    value_format_name: decimal_2
-    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${cost_tw} ;;
-    hidden: yes
-  }
+      filters: {
+        field: calendar_date_date
+        value: "after 2015/02/01"
+      }
 
-  measure: pc1_lw {
-    type: number
-    value_format_name: decimal_2
-    sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before} - ${cost_lw} ;;
-    hidden: yes
-  }
-
-  measure: pc1_l4w {
-    type: number
-    value_format_name: decimal_2
-    sql: ${gross_rev_l4w} - ${cost_l4w} ;;
-    hidden: yes
-  }
-
-  measure: pc1_mtd {
-    type: number
-    value_format_name: decimal_2
-    sql: ${gross_rev_mtd} - ${cost_mtd} ;;
-    hidden: yes
-  }
-
-  measure: pc1_std {
-    type: number
-    value_format_name: decimal_2
-    sql: ${gross_rev_std} - ${cost_std} ;;
-    hidden: yes
-  }
-
-  measure: units_sold_for_returns {
-    type: sum
-    sql: ${TABLE}.items_sold ;;
-
-    filters: {
-      field: calendar_date_date
-      value: "before 2 weeks ago"
+      hidden: yes
     }
 
-    hidden: yes
-  }
-
-  measure: units_returned_for_returns {
-    type: sum
-    sql: ${TABLE}.items_returned ;;
-
-    filters: {
-      field: calendar_date_date
-      value: "before 2 weeks ago"
+    measure: pc1_tw {
+      type: number
+      value_format_name: decimal_2
+      sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_last_week} - ${cost_tw} ;;
+      hidden: yes
     }
 
-    hidden: yes
+    measure: pc1_lw {
+      type: number
+      value_format_name: decimal_2
+      sql: ${gross_item_revenue_gbp_ex_vat_ex_discount_week_before} - ${cost_lw} ;;
+      hidden: yes
+    }
+
+    measure: pc1_l4w {
+      type: number
+      value_format_name: decimal_2
+      sql: ${gross_rev_l4w} - ${cost_l4w} ;;
+      hidden: yes
+    }
+
+    measure: pc1_mtd {
+      type: number
+      value_format_name: decimal_2
+      sql: ${gross_rev_mtd} - ${cost_mtd} ;;
+      hidden: yes
+    }
+
+    measure: pc1_std {
+      type: number
+      value_format_name: decimal_2
+      sql: ${gross_rev_std} - ${cost_std} ;;
+      hidden: yes
+    }
+
+    measure: units_sold_for_returns {
+      type: sum
+      sql: ${TABLE}.items_sold ;;
+
+      filters: {
+        field: calendar_date_date
+        value: "before 2 weeks ago"
+      }
+
+      hidden: yes
+    }
+
+    measure: units_returned_for_returns {
+      type: sum
+      sql: ${TABLE}.items_returned ;;
+
+      filters: {
+        field: calendar_date_date
+        value: "before 2 weeks ago"
+      }
+
+      hidden: yes
+    }
+
+
   }
-
-
-}
