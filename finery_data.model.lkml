@@ -440,6 +440,11 @@ explore: product_info_option_daily {
     sql_on: ${option_info.option_id} = ${product_info_option_daily.option_id} ;;
     relationship: many_to_one
   }
+
+  join: calendar_weeks {
+    sql_on: ${product_info_option_daily.calendar_date_date} = ${calendar_weeks.calendar_date_date} ;;
+    relationship: many_to_one
+  }
 }
 
 explore: visitors {
