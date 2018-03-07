@@ -18,7 +18,7 @@
       facebook_api_ad_performance.total_spend_including_smartly_commission_l3d_vs_yesterday,
       facebook_api_ad_performance.total_spend_including_smartly_commission_l7d_average,
       facebook_api_ad_performance.total_spend_including_smartly_commission_l7d_vs_yesterday,
-      facebook_api_ad_performance.dpa_vs_non_dpa]
+      facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday
         desc]
     limit: 500
@@ -67,7 +67,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.dpa_vs_non_dpa, facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday,
+    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday,
       facebook_api_ad_performance.revenue_1_day_after_clicking_lw, facebook_api_ad_performance.revenue_1_day_after_clicking_wow,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_average, facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday]
@@ -120,7 +120,7 @@
     fields: [facebook_api_ad_performance.return_on_investment_yesterday, facebook_api_ad_performance.return_on_investment_lw,
       facebook_api_ad_performance.return_on_investment_wow, facebook_api_ad_performance.return_on_investment_l3d_average,
       facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday, facebook_api_ad_performance.return_on_investment_l7d_average,
-      facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday, facebook_api_ad_performance.dpa_vs_non_dpa]
+      facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
     limit: 500
     column_limit: 50
@@ -168,7 +168,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.dpa_vs_non_dpa, facebook_api_ad_performance.cost_per_mille_yesterday,
+    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_mille_yesterday,
       facebook_api_ad_performance.cost_per_mille_lw, facebook_api_ad_performance.cost_per_mille_yesterday_wow,
       facebook_api_ad_performance.cost_per_mille_l3d_avg, facebook_api_ad_performance.cost_per_mille_vs_l3d_avg,
       facebook_api_ad_performance.cost_per_mille_l7d_avg, facebook_api_ad_performance.cost_per_mille_vs_l7d_avg]
@@ -218,7 +218,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.dpa_vs_non_dpa, facebook_api_ad_performance.cost_per_click_yesterday,
+    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_click_yesterday,
       facebook_api_ad_performance.cost_per_click_lw, facebook_api_ad_performance.cost_per_click_yesterday_wow,
       facebook_api_ad_performance.cost_per_click_l3d_avg, facebook_api_ad_performance.cost_per_click_vs_l3d_avg,
       facebook_api_ad_performance.cost_per_click_l7d_avg, facebook_api_ad_performance.cost_per_click_vs_l7d_avg]
@@ -273,7 +273,7 @@
     fields: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday, facebook_api_ad_performance.cost_per_add_to_cart_lw,
       facebook_api_ad_performance.cost_per_add_to_cart_wow, facebook_api_ad_performance.cost_per_add_to_cart_l3d_average,
       facebook_api_ad_performance.cost_per_add_to_cart_l3d_vs_yesterday, facebook_api_ad_performance.cost_per_add_to_cart_l7d_average,
-      facebook_api_ad_performance.cost_per_add_to_cart_l7d_vs_yesterday, facebook_api_ad_performance.dpa_vs_non_dpa]
+      facebook_api_ad_performance.cost_per_add_to_cart_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday desc]
     limit: 500
     column_limit: 50
@@ -324,7 +324,7 @@
     fields: [facebook_api_ad_performance.cost_per_order_yesterday, facebook_api_ad_performance.cost_per_order_lw,
       facebook_api_ad_performance.cost_per_order_wow, facebook_api_ad_performance.cost_per_order_l3d_average,
       facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday, facebook_api_ad_performance.cost_per_order_l7d_average,
-      facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday, facebook_api_ad_performance.dpa_vs_non_dpa]
+      facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
     limit: 500
     column_limit: 50
@@ -372,7 +372,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.dpa_vs_non_dpa, facebook_api_ad_performance.click_through_rate_yesterday,
+    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.click_through_rate_yesterday,
       facebook_api_ad_performance.click_through_rate_lw, facebook_api_ad_performance.click_through_rate_yesterday_wow,
       facebook_api_ad_performance.click_through_rate_l3d_avg, facebook_api_ad_performance.click_through_rate_vs_l3d_avg,
       facebook_api_ad_performance.click_through_rate_l7d_avg, facebook_api_ad_performance.click_through_rate_vs_l7d_avg]

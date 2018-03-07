@@ -1,22 +1,20 @@
 view: facebook_api_ad_performance {
   sql_table_name: facebook_data.facebook_ad_performance ;;
 
-  dimension: audience_segment {
-    sql: case when ${TABLE}.campaign_name like '%Acquisition%' then 'NonBuyers - Acquisition'
-      when ${TABLE}.campaign_name like '%Custom Audience%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
-      when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers - Custom Audience'
-      when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers - CA'
-      when ${TABLE}.campaign_name like '%_CA_%' and ${TABLE}.campaign_name like '%_LapsedBuyers%'  then 'Lapsed Buyers' end
-       ;;
+  dimension: buyers_vs_non_buyers {
+    sql: case when ${TABLE}.advert_set_name like 'Buyers_%' then 'Buyers'
+      when ${TABLE}.advert_set_name like 'SaleBuyers%' then 'Buyers'
+      when ${TABLE}.advert_set_name like '%Leads%' then 'Non Buyers'
+      when ${TABLE}.advert_set_name like 'NonBuyers%' then 'Non Buyers'
+      when ${TABLE}.campaign_name like 'UK_AA_Acquisition' then 'Non Buyers' end ;;
   }
 
   dimension: cpa_buyer_type {
-    sql: case when ${TABLE}.campaign_name like '%Retention%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%_NonBuyers%' then 'NonBuyers'
-      when ${TABLE}.campaign_name like '%_Buyers%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%Reactivation%' then 'Buyers'
-      when ${TABLE}.campaign_name like '%_LapsedBuyers%' then 'Lapsed Buyers' else null end
-       ;;
+    sql: case when ${TABLE}.advert_set_name like 'Buyers_%' then 'Buyers'
+          when ${TABLE}.advert_set_name like 'SaleBuyers%' then 'Sale Buyers'
+          when ${TABLE}.advert_set_name like '%Leads%' then 'Non Buyers'
+          when ${TABLE}.advert_set_name like 'NonBuyers%' then 'Non Buyers'
+          when ${TABLE}.advert_set_name like '%_Lapsed' then 'Lapsed Buyers'  end ;;
   }
 
   dimension: aa_vs_custom {
@@ -31,7 +29,7 @@ view: facebook_api_ad_performance {
 
   dimension: country {
     sql: case when ${TABLE}.campaign_name like '%UK%' then 'UK'
-      when ${TABLE}.campaign_name like '%USA%' then 'US'
+      when ${TABLE}.campaign_name like '%US%' then 'US'
       when ${TABLE}.campaign_name like '%Ireland%' then 'IE'
       when ${TABLE}.campaign_name like '%AUS%' then 'AUS'
       when ${TABLE}.campaign_name like 'UK_%' then 'UK'

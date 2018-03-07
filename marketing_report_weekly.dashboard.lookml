@@ -335,7 +335,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [ facebook_api_ad_performance.return_on_investment_lcw,
+    fields: [ facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.return_on_investment_lcw,
       facebook_api_ad_performance.return_on_investment_pcw, facebook_api_ad_performance.return_on_investment_lcw_wow]
     sorts: [facebook_api_ad_performance.return_on_investment_lcw desc]
     limit: 500
@@ -385,7 +385,7 @@
     model: finery_data
     explore: facebook_api_ad_performance
     type: table
-    fields: [facebook_api_ad_performance.cost_per_order_lcw,
+    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_order_lcw,
       facebook_api_ad_performance.cost_per_order_pcw, facebook_api_ad_performance.cost_per_order_lcw_wow]
     sorts: [facebook_api_ad_performance.cost_per_order_lcw desc]
     limit: 500
