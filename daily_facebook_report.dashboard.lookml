@@ -482,7 +482,7 @@
       facebook_api_ad_performance.total_spend_including_smartly_commission_l7d_vs_yesterday,
       facebook_api_ad_performance.advert_name_short]
     filters:
-      facebook_api_ad_performance.aa_vs_custom: Custom
+      facebook_api_ad_performance.dpa_vs_non_dpa: Non DPA
       facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: ">0"
     sorts: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday
         desc]
@@ -538,7 +538,7 @@
       facebook_api_ad_performance.cost_per_add_to_cart_l7d_vs_yesterday, facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday,
       facebook_api_ad_performance.advert_name_short]
     filters:
-      facebook_api_ad_performance.aa_vs_custom: Custom
+      facebook_api_ad_performance.dpa_vs_non_dpa: Non DPA
       facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: ">0"
     sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday desc]
     limit: 1000
@@ -594,7 +594,7 @@
       facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday, facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday,
       facebook_api_ad_performance.advert_name_short]
     filters:
-      facebook_api_ad_performance.aa_vs_custom: Custom
+      facebook_api_ad_performance.dpa_vs_non_dpa: Non DPA
       facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday: ">0"
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
     limit: 500
