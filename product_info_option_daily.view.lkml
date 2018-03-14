@@ -276,6 +276,17 @@ view: product_info_option_daily {
     }
   }
 
+  measure: closing_stock_end_of_week {
+    label: "Closing Stock End of Week"
+    type: sum
+    sql: ${closing_stock} ;;
+
+    filters: {
+      field: calendar_date_day_of_week_index
+      value: "6"
+    }
+  }
+
   measure: sum_gross_revenue_gbp {
     type: sum
     value_format_name: decimal_2
