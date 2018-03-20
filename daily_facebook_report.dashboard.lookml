@@ -21,6 +21,8 @@
       facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.total_spend_including_smartly_commission_yesterday
         desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -72,6 +74,8 @@
       facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_average, facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday]
     sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     total: true
     query_timezone: Europe/London
@@ -122,6 +126,8 @@
       facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday, facebook_api_ad_performance.return_on_investment_l7d_average,
       facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -173,6 +179,8 @@
       facebook_api_ad_performance.cost_per_mille_l3d_avg, facebook_api_ad_performance.cost_per_mille_vs_l3d_avg,
       facebook_api_ad_performance.cost_per_mille_l7d_avg, facebook_api_ad_performance.cost_per_mille_vs_l7d_avg]
     sorts: [facebook_api_ad_performance.cost_per_mille_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     total: true
     query_timezone: Europe/London
@@ -223,6 +231,8 @@
       facebook_api_ad_performance.cost_per_click_l3d_avg, facebook_api_ad_performance.cost_per_click_vs_l3d_avg,
       facebook_api_ad_performance.cost_per_click_l7d_avg, facebook_api_ad_performance.cost_per_click_vs_l7d_avg]
     sorts: [facebook_api_ad_performance.cost_per_click_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     total: true
     query_timezone: Europe/London
@@ -275,6 +285,8 @@
       facebook_api_ad_performance.cost_per_add_to_cart_l3d_vs_yesterday, facebook_api_ad_performance.cost_per_add_to_cart_l7d_average,
       facebook_api_ad_performance.cost_per_add_to_cart_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.cost_per_add_to_cart_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -326,6 +338,8 @@
       facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday, facebook_api_ad_performance.cost_per_order_l7d_average,
       facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -377,6 +391,8 @@
       facebook_api_ad_performance.click_through_rate_l3d_avg, facebook_api_ad_performance.click_through_rate_vs_l3d_avg,
       facebook_api_ad_performance.click_through_rate_l7d_avg, facebook_api_ad_performance.click_through_rate_vs_l7d_avg]
     sorts: [facebook_api_ad_performance.click_through_rate_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     total: true
     query_timezone: Europe/London
