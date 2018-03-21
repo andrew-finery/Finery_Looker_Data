@@ -235,6 +235,8 @@
       facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average,
       facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
     sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -334,6 +336,8 @@
       facebook_api_ad_performance.return_on_investment_l3d_average, facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday,
       facebook_api_ad_performance.return_on_investment_l7d_average, facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday]
     sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -387,6 +391,8 @@
       facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
       facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
     sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
