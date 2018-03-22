@@ -338,6 +338,8 @@
     fields: [ facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.return_on_investment_lcw,
       facebook_api_ad_performance.return_on_investment_pcw, facebook_api_ad_performance.return_on_investment_lcw_wow]
     sorts: [facebook_api_ad_performance.return_on_investment_lcw desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
@@ -388,6 +390,8 @@
     fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_order_lcw,
       facebook_api_ad_performance.cost_per_order_pcw, facebook_api_ad_performance.cost_per_order_lcw_wow]
     sorts: [facebook_api_ad_performance.cost_per_order_lcw desc]
+    filters:
+      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
     limit: 500
     column_limit: 50
     total: true
