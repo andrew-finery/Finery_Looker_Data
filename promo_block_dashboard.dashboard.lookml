@@ -33,7 +33,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     width: 14
-    height: 12
+    height: 25
     top: 0
     left: 0
 
@@ -74,6 +74,6 @@
         palette: {name: Red to Yellow to Green, colors: ["#F36254", "#FCF758", "#4FBC89"]},
         bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     width: 14
-    height: 12
-    top: 12
+    height: 25
+    top: 25
     left: 0
