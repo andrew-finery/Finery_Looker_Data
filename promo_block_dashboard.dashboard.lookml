@@ -11,10 +11,10 @@
     model: finery_data
     explore: website_promo_block_click_through_daily
     type: table
-    fields: [website_promo_block_click_through_daily.page_urlpath, spree_promo_block_info.promo_block_image,
+    fields: [spree_promo_block_info.promo_block_image,
       spree_promo_block_info.promo_block_position, spree_promo_block_info.cta_link,
       website_promo_block_click_through_daily.click_through_rate, website_promo_block_click_through_daily.sum_promo_clicks,
-      website_promo_block_click_through_daily.sum_promo_views, spree_promo_block_info.name]
+      website_promo_block_click_through_daily.sum_promo_views]
     filters:
       website_promo_block_click_through_daily.page_urlpath: "/"
       website_promo_block_click_through_daily.calendar_date: 7 days
@@ -43,10 +43,10 @@
     model: finery_data
     explore: website_promo_block_click_through_daily
     type: table
-    fields: [website_promo_block_click_through_daily.page_urlpath, spree_promo_block_info.promo_block_image,
+    fields: [spree_promo_block_info.promo_block_image,
       spree_promo_block_info.promo_block_position, spree_promo_block_info.cta_link,
       website_promo_block_click_through_daily.click_through_rate, website_promo_block_click_through_daily.sum_promo_clicks,
-      website_promo_block_click_through_daily.sum_promo_views, spree_promo_block_info.name,
+      website_promo_block_click_through_daily.sum_promo_views,
       website_promo_block_click_through_daily.device_type]
     pivots: [website_promo_block_click_through_daily.device_type]
     filters:
