@@ -7,7 +7,7 @@
 
   elements:
   - name: promo_block_performance_total
-    title: HP Promo Block Performance - Total
+    title: HP Promo Block Performance (Last 7 Days)
     model: finery_data
     explore: website_promo_block_click_through_daily
     type: table
@@ -39,7 +39,7 @@
 
 
   - name: promo_block_performance_by_device
-    title: HP Promo Block Performance - By Device
+    title: HP Promo Block Performance - By Device (Last 7 Days)
     model: finery_data
     explore: website_promo_block_click_through_daily
     type: table
