@@ -2318,7 +2318,7 @@ view: facebook_api_ad_performance {
     label: "Actual"
     type: number
     value_format_name: decimal_0
-    sql: (${revenue_1_day_after_clicking_yesterday}-${total_spend_including_smartly_commission_yesterday})/NULLIF(${total_spend_including_smartly_commission_yesterday},0) ;;
+    sql: (${revenue_1_day_after_clicking_yesterday})/NULLIF(${total_spend_including_smartly_commission_yesterday},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
@@ -2326,7 +2326,7 @@ view: facebook_api_ad_performance {
     label: "L3D Avg"
     type: number
     value_format_name: decimal_0
-    sql: (${revenue_1_day_after_clicking_l3d_average}-${total_spend_including_smartly_commission_l3d_average})/NULLIF(${total_spend_including_smartly_commission_l3d_average},0) ;;
+    sql: (${revenue_1_day_after_clicking_l3d_average})/NULLIF(${total_spend_including_smartly_commission_l3d_average},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
@@ -2350,7 +2350,7 @@ view: facebook_api_ad_performance {
     label: "L7D Avg"
     type: number
     value_format_name: decimal_0
-    sql: (${revenue_1_day_after_clicking_l7d_average}-${total_spend_including_smartly_commission_l7d_average})/NULLIF(${total_spend_including_smartly_commission_l7d_average},0) ;;
+    sql: (${revenue_1_day_after_clicking_l7d_average})/NULLIF(${total_spend_including_smartly_commission_l7d_average},0) ;;
     group_label: "ROI Reporting Measures"
   }
 
@@ -2375,7 +2375,7 @@ view: facebook_api_ad_performance {
     type: number
     value_format_name: decimal_0
     group_label: "ROI Reporting Measures"
-    sql: (${revenue_1_day_after_clicking_lw}-${total_spend_including_smartly_commission_lw})/NULLIF(${total_spend_including_smartly_commission_lw},0);;
+    sql: (${revenue_1_day_after_clicking_lw})/NULLIF(${total_spend_including_smartly_commission_lw},0);;
   }
 
   measure: return_on_investment_wow {
@@ -2399,7 +2399,7 @@ view: facebook_api_ad_performance {
     type: number
     value_format_name: decimal_0
     group_label: "ROI Reporting Measures"
-    sql: (${revenue_1_day_after_clicking_lcw}-${total_spend_including_smartly_commission_lcw})/NULLIF(${total_spend_including_smartly_commission_lcw},0);;
+    sql: (${revenue_1_day_after_clicking_lcw})/NULLIF(${total_spend_including_smartly_commission_lcw},0);;
   }
 
   measure: return_on_investment_pcw {
@@ -2407,7 +2407,7 @@ view: facebook_api_ad_performance {
     type: number
     value_format_name: decimal_0
     group_label: "ROI Reporting Measures"
-    sql: (${revenue_1_day_after_clicking_pcw}-${total_spend_including_smartly_commission_pcw})/NULLIF(${total_spend_including_smartly_commission_pcw},0);;
+    sql: (${revenue_1_day_after_clicking_pcw})/NULLIF(${total_spend_including_smartly_commission_pcw},0);;
   }
 
   measure: return_on_investment_lcw_wow {
