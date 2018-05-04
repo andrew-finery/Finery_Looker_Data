@@ -443,6 +443,74 @@
     left: 7
 
 
+  - name: top_products_add_to_cart_yesterday
+    title: Top Products Added To Cart - Yesterday
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
+      product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
+      product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
+      product_info_option_daily.sum_gross_revenue_gbp]
+    filters:
+      product_info_option_daily.calendar_date_week: 1 days ago for 1 days
+    sorts: [product_info_option_daily.add_to_carts desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      product_info_option_daily.conversion_rate: C.R
+      product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
+    width: 7
+    height: 7
+    top: 20
+    left: 0
+
+
+  - name: top_products_add_to_cart_last_7_days
+    title: Top Products Added To Cart - Last 7 Days
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_product_page_views,
+      product_info_option_daily.add_to_carts, product_info_option_daily.add_to_cart_rate,
+      product_info_option_daily.sum_items_sold, product_info_option_daily.conversion_rate,
+      product_info_option_daily.sum_gross_revenue_gbp]
+    filters:
+      product_info_option_daily.calendar_date_week: 7 days ago for 7 days
+    sorts: [product_info_option_daily.add_to_carts desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      product_info_option_daily.conversion_rate: C.R
+      product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
+    width: 7
+    height: 7
+    top: 20
+    left: 7
+
+
   - name: top_products_sold_yesterday
     title: Top Products Sold Yesterday
     model: finery_data
@@ -473,7 +541,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 20
+    top: 27
     left: 0
 
 
@@ -507,5 +575,5 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 20
+    top: 27
     left: 7
