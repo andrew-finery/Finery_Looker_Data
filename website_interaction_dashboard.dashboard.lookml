@@ -221,8 +221,9 @@
     fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_yesterday,
       website_page_views.count_total_page_views_lw, website_page_views.percentage_total_page_views_lw,
       website_page_views.count_total_page_views_l7d_average, website_page_views.percentage_total_page_views_l7d,
-      visits.distinct_conversion_rate_yesterday, visits.distinct_conversion_rate_lw,
-      visits.distinct_conversion_rate_wow, visits.distinct_conversion_rate_l7d, visits.distinct_conversion_rate_l7d_percentage]
+      website_page_views.count_total_page_views_l7d, visits.distinct_conversion_rate_yesterday,
+      visits.distinct_conversion_rate_lw, visits.distinct_conversion_rate_wow, visits.distinct_conversion_rate_l7d,
+      visits.distinct_conversion_rate_l7d_percentage]
     sorts: [website_page_views.count_total_page_views_yesterday desc]
     limit: 10
     column_limit: 50
@@ -265,7 +266,6 @@
       website_page_views.exit_rate_wow: "%"
       website_page_views.exit_rate_l7d: L7D
       website_page_views.exit_rate_l7d_percentage: L7D%
-      website_page_views.count_total_page_views_yesterday: Times Viewed Yest.
       visits.conversion_yesterday: Conversion Rate
       visits.conversion_yesterday_last_week: LW
       visits.conversion_yesterday_wow: "%"
@@ -279,6 +279,8 @@
       visits.distinct_conversion_rate_l7d: L7D
       visits.distinct_conversion_rate_l7d_percentage: vs L7D
       website_page_views.count_total_page_views_l7d_average: L7D Avg
+      website_page_views.count_total_page_views_yesterday: Actual
+      website_page_views.count_total_page_views_l7d: L7D
     width: 14
     height: 3
     top: 6
