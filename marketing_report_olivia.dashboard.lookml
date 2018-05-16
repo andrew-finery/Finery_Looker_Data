@@ -1,15 +1,7 @@
-- dashboard: marketing_report_olivia
-  title: Marketing Report Olivia
+- dashboard: marketing_report_quarterly
+  title: Marketing Report Quarterly
   layout: tile
   tile_size: 100
-
-  filters:
-
-- dashboard: marketing_report_olivia
-  title: Marketing Report Olivia
-  layout: static
-  tile_size: 100
-
 
   elements:
   - name: visits_chart
