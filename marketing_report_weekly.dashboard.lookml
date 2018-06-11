@@ -715,6 +715,60 @@
     left: 0
 
 
+  - name: traffic_table_by_day
+    title: Traffic By Day
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [session_start_calendar.calendar_date_day_of_week, sessions.visits_last_complete_week,
+      sessions.visits_previous_complete_week, sessions.visits_last_complete_week_wow,
+      sessions.visits_last_complete_week_last_year, sessions.visits_last_complete_week_last_year_yoy,
+      sessions.visits_month_to_date, sessions.visits_month_to_date_last_month, sessions.visits_month_to_date_mom,
+      sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
+    fill_fields: [session_start_calendar.calendar_date_day_of_week]
+    sorts: [session_start_calendar.calendar_date_day_of_week]
+    limit: 7
+    column_limit: 50
+    total: true
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      sessions.visits_last_complete_week_wow: "%"
+    width: 12
+    height: 3
+    top: 39
+    left: 0
+
+
   - name: traffic_graph_by_day
     title: Traffic - By Day
     model: finery_data
@@ -792,7 +846,7 @@
             name: Visits Total, axisId: sessions.count}]}]
     width: 6
     height: 3
-    top: 39
+    top: 42
     left: 0
 
 
@@ -875,7 +929,7 @@
         __FILE: finery_data/marketing_report_weekly.dashboard.lookml, __LINE_NUM: 847}]
     width: 6
     height: 3
-    top: 39
+    top: 42
     left: 6
 
 
@@ -958,7 +1012,7 @@
         __LINE_NUM: 928}]
     width: 6
     height: 3
-    top: 42
+    top: 45
     left: 0
 
 
@@ -1041,7 +1095,7 @@
         __LINE_NUM: 1009}]
     width: 6
     height: 3
-    top: 42
+    top: 45
     left: 6
 
 
@@ -1124,5 +1178,5 @@
         __LINE_NUM: 1090}]
     width: 6
     height: 3
-    top: 45
+    top: 48
     left: 3
