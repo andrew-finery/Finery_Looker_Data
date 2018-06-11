@@ -2835,6 +2835,126 @@ view: sessions {
       ;;
   }
 
+  measure: page_views_per_visit_lcw {
+    label: "LCW"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_last_complete_week},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_pcw {
+    label: "PCW"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_previous_complete_week},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit_lcw} - ${page_views_per_visit_pcw})/NULLIF(${page_views_per_visit_pcw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: page_views_per_visit_lcw_ly {
+    label: "LCW - LY"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_last_complete_week_last_year},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_lcw_ly_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit_lcw} - ${page_views_per_visit_lcw_ly})/NULLIF(${page_views_per_visit_lcw_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: page_views_per_visit_mtd {
+    label: "MTD"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_month_to_date},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_mtd_lm {
+    label: "MTD LM"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_month_to_date_last_month},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_mtd_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit_mtd} - ${page_views_per_visit_mtd_lm})/NULLIF(${page_views_per_visit_mtd_lm},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: page_views_per_visit_ytd {
+    label: "YTD"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when ${start_date} between date_trunc('year',current_date) and current_date-1 then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_year_to_date},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_ytd_ly {
+    label: "YTD LY"
+    type: number
+    value_format_name: decimal_2
+    sql: sum(case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${distinct_pages_viewed} else 0 end)/NULLIF(${visits_year_to_date_last_year},0)::REAL ;;
+    group_label: "Page View Reporting Measures"
+  }
+
+  measure: page_views_per_visit_ytd_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Page View Reporting Measures"
+    sql: (${page_views_per_visit_ytd} - ${page_views_per_visit_ytd_yoy})/NULLIF(${page_views_per_visit_ytd_yoy},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: product_views_per_visit {
     label: "Actual"
     type: number
