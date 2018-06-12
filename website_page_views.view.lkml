@@ -387,6 +387,127 @@ view: website_page_views {
         ;;
   }
 
+  measure: count_total_page_views_lcw {
+    label: "LCW"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when (((${visits.start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${visits.start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end) ;;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_pcw {
+    label: "PCW"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when (((${visits.start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${visits.start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end) ;;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_lcw} - ${count_total_page_views_pcw})/NULLIF(${count_total_page_views_pcw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: count_total_page_views_lcw_ly {
+    label: "LCW - LY"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when ${visits.start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${visits.start_date} between current_date - 400 and current_date - 30 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end);;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_lcw_ly_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_lcw} - ${count_total_page_views_lcw_ly})/NULLIF(${count_total_page_views_lcw_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: count_total_page_views_mtd {
+    label: "MTD"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when ${visits.start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end);;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_mtd_lm {
+    label: "MTD LM"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when ${visits.start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end) ;;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_mtd_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_mtd} - ${count_total_page_views_mtd_lm})/NULLIF(${count_total_page_views_mtd_lm},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: count_total_page_views_ytd {
+    label: "YTD"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when ${visits.start_date} between date_trunc('year',current_date) and current_date-1 then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end) ;;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_ytd_ly {
+    label: "YTD LY"
+    type: number
+    value_format_name: percent_1
+    sql: count(distinct case when ${visits.start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end);;
+    group_label: "Total Page Views Reporting Measures"
+  }
+
+  measure: count_total_page_views_ytd_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Total Page Views Reporting Measures"
+    sql: (${count_total_page_views_ytd} - ${count_total_page_views_ytd_ly})/NULLIF(${count_total_page_views_ytd_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+
   measure: page_exit_yesterday {
     type: number
     sql: count(distinct case when ${visits.start_date} = current_date - 1 and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
