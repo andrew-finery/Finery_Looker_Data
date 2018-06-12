@@ -2944,7 +2944,7 @@ view: sessions {
     type: number
     value_format_name: percent_0
     group_label: "Page View Reporting Measures"
-    sql: (${page_views_per_visit_ytd} - ${page_views_per_visit_ytd_yoy})/NULLIF(${page_views_per_visit_ytd_yoy},0)::REAL ;;
+    sql: (${page_views_per_visit_ytd} - ${page_views_per_visit_ytd_ly})/NULLIF(${page_views_per_visit_ytd_ly},0)::REAL ;;
     html: {% if value < 0 %}
       <font color="#D77070"> {{ rendered_value }} </font>
       {% elsif value > 0 %}
