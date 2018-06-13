@@ -43,8 +43,8 @@
     explore: sessions
     type: table
     fields: [sessions.product_views_per_visit, sessions.product_views_per_visit_lw,
-      sessions.product_views_per_visit_wow, sessions.product_views__per_visit_last_7_days,
-      sessions.product_views__per_visit_last_7_days_percentage]
+      sessions.product_views_per_visit_wow, sessions.product_views_per_visit_last_7_days,
+      sessions.product_views_per_visit_last_7_days_percentage]
     limit: 500
     column_limit: 50
     show_view_names: false
