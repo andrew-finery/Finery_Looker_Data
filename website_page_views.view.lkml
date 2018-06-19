@@ -523,6 +523,22 @@ view: website_page_views {
     hidden: yes
   }
 
+  measure: page_exit_lcw {
+    type: number
+    sql: count(distinct case when (((${visits.start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${visits.start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
+    label: "LCW"
+    group_label: "Count Exit Page Reporting Measures"
+    hidden: yes
+  }
+
+  measure: page_exit_pcw {
+    type: number
+    sql: count(distinct case when (((${visits.start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${visits.start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) and ${exit_page_flag} then ${domain_userid} || ${domain_sessionidx} || ${page_view_index} else null end)::REAL;;
+    label: "PCW"
+    group_label: "Count Exit Page Reporting Measures"
+    hidden: yes
+  }
+
   measure: exit_rate_yesterday {
     label: "Actual"
     type: number
@@ -569,6 +585,38 @@ view: website_page_views {
     value_format_name: percent_1
     group_label: "Exit Rate Reporting Measures"
     sql: (${exit_rate_yesterday} - ${exit_rate_l7d})/NULLIF(${exit_rate_l7d},0)::REAL ;;
+    html: {% if value > 0 %}
+        <font color="#D77070"> {{ rendered_value }} </font>
+        {% elsif value < 0 %}
+        <font color="#3CB371"> {{ rendered_value }} </font>
+        {% else %}
+        <font color="#000000"> {{ rendered_value }} </font>
+        {% endif %}
+        ;;
+  }
+
+  measure: exit_rate_lcw {
+    label: "LCW"
+    type: number
+    value_format_name: percent_1
+    sql: ${page_exit_lcw}/NULLIF(${count_total_page_views_lcw},0)::REAL ;;
+    group_label: "Exit Rate Reporting Measures"
+  }
+
+  measure: exit_rate_pcw {
+    label: "PCW"
+    type: number
+    value_format_name: percent_1
+    sql: ${page_exit_pcw}/NULLIF(${count_total_page_views_pcw},0)::REAL ;;
+    group_label: "Exit Rate Reporting Measures"
+  }
+
+  measure: exit_rate_lcw_percentage {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_1
+    group_label: "Exit Rate Reporting Measures"
+    sql: (${exit_rate_lcw} - ${exit_rate_pcw})/NULLIF(${exit_rate_pcw},0)::REAL ;;
     html: {% if value > 0 %}
         <font color="#D77070"> {{ rendered_value }} </font>
         {% elsif value < 0 %}

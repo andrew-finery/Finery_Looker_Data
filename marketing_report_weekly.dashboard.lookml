@@ -279,162 +279,6 @@
     left: 0
 
 
-  - name: facebook_spend_graph
-    title: Facebook Spend (26 Weeks)
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: looker_area
-    fields: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.calendar_week]
-    fill_fields: [facebook_api_ad_performance.calendar_week]
-    filters:
-      facebook_api_ad_performance.calendar_date: 30 weeks ago for 30 weeks
-    sorts: [facebook_api_ad_performance.calendar_week desc]
-    limit: 500
-    column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    ordering: none
-    show_null_labels: false
-    series_types: {}
-    y_axes: [{label: Total Spend, maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: facebook_api_ad_performance.total_spend,
-            name: Facebook API Ad Performance Total Spend, axisId: facebook_api_ad_performance.total_spend,
-            __FILE: finery_data/marketing_report.dashboard.lookml, __LINE_NUM: 240}],
-        __FILE: finery_data/marketing_report.dashboard.lookml, __LINE_NUM: 238}]
-    x_axis_label: Calendar Date
-    width: 12
-    height: 4
-    top: 18
-    left: 0
-
-
-  - name: facebook_roi_table
-    title: Facebook ROI
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: table
-    fields: [ facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.return_on_investment_lcw,
-      facebook_api_ad_performance.return_on_investment_pcw, facebook_api_ad_performance.return_on_investment_lcw_wow]
-    sorts: [facebook_api_ad_performance.return_on_investment_lcw desc]
-    filters:
-      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
-    limit: 500
-    column_limit: 50
-    total: true
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    series_labels:
-      facebook_api_ad_performance.return_on_investment_lcw_wow: "%"
-    width: 6
-    height: 2
-    top: 22
-    left: 0
-
-
-  - name: facebook_cpo_table
-    title: Facebook CPO
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: table
-    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_order_lcw,
-      facebook_api_ad_performance.cost_per_order_pcw, facebook_api_ad_performance.cost_per_order_lcw_wow]
-    sorts: [facebook_api_ad_performance.cost_per_order_lcw desc]
-    filters:
-      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
-    limit: 500
-    column_limit: 50
-    total: true
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    series_labels:
-      facebook_api_ad_performance.return_on_investment_lcw_wow: "%"
-      facebook_api_ad_performance.cost_per_order_lcw_wow: "%"
-    width: 6
-    height: 2
-    top: 22
-    left: 6
-
-
   - name: traffic_table
     title: Traffic
     model: finery_data
@@ -484,7 +328,7 @@
       sessions.visits_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 24
+    top: 18
     left: 0
 
 
@@ -540,7 +384,7 @@
       sessions.gross_revenue_ex_discount_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 27
+    top: 21
     left: 0
 
 
@@ -596,7 +440,7 @@
       sessions.orders_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 30
+    top: 24
     left: 0
 
 
@@ -653,7 +497,7 @@
       sessions.conversion_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 33
+    top: 27
     left: 0
 
 
@@ -711,7 +555,7 @@
       sessions.average_basket_ex_discount_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 36
+    top: 30
     left: 0
 
 
@@ -765,7 +609,7 @@
       sessions.visits_last_complete_week_wow: "%"
     width: 12
     height: 3
-    top: 39
+    top: 33
     left: 0
 
 
@@ -846,7 +690,7 @@
             name: Visits Total, axisId: sessions.count}]}]
     width: 6
     height: 3
-    top: 42
+    top: 36
     left: 0
 
 
@@ -929,7 +773,7 @@
         __FILE: finery_data/marketing_report_weekly.dashboard.lookml, __LINE_NUM: 847}]
     width: 6
     height: 3
-    top: 42
+    top: 36
     left: 6
 
 
@@ -1012,7 +856,7 @@
         __LINE_NUM: 928}]
     width: 6
     height: 3
-    top: 45
+    top: 39
     left: 0
 
 
@@ -1095,7 +939,7 @@
         __LINE_NUM: 1009}]
     width: 6
     height: 3
-    top: 45
+    top: 39
     left: 6
 
 
@@ -1178,5 +1022,5 @@
         __LINE_NUM: 1090}]
     width: 6
     height: 3
-    top: 48
+    top: 42
     left: 3

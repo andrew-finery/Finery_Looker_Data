@@ -7,7 +7,7 @@
 
   elements:
   - name: page_views_per_visit
-    title: Page Views Per Vist
+    title: Page Views Per Visit
     model: finery_data
     explore: sessions
     type: table
@@ -339,4 +339,187 @@
     width: 14
     height: 3
     top: 6
+    left: 0
+
+
+  - name: page_visits_with_conversion
+    title: Page Visits With Conversion
+    model: finery_data
+    explore: website_page_views
+    type: table
+    fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_lcw,
+      website_page_views.count_total_page_views_pcw, website_page_views.count_total_page_views_lcw_wow,
+      visits.distinct_conversion_rate_lcw, visits.distinct_conversion_rate_pcw, visits.distinct_conversion_rate_lcw_percentage]
+    sorts: [website_page_views.count_total_page_views_lcw desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      website_page_views.exit_rate_yesterday: Exit Rate
+      website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
+      website_page_views.exit_rate_lw: LW
+      website_page_views.exit_rate_wow: "%"
+      website_page_views.exit_rate_l7d: L7D
+      website_page_views.exit_rate_l7d_percentage: L7D%
+      visits.conversion_yesterday: Conversion Rate
+      visits.conversion_yesterday_last_week: LW
+      visits.conversion_yesterday_wow: "%"
+      website_page_views.count_total_page_views_lw: LW
+      website_page_views.percentage_total_page_views_lw: "%"
+      website_page_views.percentage_total_page_views_l7d: vs L7D
+      visits.conversion_last_7_days_percentage: L7D%
+      visits.distinct_conversion_rate_yesterday: C.R
+      visits.distinct_conversion_rate_lw: LW
+      visits.distinct_conversion_rate_wow: "%"
+      visits.distinct_conversion_rate_l7d: L7D
+      visits.distinct_conversion_rate_l7d_percentage: vs L7D
+      website_page_views.count_total_page_views_l7d_average: L7D Avg
+      website_page_views.count_total_page_views_yesterday: Actual
+      website_page_views.count_total_page_views_l7d: L7D
+      website_page_views.page_urlpath: Page Url
+      website_page_views.count_total_page_views_lcw: LCW
+      website_page_views.count_total_page_views_pcw: PCW
+      website_page_views.count_total_page_views_lcw_wow: LCW %
+      visits.distinct_conversion_rate_lcw: LCW
+      visits.distinct_conversion_rate_pcw: PCW
+      visits.distinct_conversion_rate_lcw_percentage: LCW %
+    width: 14
+    height: 3
+    top: 9
+    left: 0
+
+
+  - name: exit_rate
+    title: Exit Rate
+    model: finery_data
+    explore: website_page_views
+    type: table
+    fields: [visits.exit_page_path, visits.visits_last_complete_week, website_page_views.exit_rate_lcw,
+      website_page_views.exit_rate_pcw, website_page_views.exit_rate_lcw_percentage]
+    sorts: [visits.visits_last_complete_week desc]
+    limit: 10
+    query_timezone: Europe/London
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      website_page_views.exit_rate_lcw: LCW
+    width: 14
+    height: 3
+    top: 12
+    left: 0
+
+
+  - name: add_to_cart_product
+    title: Add To Cart Rate (Product)
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.product_add_to_cart_rate_lcw, sessions.product_add_to_cart_rate_pcw,
+      sessions.product_add_to_cart_rate_lcw_wow, sessions.product_add_to_cart_rate_lcw_ly,
+      sessions.product_add_to_cart_rate_lcw_yoy, sessions.product_add_to_cart_rate_mtd,
+      sessions.product_add_to_cart_rate_mtd_lm, sessions.product_add_to_cart_rate_mtd_mom,
+      sessions.product_add_to_cart_rate_ytd, sessions.product_add_to_cart_rate_ytd_ly,
+      sessions.product_add_to_cart_rate_ytd_yoy]
+    limit: 500
+    query_timezone: Europe/London
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      sessions.product_add_to_cart_rate_lcw_wow: "%"
+    width: 14
+    height: 1
+    top: 15
     left: 0
