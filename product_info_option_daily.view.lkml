@@ -333,6 +333,12 @@ view: product_info_option_daily {
     sql: ${product_page_views} ;;
   }
 
+  measure: sum_products_page_views_lcw {
+    label: "Page Views LCW"
+    type: sum
+    sql:  case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${product_page_views} else 0 end ;;
+  }
+
   measure: sum_product_impressions {
     type: sum
     label: "Impressions"
@@ -356,6 +362,12 @@ view: product_info_option_daily {
     sql: ${products_added_to_cart} ;;
   }
 
+  measure: add_to_carts_lcw {
+    label: "Add To Carts LCW"
+    type: sum
+    sql:  case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${products_added_to_cart} else 0 end ;;
+  }
+
   measure: coming_soon_requests {
     type: sum
     sql: ${product_coming_soon_requests} ;;
@@ -374,6 +386,14 @@ view: product_info_option_daily {
     label: "Conversion Rate"
     sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL ;;
   }
+
+  measure: conversion_rate_lcw {
+    type: number
+    value_format_name: percent_2
+    label: "Conversion Rate LCW"
+    sql: ${items_sold_lcw}/NULLIF(${sum_products_page_views_lcw},0)::REAL ;;
+  }
+
 
   measure: go_live_date {
     type: string
@@ -469,6 +489,13 @@ view: product_info_option_daily {
     label: "Add To Cart Rate"
   }
 
+  measure: add_to_cart_rate_lcw {
+    type: number
+    label: "Add To Cart Rate LCW"
+    value_format_name: percent_1
+    sql:  ${add_to_carts_lcw}/NULLIF(${sum_products_page_views_lcw},0)::REAL ;;
+  }
+
 ############################# BYUING REPORT MEASURES
 
   measure: gross_revenue_lw {
@@ -559,6 +586,13 @@ view: product_info_option_daily {
       then ${gross_revenue_gbp_ex_vat_ex_discount} else null end
       )
        ;;
+  }
+
+  measure: gross_revenue_lcw {
+    type: sum
+    value_format_name: gbp_0
+    label: "Gross Revenue LCW"
+    sql: case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${gross_revenue_gbp_ex_discount} else 0 end ;;
   }
 
   measure: cogs_lw {
@@ -701,6 +735,11 @@ view: product_info_option_daily {
       ;;
   }
 
+  measure: items_sold_lcw {
+    label: "Items Sold LCW"
+    type: sum
+    sql:  case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${items_sold} else 0 end ;;
+  }
 
   measure: return_intake_lw {
     label: "Returns Intake LW"

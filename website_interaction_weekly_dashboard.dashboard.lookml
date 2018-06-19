@@ -523,3 +523,164 @@
     height: 1
     top: 15
     left: 0
+
+
+  - name: product_conversion_rate
+    title: Conversion Rate (Product)
+    model: finery_data
+    explore: sessions
+    type: table
+    fields: [sessions.product_conversion_rate_lcw, sessions.product_conversion_rate_pcw,
+      sessions.product_conversion_lcw_wow, sessions.product_conversion_rate_lcw_ly,
+      sessions.product_conversion_lcw_yoy, sessions.product_conversion_rate_mtd, sessions.product_conversion_rate_mtd_lm,
+      sessions.product_conversion_mtd_mom, sessions.product_conversion_rate_ytd, sessions.product_conversion_rate_ytd_ly,
+      sessions.product_conversion_ytd_yoy]
+    limit: 500
+    query_timezone: Europe/London
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      sessions.product_conversion_lcw_wow: "%"
+    width: 14
+    height: 1
+    top: 16
+    left: 0
+
+
+  - name: most_viewed_product
+    title: Most Viewed Products
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_products_page_views_lcw,
+      product_info_option_daily.add_to_carts_lcw, product_info_option_daily.add_to_cart_rate_lcw,
+      product_info_option_daily.items_sold_lcw, product_info_option_daily.conversion_rate_lcw,
+      product_info_option_daily.gross_revenue_lcw]
+    sorts: [product_info_option_daily.sum_products_page_views_lcw desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.add_to_carts_lcw: Add To Carts
+      product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
+      product_info_option_daily.items_sold_lcw: Items Sold
+      product_info_option_daily.conversion_rate_lcw: C.R
+      product_info_option_daily.gross_revenue_lcw: Gross Rev.
+    width: 7
+    height: 6
+    top: 17
+    left: 0
+
+
+  - name: most_added_to_cart_product
+    title: Most Added To Cart Products
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_products_page_views_lcw,
+      product_info_option_daily.add_to_carts_lcw, product_info_option_daily.add_to_cart_rate_lcw,
+      product_info_option_daily.items_sold_lcw, product_info_option_daily.conversion_rate_lcw,
+      product_info_option_daily.gross_revenue_lcw]
+    sorts: [product_info_option_daily.add_to_carts_lcw desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.add_to_carts_lcw: Add To Carts
+      product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
+      product_info_option_daily.items_sold_lcw: Items Sold
+      product_info_option_daily.conversion_rate_lcw: C.R
+      product_info_option_daily.gross_revenue_lcw: Gross Rev.
+    width: 7
+    height: 6
+    top: 17
+    left: 7
+
+
+  - name: most_sold_product
+    title: Most Sold Products
+    model: finery_data
+    explore: product_info_option_daily
+    type: table
+    fields: [option_info.option, option_info.option_image_small, product_info_option_daily.sum_products_page_views_lcw,
+      product_info_option_daily.add_to_carts_lcw, product_info_option_daily.add_to_cart_rate_lcw,
+      product_info_option_daily.items_sold_lcw, product_info_option_daily.conversion_rate_lcw,
+      product_info_option_daily.gross_revenue_lcw]
+    sorts: [product_info_option_daily.items_sold_lcw desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    series_labels:
+      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.add_to_carts_lcw: Add To Carts
+      product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
+      product_info_option_daily.items_sold_lcw: Items Sold
+      product_info_option_daily.conversion_rate_lcw: C.R
+      product_info_option_daily.gross_revenue_lcw: Gross Rev.
+    width: 7
+    height: 6
+    top: 23
+    left: 0

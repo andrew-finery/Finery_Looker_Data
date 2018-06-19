@@ -3630,7 +3630,7 @@ view: sessions {
 
   measure: sum_product_views_lcw_wow {
     label: "LCW %"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Views Reporting Measures"
     sql: (${sum_product_views_lcw} - ${sum_product_views_pcw})/NULLIF(${sum_product_views_pcw},0)::REAL ;;
@@ -3653,7 +3653,7 @@ view: sessions {
 
   measure: sum_product_views_lcw_ly_yoy {
     label: "LCW - LY%"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Views Reporting Measures"
     sql: (${sum_product_views_lcw} - ${sum_product_views_lcw_ly})/NULLIF(${sum_product_views_lcw_ly},0)::REAL ;;
@@ -3683,7 +3683,7 @@ view: sessions {
 
   measure: sum_product_views_mtd_mom {
     label: "MTD MoM"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Views Reporting Measures"
     sql: (${sum_product_views_mtd} - ${sum_product_views_mtd_lm})/NULLIF(${sum_product_views_mtd_lm},0)::REAL ;;
@@ -3713,7 +3713,7 @@ view: sessions {
 
   measure: sum_product_views_ytd_yoy {
     label: "YTD YoY"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Views Reporting Measures"
     sql: (${sum_product_views_ytd} - ${sum_product_views_ytd_ly})/NULLIF(${sum_product_views_ytd_ly},0)::REAL ;;
@@ -3775,7 +3775,7 @@ view: sessions {
 
   measure: sum_products_add_to_cart_lcw_wow {
     label: "LCW %"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Count Added To Cart Reporting Measures"
     sql: (${sum_products_add_to_cart_lcw} - ${sum_products_add_to_cart_pcw})/NULLIF(${sum_products_add_to_cart_pcw},0)::REAL ;;
@@ -3798,7 +3798,7 @@ view: sessions {
 
   measure: sum_products_add_to_cart_lcw_ly_yoy {
     label: "LCW - LY%"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Count Added To Cart Reporting Measures"
     sql: (${sum_products_add_to_cart_lcw} - ${sum_products_add_to_cart_lcw_ly})/NULLIF(${sum_products_add_to_cart_lcw_ly},0)::REAL ;;
@@ -3828,7 +3828,7 @@ view: sessions {
 
   measure: sum_products_add_to_cart_mtd_mom {
     label: "MTD MoM"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Count Added To Cart Reporting Measures"
     sql: (${sum_products_add_to_cart_mtd} - ${sum_products_add_to_cart_mtd_lm})/NULLIF(${sum_products_add_to_cart_mtd_lm},0)::REAL ;;
@@ -3858,7 +3858,7 @@ view: sessions {
 
   measure: sum_products_add_to_cart_ytd_yoy {
     label: "YTD YoY"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Product Count Added To Cart Reporting Measures"
     sql: (${sum_products_add_to_cart_ytd} - ${sum_products_add_to_cart_ytd_ly})/NULLIF(${sum_products_add_to_cart_ytd_ly},0)::REAL ;;
@@ -4092,20 +4092,20 @@ view: sessions {
   measure: sum_products_purchased_lcw {
     label: "LCW"
     type: sum
-    sql:  case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${products_purchased} else 0 end) ;;
+    sql:  case when (((${start_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_pcw {
     label: "PCW"
     type: sum
-    sql:  case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${products_purchased} else 0 end) ;;
+    sql:  case when (((${start_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${start_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_lcw_wow {
     label: "LCW %"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Products Purchased Reporting Measures"
     sql: (${sum_products_purchased_lcw} - ${sum_products_purchased_pcw})/NULLIF(${sum_products_purchased_pcw},0)::REAL ;;
@@ -4122,13 +4122,13 @@ view: sessions {
   measure: sum_products_purchased_lcw_ly {
     label: "LCW - LY"
     type: sum
-    sql:  case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${products_purchased} else 0 end);;
+    sql:  case when ${start_week_of_year} = EXTRACT(WEEK FROM current_date - 7) and ${start_date} between current_date - 400 and current_date - 30 then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_lcw_ly_yoy {
     label: "LCW - LY%"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Products Purchased Reporting Measures"
     sql: (${sum_products_purchased_lcw} - ${sum_products_purchased_lcw_ly})/NULLIF(${sum_products_purchased_lcw_ly},0)::REAL ;;
@@ -4145,20 +4145,20 @@ view: sessions {
   measure: sum_products_purchased_mtd {
     label: "MTD"
     type: sum
-    sql:  case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${products_purchased} else 0 end);;
+    sql:  case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_mtd_lm {
     label: "MTD LM"
     type: sum
-    sql:  case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${products_purchased} else 0 end) ;;
+    sql:  case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_mtd_mom {
     label: "MTD MoM"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Products Purchased Reporting Measures"
     sql: (${sum_products_purchased_mtd} - ${sum_products_purchased_mtd_lm})/NULLIF(${sum_products_purchased_mtd_lm},0)::REAL ;;
@@ -4175,20 +4175,20 @@ view: sessions {
   measure: sum_products_purchased_ytd {
     label: "YTD"
     type: sum
-    sql:  case when ${start_date} between date_trunc('year',current_date) and current_date-1 then ${products_purchased} else 0 end) ;;
+    sql:  case when ${start_date} between date_trunc('year',current_date) and current_date-1 then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_ytd_ly {
     label: "YTD LY"
     type: sum
-    sql:  case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${products_purchased} else 0 end);;
+    sql:  case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${products_purchased} else 0 end ;;
     group_label: "Products Purchased Reporting Measures"
   }
 
   measure: sum_products_purchased_ytd_yoy {
     label: "YTD YoY"
-    type: sum
+    type: number
     value_format_name: percent_0
     group_label: "Products Purchased Reporting Measures"
     sql: (${sum_products_purchased_ytd} - ${sum_products_purchased_ytd_ly})/NULLIF(${sum_products_purchased_ytd_ly},0)::REAL ;;
@@ -4282,7 +4282,109 @@ view: sessions {
     group_label: "Product Conversion Rate Reporting Measures"
   }
 
-  #################################################################################################
+  measure: product_conversion_lcw_wow {
+    label: "LCW %"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_lcw} - ${product_conversion_rate_pcw})/NULLIF(${product_conversion_rate_pcw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_conversion_rate_lcw_ly {
+    label: "LCW - LY"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_lcw_ly}/NULLIF(${sum_product_views_lcw_ly},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_lcw_yoy {
+    label: "LCW - LY%"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_lcw} - ${product_conversion_rate_lcw_ly})/NULLIF(${product_conversion_rate_lcw_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_conversion_rate_mtd {
+    label: "MTD"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_mtd}/NULLIF(${sum_product_views_mtd},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_rate_mtd_lm {
+    label: "MTD LM"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_mtd_lm}/NULLIF(${sum_product_views_mtd_lm},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_mtd_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_mtd} - ${product_conversion_rate_mtd_lm})/NULLIF(${product_conversion_rate_mtd_lm},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: product_conversion_rate_ytd {
+    label: "YTD"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_ytd}/NULLIF(${sum_product_views_ytd},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_rate_ytd_ly {
+    label: "YTD LY"
+    type: number
+    value_format_name: percent_2
+    sql: ${sum_products_purchased_ytd_ly}/NULLIF(${sum_product_views_ytd_ly},0)::REAL ;;
+    group_label: "Product Conversion Rate Reporting Measures"
+  }
+
+  measure: product_conversion_ytd_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Product Conversion Rate Reporting Measures"
+    sql: (${product_conversion_rate_ytd} - ${product_conversion_rate_ytd_ly})/NULLIF(${product_conversion_rate_ytd_ly},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
 
   measure: number_of_converted_customers_yesterday {
     label: "Actual"
