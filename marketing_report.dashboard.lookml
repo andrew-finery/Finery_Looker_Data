@@ -225,213 +225,6 @@
     top: 12
     left: 0
 
-  - name: facebook_revenue_1d_click
-    title: Facebook Revenue 1d Click
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: table
-    fields: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_lw,
-      facebook_api_ad_performance.revenue_1_day_after_clicking_wow, facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_average,
-      facebook_api_ad_performance.revenue_1_day_after_clicking_l3d_vs_yesterday, facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_average,
-      facebook_api_ad_performance.revenue_1_day_after_clicking_l7d_vs_yesterday, facebook_api_ad_performance.buyers_vs_non_buyers]
-    sorts: [facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday desc]
-    filters:
-      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
-    limit: 500
-    column_limit: 50
-    total: true
-    query_timezone: Europe/London
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    width: 12
-    height: 3
-    top: 15
-    left: 0
-
-
-  - name: facebook_spend_last_30_days
-    title: Facebook Spend Last 30 Days
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: looker_area
-    fields: [facebook_api_ad_performance.total_spend, facebook_api_ad_performance.calendar_date]
-    fill_fields: [facebook_api_ad_performance.calendar_date]
-    filters:
-      facebook_api_ad_performance.calendar_date: 30 days ago for 30 days
-    sorts: [facebook_api_ad_performance.calendar_date desc]
-    limit: 500
-    column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: false
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: false
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    ordering: none
-    show_null_labels: false
-    series_types: {}
-    y_axes: [{label: Total Spend, maxValue: !!null '', minValue: !!null '', orientation: left,
-        showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: facebook_api_ad_performance.total_spend,
-            name: Facebook API Ad Performance Total Spend, axisId: facebook_api_ad_performance.total_spend}]}]
-    x_axis_label: Calendar Date
-    width: 12
-    height: 4
-    top: 18
-    left: 0
-
-  - name: facebook_roi
-    title: Facebook ROI
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: table
-    fields: [ facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.return_on_investment_yesterday,
-      facebook_api_ad_performance.return_on_investment_lw, facebook_api_ad_performance.return_on_investment_wow,
-      facebook_api_ad_performance.return_on_investment_l3d_average, facebook_api_ad_performance.return_on_investment_l3d_vs_yesterday,
-      facebook_api_ad_performance.return_on_investment_l7d_average, facebook_api_ad_performance.return_on_investment_l7d_vs_yesterday]
-    sorts: [facebook_api_ad_performance.return_on_investment_yesterday desc]
-    filters:
-      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
-    limit: 500
-    column_limit: 50
-    total: true
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: true
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    series_labels:
-      facebook_api_ad_performance.revenue_1_day_after_clicking_yesterday: Revenue
-      facebook_api_ad_performance.return_on_investment_yesterday: Actual
-    width: 12
-    height: 2
-    top: 22
-    left: 0
-
-  - name: facebook_cpo
-    title: Facebook CPO
-    model: finery_data
-    explore: facebook_api_ad_performance
-    type: table
-    fields: [facebook_api_ad_performance.buyers_vs_non_buyers, facebook_api_ad_performance.cost_per_order_yesterday,
-      facebook_api_ad_performance.cost_per_order_lw, facebook_api_ad_performance.cost_per_order_wow,
-      facebook_api_ad_performance.cost_per_order_l3d_average, facebook_api_ad_performance.cost_per_order_l3d_vs_yesterday,
-      facebook_api_ad_performance.cost_per_order_l7d_average, facebook_api_ad_performance.cost_per_order_l7d_vs_yesterday]
-    sorts: [facebook_api_ad_performance.cost_per_order_yesterday desc]
-    filters:
-      facebook_api_ad_performance.buyers_vs_non_buyers: "-EMPTY"
-    limit: 500
-    column_limit: 50
-    total: true
-    show_view_names: false
-    show_row_numbers: false
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: true
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    width: 12
-    height: 2
-    top: 24
-    left: 0
 
   - name: traffic_per_channel
     title: Traffic
@@ -490,7 +283,7 @@
       sessions.visits_yesterday_last_week: LW
     width: 12
     height: 3
-    top: 26
+    top: 15
     left: 0
 
   - name: revenue_per_channel
@@ -541,7 +334,7 @@
     series_types: {}
     width: 12
     height: 3
-    top: 29
+    top: 18
     left: 0
 
   - name: orders_per_channel
@@ -600,7 +393,7 @@
       sessions.conversion_yesterday: Conversion Rate
     width: 12
     height: 3
-    top: 32
+    top: 21
     left: 0
 
   - name: conversion_per_channel
@@ -660,7 +453,7 @@
       sessions.conversion_yesterday: Actual
     width: 12
     height: 3
-    top: 35
+    top: 24
     left: 0
 
   - name: average_basket_per_channel
@@ -711,7 +504,7 @@
     series_types: {}
     width: 12
     height: 3
-    top: 38
+    top: 27
     left: 0
 
   - name: crm_revenue_26_week_graph
@@ -776,7 +569,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 41
+    top: 30
     left: 0
 
   - name: search_26_week_graph
@@ -841,7 +634,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 41
+    top: 30
     left: 6
 
   - name: paid_social_26_week_graph
@@ -906,7 +699,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 44
+    top: 33
     left: 0
 
   - name: affiliates_26_week_graph
@@ -971,7 +764,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 44
+    top: 33
     left: 6
 
   - name: direct_26_week_graph
@@ -1036,7 +829,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 47
+    top: 36
     left: 0
 
   - name: organic_social_26_week_graph
@@ -1101,7 +894,7 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 47
+    top: 36
     left: 6
 
   - name: referrals_26_week_graph
@@ -1166,5 +959,5 @@
     colors: ['palette: Looker Classic']
     width: 6
     height: 3
-    top: 50
+    top: 39
     left: 3
