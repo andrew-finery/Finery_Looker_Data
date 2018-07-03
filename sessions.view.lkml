@@ -3375,7 +3375,7 @@ view: sessions {
     label: "Add To Cart Rate"
     type: number
     value_format_name: percent_1
-    sql: ${visit_contains_cart}/NULLIF(${count},0)::REAL ;;
+    sql: count(distinct case when ${add_to_cart} then ${session_id} else null end)/NULLIF(${count},0)::REAL ;;
   }
 
   measure: cart_visits_yesterday {
