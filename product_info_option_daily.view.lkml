@@ -239,6 +239,37 @@ view: product_info_option_daily {
     type: sum
     label: "Items Sold"
     sql: ${items_sold} ;;
+    group_label: "Items Sold"
+  }
+
+  measure: sum_items_sold_wtd {
+    type: number
+    label: "WTD"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${items_sold} else 0 end) ;;
+    group_label: "Items Sold"
+  }
+
+  measure: sum_items_sold_wtd_lw {
+    type: number
+    label: "WTD LW"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${items_sold} else 0 end) ;;
+    group_label: "Items Sold"
+  }
+
+  measure: sum_items_sold_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Items Sold"
+    sql: (${sum_items_sold_wtd} - ${sum_items_sold_wtd_lw})/NULLIF(${sum_items_sold_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: sum_items_sold_last_week {
@@ -306,6 +337,39 @@ view: product_info_option_daily {
     value_format_name: decimal_2
     label: "Gross Revenue ex. Discount"
     sql: ${gross_revenue_gbp_ex_discount} ;;
+    group_label: "Gross Revenue Ex Discount"
+  }
+
+  measure: sum_gross_revenue_gbp_ex_discount_wtd {
+    type: number
+    value_format_name: gbp_0
+    label: "WTD"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${gross_revenue_gbp_ex_discount} else 0 end) ;;
+    group_label: "Gross Revenue Ex Discount"
+  }
+
+  measure: sum_gross_revenue_gbp_ex_discount_wtd_lw {
+    type: number
+    value_format_name: gbp_0
+    label: "WTD LW"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${gross_revenue_gbp_ex_discount} else 0 end) ;;
+    group_label: "Gross Revenue Ex Discount"
+  }
+
+  measure: sum_gross_revenue_gbp_ex_discount_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex Discount"
+    sql: (${sum_gross_revenue_gbp_ex_discount_wtd} - ${sum_gross_revenue_gbp_ex_discount_wtd_lw})/NULLIF(${sum_gross_revenue_gbp_ex_discount_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: sum_gross_revenue_gbp_ex_vat_ex_discount {
@@ -331,12 +395,44 @@ view: product_info_option_daily {
     type: sum
     label: "Page Views"
     sql: ${product_page_views} ;;
+    group_label: "Page Views"
   }
 
   measure: sum_products_page_views_lcw {
-    label: "Page Views LCW"
+    label: "LCW"
     type: sum
     sql:  case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${product_page_views} else 0 end ;;
+    group_label: "Page Views"
+  }
+
+  measure: sum_product_page_views_wtd {
+    type: number
+    label: "WTD"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${product_page_views} else 0 end) ;;
+    group_label: "Page Views"
+  }
+
+  measure: sum_product_page_views_wtd_lw {
+    type: number
+    label: "WTD LW"
+    sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${product_page_views} else 0 end) ;;
+    group_label: "Page Views"
+  }
+
+  measure: sum_product_page_views_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Page Views"
+    sql: (${sum_product_page_views_wtd} - ${sum_product_page_views_wtd_lw})/NULLIF(${sum_product_page_views_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
   measure: sum_product_impressions {
@@ -385,13 +481,47 @@ view: product_info_option_daily {
     value_format_name: percent_2
     label: "Conversion Rate"
     sql: ${sum_items_sold}/NULLIF(${sum_product_page_views},0)::REAL ;;
+    group_label: "Conversion Rate"
   }
 
   measure: conversion_rate_lcw {
     type: number
     value_format_name: percent_2
-    label: "Conversion Rate LCW"
+    label: "LCW"
     sql: ${items_sold_lcw}/NULLIF(${sum_products_page_views_lcw},0)::REAL ;;
+    group_label: "Conversion Rate"
+  }
+
+  measure: conversion_rate_wtd {
+    type: number
+    value_format_name: percent_2
+    label: "WTD"
+    sql: ${sum_items_sold_wtd}/NULLIF(${sum_product_page_views_wtd},0)::REAL ;;
+    group_label: "Conversion Rate"
+  }
+
+  measure: conversion_rate_wtd_lw {
+    type: number
+    value_format_name: percent_2
+    label: "WTD LW"
+    sql: ${sum_items_sold_wtd_lw}/NULLIF(${sum_product_page_views_wtd_lw},0)::REAL ;;
+    group_label: "Conversion Rate"
+  }
+
+  measure: conversion_rate_week_to_date_wow {
+    label: "WTD WoW"
+    type: number
+    value_format_name: percent_0
+    group_label: "Conversion Rate"
+    sql: (${conversion_rate_wtd} - ${conversion_rate_wtd_lw})/NULLIF(${conversion_rate_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
   }
 
 

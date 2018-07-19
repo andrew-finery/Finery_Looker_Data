@@ -304,7 +304,8 @@
     explore: john_lewis_sor
     type: table
     fields: [john_lewis_sor.net_revenue_yesterday, john_lewis_sor.net_revenue_yesterday_last_week,
-      john_lewis_sor.net_revenue_yesterday_week_on_week, john_lewis_sor.net_revenue_week_to_date,
+      john_lewis_sor.net_revenue_yesterday_week_on_week, john_lewis_sor.net_revenue_yesterday_last_year,
+      john_lewis_sor.net_revenue_yesterday_year_on_year, john_lewis_sor.net_revenue_week_to_date,
       john_lewis_sor.net_revenue_week_to_date_lw, john_lewis_sor.net_revenue_week_to_date_week_on_week,
       john_lewis_sor.net_revenue_month_to_date, john_lewis_sor.net_revenue_month_to_date_last_month,
       john_lewis_sor.net_revenue_month_to_date_month_on_month]
