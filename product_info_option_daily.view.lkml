@@ -242,22 +242,29 @@ view: product_info_option_daily {
     group_label: "Items Sold"
   }
 
+  measure: sum_items_sold_yesterday {
+    type: number
+    label: "Items Sold Yesterday"
+    sql: sum(case when ${calendar_date_date} = current_date - 1 then ${items_sold} else 0 end) ;;
+    group_label: "Items Sold"
+  }
+
   measure: sum_items_sold_wtd {
     type: number
-    label: "WTD"
+    label: "Items Sold WTD"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${items_sold} else 0 end) ;;
     group_label: "Items Sold"
   }
 
   measure: sum_items_sold_wtd_lw {
     type: number
-    label: "WTD LW"
+    label: "Items Sold WTD LW"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${items_sold} else 0 end) ;;
     group_label: "Items Sold"
   }
 
   measure: sum_items_sold_week_to_date_wow {
-    label: "WTD WoW"
+    label: "Items Sold WTD WoW"
     type: number
     value_format_name: percent_0
     group_label: "Items Sold"
@@ -340,10 +347,18 @@ view: product_info_option_daily {
     group_label: "Gross Revenue Ex Discount"
   }
 
+  measure: sum_gross_revenue_gbp_ex_discount_yesterday {
+    type: number
+    value_format_name: gbp_0
+    label: "Gross Revenue ex. Discount Yesterday"
+    sql: sum(case when ${calendar_date_date} = current_date - 1 then ${gross_revenue_gbp_ex_discount} else 0 end) ;;
+    group_label: "Gross Revenue Ex Discount"
+  }
+
   measure: sum_gross_revenue_gbp_ex_discount_wtd {
     type: number
     value_format_name: gbp_0
-    label: "WTD"
+    label: "Gross Revenue ex. Discount WTD"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${gross_revenue_gbp_ex_discount} else 0 end) ;;
     group_label: "Gross Revenue Ex Discount"
   }
@@ -351,13 +366,13 @@ view: product_info_option_daily {
   measure: sum_gross_revenue_gbp_ex_discount_wtd_lw {
     type: number
     value_format_name: gbp_0
-    label: "WTD LW"
+    label: "Gross Revenue ex. Discount WTD LW"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${gross_revenue_gbp_ex_discount} else 0 end) ;;
     group_label: "Gross Revenue Ex Discount"
   }
 
   measure: sum_gross_revenue_gbp_ex_discount_week_to_date_wow {
-    label: "WTD WoW"
+    label: "Gross Revenue ex. Discount WTD WoW"
     type: number
     value_format_name: percent_0
     group_label: "Gross Revenue Ex Discount"
@@ -398,8 +413,15 @@ view: product_info_option_daily {
     group_label: "Page Views"
   }
 
+  measure: sum_product_page_views_yesterday {
+    type: number
+    label: "Page Views Yesterday"
+    sql: sum(case when ${calendar_date_date} = current_date - 1 then ${product_page_views} else 0 end) ;;
+    group_label: "Page Views"
+  }
+
   measure: sum_products_page_views_lcw {
-    label: "LCW"
+    label: "Page Views LCW"
     type: sum
     sql:  case when (((${calendar_date_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${calendar_date_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${product_page_views} else 0 end ;;
     group_label: "Page Views"
@@ -407,20 +429,20 @@ view: product_info_option_daily {
 
   measure: sum_product_page_views_wtd {
     type: number
-    label: "WTD"
+    label: "Page Views WTD"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 1) and current_date - 1 then ${product_page_views} else 0 end) ;;
     group_label: "Page Views"
   }
 
   measure: sum_product_page_views_wtd_lw {
     type: number
-    label: "WTD LW"
+    label: "Page Views WTD LW"
     sql: sum(case when ${calendar_date_date} between date_trunc('week', current_date - 8) and current_date - 8 then ${product_page_views} else 0 end) ;;
     group_label: "Page Views"
   }
 
   measure: sum_product_page_views_week_to_date_wow {
-    label: "WTD WoW"
+    label: "Page Views WTD WoW"
     type: number
     value_format_name: percent_0
     group_label: "Page Views"
@@ -484,10 +506,18 @@ view: product_info_option_daily {
     group_label: "Conversion Rate"
   }
 
+  measure: conversion_rate_yesterday {
+    type: number
+    value_format_name: percent_2
+    label: "Conversion Rate Yesterday"
+    sql: ${sum_items_sold_yesterday}/NULLIF(${sum_product_page_views_yesterday},0)::REAL ;;
+    group_label: "Conversion Rate"
+  }
+
   measure: conversion_rate_lcw {
     type: number
     value_format_name: percent_2
-    label: "LCW"
+    label: "Conversion Rate LCW"
     sql: ${items_sold_lcw}/NULLIF(${sum_products_page_views_lcw},0)::REAL ;;
     group_label: "Conversion Rate"
   }
@@ -495,7 +525,7 @@ view: product_info_option_daily {
   measure: conversion_rate_wtd {
     type: number
     value_format_name: percent_2
-    label: "WTD"
+    label: "Conversion Rate WTD"
     sql: ${sum_items_sold_wtd}/NULLIF(${sum_product_page_views_wtd},0)::REAL ;;
     group_label: "Conversion Rate"
   }
@@ -503,13 +533,13 @@ view: product_info_option_daily {
   measure: conversion_rate_wtd_lw {
     type: number
     value_format_name: percent_2
-    label: "WTD LW"
+    label: "Conversion Rate WTD LW"
     sql: ${sum_items_sold_wtd_lw}/NULLIF(${sum_product_page_views_wtd_lw},0)::REAL ;;
     group_label: "Conversion Rate"
   }
 
   measure: conversion_rate_week_to_date_wow {
-    label: "WTD WoW"
+    label: "Conversion Rate WTD WoW"
     type: number
     value_format_name: percent_0
     group_label: "Conversion Rate"

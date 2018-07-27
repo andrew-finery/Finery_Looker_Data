@@ -1622,6 +1622,16 @@ view: sessions {
     group_label: "Traffic Reporting Measures"
   }
 
+  measure: visits_last_complete_month {
+    label: "LCM"
+    type: number
+    sql: count(distinct case when (( DATEPART(m, date_created) = DATEPART(m, DATEADD(m, -1, getdate())) AND DATEPART(yyyy, date_created) = DATEPART(yyyy, DATEADD(m, -1, getdate())) then ${session_id} else null end) ;;
+    value_format_name: thousands
+    group_label: "Traffic Reporting Measures"
+  }
+
+
+
   measure: visits_previous_complete_week {
     label: "PCW"
     type:  number
