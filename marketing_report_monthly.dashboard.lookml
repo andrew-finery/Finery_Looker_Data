@@ -1,6 +1,6 @@
 - dashboard: marketing_report_monthly
   title: Marketing Report Monthly
-  layout: tile
+  layout: static
   tile_size: 100
 
 
