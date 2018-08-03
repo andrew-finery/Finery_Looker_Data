@@ -4718,6 +4718,30 @@ view: sessions {
       ;;
   }
 
+  measure: gross_revenue_ex_discount_month_to_date_last_year {
+    label: "MTD LY"
+    type: sum
+    sql: case when ${start_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${gross_revenue_ex_discount} else 0 end ;;
+    value_format_name: pounds_k
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+  }
+
+  measure: gross_revenue_ex_discount_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Gross Revenue Ex. Discount Reporting Measures"
+    sql: (${gross_revenue_ex_discount_month_to_date} - ${gross_revenue_ex_discount_month_to_date_last_year})/NULLIF(${gross_revenue_ex_discount_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: gross_revenue_ex_discount_year_to_date {
     label: "YTD"
     type: sum
