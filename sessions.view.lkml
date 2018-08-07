@@ -4886,6 +4886,30 @@ view: sessions {
       ;;
   }
 
+  measure: average_basket_ex_discount_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: ${gross_revenue_ex_discount_month_to_date_last_year}/NULLIF(${orders_month_to_date_last_year},0)::REAL ;;
+    value_format_name: pounds
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+  }
+
+  measure: avereage_basket_ex_discount_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Average Basket Ex. Discount Reporting Measures"
+    sql: (${average_basket_ex_discount_month_to_date} - ${average_basket_ex_discount_month_to_date_last_year})/NULLIF(${average_basket_ex_discount_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: average_basket_ex_discount_last_complete_week {
     label: "LCW"
     type: number
