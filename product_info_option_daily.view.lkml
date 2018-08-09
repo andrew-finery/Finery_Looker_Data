@@ -916,16 +916,12 @@ view: product_info_option_daily {
   measure: closing_stock_units {
     type: sum
     label: "Stock Units"
-    group_label: "Buying Report Measures"
-    value_format_name: thousands
     sql: ${closing_stock} ;;
   }
 
   measure: closing_stock_units_yesterday {
     type: sum
     label: "Stock Units Yesterday"
-    group_label: "Buying Report Measures"
-    value_format_name: thousands
     sql: case when ${calendar_date_date}  = current_date - 1 then ${closing_stock} else 0 end ;;
   }
 
@@ -949,16 +945,14 @@ view: product_info_option_daily {
   measure: closing_stock_value {
     type: sum
     label: "Stock Value"
-    group_label: "Buying Report Measures"
-    value_format_name: pounds_k
+    value_format_name: pounds
     sql: ${closing_stock}*NULLIF(${price},0) ;;
   }
 
   measure: closing_stock_value_yesterday {
     type: sum
     label: "Stock Value Yesterday"
-    group_label: "Buying Report Measures"
-    value_format_name: pounds_k
+    value_format_name: pounds
     sql: case when ${calendar_date_date}  = current_date - 1 then (${closing_stock}*NULLIF(${price},0)) else 0 end ;;
   }
 
