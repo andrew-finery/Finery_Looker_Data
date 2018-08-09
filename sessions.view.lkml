@@ -4974,6 +4974,99 @@ view: sessions {
       ;;
   }
 
+  measure: newsletter_signups_month_to_date {
+    label: "MTD"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', current_date - 1) and current_date - 1 then ${newsletter_signups} else 0 end) ;;
+    group_label: "Newsletter Signups Reporting Measures"
+  }
+
+  measure: newsletter_signups_month_to_date_new {
+    label: "Newsletter Signups MTD"
+    type: sum
+    sql: ${newsletter_signups} ;;
+
+    filters: {
+      field: start_date
+      value: "this month"
+    }
+  }
+
+  measure: newsletter_signups_month_to_date_last_month {
+    label: "MTD LM"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -1)) and add_months(current_date - 1, -1) then ${newsletter_signups} else 0 end) ;;
+    group_label: "Newsletter Signups Reporting Measures"
+  }
+
+  measure: newsletter_signups_month_to_date_mom {
+    label: "MTD MoM"
+    type: number
+    value_format_name: percent_0
+    group_label: "Newsletter Signups Reporting Measures"
+    sql: (${newsletter_signups_month_to_date} - ${newsletter_signups_month_to_date_last_month})/NULLIF(${newsletter_signups_month_to_date_last_month},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: newsletter_signups_month_to_date_last_year {
+    label: "MTD LY"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('month', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${newsletter_signups} else 0 end) ;;
+    group_label: "Newsletter Signups Reporting Measures"
+  }
+
+  measure: newsletter_signups_month_to_date_yoy {
+    label: "MTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Newsletter Signups Reporting Measures"
+    sql: (${newsletter_signups_month_to_date} - ${newsletter_signups_month_to_date_last_year})/NULLIF(${newsletter_signups_month_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
+  measure: newsletter_signups_year_to_date {
+    label: "YTD"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('year',current_date) and current_date-1 then ${newsletter_signups} else 0 end) ;;
+    group_label: "Newsletter Signups Reporting Measures"
+  }
+
+  measure: newsletter_signups_year_to_date_last_year {
+    label: "YTD LY"
+    type: number
+    sql: sum(case when ${start_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${newsletter_signups} else 0 end) ;;
+    group_label: "Newsletter Signups Reporting Measures"
+  }
+
+  measure: newsletter_signups_year_to_date_yoy {
+    label: "YTD YoY"
+    type: number
+    value_format_name: percent_0
+    group_label: "Newsletter Signups Reporting Measures"
+    sql: (${newsletter_signups_year_to_date} - ${newsletter_signups_year_to_date_last_year})/NULLIF(${newsletter_signups_year_to_date_last_year},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
 
 
 

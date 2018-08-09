@@ -913,6 +913,22 @@ view: product_info_option_daily {
     }
   }
 
+  measure: closing_stock_units {
+    type: sum
+    label: "Stock Units"
+    group_label: "Buying Report Measures"
+    value_format_name: thousands
+    sql: ${closing_stock} ;;
+  }
+
+  measure: closing_stock_units_yesterday {
+    type: sum
+    label: "Stock Units Yesterday"
+    group_label: "Buying Report Measures"
+    value_format_name: thousands
+    sql: case when ${calendar_date_date}  = current_date - 1 then ${closing_stock} else 0 end ;;
+  }
+
   measure: closing_stock_units_lw {
     type: sum
     label: "Stock Units LW"
@@ -928,6 +944,22 @@ view: product_info_option_daily {
       field: calendar_date_day_of_week_index
       value: "6"
     }
+  }
+
+  measure: closing_stock_value {
+    type: sum
+    label: "Stock Value"
+    group_label: "Buying Report Measures"
+    value_format_name: pounds_k
+    sql: ${closing_stock}*NULLIF(${price},0) ;;
+  }
+
+  measure: closing_stock_value_yesterday {
+    type: sum
+    label: "Stock Value Yesterday"
+    group_label: "Buying Report Measures"
+    value_format_name: pounds_k
+    sql: case when ${calendar_date_date}  = current_date - 1 then (${closing_stock}*NULLIF(${price},0)) else 0 end ;;
   }
 
   measure: closing_stock_value_lw {
@@ -947,12 +979,12 @@ view: product_info_option_daily {
     }
   }
 
-  measure: closing_stock_units_pw {
+  measure: closing_stock_value_pw {
     type: sum
     group_label: "Buying Report Measures"
-    label: "Stock Units PW"
-    value_format_name: thousands
-    sql: ${closing_stock} ;;
+    label: "Stock Value PW"
+    value_format_name: pounds_k
+    sql: ${closing_stock}*NULLIF(${price},0) ;;
     filters: {
       field: calendar_date_date
       value: "2 weeks ago for 1 week"
@@ -964,12 +996,12 @@ view: product_info_option_daily {
     }
   }
 
-  measure: closing_stock_value_pw {
+  measure: closing_stock_units_pw {
     type: sum
     group_label: "Buying Report Measures"
-    label: "Stock Value PW"
-    value_format_name: pounds_k
-    sql: ${closing_stock}*NULLIF(${price},0) ;;
+    label: "Stock Units PW"
+    value_format_name: thousands
+    sql: ${closing_stock} ;;
     filters: {
       field: calendar_date_date
       value: "2 weeks ago for 1 week"
