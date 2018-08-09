@@ -454,6 +454,42 @@ dimension: ean {
 
 ### Buying Report Measures
 
+  measure: gross_revenue_yesterday {
+    type: sum
+    sql: case when ${calendar_date} = current_date - 1 then  ${gross_revenue} else 0 end ;;
+    value_format_name: pounds
+    label: "Gross Revenue Yesterday"
+  }
+
+    measure: gross_revenue_wtd {
+      type: sum
+      sql: case when ${calendar_date} between date_trunc('week', current_date - 1) and current_date - 1 then  ${gross_revenue} else 0 end ;;
+      value_format_name: pounds
+      label: "Gross Revenue WTD"
+  }
+
+  measure: gross_revenue_wtd_lw {
+    type: sum
+    sql: case when ${calendar_date} between date_trunc('week', current_date - 8) and current_date - 8 then  ${gross_revenue} else 0 end ;;
+    value_format_name: pounds
+    label: "Gross Revenue WTD LW"
+  }
+
+  measure: gross_revenue_wtd_wow {
+    type: number
+    value_format_name: percent_0
+    label: "Gross Revenue WTD WoW"
+    sql: (${gross_revenue_wtd} - ${gross_revenue_wtd_lw})/NULLIF(${gross_revenue_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: gross_revenue_last_week {
     type: sum
     sql: ${gross_revenue} ;;
