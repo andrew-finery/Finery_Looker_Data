@@ -77,6 +77,39 @@ dimension: ean {
     sql: ${sales_units} ;;
   }
 
+  measure: sum_sales_units_yesterday {
+    type: sum
+    sql: case when ${calendar_date} = current_date - 1 then  ${sales_units} else 0 end ;;
+    label: "Items Sold Yesterday"
+  }
+
+  measure: sum_sales_units_wtd {
+    type: sum
+    sql: case when ${calendar_date} between date_trunc('week', current_date - 1) and current_date - 1 then  ${sales_units} else 0 end ;;
+    label: "Items Sold WTD"
+  }
+
+  measure: sum_sales_units_wtd_lw {
+    type: sum
+    sql: case when ${calendar_date} between date_trunc('week', current_date - 8) and current_date - 8 then  ${sales_units} else 0 end ;;
+    label: "Items Sold WTD LW"
+  }
+
+  measure: sum_sales_units_wtd_wow {
+    type: number
+    value_format_name: percent_0
+    label: "Items Sold WTD WoW"
+    sql: (${sum_sales_units_wtd} - ${sum_sales_units_wtd_lw})/NULLIF(${sum_sales_units_wtd_lw},0)::REAL ;;
+    html: {% if value < 0 %}
+      <font color="#D77070"> {{ rendered_value }} </font>
+      {% elsif value > 0 %}
+      <font color="#3CB371"> {{ rendered_value }} </font>
+      {% else %}
+      <font color="#000000"> {{ rendered_value }} </font>
+      {% endif %}
+      ;;
+  }
+
   measure: sum_returns_units{
     type: sum
     sql: ${returns_units} ;;
