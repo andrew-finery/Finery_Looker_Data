@@ -661,7 +661,7 @@
       visits.conversion_rate]
     filters:
       visits.campaign_content: "-EMPTY"
-      visits.start_date: this month
+      visits.start_date: 1 months ago for 1 months
     sorts: [visits.count desc]
     limit: 10
     query_timezone: Europe/London
