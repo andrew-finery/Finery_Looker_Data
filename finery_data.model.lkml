@@ -445,6 +445,12 @@ explore: product_info_option_daily {
     sql_on: ${product_info_option_daily.calendar_date_date} = ${calendar_weeks.calendar_date_date} ;;
     relationship: many_to_one
   }
+
+#  join: variant_info {
+  #  from: product_info_variants
+   # sql_on: ${product_info_option_daily.option_id} = ${variant_info.option_id} ;;
+  #  relationship: many_to_one
+ # }
 }
 
 explore: visitors {
