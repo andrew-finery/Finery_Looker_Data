@@ -388,6 +388,126 @@ view: sessions {
         label: "China"
       }
 
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'AT' ;;
+        label: "Austria"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'BE' ;;
+        label: "Belgium"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'BG' ;;
+        label: "Bulgaria"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'BR' ;;
+        label: "Brazil"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'CH' ;;
+        label: "Switzerland"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'CY' ;;
+        label: "Cyprus"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'DE' ;;
+        label: "Germany"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'DK' ;;
+        label: "Denmark"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'ES' ;;
+        label: "Spain"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'FR' ;;
+        label: "France"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'GG' ;;
+        label: "Guernsey"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'GR' ;;
+        label: "Greece"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'IL' ;;
+        label: "Isreal"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'IN' ;;
+        label: "India"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'IT' ;;
+        label: "Italy"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'JP' ;;
+        label: "Japan"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'KR' ;;
+        label: "South Korea"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'NL' ;;
+        label: "Netherlands"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'NO' ;;
+        label: "Norway"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'NZ' ;;
+        label: "New Zealand"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'PL' ;;
+        label: "Poland"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'PT' ;;
+        label: "Portugal"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'RU' ;;
+        label: "Russia"
+      }
+
+      when: {
+        sql: ${geography_country_two_letter_iso_code} = 'SE' ;;
+        label: "Sweden"
+      }
+
       else: "Other"
     }
   }
