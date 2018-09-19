@@ -120,6 +120,12 @@ dimension: ean {
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${sales_units} ;;
   }
 
+  measure: gross_cogs_yesterday{
+    type: sum
+    sql: case when(${calendar_date} = current_date - 1 then (coalesce(${variant_info.total_landed_cost_gbp}, 0)*${sales_units}) else 0 end) ;;
+    label: "Gross Cogs Yesterday"
+  }
+
   measure: net_cogs{
     type: sum
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*(${sales_units} - ${returns_units}) ;;
