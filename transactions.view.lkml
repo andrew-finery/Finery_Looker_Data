@@ -877,7 +877,7 @@ view: transactions {
   measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping {
     label: "Avg Basket Size"
     type: number
-    value_format_name: percent_1
+    value_format_name: gbp
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL ;;
   }
 

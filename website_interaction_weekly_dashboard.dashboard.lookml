@@ -342,81 +342,125 @@
     left: 0
 
 
-  - name: page_visits_with_conversion
-    title: Page Visits With Conversion
+  - name: page_views_graph
+    title: Page Views
     model: finery_data
     explore: website_page_views
-    type: table
-    fields: [website_page_views.page_urlpath, website_page_views.count_total_page_views_lcw,
-      website_page_views.count_total_page_views_pcw, website_page_views.count_total_page_views_lcw_wow,
-      visits.distinct_conversion_rate_lcw, visits.distinct_conversion_rate_pcw, visits.distinct_conversion_rate_lcw_percentage]
+    type: looker_column
+    fields: [website_page_views.count_total_page_views_lcw, website_page_views.count_total_page_views_pcw,
+      website_page_views.page_urlpath]
+    filters:
+      website_page_views.page_urlpath: "-/,-/cart/,-/klarna/checkout/"
     sorts: [website_page_views.count_total_page_views_lcw desc]
     limit: 10
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
+    query_timezone: Europe/London
     stacking: ''
+    colors: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f",
+      "#ff7f00", "#cab2d6", "#6a3d9a", "#edbc0e", "#b15928"]
     show_value_labels: false
     label_density: 25
     legend_position: center
     x_axis_gridlines: false
     y_axis_gridlines: true
+    show_view_names: false
+    point_style: none
+    series_colors:
+      website_page_views.count_total_page_views_lcw: "#0a628f"
+      website_page_views.count_total_page_views_pcw: "#b6e1fd"
+    series_labels:
+      website_page_views.count_total_page_views_lcw: Last Week
+      website_page_views.count_total_page_views_pcw: Previous Week
+    limit_displayed_rows: false
+    y_axes: [{label: Page Views, orientation: left, series: [{id: website_page_views.count_total_page_views_lcw,
+            name: Last Week, axisId: website_page_views.count_total_page_views_lcw},
+          {id: website_page_views.count_total_page_views_pcw, name: Previous Week, axisId: website_page_views.count_total_page_views_pcw}],
+        showLabels: true, showValues: true, valueFormat: '[>=1000]#,##0,"K";0', unpinAxis: false,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
     y_axis_combined: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
     show_x_axis_label: true
+    x_axis_label: Page URL
     show_x_axis_ticks: true
     x_axis_scale: auto
     y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    reference_lines: []
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    series_types: {}
-    series_labels:
-      website_page_views.exit_rate_yesterday: Exit Rate
-      website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
-      website_page_views.exit_rate_lw: LW
-      website_page_views.exit_rate_wow: "%"
-      website_page_views.exit_rate_l7d: L7D
-      website_page_views.exit_rate_l7d_percentage: L7D%
-      visits.conversion_yesterday: Conversion Rate
-      visits.conversion_yesterday_last_week: LW
-      visits.conversion_yesterday_wow: "%"
-      website_page_views.count_total_page_views_lw: LW
-      website_page_views.percentage_total_page_views_lw: "%"
-      website_page_views.percentage_total_page_views_l7d: vs L7D
-      visits.conversion_last_7_days_percentage: L7D%
-      visits.distinct_conversion_rate_yesterday: C.R
-      visits.distinct_conversion_rate_lw: LW
-      visits.distinct_conversion_rate_wow: "%"
-      visits.distinct_conversion_rate_l7d: L7D
-      visits.distinct_conversion_rate_l7d_percentage: vs L7D
-      website_page_views.count_total_page_views_l7d_average: L7D Avg
-      website_page_views.count_total_page_views_yesterday: Actual
-      website_page_views.count_total_page_views_l7d: L7D
-      website_page_views.page_urlpath: Page Url
-      website_page_views.count_total_page_views_lcw: LCW
-      website_page_views.count_total_page_views_pcw: PCW
-      website_page_views.count_total_page_views_lcw_wow: LCW %
-      visits.distinct_conversion_rate_lcw: LCW
-      visits.distinct_conversion_rate_pcw: PCW
-      visits.distinct_conversion_rate_lcw_percentage: LCW %
     width: 14
-    height: 3
+    height: 6
     top: 9
+    left: 0
+
+
+  - name: page_conversion
+    title: Page Conversion
+    model: finery_data
+    explore: website_page_views
+    type: looker_column
+    fields: [website_page_views.page_urlpath, visits.distinct_conversion_rate_lcw, visits.distinct_conversion_rate_pcw]
+    filters:
+      visits.distinct_conversion_rate_lcw: NOT NULL
+      website_page_views.page_urlpath: "/t/shoes/,/t/dresses/,/t/jersey-tops/,/t/knitwear/,/t/the-full-collection/,/t/Final-call/,/t/skirts-and-trousers/,/t/blouses-and-shirts/,/t/accessories/"
+    sorts: [visits.distinct_conversion_rate_lcw desc]
+    limit: 10
+    column_limit: 50
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    point_style: none
+    series_colors:
+      visits.distinct_conversion_rate_lcw: "#0a628f"
+      visits.distinct_conversion_rate_pcw: "#b6e1fd"
+    series_types: {}
+    limit_displayed_rows: false
+    y_axes: [{label: Conversion Rate, orientation: left, series: [{id: visits.distinct_conversion_rate_lcw,
+            name: Last Week, axisId: visits.distinct_conversion_rate_lcw}, {id: visits.distinct_conversion_rate_pcw,
+            name: Previous Week, axisId: visits.distinct_conversion_rate_pcw}], showLabels: true,
+        showValues: true, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    x_axis_label: Page URL
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    width: 14
+    height: 6
+    top: 15
     left: 0
 
 
@@ -467,7 +511,7 @@
       website_page_views.exit_rate_lcw: LCW
     width: 14
     height: 3
-    top: 12
+    top: 21
     left: 0
 
 
@@ -521,7 +565,7 @@
       sessions.product_add_to_cart_rate_lcw_wow: "%"
     width: 14
     height: 1
-    top: 15
+    top: 24
     left: 0
 
 
@@ -574,7 +618,7 @@
       sessions.product_conversion_lcw_wow: "%"
     width: 14
     height: 1
-    top: 16
+    top: 25
     left: 0
 
 
@@ -610,7 +654,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 17
+    top: 26
     left: 0
 
 
@@ -646,7 +690,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 17
+    top: 26
     left: 7
 
 
@@ -682,5 +726,5 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 23
+    top: 32
     left: 0
