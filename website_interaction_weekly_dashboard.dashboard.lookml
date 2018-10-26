@@ -353,7 +353,7 @@
       website_page_views.page_urlpath: "-/,-/cart/,-/klarna/checkout/"
     sorts: [website_page_views.count_total_page_views_lcw desc]
     limit: 10
-    query_timezone: Europe/London
+    column_limit: 50
     stacking: ''
     colors: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f",
       "#ff7f00", "#cab2d6", "#6a3d9a", "#edbc0e", "#b15928"]
@@ -372,10 +372,13 @@
       website_page_views.count_total_page_views_pcw: Previous Week
     limit_displayed_rows: false
     y_axes: [{label: Page Views, orientation: left, series: [{id: website_page_views.count_total_page_views_lcw,
-            name: Last Week, axisId: website_page_views.count_total_page_views_lcw},
-          {id: website_page_views.count_total_page_views_pcw, name: Previous Week, axisId: website_page_views.count_total_page_views_pcw}],
-        showLabels: true, showValues: true, valueFormat: '[>=1000]#,##0,"K";0', unpinAxis: false,
-        tickDensity: default, tickDensityCustom: 5, type: linear}]
+            name: Last Week, axisId: website_page_views.count_total_page_views_lcw,
+            __FILE: finery_data/website_interaction_weekly_dashboard.dashboard.lookml,
+            __LINE_NUM: 374}, {id: website_page_views.count_total_page_views_pcw, name: Previous
+              Week, axisId: website_page_views.count_total_page_views_pcw, __FILE: finery_data/website_interaction_weekly_dashboard.dashboard.lookml,
+            __LINE_NUM: 376}], showLabels: true, showValues: true, valueFormat: '[>=1000]#,##0,"K";0',
+        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear,
+        __FILE: finery_data/website_interaction_weekly_dashboard.dashboard.lookml, __LINE_NUM: 374}]
     y_axis_combined: true
     show_y_axis_labels: true
     show_y_axis_ticks: true
@@ -390,13 +393,15 @@
     y_axis_reversed: false
     plot_size_by_field: false
     reference_lines: []
+    x_axis_label_rotation: 0
     ordering: none
     show_null_labels: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    query_timezone: Europe/London
     width: 14
-    height: 6
+    height: 10
     top: 9
     left: 0
 
@@ -460,7 +465,7 @@
     conditional_formatting_include_nulls: false
     width: 14
     height: 6
-    top: 15
+    top: 19
     left: 0
 
 
@@ -511,7 +516,7 @@
       website_page_views.exit_rate_lcw: LCW
     width: 14
     height: 3
-    top: 21
+    top: 25
     left: 0
 
 
@@ -565,7 +570,7 @@
       sessions.product_add_to_cart_rate_lcw_wow: "%"
     width: 14
     height: 1
-    top: 24
+    top: 28
     left: 0
 
 
@@ -618,7 +623,7 @@
       sessions.product_conversion_lcw_wow: "%"
     width: 14
     height: 1
-    top: 25
+    top: 29
     left: 0
 
 
@@ -654,7 +659,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 26
+    top: 30
     left: 0
 
 
@@ -690,7 +695,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 26
+    top: 30
     left: 7
 
 
@@ -726,5 +731,5 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 32
+    top: 36
     left: 0

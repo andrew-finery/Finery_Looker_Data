@@ -298,7 +298,7 @@ view: product_info_option_daily {
 
   measure: return_rate {
     type: number
-    value_format_name: decimal_4
+    value_format_name: percent_1
     label: "Return Rate"
     sql: ${sum_items_returned}/NULLIF(${sum_items_sold},0)::REAL ;;
   }

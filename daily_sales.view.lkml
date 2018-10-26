@@ -488,6 +488,25 @@
           value_format: "#,##0"
         }
 
+        measure: potential_full_price_sales {
+          label: "Sales @ Original Price"
+          type: sum
+          value_format_name: gbp_0
+          sql: ${TABLE}.items_sold * ${original_price} ;;
+        }
+
+        measure: potential_full_price_sales_yesterday {
+          label: "Sales @ Original Price - Yesterday"
+          type: sum
+          value_format_name: gbp_0
+          sql: ${TABLE}.items_sold * ${original_price} ;;
+
+          filters: {
+            field: calendar_date_date
+            value: "yesterday"
+          }
+        }
+
         # closing stock @ retail
 
         measure: closing_stock_value_retail {
