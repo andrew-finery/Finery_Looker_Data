@@ -393,7 +393,7 @@
     y_axis_reversed: false
     plot_size_by_field: false
     reference_lines: []
-    x_axis_label_rotation: 0
+    x_axis_label_rotation: -60
     ordering: none
     show_null_labels: false
     show_totals_labels: false
@@ -459,12 +459,13 @@
     hide_totals: false
     hide_row_totals: false
     table_theme: editable
+    x_axis_label_rotation: -60
     enable_conditional_formatting: false
     conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     width: 14
-    height: 6
+    height: 10
     top: 19
     left: 0
 
@@ -516,7 +517,7 @@
       website_page_views.exit_rate_lcw: LCW
     width: 14
     height: 3
-    top: 25
+    top: 29
     left: 0
 
 
@@ -570,7 +571,7 @@
       sessions.product_add_to_cart_rate_lcw_wow: "%"
     width: 14
     height: 1
-    top: 28
+    top: 32
     left: 0
 
 
@@ -623,7 +624,7 @@
       sessions.product_conversion_lcw_wow: "%"
     width: 14
     height: 1
-    top: 29
+    top: 33
     left: 0
 
 
@@ -659,7 +660,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 30
+    top: 34
     left: 0
 
 
@@ -695,7 +696,7 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 30
+    top: 34
     left: 7
 
 
@@ -731,5 +732,5 @@
       product_info_option_daily.gross_revenue_lcw: Gross Rev.
     width: 7
     height: 6
-    top: 36
+    top: 40
     left: 0
