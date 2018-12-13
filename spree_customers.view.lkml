@@ -379,6 +379,12 @@ view: spree_customers {
     sql: ${TABLE}.total_gross_revenue_ex_discount_ex_vat_ex_shipping ;;
   }
 
+  dimension: clv_over_250 {
+    label: "Customer Lifetime Value >250 (Gross)"
+    type: yesno
+    sql: ${TABLE}.total_gross_revenue_ex_discount_ex_shipping >= 250 ;;
+  }
+
   dimension: total_shipping_revenue {
     type: number
     sql: ${TABLE}.total_shipping_revenue ;;
