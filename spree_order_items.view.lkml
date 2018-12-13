@@ -216,6 +216,33 @@ view: spree_order_items {
     }
   }
 
+  dimension: selling_price_tiered_ellie {
+    case: {
+      when: {
+        sql: ${price_gbp} < 80 ;;
+        label: "£0 - £79"
+      }
+
+      when: {
+        sql: ${price_gbp} < 110 ;;
+        label: "£80 - £109"
+      }
+
+      when: {
+        sql: ${price_gbp} < 140 ;;
+        label: "£110 - £139"
+      }
+
+      when: {
+        sql: ${price_gbp} < 170 ;;
+        label: "£140 - £169"
+      }
+
+      else: "£170 and over"
+    }
+  }
+
+
   dimension: quantity {
     sql: ${TABLE}.quantity ;;
   }
