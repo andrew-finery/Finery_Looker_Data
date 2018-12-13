@@ -54,6 +54,12 @@ view: spree_users {
     sql: ${TABLE}.role ;;
   }
 
+  dimension: vip_yes_no {
+    label: "VIP"
+    type: yesno
+    sql: ${TABLE}.role = 'vip' ;;
+  }
+
   dimension: has_sent_referral {
     type: yesno
     sql: coalesce(${TABLE}.referrals_sent,0)>0 ;;
