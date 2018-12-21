@@ -489,17 +489,36 @@
         }
 
         measure: potential_full_price_sales {
-          label: "Sales @ Original Price"
+          label: "Gross Sales @ Original Price"
           type: sum
           value_format_name: gbp_0
           sql: ${TABLE}.items_sold * ${original_price} ;;
         }
 
         measure: potential_full_price_sales_yesterday {
-          label: "Sales @ Original Price - Yesterday"
+          label: "Gross Sales @ Original Price - Yesterday"
           type: sum
           value_format_name: gbp_0
           sql: ${TABLE}.items_sold * ${original_price} ;;
+
+          filters: {
+            field: calendar_date_date
+            value: "yesterday"
+          }
+        }
+
+        measure: potential_net_full_price_sales {
+          label: "Net Sales @ Original Price"
+          type: sum
+          value_format_name: gbp_0
+          sql: ${TABLE}.items_sold_after_returns * ${original_price} ;;
+        }
+
+        measure: potential_net_full_price_sales_yesterday {
+          label: "Net Sales @ Original Price - Yesterday"
+          type: sum
+          value_format_name: gbp_0
+          sql: ${TABLE}.items_sold_after_returns * ${original_price} ;;
 
           filters: {
             field: calendar_date_date
