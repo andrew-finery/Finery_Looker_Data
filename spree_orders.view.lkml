@@ -624,6 +624,23 @@ view: spree_orders {
 
   ################################################## BASIC ORDER MEASURES ################################################################
 
+  measure: sum_sale_item_count {
+    label: "Sale Item Count"
+    type: sum
+    sql: ${sale_item_count} ;;
+  }
+
+  measure: sum_item_count {
+    label: "Item Count"
+    type: sum
+    sql: ${item_count} ;;
+  }
+
+  measure: sale_item_only_customer {
+    type: yesno
+    sql: ${sum_sale_item_count} = ${sum_item_count} ;;
+  }
+
   measure: count_orders {
     label: "Orders"
     type: count_distinct
