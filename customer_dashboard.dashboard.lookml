@@ -104,15 +104,15 @@
     left: 0
 
   - name: add_a_unique_name_373
-    title: Basket Size - New vs Repreat Purchase - Last 7 Days
+    title: Basket - New vs Repeat - L7D
     type: looker_bar
     model: finery_data
     explore: spree_orders
     dimensions: [spree_orders.new_customer_flag]
-    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
+    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days
-    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat desc]
+    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp desc]
     limit: 500
     total: true
     show_x_axis_label: true
@@ -189,13 +189,13 @@
     model: finery_data
     explore: spree_orders
     dimensions: [spree_addresses.country]
-    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
+    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days
-    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat desc]
+    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp desc]
     limit: 500
     total: true
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_gridlines: false
     show_value_labels: false
@@ -214,18 +214,29 @@
     top: 5
     left: 4
 
-  - name: add_a_unique_name_590
-    title: Top 8 Customers of All-Time - By Revenue
-    type: table
+  - name: add_a_unique_name_288
+    title: Customer Split - London vs Non-London
+    type: looker_pie
     model: finery_data
     explore: spree_orders
-    dimensions: [spree_orders.order_email]
-    measures: [spree_orders.count_orders, spree_orders.sum_net_revenue_ex_discount_gbp_ex_vat]
-    filters:
-      spree_orders.state: -"canceled",-"returned"
-    sorts: [spree_orders.sum_net_revenue_ex_discount_gbp_ex_vat desc]
-    limit: 8
-    total: false
+    dimensions: [spree_addresses.london_flag]
+    measures: [spree_orders.count_customers]
+    sorts: [spree_orders.count_customers desc]
+    limit: 500
+    total: true
+    value_labels: labels
+    label_type: labPer
+    show_null_points: true
+    interpolation: monotone
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_gridlines: false
+    show_value_labels: false
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_gridlines: false
+    y_axis_combined: true
     height: 3
     width: 4
     top: 5
@@ -263,47 +274,21 @@
     top: 8
     left: 0
 
-  - name: add_a_unique_name_288
-    title: Customer Split - London vs Non-London
-    type: looker_pie
-    model: finery_data
-    explore: spree_orders
-    dimensions: [spree_addresses.london_flag]
-    measures: [spree_orders.count_customers]
-    sorts: [spree_orders.count_customers desc]
-    limit: 500
-    total: true
-    show_null_points: true
-    interpolation: monotone
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_gridlines: false
-    show_value_labels: false
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_gridlines: false
-    y_axis_combined: true
-    height: 3
-    width: 3
-    top: 8
-    left: 6
-
   - name: add_a_unique_name_897
     title: Avg Basket Size - London vs Non-London - Last 7 Days
     type: looker_bar
     model: finery_data
     explore: spree_orders
     dimensions: [spree_addresses.london_flag]
-    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat]
+    measures: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       spree_orders.completed_date: 7 days ago for 7 days
-    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp_ex_vat desc]
+    sorts: [spree_orders.avg_gross_revenue_ex_discount_in_gbp desc]
     limit: 500
     total: true
     show_null_points: true
     interpolation: monotone
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_gridlines: false
     show_value_labels: false
@@ -316,9 +301,9 @@
     x_axis_scale: auto
     show_null_labels: false
     height: 3
-    width: 3
+    width: 6
     top: 8
-    left: 9
+    left: 6
 
   - name: add_a_unique_name_878
     title: Customers in last 7 Days - Top 10 Cities
@@ -333,7 +318,7 @@
     limit: 10
     total: false
     show_null_points: true
-    show_x_axis_label: true
+    show_x_axis_label: false
     show_x_axis_ticks: true
     x_axis_gridlines: false
     show_value_labels: false
