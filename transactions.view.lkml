@@ -456,6 +456,20 @@ view: transactions {
     }
   }
 
+  measure: count_new_customers_last_week {
+    label: "LCW"
+    type: count_distinct
+    group_label: "New Customers"
+    sql: case when (((${completed_date}) >= ((DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${completed_date} ) < ((DATEADD(week,1, DATEADD(week,-1, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${blended_email} else null end ;;
+  }
+
+  measure: count_new_customers_previous_week {
+    label: "PCW"
+    type: count_distinct
+    group_label: "New Customers"
+    sql: case when (((${completed_date}) >= ((DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())) ))) AND ( ${completed_date} ) < ((DATEADD(week,1, DATEADD(week,-2, DATE_TRUNC('week', DATE_TRUNC('day',GETDATE())))))))) then ${blended_email} else null end ;;
+  }
+
   measure: total_items {
     label: "Items"
     type: sum

@@ -298,6 +298,57 @@
     top: 5
     left: 0
 
+  - name: john_lewis_gross_revenue
+    title: John Lewis - Gross Revenue
+    model: finery_data
+    explore: john_lewis_sor
+    type: table
+    fields: [john_lewis_sor.gross_revenue_yesterday_daily, john_lewis_sor.gross_revenue_yesterday_last_week,
+      john_lewis_sor.gross_revenue_yesterday_week_on_week, john_lewis_sor.gross_revenue_yesterday_last_year,
+      john_lewis_sor.gross_revenue_yesterday_year_on_year, john_lewis_sor.gross_revenue_week_to_date,
+      john_lewis_sor.gross_revenue_week_to_date_lw, john_lewis_sor.gross_revenue_week_to_date_week_on_week,
+      john_lewis_sor.gross_revenue_month_to_date, john_lewis_sor.gross_revenue_month_to_date_last_month,
+      john_lewis_sor.gross_revenue_month_to_date_month_on_month]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_types: {}
+    height: 1
+    width: 12
+    top: 6
+    left: 0
+
   - name: john_lewis_net_revenue
     title: John Lewis - Net Revenue
     model: finery_data
@@ -345,7 +396,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 6
+    top: 7
     left: 0
 
 
@@ -381,7 +432,7 @@
       spree_order_items.total_items_sold: Units Sold
     height: 8
     width: 6
-    top: 7
+    top: 8
     left: 0
 
   - name: top_products_yesterday_jl
@@ -415,7 +466,7 @@
       john_lewis_sor.sum_gross_revenue: Revenue
     height: 8
     width: 6
-    top: 7
+    top: 8
     left: 6
 
 
@@ -463,7 +514,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 15
+    top: 16
     left: 0
 
   - name: conversion_rate_long_term
@@ -511,7 +562,7 @@
     series_types: {}
     height: 1
     width: 12
-    top: 16
+    top: 17
     left: 0
 
   - name: basket_long_term
@@ -564,7 +615,7 @@
         __LINE_NUM: 55}]
     height: 1
     width: 12
-    top: 17
+    top: 18
     left: 0
 
   - name: revenue_long_term
