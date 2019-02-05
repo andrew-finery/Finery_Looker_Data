@@ -7,8 +7,8 @@
 
   elements:
 
-  - name: AW16_worst_30_returners
-    title: Worst 30 Returning Options (AW16)
+  - name: SS19_worst_30_returners
+    title: Worst 15 Returning Options (SS19)
     type: table
     model: finery_data
     explore: spree_order_items
@@ -19,10 +19,10 @@
       spree_order_items.total_items_returned_not_as_described, spree_order_items.total_items_returned_faulty]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: AW16
+      option_info.sub_season: SS19
       spree_order_items.total_items_sold: '>10'
     sorts: [spree_order_items.return_rate desc]
-    limit: 30
+    limit: 15
     show_view_names: false
     show_row_numbers: true
     truncate_column_names: false
@@ -39,18 +39,18 @@
     limit_displayed_rows: false
     top: 0
     left: 0
-    height: 42
+    height: 22
     width: 10
 
   - name: season_return_rate
-    title: AW16 Stock - Return Rate
+    title: SS19 Stock - Return Rate
     type: single_value
     model: finery_data
     explore: spree_order_items
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: AW16
+      option_info.sub_season: SS19
     sorts: [spree_order_items.return_rate desc]
     limit: 1
     value_format: '#0.0%'
@@ -109,7 +109,7 @@
     width: 3
 
   - name: season_category_return_rates
-    title: AW16 Category Return Rates
+    title: SS19 Category Return Rates
     type: looker_bar
     model: finery_data
     explore: spree_order_items
@@ -117,7 +117,7 @@
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: AW16
+      option_info.sub_season: SS19
     sorts: [spree_order_items.return_rate desc]
     limit: 30
     stacking: ''
@@ -156,7 +156,7 @@
     width: 3
 
   - name: size_category_return_rates
-    title: AW16 Size Return Rates
+    title: SS19 Size Return Rates
     type: looker_bar
     model: finery_data
     explore: spree_order_items
@@ -164,7 +164,7 @@
     measures: [spree_order_items.return_rate]
     filters:
       calendar_weeks.calendar_date_date: before 28 days ago
-      option_info.sub_season: AW16
+      option_info.sub_season: SS19
       variant_info.size: '6,8,10,12,14,16'
     sorts: [spree_order_items.return_rate desc]
     limit: 30
