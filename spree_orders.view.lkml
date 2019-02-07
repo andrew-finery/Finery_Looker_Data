@@ -288,7 +288,6 @@ view: spree_orders {
 
   dimension: exchange_rate {
     sql: ${TABLE}.exchange_rate ;;
-    hidden: yes
   }
 
   dimension: tax_rate {
