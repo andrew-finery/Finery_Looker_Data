@@ -414,7 +414,7 @@
     fields: [website_page_views.page_urlpath, visits.distinct_conversion_rate_lcw, visits.distinct_conversion_rate_pcw]
     filters:
       visits.distinct_conversion_rate_lcw: NOT NULL
-      website_page_views.page_urlpath: "/t/shoes/,/t/dresses/,/t/jersey-tops/,/t/knitwear/,/t/the-full-collection/,/t/Final-call/,/t/skirts-and-trousers/,/t/blouses-and-shirts/,/t/accessories/"
+      website_page_views.page_urlpath: "/t/shoes/,/t/dresses/,/t/jersey-tops/,/t/knitwear/,/t/the-full-collection/,/t/final-call/,/t/skirts-and-trousers/,/t/blouses-and-shirts/,/t/accessories/"
     sorts: [visits.distinct_conversion_rate_lcw desc]
     limit: 10
     column_limit: 50
