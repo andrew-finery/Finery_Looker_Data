@@ -407,10 +407,9 @@ view: product_info_option_daily {
   }
 
   measure: sum_product_page_views {
-    type: sum
+    type: number
     label: "Page Views"
-    sql: ${product_page_views} ;;
-    group_label: "Page Views"
+    sql: sum(${product_page_views}) ;;
   }
 
   measure: sum_product_page_views_yesterday {
