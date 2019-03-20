@@ -173,7 +173,7 @@
           label: "Return Rate"
           type: number
           value_format_name: percent_2
-          sql: ${sum_items_returned}/NULLIF(${sum_items_sold},0)::REAL ;;
+          sql: ${sum_items_returned}/NULLIF(${units_sold_for_returns},0)::REAL ;;
         }
 
         measure: first_sale_date {
