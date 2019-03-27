@@ -652,7 +652,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.sum_products_page_views_lcw: Clicks
       product_info_option_daily.add_to_carts_lcw: Add To Carts
       product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
       product_info_option_daily.items_sold_lcw: Items Sold
@@ -688,7 +688,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.sum_products_page_views_lcw: Clicks
       product_info_option_daily.add_to_carts_lcw: Add To Carts
       product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
       product_info_option_daily.items_sold_lcw: Items Sold
@@ -724,7 +724,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     series_labels:
-      product_info_option_daily.sum_products_page_views_lcw: Page Views
+      product_info_option_daily.sum_products_page_views_lcw: Clicks
       product_info_option_daily.add_to_carts_lcw: Add To Carts
       product_info_option_daily.add_to_cart_rate_lcw: Add To Cart Rate
       product_info_option_daily.items_sold_lcw: Items Sold
