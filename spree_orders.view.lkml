@@ -810,6 +810,18 @@ view: spree_orders {
     }
   }
 
+  measure: count_customers_ytd {
+    label: "Customers YTD"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 then ${blended_email} else null end ;;
+  }
+
+  measure: count_customers_ytd_ly {
+    label: "Customers YTD LY"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) then ${blended_email} else null end ;;
+  }
+
   measure: count_new_customers {
     label: "New Customers"
     type: count_distinct
@@ -824,6 +836,30 @@ view: spree_orders {
       field: order_sequence_number
       value: "1"
     }
+  }
+
+  measure: count_new_customers_ytd {
+    label: "New Customers YTD"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 and ${order_sequence_number} = 1 then ${blended_email} else null end ;;
+  }
+
+  measure: count_new_customers_ytd_ly {
+    label: "New Customers YTD LY"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) and ${order_sequence_number} = 1 then ${blended_email} else null end ;;
+  }
+
+  measure: count_second_order_customers_ytd {
+    label: "Second Purchase Customers YTD"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', current_date - 1) and current_date - 1 and ${order_sequence_number} = 2 then ${blended_email} else null end ;;
+  }
+
+  measure: count_second_order_customers_ytd_ly {
+    label: "Second Purchase Customers YTD LY"
+    type: count_distinct
+    sql: case when ${completed_date} between date_trunc('year', add_months(current_date - 1, -12)) and add_months(current_date - 1, -12) and ${order_sequence_number} = 2 then ${blended_email} else null end ;;
   }
 
   measure: total_items {
@@ -1367,91 +1403,91 @@ view: spree_orders {
   measure: avg_gross_revenue_gbp {
     label: "Avg Basket Size"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_in_gbp {
     label: "Avg Basket Size ex. Voucher"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_and_shipping_in_gbp {
     label: "Avg Basket Size ex. Voucher & Shipping"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_shipping_in_gbp {
     label: "Shipping Revenue per Order"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_shipping_total_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp {
     label: "Avg Basket Size ex. Voucher & Store Credit"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_gbp_ex_vat {
     label: "Avg Basket Size ex. VAT"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_gbp_ex_voucher_and_shipping_and_store_credit {
     label: "Avg Basket Size ex. Voucher, Shipping, Store Credit"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_in_gbp_ex_vat {
     label: "Avg Basket Size ex. Voucher & VAT"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat {
     label: "Avg Basket Size ex. Voucher & Store Credit & VAT"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp_0
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_discount_in_gbp {
     label: "Avg Discount Value"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${sum_total_discount_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_discount_in_gbp_ex_vat {
     label: "Avg Discount Value ex. VAT"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${sum_total_discount_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_store_credit_used_gbp {
     label: "Avg Store Credit Used"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${sum_store_credit_used_gbp}/NULLIF(${count_orders},0)::REAL ;;
   }
 
   measure: avg_store_credit_used_gbp_ex_vat {
     label: "Avg Store Credit Used ex. VAT"
     type: number
-    value_format_name: decimal_2
+    value_format_name: gbp
     sql: ${sum_store_credit_used_gbp_ex_vat}/NULLIF(${count_orders},0)::REAL ;;
   }
 

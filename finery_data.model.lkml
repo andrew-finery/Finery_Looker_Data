@@ -741,3 +741,5 @@ explore: john_lewis_replenishment_model {
     relationship: many_to_one
   }
 }
+
+explore: john_lewis_recalls {}

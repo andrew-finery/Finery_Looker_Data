@@ -1,7 +1,6 @@
 - dashboard: daily_summary_report
   title: Daily Summary Report
-  layout: static
-  tile_size: 100
+  layout: newspaper
 
 
   elements:
@@ -44,10 +43,8 @@
       calendar_weeks.calendar_date_date]
     series_labels:
       calculation_1: Date
-    height: 1
-    width: 12
-    top: 0
-    left: 0
+    height: 2
+    width: 24
 
   - name: traffic_short_term
     title: Traffic
@@ -94,10 +91,8 @@
     series_labels:
       sessions.visits_yesterday: Actual
       sessions.visits_yesterday_last_week: LW
-    height: 1
-    width: 12
-    top: 1
-    left: 0
+    height: 2
+    width: 24
 
   - name: conversion_rate_short_term
     title: Conversion Rate
@@ -143,10 +138,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 2
-    left: 0
+    height: 2
+    width: 24
 
   - name: basket_short_term
     title: Basket Size (ex. Store Credit)
@@ -192,10 +185,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 3
-    left: 0
+    height: 2
+    width: 24
 
   - name: revenue_short_term
     title: Revenue (ex. Store Credit)
@@ -244,10 +235,8 @@
     conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
         font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
             "#FCF758", "#4FBC89"]}, bold: false, italic: false, strikethrough: false}]
-    height: 1
-    width: 12
-    top: 4
-    left: 0
+    height: 2
+    width: 24
 
   - name: trading_margin_short_term
     title: Trading Margin
@@ -293,10 +282,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 5
-    left: 0
+    height: 2
+    width: 24
 
   - name: john_lewis_gross_revenue
     title: John Lewis - Gross Revenue
@@ -344,10 +331,8 @@
     totals_color: "#808080"
     series_types: {}
     series_types: {}
-    height: 1
-    width: 12
-    top: 6
-    left: 0
+    height: 2
+    width: 24
 
   - name: john_lewis_net_revenue
     title: John Lewis - Net Revenue
@@ -394,10 +379,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 7
-    left: 0
+    height: 2
+    width: 24
 
 
 
@@ -431,9 +414,7 @@
       spree_order_items.sum_gross_item_revenue_ex_voucher_discount_gbp: Revenue
       spree_order_items.total_items_sold: Units Sold
     height: 8
-    width: 6
-    top: 8
-    left: 0
+    width: 12
 
   - name: top_products_yesterday_jl
     title: Top Products Yesterday - John Lewis
@@ -465,9 +446,8 @@
       john_lewis_sor.sum_sales_units: Units
       john_lewis_sor.sum_gross_revenue: Revenue
     height: 8
-    width: 6
-    top: 8
-    left: 6
+    width: 12
+    col: 12
 
 
   - name: traffic_long_term
@@ -512,10 +492,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 16
-    left: 0
+    height: 2
+    width: 24
 
   - name: conversion_rate_long_term
     title: Conversion Rate
@@ -560,10 +538,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 17
-    left: 0
+    height: 2
+    width: 24
 
   - name: basket_long_term
     title: Basket Size (ex. Store Credit)
@@ -613,10 +589,8 @@
             "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
           __LINE_NUM: 56}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
         __LINE_NUM: 55}]
-    height: 1
-    width: 12
-    top: 18
-    left: 0
+    height: 2
+    width: 24
 
   - name: revenue_long_term
     title: Revenue (ex. Store Credit)
@@ -666,10 +640,8 @@
             "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
           __LINE_NUM: 56}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
         __LINE_NUM: 55}]
-    height: 1
-    width: 12
-    top: 18
-    left: 0
+    height: 2
+    width: 24
 
   - name: trading_margin_long_term
     title: Trading Margin
@@ -714,10 +686,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 1
-    width: 12
-    top: 19
-    left: 0
+    height: 2
+    width: 24
 
 
 
@@ -772,10 +742,9 @@
             "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
           __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
         __LINE_NUM: 850}]
-    height: 3
-    width: 12
-    top: 20
-    left: 0
+    height: 4
+    width: 24
+
 
   - name: revenue_short_term_by_device
     title: Revenue by Device
@@ -828,10 +797,9 @@
             "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
           __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
         __LINE_NUM: 850}]
-    height: 2
-    width: 12
-    top: 23
-    left: 0
+    height: 4
+    width: 24
+
 
   - name: revenue_short_term_by_country
     title: Revenue by Country
@@ -884,7 +852,5 @@
             "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
           __LINE_NUM: 851}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
         __LINE_NUM: 850}]
-    height: 2
-    width: 12
-    top: 25
-    left: 0
+    height: 4
+    width: 24
