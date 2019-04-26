@@ -254,6 +254,7 @@ view: product_info_options {
 
   dimension: days_online {
     label: "Days Online"
+    type: number
     sql: case when ${TABLE}.online_flag = 'No' then 0 else cast(CURRENT_DATE - date(${TABLE}.available_on_spree) as integer) end ;;
   }
 
