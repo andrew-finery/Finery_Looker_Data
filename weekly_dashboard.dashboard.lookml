@@ -490,7 +490,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     conditional_formatting_ignored_fields: []
-    width: 12
+    width: 24
     height: 16
 
 
@@ -538,6 +538,5 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     conditional_formatting_ignored_fields: []
-    width: 12
+    width: 24
     height: 16
-    col: 12
