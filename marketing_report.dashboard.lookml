@@ -1,7 +1,6 @@
 - dashboard: marketing_report
   title: Marketing Report
-  layout: static
-  tile_size: 100
+  layout: newspaper
 
 
   elements:
@@ -53,10 +52,9 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 0
-    left: 0
+    width: 8
+    height: 8
+
 
   - name: revenue_yesterday_pie_chart
     title: Revenue Yesterday
@@ -106,10 +104,10 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 0
-    left: 6
+    width: 8
+    height: 8
+    col: 8
+
 
 
   - name: orders_yesterday_pie_chart
@@ -160,10 +158,10 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 6
-    left: 3
+    width: 8
+    height: 8
+    col: 16
+
 
   - name: marketing_kpi_yesterday
     title: KPI Performance Yesterday
@@ -220,10 +218,9 @@
       sessions.visits_yesterday: Visits
       sessions.conversion_yesterday: Conversion Rate
       sessions.average_basket_ex_discount_yesterday: Average Basket Size
-    width: 12
-    height: 3
-    top: 12
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: traffic_per_channel
@@ -281,10 +278,9 @@
       sessions.visits_yesterday: Actual
       sessions.conversion_yesterday: Conversion Rate
       sessions.visits_yesterday_last_week: LW
-    width: 12
-    height: 3
-    top: 15
-    left: 0
+    width: 24
+    height: 5
+
 
   - name: revenue_per_channel
     title: Revenue Ex. Discount
@@ -332,10 +328,10 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    width: 12
-    height: 3
-    top: 18
-    left: 0
+    width: 24
+    height: 5
+
+
 
   - name: orders_per_channel
     title: Orders
@@ -391,10 +387,9 @@
       sessions.orders_yesterday: Actual
       sessions.visits_yesterday: Visits
       sessions.conversion_yesterday: Conversion Rate
-    width: 12
-    height: 3
-    top: 21
-    left: 0
+    width: 24
+    height: 5
+
 
   - name: conversion_per_channel
     title: Conversion Rate
@@ -451,10 +446,9 @@
       sessions.orders_yesterday: Actual
       sessions.visits_yesterday: Visits
       sessions.conversion_yesterday: Actual
-    width: 12
-    height: 3
-    top: 24
-    left: 0
+    width: 24
+    height: 5
+
 
   - name: average_basket_per_channel
     title: Average Basket Size
@@ -502,10 +496,9 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    width: 12
-    height: 3
-    top: 27
-    left: 0
+    width: 24
+    height: 5
+
 
   - name: crm_revenue_26_week_graph
     title: CRM Revenue (6 Months)
@@ -567,10 +560,9 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 30
-    left: 0
+    width: 12
+    height: 5
+
 
   - name: search_26_week_graph
     title: Search Revenue (6 Months)
@@ -632,10 +624,10 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 30
-    left: 6
+    width: 12
+    height: 5
+    col: 12
+
 
   - name: paid_social_26_week_graph
     title: Paid Social Revenue (6 Months)
@@ -697,10 +689,8 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 33
-    left: 0
+    width: 12
+    height: 5
 
   - name: affiliates_26_week_graph
     title: Affiliates Revenue (6 Months)
@@ -762,10 +752,9 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 33
-    left: 6
+    width: 12
+    height: 5
+    col: 12
 
   - name: direct_26_week_graph
     title: Direct Revenue (6 Months)
@@ -827,10 +816,9 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 36
-    left: 0
+    width: 12
+    height: 5
+
 
   - name: organic_social_26_week_graph
     title: Organic Social Revenue (6 Months)
@@ -892,10 +880,10 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 36
-    left: 6
+    width: 12
+    height: 5
+    col: 12
+
 
   - name: referrals_26_week_graph
     title: Referrals Revenue (6 Months)
@@ -957,7 +945,5 @@
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.sum_gross_revenue_ex_discount,
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount}]}]
     colors: ['palette: Looker Classic']
-    width: 6
-    height: 3
-    top: 39
-    left: 3
+    width: 12
+    height: 5
