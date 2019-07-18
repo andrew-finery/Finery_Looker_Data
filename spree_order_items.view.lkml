@@ -614,7 +614,7 @@ view: spree_order_items {
     hidden: yes
   }
 
-  measure: return_rate_value {
+  measure: return_value {
     type: number
     value_format_name: percent_2
     sql: ${sum_return_item_value_gbp} ;;
