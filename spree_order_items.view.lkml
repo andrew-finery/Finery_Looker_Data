@@ -617,7 +617,7 @@ view: spree_order_items {
   measure: return_rate_value {
     type: number
     value_format_name: percent_2
-    sql: ${sum_return_item_value_gbp}/NULLIF(${sum_gross_item_revenue_in_gbp},0)::REAL ;;
+    sql: ${sum_return_item_value_gbp} ;;
   }
 
   ######################################################## GROSS Revenue Measures #######################################################################################################

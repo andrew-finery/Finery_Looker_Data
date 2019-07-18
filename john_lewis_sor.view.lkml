@@ -70,11 +70,24 @@ dimension: ean {
     hidden:  yes
   }
 
+  dimension: original_price {
+    type: number
+    value_format_name: gbp_0
+    sql: ${option_info.original_price}  ;;
+    hidden: yes
+  }
+
+
 # Measures
 
   measure: sum_sales_units {
     type: sum
     sql: ${sales_units} ;;
+  }
+
+  measure: sum_original_price {
+    value_format_name: gbp_0
+    sql: ${original_price} ;;
   }
 
   measure: sum_sales_units_yesterday {
@@ -1012,6 +1025,13 @@ dimension: ean {
     label: "Net Cover PW"
     group_label: "Buying Report Measures"
     sql: ${stock_units_week_before_last_end_of_week}/NULLIF(${units_net_week_before_last},0)::REAL ;;
+  }
+
+  measure: gross_sales_original_price {
+    type: number
+    value_format_name: gbp_0
+    label: "Gross Sales @ Original Price"
+    sql: ${sum_sales_units}* ${sum_original_price}  ;;
   }
 
 

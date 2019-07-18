@@ -1058,7 +1058,7 @@ view: sessions {
     sql: max(${start_time}) ;;
   }
 
-  measure: landing_page_visits {
+  measure: landing_page_visits_actual {
     label: "Landing Page Visits Yest."
     type: number
     value_format_name: decimal_0
