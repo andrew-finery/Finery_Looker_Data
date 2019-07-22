@@ -1015,12 +1015,5 @@ dimension: ean {
     sql: ${stock_units_week_before_last_end_of_week}/NULLIF(${units_net_week_before_last},0)::REAL ;;
   }
 
-  measure: gross_sales_original_price {
-    type: number
-    value_format_name: gbp_0
-    label: "Gross Sales @ Original Price"
-    sql: ${sum_sales_units}* ${sum_original_price}  ;;
-  }
-
 
 }
