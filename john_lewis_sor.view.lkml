@@ -70,24 +70,12 @@ dimension: ean {
     hidden:  yes
   }
 
-  dimension: original_price {
-    type: number
-    value_format_name: gbp_0
-    sql: ${option_info.original_price}  ;;
-    hidden: yes
-  }
-
 
 # Measures
 
   measure: sum_sales_units {
     type: sum
     sql: ${sales_units} ;;
-  }
-
-  measure: sum_original_price {
-    value_format_name: gbp_0
-    sql: ${original_price} ;;
   }
 
   measure: sum_sales_units_yesterday {
