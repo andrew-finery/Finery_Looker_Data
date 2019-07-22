@@ -258,6 +258,77 @@
     width: 24
     height: 8
 
+  - name: lapsed_won_back
+    title: Customers Won Back
+    model: finery_data
+    explore: spree_orders
+    type: looker_area
+    fields: [calendar_weeks.week_number, spree_orders.count_customers_ytd, spree_orders.count_customers_ytd_ly]
+    filters:
+      spree_orders.customer_bucket_when_placing_order: 4. Lapsed Customer
+      spree_orders.count_customers_ytd: not 0
+    sorts: [calendar_weeks.week_number]
+    limit: 500
+    color_application:
+      collection_id: b43731d5-dc87-4a8e-b807-635bef3948e7
+      palette_id: fb7bb53e-b77b-4ab6-8274-9d420d3d73f3
+      options:
+        steps: 5
+        __FILE: finery_data/weekly_dashboard.dashboard.lookml
+        __LINE_NUM: 136
+        reverse: false
+    x_axis_gridlines: false
+    y_axis_gridlines: false
+    show_view_names: false
+    y_axes: [{label: '', orientation: left, series: [{axisId: spree_orders.count_new_customers_ytd,
+            id: spree_orders.count_new_customers_ytd, name: New Customers YTD, __FILE: finery_data/weekly_dashboard.dashboard.lookml,
+            __LINE_NUM: 140}, {axisId: spree_orders.count_new_customers_ytd_ly, id: spree_orders.count_new_customers_ytd_ly,
+            name: New Customers YTD LY, __FILE: finery_data/weekly_dashboard.dashboard.lookml,
+            __LINE_NUM: 141}], showLabels: true, showValues: true, unpinAxis: true,
+        tickDensity: default, tickDensityCustom: 5, type: linear, __FILE: finery_data/weekly_dashboard.dashboard.lookml,
+        __LINE_NUM: 140}]
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    limit_displayed_rows_values:
+      show_hide: hide
+      first_last: last
+      num_rows: '20'
+    hidden_series: []
+    legend_position: center
+    series_types: {}
+    point_style: circle_outline
+    series_colors:
+      spree_orders.count_customers_ytd: "#170d1f"
+      spree_orders.count_customers_ytd_ly: "#f0c819"
+    series_labels:
+      spree_orders.count_new_customers_ytd: '2019'
+      spree_orders.count_new_customers_ytd_ly: '2018'
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    trend_lines: []
+    swap_axes: false
+    show_null_points: false
+    interpolation: monotone
+    discontinuous_nulls: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    width: 24
+    height: 8
+
 
   - name: conversion_funnel
     title: Conversion Funnel

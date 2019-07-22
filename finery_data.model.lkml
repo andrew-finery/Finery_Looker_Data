@@ -345,8 +345,9 @@ explore: spree_order_items {
 
   join: option_info {
     from: product_info_options
-    sql_on: ${variant_info.option_id} = ${option_info.option_id} ;;
+    #sql_on: ${variant_info.option_id} = ${option_info.option_id} ;;
     relationship: many_to_one
+    sql: RIGHT JOIN product_info_options AS option_info ON ${variant_info.option_id} = option_info.option_id ;;
   }
 }
 
