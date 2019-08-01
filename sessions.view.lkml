@@ -117,6 +117,12 @@ view: sessions {
     sql: ${TABLE}.interaction_events < 2 and ${TABLE}.distinct_pages_viewed = 1 ;;
   }
 
+  dimension: bounce_ga {
+    label: "Bounce GA"
+    type: yesno
+    sql:${TABLE}.distinct_pages_viewed = 1 ;;
+  }
+
   dimension: accounts_created {
     type: number
     sql: ${TABLE}.accounts_created ;;
@@ -1098,6 +1104,17 @@ view: sessions {
 
     filters: {
       field: bounce
+      value: "yes"
+    }
+  }
+
+  measure: bounced__ga_sessions_count {
+    label: "Bounced GA Visits Total"
+    type: count_distinct
+    sql: ${session_id} ;;
+
+    filters: {
+      field: bounce_ga
       value: "yes"
     }
   }
