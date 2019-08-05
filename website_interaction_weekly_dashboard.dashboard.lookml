@@ -406,64 +406,66 @@
     left: 0
 
 
-  - name: page_conversion
-    title: Page Conversion
+  - name: department_conversion
+    title: Department Conversion
     model: finery_data
-    explore: website_page_views
+    explore: daily_sales
     type: looker_column
-    fields: [website_page_views.page_urlpath, visits.distinct_conversion_rate_lcw, visits.distinct_conversion_rate_pcw]
+    fields: [option_info.big_department, option_info.on_sale_flag, option_info_daily.conversion_rate_wtd,
+      option_info_daily.conversion_rate_wtd_lw]
     filters:
-      visits.distinct_conversion_rate_lcw: NOT NULL
-      website_page_views.page_urlpath: "/t/shoes/,/t/dresses/,/t/jersey-tops/,/t/knitwear/,/t/the-full-collection/,/t/final-call/,/t/skirts-and-trousers/,/t/blouses-and-shirts/,/t/accessories/"
-    sorts: [visits.distinct_conversion_rate_lcw desc]
-    limit: 10
+      option_info.big_department: Skirts & Trousers,Dresses,Jumpsuits,Tops
+    sorts: [option_info_daily.conversion_rate_wtd desc]
+    limit: 500
     column_limit: 50
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
+    query_timezone: Europe/London
+    color_application:
+      collection_id: legacy
+      palette_id: random
+      options:
+        steps: 5
+    x_axis_gridlines: true
+    y_axis_gridlines: false
     show_view_names: false
-    point_style: none
-    series_colors:
-      visits.distinct_conversion_rate_lcw: "#0a628f"
-      visits.distinct_conversion_rate_pcw: "#b6e1fd"
-    series_types: {}
-    limit_displayed_rows: false
-    y_axes: [{label: Conversion Rate, orientation: left, series: [{id: visits.distinct_conversion_rate_lcw,
-            name: Last Week, axisId: visits.distinct_conversion_rate_lcw}, {id: visits.distinct_conversion_rate_pcw,
-            name: Previous Week, axisId: visits.distinct_conversion_rate_pcw}], showLabels: true,
-        showValues: true, unpinAxis: false, tickDensity: default, tickDensityCustom: 5,
-        type: linear}]
-    y_axis_combined: true
+    y_axes: [{label: '', orientation: left, series: [{axisId: option_info_daily.conversion_rate_wtd,
+            id: option_info_daily.conversion_rate_wtd, name: Conversion Rate WTD}, {
+            axisId: option_info_daily.conversion_rate_wtd_lw, id: option_info_daily.conversion_rate_wtd_lw,
+            name: Conversion Rate WTD LW}], showLabels: true, showValues: true, unpinAxis: false,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
     show_y_axis_labels: true
     show_y_axis_ticks: true
     y_axis_tick_density: default
     y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    x_axis_label: Page URL
+    show_x_axis_label: false
     show_x_axis_ticks: true
-    x_axis_scale: auto
     y_axis_scale_mode: linear
     x_axis_reversed: false
     y_axis_reversed: false
     plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    limit_displayed_rows_values:
+      show_hide: hide
+      first_last: first
+      num_rows: 0
+    hide_legend: false
+    legend_position: center
+    point_style: none
+    series_colors: {}
+    series_labels:
+      option_info_daily.conversion_rate_wtd: Last Week
+      option_info_daily.conversion_rate_wtd_lw: Previous Week
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
     ordering: none
     show_null_labels: false
+    show_dropoff: false
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    x_axis_label_rotation: -60
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
     width: 14
     height: 10
     top: 19
