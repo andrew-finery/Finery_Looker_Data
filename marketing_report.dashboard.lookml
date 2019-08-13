@@ -285,17 +285,17 @@
   - name: revenue_per_channel
     title: Revenue Ex. Discount
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: table
-    fields: [sessions.channel_grouping_3, sessions.gross_revenue_ex_discount_yesterday,
-      sessions.gross_revenue_ex_discount_lw, sessions.gross_revenue_ex_discount_wow,
-      sessions.gross_revenue_ex_discount_yesterday_last_year, sessions.gross_revenue_ex_discount_yesterday_yoy,
-      sessions.gross_revenue_ex_discount_month_to_date, sessions.gross_revenue_ex_discount_month_to_date_last_month,
-      sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
-      sessions.gross_revenue_ex_discount_year_to_date_last_year, sessions.gross_revenue_ex_discount_year_to_date_yoy]
-    fill_fields: [sessions.channel_grouping_3]
-    sorts: [sessions.gross_revenue_ex_discount_yesterday desc]
+    fields: [website_visits.channel_grouping_3, transactions.revenue_yesterday, transactions.revenue_yesterday_last_week,
+      transactions.revenue_yesterday_week_on_week, transactions.revenue_yesterday_last_year,
+      transactions.revenue_yesterday_year_on_year, transactions.revenue_month_to_date,
+      transactions.revenue_month_to_date_last_month, transactions.revenue_month_to_date_month_on_month,
+      transactions.revenue_year_to_date, transactions.revenue_year_to_date_last_year,
+      transactions.revenue_year_to_date_year_on_year]
+    sorts: [transactions.revenue_yesterday desc]
     limit: 500
+    column_limit: 50
     total: true
     show_view_names: false
     show_row_numbers: false
@@ -305,6 +305,7 @@
     table_theme: editable
     limit_displayed_rows: false
     enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     stacking: ''
@@ -328,6 +329,11 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
+    conditional_formatting: [{type: low to high, value: !!null '', background_color: !!null '',
+        font_color: !!null '', palette: {name: Red to Yellow to Green, colors: ["#F36254",
+            "#FCF758", "#4FBC89"], __FILE: finery_data/daily_summary_report.dashboard.lookml,
+          __LINE_NUM: 741}, bold: false, italic: false, strikethrough: false, __FILE: finery_data/daily_summary_report.dashboard.lookml,
+        __LINE_NUM: 740}]
     width: 24
     height: 5
 
