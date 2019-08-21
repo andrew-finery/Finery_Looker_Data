@@ -370,7 +370,20 @@ view: spree_order_items {
 
   dimension_group: return_time {
     type: time
-    timeframes: [date, week, month]
+    timeframes: [time,
+      date,
+      hour_of_day,
+      hour,
+      time_of_day,
+      day_of_week_index,
+      week,
+      week_of_year,
+      day_of_month,
+      month,
+      month_num,
+      year,
+      quarter,
+      quarter_of_year]
     sql: ${TABLE}.return_tstamp ;;
   }
 
@@ -642,8 +655,15 @@ view: spree_order_items {
 
   measure: sum_net_item_revenue_gbp {
     type: sum
-    sql: ${price} * (${quantity} - ${items_returned}) / ${exchange_rate} ;;
+    sql: ${price_gbp} * (${quantity} - ${items_returned}) / ${exchange_rate} ;;
     value_format_name: decimal_2
+  }
+
+  measure: net_return_value_at_cost_gbp {
+    type: sum
+    sql: ${landed_cost_gbp} * ${items_returned} / ${exchange_rate} ;;
+    value_format_name: gbp_0
+    label: "Net Return Value @ Cost gbp"
   }
 
   measure: sum_gross_item_revenue_ex_discount_ex_vat_gbp {
@@ -662,6 +682,12 @@ view: spree_order_items {
   measure: sum_net_item_revenue_gbp_ex_vat {
     type: sum
     sql: (${price} * (${quantity} - ${items_returned}) / (1+${tax_rate})) / ${exchange_rate} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: sum_net_revenue_gbp {
+    type: sum
+    sql: (${gross_item_revenue} - ${net_item_revenue}) / ${exchange_rate} ;;
     value_format_name: decimal_2
   }
 
@@ -715,7 +741,7 @@ view: spree_order_items {
   measure: sum_net_landed_cost_gbp {
     type: sum
     sql: ${variant_info.total_landed_cost_gbp} * (${quantity} - ${items_returned}) ;;
-    value_format_name: decimal_2
+    value_format_name: gbp_0
   }
 
   measure: sum_net_margin_gbp_ex_vat {
