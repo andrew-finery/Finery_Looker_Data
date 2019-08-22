@@ -1,7 +1,6 @@
 - dashboard: buying_report
   title: Buying Report
-  layout: static
-  tile_size: 100
+  layout: newspaper
 
   filters:
 
@@ -62,10 +61,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 0
-    left: 0
     height: 6
-    width: 22
+    width: 24
 
   - name: fp_sales_by_season
     title: Full Price - Sales by Season
@@ -122,10 +119,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 6
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: fp_sales_by_area
     title: Full Price - Sales by Area
@@ -182,10 +177,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 10
-    left: 0
     height: 3
-    width: 22
+    width: 24
 
   - name: md_sales_by_dept
     title: Markdown - Sales by Department
@@ -242,10 +235,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 13
-    left: 0
     height: 6
-    width: 22
+    width: 24
 
   - name: md_sales_by_season
     title: Markdown - Sales by Season
@@ -302,10 +293,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 19
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: md_sales_by_area
     title: Markdown - Sales by Area
@@ -362,10 +351,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 23
-    left: 0
     height: 3
-    width: 22
+    width: 24
 
   - name: fp_md_sales_by_dept
     title: Full Price + Markdown - Sales by Department
@@ -420,10 +407,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 26
-    left: 0
     height: 6
-    width: 22
+    width: 24
 
   - name: fp_md_sales_by_season
     title: Full Price + Markdown - Sales by Season
@@ -478,10 +463,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 32
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: fp_md_sales_by_area
     title: Full Price + Markdown - Sales by Area
@@ -536,10 +519,8 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    top: 36
-    left: 0
     height: 3
-    width: 22
+    width: 24
 
   - name: jl_sales
     title: John Lewis Sales
@@ -558,10 +539,8 @@
     limit: 500
     column_limit: 50
     show_view_names: false
-    top: 39
-    left: 0
     height: 2
-    width: 22
+    width: 24
 
   - name: top_10_value
     title: Top 10 Products - Value
@@ -586,10 +565,8 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 41
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: top_10_units
     title: Top 10 Products - Units
@@ -614,10 +591,8 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 45
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: top_10_lowest_cover
     title: Top 10 Products - Lowest Cover
@@ -645,10 +620,8 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 49
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: top_10_highest_cover
     title: Top 10 Products - Highest Cover
@@ -676,10 +649,8 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 53
-    left: 0
     height: 4
-    width: 22
+    width: 24
 
   - name: zero_selling_options
     title: Zero Selling Options (Top 10 Stock Units)
@@ -707,7 +678,5 @@
     enable_conditional_formatting: false
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
-    top: 57
-    left: 0
     height: 4
-    width: 22
+    width: 24

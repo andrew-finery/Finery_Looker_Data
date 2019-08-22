@@ -105,7 +105,7 @@
     top: 14
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: visits_last_week_v_week_before
     title: Visits Last Week vs Week Before
@@ -130,7 +130,7 @@
     top: 14
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: visits_last_30_days
     title: Visits by Device - Last 30 Days
@@ -164,7 +164,7 @@
     top: 14
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## ORDERS
 
@@ -191,7 +191,7 @@
     top: 28
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: orders_last_week_vs_week_before
     title: Orders Last Week vs Week Before
@@ -216,7 +216,7 @@
     top: 28
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: orders_last_30_days
     title: Orders by Device - Last 30 Days
@@ -250,7 +250,7 @@
     top: 28
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## CONVERSION RATE
 
@@ -277,7 +277,7 @@
     top: 42
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: cr_last_week_vs_week_before
     title: Conversion Rate Last Week vs Week Before
@@ -302,7 +302,7 @@
     top: 42
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: cr_last_30_days_by_device
     title: Conversion Rate by Device - Last 30 Days
@@ -336,7 +336,7 @@
     top: 42
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## CONVERSION RATE
 
@@ -363,7 +363,7 @@
     top: 42
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: conversion_rate_short_name_last_week_vs_week_before
     title: Conversion Rate Last Week vs Week Before
@@ -388,7 +388,7 @@
     top: 42
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: conversion_rate_short_name_last_30_days
     title: Conversion Rate by Device - Last 30 Days
@@ -422,7 +422,7 @@
     top: 42
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## Engagement Rate
 
@@ -449,7 +449,7 @@
     top: 56
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: engagement_rate_short_name_last_week_vs_week_before
     title: Engagement Rate Last Week vs Week Before
@@ -474,7 +474,7 @@
     top: 56
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: engagement_rate_short_name_last_30_days
     title: Engagement Rate by Device - Last 30 Days
@@ -508,7 +508,7 @@
     top: 56
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## New Visit %
 
@@ -535,7 +535,7 @@
     top: 70
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: new_visitor_percentage_last_week_vs_week_before
     title: New Visit % Last Week vs Week Before
@@ -560,7 +560,7 @@
     top: 70
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: new_visitor_percentage_last_30_days
     title: New Visit % by Device - Last 30 Days
@@ -594,7 +594,7 @@
     top: 70
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## Newsletter Subscriptions
 
@@ -621,7 +621,7 @@
     top: 84
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: sum_newsletter_signups_last_week_vs_week_before
     title: Newsletter Subscriptions Last Week vs Week Before
@@ -646,7 +646,7 @@
     top: 84
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: sum_newsletter_signups_last_30_days
     title: Newsletter Subscriptions by Device - Last 30 Days
@@ -680,7 +680,7 @@
     top: 84
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## Referrals
 
@@ -707,7 +707,7 @@
     top: 98
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: sum_referrals_sent_last_week_vs_week_before
     title: Referrals Last Week vs Week Before
@@ -732,7 +732,7 @@
     top: 98
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: sum_referrals_sent_last_30_days
     title: Referrals by Device - Last 30 Days
@@ -766,7 +766,7 @@
     top: 98
     left: 44
     height: 14
-    width: 22
+    width: 24
 
 ## Average Basket Size
 
@@ -793,7 +793,7 @@
     top: 112
     left: 0
     height: 14
-    width: 22
+    width: 24
 
   - name: avg_basket_last_week_v_week_before
     title: Average Basket Size Last Week vs Week Before
@@ -818,7 +818,7 @@
     top: 112
     left: 22
     height: 14
-    width: 22
+    width: 24
 
   - name: avg_basket_size_last_30_days
     title: Average Basket Size by Device - Last 30 Days
@@ -852,7 +852,7 @@
     top: 112
     left: 44
     height: 14
-    width: 22
+    width: 24
 
   - name: visits_cr_by_channel_yesterday
     title: Visits and Conversion by Channel - Yesterday

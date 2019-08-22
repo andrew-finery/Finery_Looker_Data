@@ -1,7 +1,6 @@
 - dashboard: website_interaction_dashboard
   title: Website Interaction Dashboard
-  layout: static
-  tile_size: 100
+  layout: newspaper
 
   filters:
 
@@ -31,10 +30,8 @@
     series_labels:
       sessions.page_views_per_visit: Actual
       sessions.page_views_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 0
-    left: 0
+    width: 8
+    height: 2
 
 
   - name: product_views_per_visit
@@ -61,10 +58,9 @@
     series_labels:
       sessions.product_views_per_visit: Actual
       sessions.product_views_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 0
-    left: 7
+    width: 8
+    height: 2
+    col: 8
 
   - name: add_to_cart
     title: Add To Cart (Site)
@@ -89,11 +85,9 @@
     series_labels:
       sessions.add_to_cart_rate_yesterday: Actual
       sessions.add_to_cart_rate_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 1
-    left: 0
-
+    width: 8
+    height: 2
+    col: 16
 
   - name: conversion_rate
     title: Conversion Rate (Site)
@@ -118,10 +112,9 @@
     series_labels:
       sessions.conversion_yesterday: Actual
       sessions.conversion_rate_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 1
-    left: 7
+    width: 8
+    height: 2
+
 
 
   - name: bounce_rate
@@ -147,10 +140,9 @@
     series_labels:
       sessions.bounce_rate_yesterday: Actual
       sessions.bounce_rate_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 2
-    left: 0
+    width: 8
+    height: 2
+    col: 8
 
 
   - name: engagement_rate
@@ -176,10 +168,10 @@
     series_labels:
       sessions.engagement_rate_yesterday: Actual
       sessions.engagement_rate_last_7_days: L7D
-    width: 7
-    height: 1
-    top: 2
-    left: 7
+    width: 8
+    height: 2
+    col: 16
+
 
 
   - name: landing_page_bounced_visits
@@ -207,10 +199,65 @@
     series_labels:
       sessions.visits_yesterday: Actual
       sessions.bounce_rate_yesterday: Bounce Rate
-    width: 14
-    height: 3
-    top: 3
-    left: 0
+    width: 12
+    height: 6
+
+
+  - name: top_exit_page
+    title: Top Exit Page
+    model: finery_data
+    explore: website_page_views
+    type: table
+    fields: [visits.exit_page_path, website_page_views.count_total_page_views_yesterday,
+      website_page_views.count_total_page_views_yesterday, website_page_views.exit_rate_yesterday,
+      website_page_views.exit_rate_lw, website_page_views.exit_rate_wow, website_page_views.exit_rate_l7d,
+      website_page_views.exit_rate_l7d_percentage]
+    sorts: [website_page_views.count_total_page_views_yesterday desc]
+    limit: 10
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    conditional_formatting_ignored_fields: []
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    stacking: ''
+    show_value_labels: false
+    label_density: 25
+    legend_position: center
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    y_axis_combined: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    x_axis_scale: auto
+    y_axis_scale_mode: linear
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    series_types: {}
+    series_labels:
+      website_page_views.exit_rate_yesterday: Exit Rate
+      website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
+      website_page_views.exit_rate_lw: LW
+      website_page_views.exit_rate_wow: "%"
+      website_page_views.exit_rate_l7d: L7D
+      website_page_views.exit_rate_l7d_percentage: L7D%
+      website_page_views.count_total_page_views_yesterday: Times Viewed
+    width: 12
+    height: 6
+    col: 12
 
 
   - name: top_pages_visited
@@ -282,67 +329,8 @@
       website_page_views.count_total_page_views_yesterday: Actual
       website_page_views.count_total_page_views_l7d: L7D
     width: 14
-    height: 3
-    top: 6
-    left: 0
+    height: 6
 
-
-  - name: top_exit_page
-    title: Top Exit Page
-    model: finery_data
-    explore: website_page_views
-    type: table
-    fields: [visits.exit_page_path, website_page_views.count_total_page_views_yesterday,
-      website_page_views.count_total_page_views_yesterday, website_page_views.exit_rate_yesterday,
-      website_page_views.exit_rate_lw, website_page_views.exit_rate_wow, website_page_views.exit_rate_l7d,
-      website_page_views.exit_rate_l7d_percentage]
-    sorts: [website_page_views.count_total_page_views_yesterday desc]
-    limit: 10
-    column_limit: 50
-    show_view_names: false
-    show_row_numbers: true
-    truncate_column_names: false
-    hide_totals: false
-    hide_row_totals: false
-    table_theme: editable
-    limit_displayed_rows: false
-    enable_conditional_formatting: false
-    conditional_formatting_ignored_fields: []
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
-    series_labels:
-      website_page_views.exit_rate_yesterday: Exit Rate
-      website_page_views.count_distinct_page_views_yesterday: No. Of Exits Yest
-      website_page_views.exit_rate_lw: LW
-      website_page_views.exit_rate_wow: "%"
-      website_page_views.exit_rate_l7d: L7D
-      website_page_views.exit_rate_l7d_percentage: L7D%
-      website_page_views.count_total_page_views_yesterday: Times Viewed
-    width: 14
-    height: 3
-    top: 9
-    left: 0
 
   - name: add_to_cart_rate_by_session
     title: Add To Cart (Product)
@@ -356,10 +344,10 @@
     show_view_names: false
     limit: 500
     column_limit: 50
-    width: 7
-    height: 1
-    top: 12
-    left: 0
+    width: 10
+    height: 3
+    col: 14
+
 
   - name: product_conversion_rate
     title: Conversion Rate (Product)
@@ -372,10 +360,10 @@
     show_view_names: false
     limit: 500
     column_limit: 50
-    width: 7
-    height: 1
-    top: 12
-    left: 7
+    width: 10
+    height: 3
+    col: 14
+
 
   - name: top_products_viewed_yesterday
     title: Top Products Viewed - Yesterday
@@ -407,8 +395,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 13
-    left: 0
+
 
 
   - name: top_products_viewed_last_7_days
@@ -441,8 +428,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 13
-    left: 7
+
 
 
   - name: top_products_add_to_cart_yesterday
@@ -475,8 +461,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 20
-    left: 0
+
 
 
   - name: top_products_add_to_cart_last_7_days
@@ -509,8 +494,7 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 20
-    left: 7
+
 
 
   - name: top_products_sold_yesterday
@@ -543,8 +527,6 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 27
-    left: 0
 
 
   - name: top_products_sold_last_7_days
@@ -577,5 +559,3 @@
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
     width: 7
     height: 7
-    top: 27
-    left: 7
