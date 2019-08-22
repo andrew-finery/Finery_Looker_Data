@@ -264,6 +264,15 @@
           sql: ${gross_item_revenue_gbp_ex_vat_ex_discount} - ${net_item_revenue_gbp_ex_vat_ex_discount} ;;
         }
 
+        measure: return_item_value_gbp_ex_discount {
+          label: "Return Item Value ex. Discount"
+          type: number
+          value_format_name: decimal_2
+          sql: ${gross_item_revenue_gbp_ex_discount} - ${net_item_revenue_gbp_ex_discount} ;;
+        }
+
+
+
         # ASP
 
         measure: asp {
