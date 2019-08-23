@@ -61,8 +61,9 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    height: 6
-    width: 24
+    height: 12
+    width: 32
+
 
   - name: fp_sales_by_season
     title: Full Price - Sales by Season
@@ -120,7 +121,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 4
-    width: 24
+    width: 32
 
   - name: fp_sales_by_area
     title: Full Price - Sales by Area
@@ -178,7 +179,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 3
-    width: 24
+    width: 32
 
   - name: md_sales_by_dept
     title: Markdown - Sales by Department
@@ -236,7 +237,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 6
-    width: 24
+    width: 32
 
   - name: md_sales_by_season
     title: Markdown - Sales by Season
@@ -294,7 +295,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 4
-    width: 24
+    width: 32
 
   - name: md_sales_by_area
     title: Markdown - Sales by Area
@@ -352,7 +353,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 3
-    width: 24
+    width: 32
 
   - name: fp_md_sales_by_dept
     title: Full Price + Markdown - Sales by Department
@@ -408,7 +409,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 6
-    width: 24
+    width: 32
 
   - name: fp_md_sales_by_season
     title: Full Price + Markdown - Sales by Season
@@ -464,7 +465,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 4
-    width: 24
+    width: 32
 
   - name: fp_md_sales_by_area
     title: Full Price + Markdown - Sales by Area
@@ -520,7 +521,7 @@
     totals_color: "#808080"
     series_types: {}
     height: 3
-    width: 24
+    width: 32
 
   - name: jl_sales
     title: John Lewis Sales
@@ -540,7 +541,7 @@
     column_limit: 50
     show_view_names: false
     height: 2
-    width: 24
+    width: 32
 
   - name: top_10_value
     title: Top 10 Products - Value
@@ -566,7 +567,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     height: 4
-    width: 24
+    width: 32
 
   - name: top_10_units
     title: Top 10 Products - Units
@@ -592,7 +593,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     height: 4
-    width: 24
+    width: 32
 
   - name: top_10_lowest_cover
     title: Top 10 Products - Lowest Cover
@@ -621,7 +622,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     height: 4
-    width: 24
+    width: 32
 
   - name: top_10_highest_cover
     title: Top 10 Products - Highest Cover
@@ -650,7 +651,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     height: 4
-    width: 24
+    width: 32
 
   - name: zero_selling_options
     title: Zero Selling Options (Top 10 Stock Units)
@@ -679,4 +680,4 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     height: 4
-    width: 24
+    width: 32
