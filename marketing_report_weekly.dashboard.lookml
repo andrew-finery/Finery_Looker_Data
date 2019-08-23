@@ -1,7 +1,6 @@
 - dashboard: marketing_report_weekly
   title: Marketing Report Weekly
-  layout: static
-  tile_size: 100
+  layout: newspaper
 
 
   elements:
@@ -53,10 +52,8 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 0
-    left: 0
+    width: 8
+    height: 8
 
 
   - name: revenue_chart
@@ -107,10 +104,10 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 0
-    left: 6
+    width: 8
+    height: 8
+    col: 8
+
 
 
   - name: orders_chart
@@ -161,10 +158,10 @@
       Paid Social: "#9fdee0"
       Affiliates: "#1f3e5a"
       Organic Social: "#92818d"
-    width: 6
-    height: 6
-    top: 6
-    left: 3
+    width: 8
+    height: 8
+    col: 16
+
 
 
   - name: kpi_performance
@@ -222,10 +219,9 @@
       sessions.visits_yesterday: Visits
       sessions.conversion_yesterday: Conversion Rate
       sessions.average_basket_ex_discount_yesterday: Average Basket Size
-    width: 12
-    height: 3
-    top: 12
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: kpi_performance_day_of_the_week
@@ -273,10 +269,9 @@
     show_silhouette: false
     totals_color: "#808080"
     series_types: {}
-    width: 12
-    height: 3
-    top: 15
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: traffic_table
@@ -326,10 +321,9 @@
     series_types: {}
     series_labels:
       sessions.visits_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 18
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: revenue_ex_discount_table
@@ -382,10 +376,9 @@
     series_labels:
       sessions.visits_last_complete_week_wow: "%"
       sessions.gross_revenue_ex_discount_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 21
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: orders_table
@@ -438,10 +431,9 @@
       sessions.visits_last_complete_week_wow: "%"
       sessions.gross_revenue_ex_discount_last_complete_week_wow: "%"
       sessions.orders_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 24
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: conversion_rate_table
@@ -495,10 +487,9 @@
       sessions.gross_revenue_ex_discount_last_complete_week_wow: "%"
       sessions.orders_last_complete_week_wow: "%"
       sessions.conversion_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 27
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: average_basket_table
@@ -553,10 +544,9 @@
       sessions.orders_last_complete_week_wow: "%"
       sessions.conversion_last_complete_week_wow: "%"
       sessions.average_basket_ex_discount_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 30
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: traffic_table_by_day
@@ -607,10 +597,9 @@
     series_types: {}
     series_labels:
       sessions.visits_last_complete_week_wow: "%"
-    width: 12
-    height: 3
-    top: 33
-    left: 0
+    width: 24
+    height: 5
+
 
 
   - name: traffic_graph_by_day
@@ -688,10 +677,9 @@
         showLabels: false, showValues: true, tickDensity: default, tickDensityCustom: 5,
         type: linear, unpinAxis: false, valueFormat: !!null '', series: [{id: sessions.count,
             name: Visits Total, axisId: sessions.count}]}]
-    width: 6
-    height: 3
-    top: 36
-    left: 0
+    width: 12
+    height: 7
+
 
 
   - name: revenue_graph_by_day
@@ -771,10 +759,10 @@
             name: Sum Gross Revenue Ex Discount, axisId: sessions.sum_gross_revenue_ex_discount,
             __FILE: finery_data/marketing_report_weekly.dashboard.lookml, __LINE_NUM: 849}],
         __FILE: finery_data/marketing_report_weekly.dashboard.lookml, __LINE_NUM: 847}]
-    width: 6
-    height: 3
-    top: 36
-    left: 6
+    width: 12
+    height: 7
+    col: 12
+
 
 
   - name: orders_graph_by_day
@@ -854,10 +842,9 @@
             name: Sum Orders, axisId: sessions.sum_orders, __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
             __LINE_NUM: 930}], __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
         __LINE_NUM: 928}]
-    width: 6
-    height: 3
-    top: 39
-    left: 0
+    width: 12
+    height: 7
+
 
 
   - name: conversion_graph_by_day
@@ -937,10 +924,10 @@
             name: Conversion Rate, axisId: sessions.conversion_rate, __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
             __LINE_NUM: 1011}], __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
         __LINE_NUM: 1009}]
-    width: 6
-    height: 3
-    top: 39
-    left: 6
+    width: 12
+    height: 7
+    col: 12
+
 
 
   - name: average_basket_graph_by_day
@@ -1020,7 +1007,5 @@
             name: Average Basket Size, axisId: sessions.average_basket_size, __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
             __LINE_NUM: 1092}], __FILE: finery_data/marketing_report_weekly.dashboard.lookml,
         __LINE_NUM: 1090}]
-    width: 6
-    height: 3
-    top: 42
-    left: 3
+    width: 12
+    height: 7
