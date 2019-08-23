@@ -393,8 +393,8 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
 
 
 
@@ -426,8 +426,9 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
+    col: 12
 
 
 
@@ -459,8 +460,8 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
 
 
 
@@ -492,8 +493,9 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
+    col: 12
 
 
 
@@ -525,8 +527,8 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
 
 
   - name: top_products_sold_last_7_days
@@ -557,5 +559,6 @@
     series_labels:
       product_info_option_daily.conversion_rate: C.R
       product_info_option_daily.sum_gross_revenue_gbp: Gross Rev.
-    width: 7
-    height: 7
+    width: 12
+    height: 12
+    col: 12
