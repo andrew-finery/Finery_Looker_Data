@@ -45,13 +45,13 @@
     totals_color: "#808080"
     series_types: {}
     series_colors:
-      CRM (Email): "#04c49c"
-      Direct: "#2545aa"
-      Search: "#ec8080"
-      Referrals: "#f1cd52"
-      Paid Social: "#9fdee0"
-      Affiliates: "#1f3e5a"
-      Organic Social: "#92818d"
+      Paid Social: "#a9c574"
+      Organic Social: "#928fb4"
+      Referrals: "#c5c6a6"
+      Affiliates: "#e9b404"
+      Search: "#ed6168"
+      CRM (Email): "#1f3e5a"
+      Direct: "#9fdee0"
     width: 8
     height: 8
 
@@ -59,51 +59,32 @@
   - name: revenue_yesterday_pie_chart
     title: Revenue Yesterday
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.sum_gross_revenue_ex_discount]
-    fill_fields: [sessions.channel_grouping_3]
+    fields: [website_visits.channel_grouping_3, transactions.sum_gross_revenue_ex_discount_and_store_credit_in_gbp]
+    fill_fields: [website_visits.channel_grouping_3]
     filters:
-      session_start_calendar.calendar_date_date: 1 days ago for 1 days
-    sorts: [sessions.sum_gross_revenue_ex_discount desc]
+      transactions.completed_date: 1 days ago for 1 days
+    sorts: [transactions.sum_gross_revenue_ex_discount_and_store_credit_in_gbp desc]
     limit: 500
-    column_limit: 50
+    total: true
+    query_timezone: Europe/London
     value_labels: labels
     label_type: labPer
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
+    color_application:
+      collection_id: legacy
+      palette_id: looker_classic
+      options:
+        steps: 5
     series_colors:
-      CRM (Email): "#04c49c"
-      Direct: "#2545aa"
-      Search: "#ec8080"
-      Referrals: "#f1cd52"
-      Paid Social: "#9fdee0"
-      Affiliates: "#1f3e5a"
-      Organic Social: "#92818d"
+      Paid Social: "#a9c574"
+      Organic Social: "#928fb4"
+      Referrals: "#c5c6a6"
+      Affiliates: "#e9b404"
+      Search: "#ed6168"
+      CRM (Email): "#1f3e5a"
+      Direct: "#9fdee0"
+    series_types: {}
     width: 8
     height: 8
     col: 8
@@ -113,51 +94,32 @@
   - name: orders_yesterday_pie_chart
     title: Orders Yesterday
     model: finery_data
-    explore: sessions
+    explore: transactions
     type: looker_pie
-    fields: [sessions.channel_grouping_3, sessions.sum_orders]
-    fill_fields: [sessions.channel_grouping_3]
+    fields: [website_visits.channel_grouping_3, transactions.count_orders]
+    fill_fields: [website_visits.channel_grouping_3]
     filters:
-      session_start_calendar.calendar_date_date: 1 days ago for 1 days
-    sorts: [sessions.sum_orders desc]
+      transactions.completed_date: 1 days ago for 1 days
+    sorts: [transactions.count_orders desc]
     limit: 500
-    column_limit: 50
+    total: true
+    query_timezone: Europe/London
     value_labels: labels
     label_type: labPer
-    stacking: ''
-    show_value_labels: false
-    label_density: 25
-    legend_position: center
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: true
-    limit_displayed_rows: false
-    y_axis_combined: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    x_axis_scale: auto
-    y_axis_scale_mode: linear
-    show_null_points: true
-    point_style: none
-    interpolation: linear
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
-    series_types: {}
+    color_application:
+      collection_id: legacy
+      palette_id: looker_classic
+      options:
+        steps: 5
     series_colors:
-      CRM (Email): "#04c49c"
-      Direct: "#2545aa"
-      Search: "#ec8080"
-      Referrals: "#f1cd52"
-      Paid Social: "#9fdee0"
-      Affiliates: "#1f3e5a"
-      Organic Social: "#92818d"
+      Paid Social: "#a9c574"
+      Organic Social: "#928fb4"
+      Referrals: "#c5c6a6"
+      Affiliates: "#e9b404"
+      Search: "#ed6168"
+      CRM (Email): "#1f3e5a"
+      Direct: "#9fdee0"
+    series_types: {}
     width: 8
     height: 8
     col: 16
