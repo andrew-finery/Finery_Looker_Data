@@ -116,6 +116,11 @@ dimension: ean {
     sql: ${returns_units} ;;
   }
 
+  measure: return_value{
+    type: sum
+    sql: ${returns_units}*${price} ;;
+  }
+
   measure: gross_cogs{
     type: sum
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*${sales_units} ;;
