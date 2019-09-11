@@ -137,6 +137,12 @@ dimension: ean {
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*(${sales_units} - ${returns_units}) ;;
   }
 
+  measure: net_margin_value_ex_vat {
+    type: number
+    value_format_name: decimal_0
+    sql: (${sum_net_revenue} - ${net_cogs})*0.8  ;;
+  }
+
   measure: return_cogs{
     type: sum
     sql: coalesce(${variant_info.total_landed_cost_gbp}, 0)*(${returns_units}) ;;
