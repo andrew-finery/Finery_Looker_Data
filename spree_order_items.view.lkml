@@ -753,7 +753,7 @@ view: spree_order_items {
   measure: sum_net_margin_gbp {
     type: number
     value_format_name: decimal_2
-    sql: ${net_item_revenue_ex_voucher_discount_gbp} - ${sum_net_landed_cost_gbp} ;;
+    sql: ${sum_net_item_revenue_ex_discount_ex_vat_gbp} - ${sum_net_landed_cost_gbp} ;;
   }
 
   measure: net_margin_percent_ex_vat {
