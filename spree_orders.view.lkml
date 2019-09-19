@@ -1707,7 +1707,7 @@ view: spree_orders {
   }
 
   measure: sum_net_revenue_ex_discount_and_shipping_gbp {
-    label: "Net Revenue ex. Discount"
+    label: "Net Revenue ex. Discount & Shipping"
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded}) / ${exchange_rate} ;;
     value_format_name: decimal_2
