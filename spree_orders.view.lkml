@@ -1135,7 +1135,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_in_gbp {
-    label: "Gross Revenue ex. Voucher"
+    label: "Gross Revenue ex. Discount"
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1147,7 +1147,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_shipping_in_gbp {
-    label: "Gross Revenue ex. Voucher & Shipping"
+    label: "Gross Revenue ex. Discount & Shipping"
     type: sum
     sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) ) / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1172,7 +1172,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat {
-    label: "Gross Revenue ex. Voucher & VAT"
+    label: "Gross Revenue ex. Discount & VAT"
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1184,7 +1184,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_in_gbp_ex_vat_in_k {
-    label: "Gross Revenue ex. Voucher &, VAT (K)"
+    label: "Gross Revenue ex. Discount &, VAT (K)"
     type: sum
     sql: (((${TABLE}.item_total- (${TABLE}.adjustment_total * (-1)) )*(1/(1+${tax_rate})))  + ${TABLE}.shipment_total) / ${exchange_rate} / 1000 ;;
     value_format: "\"£\"##0.0\"k\""
@@ -1209,7 +1209,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp {
-    label: "Gross Revenue ex. Voucher & Store Credit"
+    label: "Gross Revenue ex. Discount & Store Credit"
     type: sum
     sql: (${TABLE}.item_total + ${TABLE}.shipment_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1221,7 +1221,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_and_shipping_in_gbp {
-    label: "Gross Revenue ex. Voucher & Store Credit & Shipping"
+    label: "Gross Revenue ex. Discount & Store Credit & Shipping"
     type: sum
     sql: (${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1241,7 +1241,7 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat {
-    label: "Gross Revenue ex. Voucher & Store Credit & VAT"
+    label: "Gross Revenue ex. Discount & Store Credit & VAT"
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))) + ${TABLE}.shipment_total)  / ${exchange_rate} ;;
     value_format_name: decimal_2
@@ -1253,14 +1253,14 @@ view: spree_orders {
   }
 
   measure: sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping {
-    label: "Gross Revenue ex. Voucher & Store Credit & Shipping, VAT"
+    label: "Gross Revenue ex. Discount & Store Credit & Shipping, VAT"
     type: sum
     sql: (((${TABLE}.item_total - (${TABLE}.adjustment_total * (-1)) - ${TABLE}.store_credit_used)*(1/(1+${tax_rate}))))  / ${exchange_rate} ;;
     value_format_name: decimal_2
   }
 
   measure: avg_basket_ex_discount_store_credot_shipping_vat {
-    label: "Avg Basket ex. Voucher & Store Credit & Shipping, VAT"
+    label: "Avg Basket ex. Discount & Store Credit & Shipping, VAT"
     type:  number
     value_format_name: decimal_2
     sql: ${sum_gross_revenue_ex_discount_and_store_credit_in_gbp_ex_vat_ex_shipping}/NULLIF(${count_orders},0)::REAL ;;
@@ -1698,6 +1698,18 @@ view: spree_orders {
     label: "Net Revenue ex. Discount"
     type: sum
     sql: (${item_total} - ${discount} - ${amount_refunded} + ${shipping_total}) / ${exchange_rate} ;;
+    value_format_name: decimal_2
+
+    filters: {
+      field: state
+      value: "-canceled"
+    }
+  }
+
+  measure: sum_net_revenue_ex_discount_and_shipping_gbp {
+    label: "Net Revenue ex. Discount"
+    type: sum
+    sql: (${item_total} - ${discount} - ${amount_refunded}) / ${exchange_rate} ;;
     value_format_name: decimal_2
 
     filters: {
