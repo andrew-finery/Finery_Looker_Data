@@ -743,6 +743,18 @@ view: product_info_options {
        ;;
   }
 
+  dimension: avaliability {
+    type: string
+    sql: case
+      when (${online_flag}
+            and ${size_availability} > 0
+            and ${units_in_stock} > 0
+            and not ${coming_soon_flag})
+      then 'in stock' else 'out of stock'
+      end
+       ;;
+  }
+
   dimension: return_rate {
     type: number
     sql: case
