@@ -114,7 +114,7 @@ view: product_info_options {
     group_label: "Prices"
     type: number
     sql: ${TABLE}.retail_price_gbp ;;
-    value_format: "##0"
+    value_format_name: gbp_0
   }
 
   dimension: current_price_usd {
