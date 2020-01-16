@@ -13,6 +13,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 days ago for 1 days
+      sessions.geography_country: "-USA"
     sorts: [sessions.count desc]
     limit: 500
     column_limit: 50
@@ -65,6 +66,7 @@
     fill_fields: [website_visits.channel_grouping_3]
     filters:
       transactions.completed_date: 1 days ago for 1 days
+      sessions.geography_country: "-USA"
     sorts: [transactions.sum_gross_revenue_ex_discount_and_store_credit_in_gbp desc]
     limit: 500
     total: true
@@ -100,6 +102,7 @@
     fill_fields: [website_visits.channel_grouping_3]
     filters:
       transactions.completed_date: 1 days ago for 1 days
+      sessions.geography_country: "-USA"
     sorts: [transactions.count_orders desc]
     limit: 500
     total: true
@@ -135,6 +138,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 days ago for 1 days
+      sessions.geography_country: "-USA"
     sorts: [sessions.sum_gross_revenue_ex_discount desc]
     limit: 500
     column_limit: 50
@@ -195,6 +199,8 @@
       sessions.visits_month_to_date, sessions.visits_month_to_date_last_month, sessions.visits_month_to_date_mom,
       sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.visits_yesterday desc]
     limit: 500
     column_limit: 50
@@ -255,6 +261,8 @@
       transactions.revenue_month_to_date_last_month, transactions.revenue_month_to_date_month_on_month,
       transactions.revenue_year_to_date, transactions.revenue_year_to_date_last_year,
       transactions.revenue_year_to_date_year_on_year]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
@@ -311,6 +319,8 @@
       sessions.orders_month_to_date, sessions.orders_month_to_date_last_month, sessions.orders_month_to_date_month_on_month,
       sessions.orders_year_to_date, sessions.orders_year_to_date_last_year, sessions.orders_year_to_date_year_on_year]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.orders_yesterday desc]
     limit: 500
     column_limit: 50
@@ -370,6 +380,8 @@
       sessions.conversion_month_to_date_mom, sessions.conversion_year_to_date, sessions.conversion_year_to_date_last_year,
       sessions.conversion_year_to_date_yoy]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.conversion_yesterday desc]
     limit: 500
     column_limit: 50
@@ -430,6 +442,8 @@
       sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
       sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy_2]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.average_basket_ex_discount_yesterday desc]
     limit: 500
     total: true

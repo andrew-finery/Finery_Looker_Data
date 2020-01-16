@@ -13,6 +13,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [sessions.count desc]
     limit: 500
     column_limit: 50
@@ -65,6 +66,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [sessions.sum_gross_revenue_ex_discount desc]
     limit: 500
     column_limit: 50
@@ -119,6 +121,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [sessions.sum_orders desc]
     limit: 500
     column_limit: 50
@@ -174,6 +177,7 @@
     fill_fields: [sessions.channel_grouping_3]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [sessions.sum_gross_revenue_ex_discount desc]
     limit: 500
     column_limit: 50
@@ -234,6 +238,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50
@@ -284,6 +289,8 @@
       sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
       sessions.visits_month_to_date_mom, sessions.visits_year_to_date, sessions.visits_year_to_date_last_year,
       sessions.visits_year_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.visits_last_complete_week desc]
     limit: 500
     column_limit: 50
@@ -338,6 +345,8 @@
       sessions.gross_revenue_ex_discount_month_to_date_mom, sessions.gross_revenue_ex_discount_year_to_date,
       sessions.gross_revenue_ex_discount_year_to_date_last_year, sessions.gross_revenue_ex_discount_year_to_date_yoy]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.gross_revenue_ex_discount_last_complete_week desc]
     limit: 500
     column_limit: 50
@@ -392,6 +401,8 @@
       sessions.orders_month_to_date_month_on_month, sessions.orders_year_to_date, sessions.orders_year_to_date_last_year,
       sessions.orders_year_to_date_year_on_year]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.orders_last_complete_week desc]
     limit: 500
     column_limit: 50
@@ -447,6 +458,8 @@
       sessions.conversion_year_to_date, sessions.conversion_year_to_date_last_year,
       sessions.conversion_year_to_date_yoy]
     fill_fields: [sessions.channel_grouping_3]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [sessions.conversion_last_complete_week desc]
     limit: 500
     column_limit: 50
@@ -504,6 +517,8 @@
       sessions.average_basket_ex_discount_month_to_date_mom, sessions.average_basket_ex_discount_year_to_date,
       sessions.average_basket_ex_discount_year_to_date_last_year, sessions.average_basket_ex_discount_year_to_date_yoy_2]
     sorts: [sessions.average_basket_ex_discount_last_complete_week desc]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     total: true
@@ -560,6 +575,8 @@
       sessions.visits_month_to_date, sessions.visits_month_to_date_last_month, sessions.visits_month_to_date_mom,
       sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 7
     column_limit: 50
@@ -611,6 +628,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50
@@ -691,6 +709,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50
@@ -774,6 +793,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50
@@ -856,6 +876,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50
@@ -939,6 +960,7 @@
     fill_fields: [session_start_calendar.calendar_date_day_of_week]
     filters:
       session_start_calendar.calendar_date_week: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     sorts: [session_start_calendar.calendar_date_day_of_week]
     limit: 500
     column_limit: 50

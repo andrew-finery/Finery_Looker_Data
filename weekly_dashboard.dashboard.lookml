@@ -13,6 +13,7 @@
     fields: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     query_timezone: Europe/London
@@ -37,6 +38,7 @@
     fields: [spree_orders.count_orders]
     filters:
       calendar_weeks.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     custom_color_enabled: true
@@ -61,6 +63,7 @@
     fields: [sessions.conversion_rate]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     query_timezone: Europe/London
@@ -86,6 +89,7 @@
     fields: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       calendar_weeks.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     limit: 500
     dynamic_fields:
     - table_calculation: calculation_1
@@ -165,8 +169,8 @@
     point_style: circle_outline
     series_colors: {}
     series_labels:
-      spree_orders.count_new_customers_ytd: '2019'
-      spree_orders.count_new_customers_ytd_ly: '2018'
+      spree_orders.count_new_customers_ytd: '2020'
+      spree_orders.count_new_customers_ytd_ly: '2019'
     show_value_labels: true
     label_density: 25
     x_axis_scale: auto
@@ -239,10 +243,10 @@
     point_style: circle_outline
     series_colors: {}
     series_labels:
-      spree_orders.count_new_customers_ytd: '2019'
-      spree_orders.count_new_customers_ytd_ly: '2018'
-      spree_orders.count_second_order_customers_ytd: '2019'
-      spree_orders.count_second_order_customers_ytd_ly: '2018'
+      spree_orders.count_new_customers_ytd: '2020'
+      spree_orders.count_new_customers_ytd_ly: '2019'
+      spree_orders.count_second_order_customers_ytd: '2020'
+      spree_orders.count_second_order_customers_ytd_ly: '2019'
     show_value_labels: true
     label_density: 25
     x_axis_scale: auto
@@ -312,8 +316,8 @@
       spree_orders.count_customers_ytd: "#170d1f"
       spree_orders.count_customers_ytd_ly: "#f0c819"
     series_labels:
-      spree_orders.count_new_customers_ytd: '2019'
-      spree_orders.count_new_customers_ytd_ly: '2018'
+      spree_orders.count_new_customers_ytd: '2020'
+      spree_orders.count_new_customers_ytd_ly: '2019'
     show_value_labels: true
     label_density: 25
     x_axis_scale: auto
@@ -342,6 +346,7 @@
       sessions.9_conversion_funnel_checkout_payment, sessions.10_conversion_funnel_order]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
+      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     leftAxisLabelVisible: false
@@ -454,7 +459,7 @@
     point_style: none
     interpolation: monotone
     width: 12
-    height: 12
+    height: 13
 
 
   - name: promo_code_usage
@@ -520,7 +525,7 @@
     total_color: "#929292"
     hidden_fields: [transactions.sum_gross_revenue_ex_discount_in_gbp]
     width: 12
-    height: 6
+    height: 7
     col: 12
 
 

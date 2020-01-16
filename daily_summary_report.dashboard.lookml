@@ -54,6 +54,8 @@
     fields: [sessions.visits_yesterday, sessions.visits_yesterday_last_week, sessions.visits_yesterday_wow,
       sessions.visits_yesterday_last_year, sessions.visits_yesterday_yoy, sessions.visits_week_to_date, sessions.visits_week_to_date_last_week,
       sessions.visits_week_to_date_wow, sessions.visits_week_to_date_last_year, sessions.visits_week_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -104,6 +106,8 @@
       sessions.conversion_week_to_date, sessions.conversion_week_to_date_last_week,
       sessions.conversion_week_to_date_wow, sessions.conversion_week_to_date_last_year,
       sessions.conversion_week_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -151,6 +155,8 @@
       spree_orders.basket_week_to_date, spree_orders.basket_week_to_date_last_week,
       spree_orders.basket_week_to_date_wow, spree_orders.basket_week_to_date_last_year,
       spree_orders.basket_week_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -198,6 +204,8 @@
       spree_orders.revenue_yesterday_year_on_year, spree_orders.revenue_week_to_date, spree_orders.revenue_week_to_date_lw,
       spree_orders.revenue_week_to_date_week_on_week, spree_orders.revenue_week_to_date_ly,
       spree_orders.revenue_week_to_date_year_on_year]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -458,6 +466,8 @@
     fields: [sessions.visits_month_to_date, sessions.visits_month_to_date_last_month,
       sessions.visits_month_to_date_mom, sessions.visits_month_to_date_last_year, sessions.visits_month_to_date_yoy,
       sessions.visits_year_to_date, sessions.visits_year_to_date_last_year, sessions.visits_year_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -504,6 +514,8 @@
       sessions.conversion_month_to_date_mom, sessions.conversion_month_to_date_last_year,
       sessions.conversion_month_to_date_yoy, sessions.conversion_year_to_date,
       sessions.conversion_year_to_date_last_year, sessions.conversion_year_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -550,6 +562,8 @@
       spree_orders.basket_month_to_date_mom, spree_orders.basket_month_to_date_last_year,
       spree_orders.basket_month_to_date_yoy, spree_orders.basket_year_to_date,
       spree_orders.basket_year_to_date_last_year, spree_orders.basket_year_to_date_yoy]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -601,6 +615,8 @@
       spree_orders.revenue_month_to_date_month_on_month, spree_orders.revenue_month_to_date_last_year,
       spree_orders.revenue_month_to_date_year_on_year, spree_orders.revenue_year_to_date,
       spree_orders.revenue_year_to_date_last_year, spree_orders.revenue_year_to_date_year_on_year]
+    filters:
+      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -701,6 +717,8 @@
       transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
       transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
       transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
@@ -756,6 +774,8 @@
       transactions.revenue_yesterday_year_on_year, transactions.revenue_week_to_date,
       transactions.revenue_week_to_date_lw, transactions.revenue_week_to_date_week_on_week,
       transactions.revenue_week_to_date_ly, transactions.revenue_week_to_date_year_on_year]
+    filters:
+      sessions.geography_country: "-USA"
     sorts: [transactions.revenue_yesterday desc]
     limit: 500
     column_limit: 50
