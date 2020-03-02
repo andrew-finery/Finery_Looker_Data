@@ -13,7 +13,6 @@
     fields: [sessions.count]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
-      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     query_timezone: Europe/London
@@ -38,7 +37,6 @@
     fields: [spree_orders.count_orders]
     filters:
       calendar_weeks.calendar_date_date: 1 weeks ago for 1 weeks
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     custom_color_enabled: true
@@ -63,7 +61,6 @@
     fields: [sessions.conversion_rate]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
-      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     query_timezone: Europe/London
@@ -89,7 +86,6 @@
     fields: [spree_orders.avg_gross_revenue_ex_discount_in_gbp]
     filters:
       calendar_weeks.calendar_date_date: 1 weeks ago for 1 weeks
-      sessions.geography_country: "-USA"
     limit: 500
     dynamic_fields:
     - table_calculation: calculation_1
@@ -346,7 +342,6 @@
       sessions.9_conversion_funnel_checkout_payment, sessions.10_conversion_funnel_order]
     filters:
       session_start_calendar.calendar_date_date: 1 weeks ago for 1 weeks
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     leftAxisLabelVisible: false
