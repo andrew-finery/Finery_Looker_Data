@@ -14,8 +14,6 @@
       sessions.page_views_per_visit_lcw_ly, sessions.page_views_per_visit_lcw_ly_yoy,
       sessions.page_views_per_visit_mtd, sessions.page_views_per_visit_mtd_lm, sessions.page_views_per_visit_mtd_mom,
       sessions.page_views_per_visit_ytd, sessions.page_views_per_visit_ytd_ly, sessions.page_views_per_visit_ytd_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     column_limit: 50
     show_view_names: false
@@ -46,8 +44,6 @@
       sessions.product_views_per_visit_mtd_lm, sessions.product_views_per_visit_mtd_mom,
       sessions.product_views_per_visit_ytd, sessions.product_views_per_visit_ytd_ly,
       sessions.product_views_per_visit_ytd_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     show_view_names: false
@@ -108,8 +104,6 @@
       sessions.engagement_rate_lcw_ly, sessions.engagement_rate_lcw_ly_yoy, sessions.engagement_rate_mtd,
       sessions.engagement_rate_mtd_lm, sessions.engagement_rate_mtd_mom, sessions.engagement_rate_ytd,
       sessions.engagement_rate_ytd_ly, sessions.engagement_rate_ytd_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     show_view_names: false
@@ -161,8 +155,6 @@
       sessions.bounce_rate_lcw_ly, sessions.bounce_rate_lcw_ly_yoy, sessions.bounce_rate_mtd,
       sessions.bounce_rate_mtd_lm, sessions.bounce_rate_mtd_mom, sessions.bounce_rate_ytd,
       sessions.bounce_rate_ytd_ly, sessions.bounce_rate_ytd_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     show_view_names: false
@@ -214,8 +206,6 @@
       sessions.add_to_cart_lcw_ly, sessions.add_to_cart_lcw_ly_yoy, sessions.add_to_cart_mtd,
       sessions.add_to_cart_mtd_lm, sessions.add_to_cart_mtd_mom, sessions.add_to_cart_ytd,
       sessions.add_to_cart_ytd_ly, sessions.add_to_cart_ytd_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     show_view_names: false
@@ -268,8 +258,6 @@
       sessions.conversion_month_to_date_last_month, sessions.conversion_month_to_date_mom,
       sessions.conversion_year_to_date, sessions.conversion_year_to_date_last_year,
       sessions.conversion_year_to_date_yoy]
-    filters:
-      sessions.geography_country: "-USA"
     limit: 500
     query_timezone: Europe/London
     show_view_names: false
@@ -466,7 +454,6 @@
       option_info_daily.conversion_rate_wtd_lw]
     filters:
       option_info.big_department: Skirts & Trousers,Dresses,Jumpsuits,Tops
-      sessions.geography_country: "-USA"
     sorts: [option_info_daily.conversion_rate_wtd desc]
     limit: 500
     column_limit: 50
